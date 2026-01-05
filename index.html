@@ -17,22 +17,188 @@
   <base href="/">
 
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="description" content="A new Flutter project.">
+  <meta name="description" content="Mohamed Adel - Flutter Developer Portfolio. A modern, animated portfolio website showcasing mobile app development expertise, projects, and experience.">
 
   <!-- iOS meta tags & icons -->
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="my_web_site">
+  <meta name="apple-mobile-web-app-title" content="Mohamed Adel">
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
 
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="favicon.png"/>
 
-  <title>my_web_site</title>
+  <title>Mohamed Adel - Flutter Developer Portfolio</title>
   <link rel="manifest" href="manifest.json">
+  
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #0A0E27;
+      color: #FFFFFF;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      min-height: 100vh;
+      position: relative;
+    }
+    
+    .loading-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 9999;
+    }
+    
+    .logo-container {
+      position: absolute;
+      top: 30px;
+      left: 30px;
+      animation: fadeIn 0.8s ease-in;
+      z-index: 10000;
+    }
+    
+    .logo {
+      max-width: 250px;
+      width: auto;
+      height: auto;
+      display: block;
+      filter: drop-shadow(0 0 20px rgba(0, 217, 255, 0.4));
+      animation: logoPulse 2s ease-in-out infinite;
+      object-fit: contain;
+    }
+    
+    .logo[src=""],
+    .logo:not([src]) {
+      display: none;
+    }
+    
+    @media (max-width: 768px) {
+      .logo-container {
+        top: 20px;
+        left: 20px;
+      }
+      
+      .logo {
+        max-width: 180px;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .logo-container {
+        top: 15px;
+        left: 15px;
+      }
+      
+      .logo {
+        max-width: 150px;
+      }
+    }
+    
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-20px) scale(0.9);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+    
+    @keyframes logoPulse {
+      0%, 100% {
+        opacity: 1;
+        filter: drop-shadow(0 0 20px rgba(0, 217, 255, 0.4));
+      }
+      50% {
+        opacity: 0.9;
+        filter: drop-shadow(0 0 25px rgba(0, 217, 255, 0.6));
+      }
+    }
+    
+    .error-message {
+      display: none;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      padding: 20px;
+      background-color: rgba(255, 0, 0, 0.1);
+      border: 1px solid rgba(255, 0, 0, 0.3);
+      border-radius: 8px;
+      max-width: 500px;
+      text-align: center;
+    }
+    
+    .error-message.show {
+      display: block;
+    }
+  </style>
 </head>
 <body>
+  <div class="loading-container">
+    <div class="logo-container">
+      <img src="logo.png" alt="Mohamed Adel Logo" class="logo" id="logo">
+    </div>
+    <div class="error-message" id="error-message">
+      <h3>Failed to load application</h3>
+      <p>Please check the browser console for more details.</p>
+      <p>If the problem persists, try:</p>
+      <ul style="text-align: left; display: inline-block;">
+        <li>Clearing your browser cache</li>
+        <li>Checking your internet connection</li>
+        <li>Ensuring all files are uploaded correctly</li>
+      </ul>
+    </div>
+  </div>
+  
+  <script>
+    // Handle logo image load errors silently
+    var logo = document.getElementById('logo');
+    if (logo) {
+      logo.addEventListener('error', function() {
+        console.warn('Logo image failed to load');
+        this.style.display = 'none';
+      });
+      
+      logo.addEventListener('load', function() {
+        console.log('Logo image loaded successfully');
+      });
+    }
+    
+    window.addEventListener('error', function(e) {
+      // Only show error message for Flutter app errors, not image errors
+      if (e.target && e.target.tagName === 'IMG') {
+        return;
+      }
+      console.error('Error loading Flutter app:', e);
+      document.getElementById('error-message').classList.add('show');
+      if (logo) logo.style.animation = 'none';
+    });
+    
+    window.addEventListener('unhandledrejection', function(e) {
+      console.error('Unhandled promise rejection:', e);
+      document.getElementById('error-message').classList.add('show');
+      if (logo) logo.style.animation = 'none';
+    });
+    
+    // Hide loading indicator when Flutter app loads
+    window.addEventListener('flutter-first-frame', function() {
+      document.querySelector('.loading-container').style.display = 'none';
+    });
+    
+    // Fallback: hide loading screen after 10 seconds if Flutter doesn't load
+    setTimeout(function() {
+      if (document.querySelector('.loading-container').style.display !== 'none') {
+        console.warn('Flutter app taking longer than expected to load...');
+      }
+    }, 10000);
+  </script>
+  
   <script src="flutter_bootstrap.js" async></script>
 </body>
 </html>
