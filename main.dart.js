@@ -355,7 +355,7 @@ case 2:s=A.b([r],t.s)
 break
 default:s=null}return s},
 aST(){var s=A.eJ().b,r=s==null?null:s.canvasKitVariant
-s=A.aVA(A.aMK(B.Iw,r==null?"auto":r))
+s=A.aVA(A.aMK(B.Ix,r==null?"auto":r))
 return new A.a8(s,new A.av8(),A.a4(s).i("a8<1,o>"))},
 aUO(a,b){return b+a},
 a_u(){var s=0,r=A.O(t.m),q,p,o,n
@@ -31138,7 +31138,7 @@ if(f.b){q=t.f
 e=q.a(J.b8(q.a(B.c6.fU(a1)),"data"))
 d=A.cV(J.b8(e,"message"))
 if(d!=null&&d.length!==0){c=A.M0(e,"assertiveness")
-f.a.S2(d,B.I8[c==null?0:c])}}b.eQ(a2,B.c6.c0(!0))
+f.a.S2(d,B.I9[c==null?0:c])}}b.eQ(a2,B.c6.c0(!0))
 return
 case"flutter/navigation":q=t.e8
 if(q.a(b.gcP().b.h(0,0))!=null)q.a(b.gcP().b.h(0,0)).Gu(a1).bt(new A.a4Z(b,a2),t.P)
@@ -39795,7 +39795,7 @@ n=o.w=s.charCodeAt(0)==0?s:s}return n},
 guT(){var s,r,q=this,p=q.x
 if(p===$){s=q.e
 if(s.length!==0&&s.charCodeAt(0)===47)s=B.d.cr(s,1)
-r=s.length===0?B.eE:A.a93(new A.a8(A.b(s.split("/"),t.s),A.aV4(),t.Gf),t.N)
+r=s.length===0?B.eD:A.a93(new A.a8(A.b(s.split("/"),t.s),A.aV4(),t.Gf),t.N)
 q.x!==$&&A.ac()
 p=q.x=r}return p},
 gD(a){var s,r=this,q=r.y
@@ -39973,7 +39973,7 @@ gjP(){var s=this.r,r=this.a
 return s<r.length?B.d.cr(r,s+1):""},
 guT(){var s,r,q=this.e,p=this.f,o=this.a
 if(B.d.d8(o,"/",q))++q
-if(q===p)return B.eE
+if(q===p)return B.eD
 s=A.b([],t.s)
 for(r=q;r<p;++r)if(o.charCodeAt(r)===47){s.push(B.d.Y(o,q,r))
 q=r+1}s.push(B.d.Y(o,q,p))
@@ -42245,7 +42245,7 @@ h=r[4]
 g=r[5]
 f=r[6]
 e=r[7]
-for(d=l,q=0;q<64;++q,e=f,f=g,g=h,h=b,i=j,j=k,k=d,d=a){c=(e+(((h>>>6|h<<26)^(h>>>11|h<<21)^(h>>>25|h<<7))>>>0)>>>0)+(((h&g^~h&f)>>>0)+(B.Ib[q]+s[q]>>>0)>>>0)>>>0
+for(d=l,q=0;q<64;++q,e=f,f=g,g=h,h=b,i=j,j=k,k=d,d=a){c=(e+(((h>>>6|h<<26)^(h>>>11|h<<21)^(h>>>25|h<<7))>>>0)>>>0)+(((h&g^~h&f)>>>0)+(B.Ia[q]+s[q]>>>0)>>>0)>>>0
 b=i+c>>>0
 a=c+((((d>>>2|d<<30)^(d>>>13|d<<19)^(d>>>22|d<<10))>>>0)+((d&k^d&j^k&j)>>>0)>>>0)>>>0}r.$flags&2&&A.aC(r)
 r[0]=d+l>>>0
@@ -46869,7 +46869,7 @@ A.vS.prototype={
 I(){return"_CornerId."+this.b}}
 A.m8.prototype={}
 A.ub.prototype={
-kp(){var s,r,q=this,p=A.aU3(B.IB,new A.abK(q,q.b.gaY().a0(0,q.a.gaY()))),o=q.a
+kp(){var s,r,q=this,p=A.aU3(B.IC,new A.abK(q,q.b.gaY().a0(0,q.a.gaY()))),o=q.a
 o.toString
 s=p.a
 o=q.oC(o,s)
@@ -50971,7 +50971,7 @@ r.e=s.a.a
 r.f=s.d},
 $S:0}
 A.Mp.prototype={
-G(a){return A.aDv(new A.p3(B.DL,null,null),B.W,new A.u8(1,B.J3,new A.cD(B.AQ,B.x)),this.c.a2(0,new A.i(0,40.95)),1.25,B.PI)}}
+G(a){return A.aDv(new A.p3(B.DL,null,null),B.W,new A.u8(1,B.J4,new A.cD(B.AQ,B.x)),this.c.a2(0,new A.i(0,40.95)),1.25,B.PI)}}
 A.q2.prototype={
 I(){return"MaterialType."+this.b}}
 A.A9.prototype={
@@ -51429,7 +51429,7 @@ gj3(){return A.aWj()},
 Ss(a,b,c,d,e,f){return A.aLK(a,b,c,d,e,f)}}
 A.N4.prototype={
 a2p(a){var s=t.Tr
-s=A.a6(new A.a8(B.IA,new A.ada(a),s),s.i("aE.E"))
+s=A.a6(new A.a8(B.IB,new A.ada(a),s),s.i("aE.E"))
 return s},
 k(a,b){if(b==null)return!1
 if(this===b)return!0
@@ -56527,7 +56527,7 @@ dB(a){var s,r,q=this.b,p=q.a.c,o=a.a0(0,q.ghZ())
 p=p.a
 p===$&&A.a()
 s=p.a.getGlyphPositionAtCoordinate(o.a,o.b)
-r=B.Ir[J.ak(s.affinity.value)]
+r=B.Is[J.ak(s.affinity.value)]
 return new A.as(J.ak(s.pos),r)},
 tt(){var s,r,q=this.b,p=q.ghZ()
 if(!isFinite(p.a)||!isFinite(p.b))return B.IU
@@ -70751,7 +70751,7 @@ r=s==null?null:s.e
 if(r!=null)A.l_(r,q,t.T)}},
 gka(){var s,r,q,p,o,n,m,l,k,j,i,h=this
 h.a.toString
-s=J.pK(B.eE.slice(0),t.N)
+s=J.pK(B.eD.slice(0),t.N)
 r=s!=null?new A.xB(!0,"EditableText-"+A.h7(h),s,h.a.c.a,null):B.lV
 q=h.c
 q.toString
@@ -70768,7 +70768,7 @@ p=o.k(0,B.lc)?B.zR:B.zS
 j=h.a
 i=j.dy
 j=j.ap
-return A.aEd(null,B.eE,!0,r,!1,!0,k,!0,p,o,j,!1,n,m,l,i,q)},
+return A.aEd(null,B.eD,!0,r,!1,!0,k,!0,p,o,j,!1,n,m,l,i,q)},
 Yd(a,b){this.a6(new A.a4w(this,a,b))},
 adK(a){var s=this,r=s.a,q=!1
 if(r.aE)if(r.d.gbI())if(t.qY.b(s.a.p2))r=s.gtw()
@@ -81901,7 +81901,7 @@ g.p2=A.z(t.D2,q)
 p=g.p1
 s=s.c
 g.p1=A.z(s,q)
-for(o=0;o<11;++o){n=B.Id[o]
+for(o=0;o<11;++o){n=B.Ic[o]
 m=f.ahd(n)
 l=m==null?null:m.a
 k=p.h(0,n)
@@ -87274,7 +87274,7 @@ $0(){this.a.d=!0},
 $S:0}
 A.OR.prototype={
 G(a){var s=null,r=B.c.P(127.5),q=this.d
-return A.r9(A.aDG(A.cG(A.cn(A.aB(s,s,B.l,s,s,new A.am(s,s,s,s,s,new A.bw(B.aa,B.ai,B.D,A.b([B.J,A.t(r,B.e.j()>>>16&255,B.e.j()>>>8&255,B.e.j()&255),A.t(r,B.z.j()>>>16&255,B.z.j()>>>8&255,B.z.j()&255),B.J],t.O),B.If,s),B.o),s,1,B.F7,s,s,s,s),s,s,s),q,A.F(1e6,0,0)),0,q,A.F(1e6,0,0),1),new A.i(0,this.c*0.1),!0)}}
+return A.r9(A.aDG(A.cG(A.cn(A.aB(s,s,B.l,s,s,new A.am(s,s,s,s,s,new A.bw(B.aa,B.ai,B.D,A.b([B.J,A.t(r,B.e.j()>>>16&255,B.e.j()>>>8&255,B.e.j()&255),A.t(r,B.z.j()>>>16&255,B.z.j()>>>8&255,B.z.j()&255),B.J],t.O),B.Ie,s),B.o),s,1,B.F7,s,s,s,s),s,s,s),q,A.F(1e6,0,0)),0,q,A.F(1e6,0,0),1),new A.i(0,this.c*0.1),!0)}}
 A.km.prototype={
 G(a){var s,r,q,p,o,n,m=null,l=6e5,k=A.aL(a,m,t.w).w.a.a,j=k<768,i=k>=768&&k<1024
 if(j)s=36
@@ -87508,7 +87508,7 @@ e=A.b_(15)
 d=A.ca(A.t(B.c.P(76.5),B.e.j()>>>16&255,B.e.j()>>>8&255,B.e.j()&255),1.5)
 i=A.b([new A.bp(0,B.L,A.t(i,B.e.j()>>>16&255,B.e.j()>>>8&255,B.e.j()&255),B.f,20)],t.V)
 c=t.p
-return A.aB(a0,A.e6(B.aJ,A.b([o,A.bD(A.b([n,m,l,k,j,h,A.kb(A.aB(a0,A.aX("\xa9 2024 Mohamed Adel - Flutter Developer Portfolio. Built with \u2764\ufe0f using Flutter",a0,a0,a0,a0,A.bc().$2$color$fontSize(B.j5,b4?12:14),B.bB,a0),B.l,a0,a0,new A.am(a0,a0,d,e,i,new A.bw(B.aA,B.b1,B.D,b0,a0,a0),B.o),a0,a0,a0,new A.a_(f,f,f,f),a0,a0,a0),g,3,p,b3,b1)],c),B.w,B.q,B.a4)],c),B.W,B.aP),B.l,a0,a0,new A.am(a0,a0,a0,a0,a0,new A.bw(B.aA,B.b1,B.D,q,B.eD,a0),B.o),a0,a0,a0,new A.a_(s,r,s,r),a0,a0,a0)}}
+return A.aB(a0,A.e6(B.aJ,A.b([o,A.bD(A.b([n,m,l,k,j,h,A.kb(A.aB(a0,A.aX("\xa9 2024 Mohamed Adel - Flutter Developer Portfolio. Built with \u2764\ufe0f using Flutter",a0,a0,a0,a0,A.bc().$2$color$fontSize(B.j5,b4?12:14),B.bB,a0),B.l,a0,a0,new A.am(a0,a0,d,e,i,new A.bw(B.aA,B.b1,B.D,b0,a0,a0),B.o),a0,a0,a0,new A.a_(f,f,f,f),a0,a0,a0),g,3,p,b3,b1)],c),B.w,B.q,B.a4)],c),B.W,B.aP),B.l,a0,a0,new A.am(a0,a0,a0,a0,a0,new A.bw(B.aA,B.b1,B.D,q,B.eC,a0),B.o),a0,a0,a0,new A.a_(s,r,s,r),a0,a0,a0)}}
 A.a2k.prototype={
 $0(){var s=0,r=A.O(t.H),q
 var $async$$0=A.P(function(a,b){if(a===1)return A.L(b,r)
@@ -87657,7 +87657,7 @@ p=A.eS(new A.jt(q,0.05,m),q,i,-0.15)
 q=A.fz(new A.km("Work Experience",!0,m),A.F(0,0,0),q,i)
 o=t.p
 q=A.b([q,A.aK(m,h?48:72,m)],o)
-n=new A.eA(B.ID,t.EU)
+n=new A.eA(B.IE,t.EU)
 B.b.V(q,n.gek(n).ed(0,new A.a5e(this,i,k,h,g),t.l7))
 return A.aB(m,A.e6(B.aJ,A.b([p,A.bD(q,B.w,B.q,B.a4)],o),B.l,B.aP),B.l,m,m,new A.am(m,m,m,m,m,new A.bw(B.bG,B.bF,B.D,l,m,m),B.o),m,m,m,new A.a_(s,r,s,r),m,m,m)}}
 A.a5e.prototype={
@@ -87919,7 +87919,7 @@ e=A.eS(new A.o2("Building mobile experiences that go further, stay longer, and c
 f=A.aK(a3,b0?24:40,a3)
 d=b0?12:16
 c=b0?12:16
-b=new A.eA(B.IC,t.ly)
+b=new A.eA(B.ID,t.ly)
 d=A.eS(A.o8(B.im,b.gek(b).ed(0,new A.a75(),t.A4).d1(0),c,d),q,0,0.12)
 c=A.aK(a3,b0?40:60,a3)
 b=b0?12:20
@@ -87975,15 +87975,15 @@ A.B0.prototype={
 a9(){return new A.VI(A.aI(t.N))}}
 A.VI.prototype={
 MH(){var s,r=A.aI(t.N)
-for(s=0;s<7;++s)r.V(0,B.eC[s].c)
+for(s=0;s<7;++s)r.V(0,B.eE[s].c)
 return r},
 a63(){var s=this.d
-if(s.gab(s))return B.eC
+if(s.gab(s))return B.eE
 s=t.R2
-s=A.a6(new A.b0(B.eC,new A.arz(this),s),s.i("l.E"))
+s=A.a6(new A.b0(B.eE,new A.arz(this),s),s.i("l.E"))
 return s},
 a6j(){var s,r,q,p,o,n,m
-for(s=0,r=0,q=0,p=0;p<7;++p){o=B.eC[p].e
+for(s=0,r=0,q=0,p=0;p<7;++p){o=B.eE[p].e
 n=A.d6("[^\\d]",!1)
 m=A.kW(o,n,"")
 if(m.length!==0){n=A.Nt(m,null)
@@ -88050,7 +88050,7 @@ b2=A.aB(b0,b0,B.l,b0,b0,new A.am(b0,b0,b0,A.b_(2),b0,new A.bw(B.aa,B.ai,B.D,b2,b
 a7=A.aK(b0,b6?16:20,b0)
 if(b6)a8=14
 else a8=b7?15:17
-d=A.lm(c,A.aB(b0,A.bD(A.b([a5,a6,b2,a7,A.aX("Discover a better way to build, where development feels effortless, apps perform seamlessly, and users come alive in smooth experiences. With clean architecture, powerful state management, and intuitive design, your project is unforgettable.",b0,b0,b0,b0,A.bc().$4$color$fontSize$height$letterSpacing(A.t(B.c.P(229.5),B.p.j()>>>16&255,B.p.j()>>>8&255,B.p.j()&255),a8,1.8,0.2),B.bB,b0)],m),B.w,B.q,B.A),B.l,b0,b0,new A.am(b0,b0,a3,a2,a4,new A.bw(B.aA,B.b1,B.D,a1,B.eD,b0),B.o),b0,b0,new A.a_(0,0,0,a0),new A.a_(b,a,b,a),b0,b0,b0),b1,"projects-intro",d,b5+b3*0.1,!1,b3)
+d=A.lm(c,A.aB(b0,A.bD(A.b([a5,a6,b2,a7,A.aX("Discover a better way to build, where development feels effortless, apps perform seamlessly, and users come alive in smooth experiences. With clean architecture, powerful state management, and intuitive design, your project is unforgettable.",b0,b0,b0,b0,A.bc().$4$color$fontSize$height$letterSpacing(A.t(B.c.P(229.5),B.p.j()>>>16&255,B.p.j()>>>8&255,B.p.j()&255),a8,1.8,0.2),B.bB,b0)],m),B.w,B.q,B.A),B.l,b0,b0,new A.am(b0,b0,a3,a2,a4,new A.bw(B.aA,B.b1,B.D,a1,B.eC,b0),B.o),b0,b0,new A.a_(0,0,0,a0),new A.a_(b,a,b,a),b0,b0,b0),b1,"projects-intro",d,b5+b3*0.1,!1,b3)
 b2=A.aK(b0,b6?40:48,b0)
 c=a9.a.c
 c=A.lm(A.a0(["opacity",A.a0(["from",0,"to",1],k,j),"y",A.a0(["from",40,"to",0],k,j),"scale",A.a0(["from",0.95,"to",1],k,i)],k,h),new A.VH(a9.a6j(),b6,b7,b0),b1,"projects-stats",c,b5+b3*0.15,!1,b3)
@@ -88085,7 +88085,7 @@ o=o?14:16
 return A.aB(p,A.bD(A.b([m,k,s,r,A.aX("Try selecting different tech stacks",p,p,p,p,A.bc().$2$color$fontSize(A.t(B.c.P(178.5),B.p.j()>>>16&255,B.p.j()>>>8&255,B.p.j()&255),o),p,p)],t.p),B.w,B.q,B.A),B.l,p,p,p,p,p,p,new A.a_(n,n,n,n),p,p,p)}return A.o8(B.bR,A.a92(k,new A.arA(m,l,(b.b-o*(n-1))/n,q.e,q.f),!0,t.l7),o,o)},
 $S:554}
 A.arA.prototype={
-$1(a){var s=this,r=s.b[a],q=B.b.hr(B.eC,r),p=s.a.a.c,o=s.e,n=t.N,m=t.S,l=A.a0(["from",0,"to",1],n,m),k=A.a0(["from",80,"to",0],n,m),j=A.a0(["from",0.85,"to",1],n,t.i)
+$1(a){var s=this,r=s.b[a],q=B.b.hr(B.eE,r),p=s.a.a.c,o=s.e,n=t.N,m=t.S,l=A.a0(["from",0,"to",1],n,m),k=A.a0(["from",80,"to",0],n,m),j=A.a0(["from",0.85,"to",1],n,t.i)
 return A.aK(A.lm(A.a0(["opacity",l,"y",k,"scale",j,"rotation",A.a0(["from",B.i.aX(a,2)===0?-2:2,"to",0],n,m)],n,t.z),new A.B_(r,A.F(0,0,0),!0,null),"power3.out","project-card-"+q,p,s.d+o*0.25+a*o*0.08,!1,o),null,s.c)},
 $S:555}
 A.VH.prototype={
@@ -88107,7 +88107,7 @@ h=c?40:50
 h=A.aB(d,d,B.l,A.t(p,B.e.j()>>>16&255,B.e.j()>>>8&255,B.e.j()&255),d,d,d,h,d,d,d,d,1)
 g=J.aKJ(m.h(0,"averageRating"),1)
 f=c?40:50
-return A.aB(d,A.cl(A.b([new A.rC(B.Ge,"Projects",A.k(l),B.e,c,k,d),j,new A.rC(B.o_,"Downloads",i+"K+",B.z,c,k,d),h,new A.rC(B.k_,"Rating",g,B.e,c,k,d),A.aB(d,d,B.l,A.t(p,B.e.j()>>>16&255,B.e.j()>>>8&255,B.e.j()&255),d,d,d,f,d,d,d,d,1),new A.rC(B.nZ,"Tech Stacks",A.k(m.h(0,"techStacks")),B.z,c,k,d)],t.p),B.w,B.ue,B.A),B.l,d,d,new A.am(d,d,o,q,n,new A.bw(B.aA,B.b1,B.D,r,B.eD,d),B.o),d,d,d,new A.a_(s,s,s,s),d,d,d)}}
+return A.aB(d,A.cl(A.b([new A.rC(B.Ge,"Projects",A.k(l),B.e,c,k,d),j,new A.rC(B.o_,"Downloads",i+"K+",B.z,c,k,d),h,new A.rC(B.k_,"Rating",g,B.e,c,k,d),A.aB(d,d,B.l,A.t(p,B.e.j()>>>16&255,B.e.j()>>>8&255,B.e.j()&255),d,d,d,f,d,d,d,d,1),new A.rC(B.nZ,"Tech Stacks",A.k(m.h(0,"techStacks")),B.z,c,k,d)],t.p),B.w,B.ue,B.A),B.l,d,d,new A.am(d,d,o,q,n,new A.bw(B.aA,B.b1,B.D,r,B.eC,d),B.o),d,d,d,new A.a_(s,s,s,s),d,d,d)}}
 A.rC.prototype={
 G(a){var s=this,r=null,q=s.r,p=q?10:12,o=s.f,n=A.b([A.t(B.c.P(76.5),o.j()>>>16&255,o.j()>>>8&255,o.j()&255),A.t(38,o.j()>>>16&255,o.j()>>>8&255,o.j()&255)],t.O),m=A.b_(12),l=A.ca(A.t(102,o.j()>>>16&255,o.j()>>>8&255,o.j()&255),1.5),k=q?24:28
 p=A.aB(r,A.cQ(s.c,o,r,k),B.l,r,r,new A.am(r,r,l,m,r,new A.bw(B.aa,B.ai,B.D,n,r,r),B.o),r,r,r,new A.a_(p,p,p,p),r,r,r)
@@ -88254,7 +88254,7 @@ $2(a,b){var s,r,q,p=this.a
 if(p)s=1
 else s=2
 r=p?20:28
-q=new A.eA(B.Ie,t.dp)
+q=new A.eA(B.Id,t.dp)
 return A.o8(B.bR,q.gek(q).ed(0,new A.aiH(p,b,r,s,this.b),t.YA).d1(0),r,r)},
 $S:210}
 A.aiH.prototype={
@@ -88313,7 +88313,7 @@ a=n.c
 if(d)n=12
 else n=n.f?13:14
 d=t.p
-return A.dV(A.i5(A.bD(A.b([m,l,j,e,k,f,s,c,A.cl(A.b([A.dQ(A.bD(A.b([b,A.aX(a.b+" \u2022 "+a.c,a1,a1,a1,a1,A.bc().$3$color$fontSize$letterSpacing(A.t(204,B.p.j()>>>16&255,B.p.j()>>>8&255,B.p.j()&255),n,0.1),a1,a1)],d),B.a7,B.q,B.A),1,a1)],d),B.w,B.q,B.A)],d),B.a7,B.q,B.a4),B.bU,new A.am(a1,a1,p,q,i,new A.bw(B.aA,B.b1,B.D,r,B.eD,a1),B.o),B.at,a1,a1,new A.a_(a2,a2,a2,a2),o,a1),B.av,a1,new A.atD(a0),new A.atE(a0),a1)}}
+return A.dV(A.i5(A.bD(A.b([m,l,j,e,k,f,s,c,A.cl(A.b([A.dQ(A.bD(A.b([b,A.aX(a.b+" \u2022 "+a.c,a1,a1,a1,a1,A.bc().$3$color$fontSize$letterSpacing(A.t(204,B.p.j()>>>16&255,B.p.j()>>>8&255,B.p.j()&255),n,0.1),a1,a1)],d),B.a7,B.q,B.A),1,a1)],d),B.w,B.q,B.A)],d),B.a7,B.q,B.a4),B.bU,new A.am(a1,a1,p,q,i,new A.bw(B.aA,B.b1,B.D,r,B.eC,a1),B.o),B.at,a1,a1,new A.a_(a2,a2,a2,a2),o,a1),B.av,a1,new A.atD(a0),new A.atE(a0),a1)}}
 A.atD.prototype={
 $1(a){var s=this.a
 return s.a6(new A.atC(s))},
@@ -88349,7 +88349,7 @@ $2(a,b){var s,r,q,p=this.a
 if(p)s=1
 else s=this.b?2:3
 r=p?16:24
-q=new A.eA(B.Iy,t.wo)
+q=new A.eA(B.Iz,t.wo)
 return A.o8(B.bR,q.gek(q).ed(0,new A.ak2(p,b,r,s,this.b),t.YA).d1(0),r,r)},
 $S:210}
 A.ak2.prototype={
@@ -88409,7 +88409,7 @@ h=A.aK(d,i?10:12,d)
 g=j.c
 if(i)j=13
 else j=j.f?14:15
-return A.dV(A.i5(A.bD(A.b([k,p,l,h,A.aX(g.b,d,d,d,d,A.bc().$4$color$fontSize$height$letterSpacing(A.t(q,B.p.j()>>>16&255,B.p.j()>>>8&255,B.p.j()&255),j,1.6,0.1),d,d)],t.p),B.a7,B.q,B.a4),B.bU,new A.am(d,d,o,c,m,new A.bw(B.aA,B.b1,B.D,r,B.eD,d),B.o),B.at,d,d,new A.a_(s,s,s,s),n,d),B.av,d,new A.auO(e),new A.auP(e),d)}}
+return A.dV(A.i5(A.bD(A.b([k,p,l,h,A.aX(g.b,d,d,d,d,A.bc().$4$color$fontSize$height$letterSpacing(A.t(q,B.p.j()>>>16&255,B.p.j()>>>8&255,B.p.j()&255),j,1.6,0.1),d,d)],t.p),B.a7,B.q,B.a4),B.bU,new A.am(d,d,o,c,m,new A.bw(B.aA,B.b1,B.D,r,B.eC,d),B.o),B.at,d,d,new A.a_(s,s,s,s),n,d),B.av,d,new A.auO(e),new A.auP(e),d)}}
 A.auO.prototype={
 $1(a){var s=this.a
 return s.a6(new A.auN(s))},
@@ -92564,12 +92564,12 @@ B.iM=new A.xx(1,"assertive")
 B.lT=new A.IK(1,"assertive")
 B.lU=new A.IS(0,"begin")
 B.AD=new A.IS(2,"end")
-B.eE=A.b(s([]),t.s)
+B.eD=A.b(s([]),t.s)
 B.m=new A.CM(1,"downstream")
 B.lf=new A.fE(-1,-1,B.m,!1,-1,-1)
 B.bC=new A.c7(-1,-1)
 B.ia=new A.cT("",B.lf,B.bC)
-B.lV=new A.xB(!1,"",B.eE,B.ia,null)
+B.lV=new A.xB(!1,"",B.eD,B.ia,null)
 B.iN=new A.rX(0,"disabled")
 B.lW=new A.rX(1,"always")
 B.AE=new A.rX(2,"onUserInteraction")
@@ -92687,9 +92687,9 @@ B.m4=new A.am(B.L7,null,null,null,null,null,B.bn)
 B.Dy=new A.A(0.23529411764705882,0,0,0,B.h)
 B.hw=new A.i(0,4)
 B.Bk=new A.bp(0.5,B.L,B.Dy,B.hw,10)
-B.IF=A.b(s([B.Bk]),t.V)
+B.IG=A.b(s([B.Bk]),t.V)
 B.o=new A.Jc(0,"rectangle")
-B.Bf=new A.am(null,null,null,B.lY,B.IF,null,B.o)
+B.Bf=new A.am(null,null,null,B.lY,B.IG,null,B.o)
 B.m5=new A.am(B.hr,null,null,null,null,null,B.bn)
 B.iQ=new A.J9(1,"contain")
 B.Bg=new A.J9(2,"cover")
@@ -93546,14 +93546,14 @@ B.Hi=new A.A1(null,null,null,null,null,null,null,null,null,null,null,null,null,n
 B.od=A.b(s(["text","multiline","number","phone","datetime","emailAddress","url","visiblePassword","name","address","none","webSearch","twitter"]),t.s)
 B.Hl=A.b(s([239,191,189]),t.t)
 B.HI=A.b(s([4,9,14,19]),t.t)
-B.Ja=A.b(s([137,80,78,71,13,10,26,10]),t.Z)
+B.J9=A.b(s([137,80,78,71,13,10,26,10]),t.Z)
 B.GD=new A.n4(0,"png")
 B.GL=new A.k6(B.GD,!1,0,"png")
-B.GB=new A.lp(B.Ja,B.GL,0,"png")
+B.GB=new A.lp(B.J9,B.GL,0,"png")
 B.Jb=A.b(s([71,73,70,56,55,97]),t.Z)
 B.GA=new A.lp(B.Jb,B.h8,1,"gif87a")
-B.Iz=A.b(s([71,73,70,56,57,97]),t.Z)
-B.Gz=new A.lp(B.Iz,B.h8,2,"gif89a")
+B.IA=A.b(s([71,73,70,56,57,97]),t.Z)
+B.Gz=new A.lp(B.IA,B.h8,2,"gif89a")
 B.Hm=A.b(s([255,216,255]),t.Z)
 B.GE=new A.n4(2,"jpeg")
 B.GP=new A.k6(B.GE,!1,3,"jpeg")
@@ -93592,27 +93592,8 @@ B.i9=new A.lV(3,"justify")
 B.bt=new A.lV(4,"start")
 B.l8=new A.lV(5,"end")
 B.I6=A.b(s([B.fd,B.l7,B.bB,B.i9,B.bt,B.l8]),A.ay("C<lV>"))
-B.I8=A.b(s([B.iL,B.iM]),A.ay("C<xx>"))
-B.Jg=A.b(s(["Flutter","Firebase","Riverpod","Clean Architecture","Payment Gateway"]),t.s)
-B.Ia=A.b(s(["images/gomla/image1.webp","images/gomla/image2.webp","images/gomla/image3.webp","images/gomla/image4.webp"]),t.s)
-B.Nd=new A.hO("Gomla Mobile App","A comprehensive e-commerce solution built with clean architecture principles. Features seamless Firebase backend integration, secure payment processing, and intuitive user experience. This app successfully reached 5,000+ downloads with outstanding 4.8-star ratings, demonstrating reliability and user satisfaction.",B.Jg,B.e,"10,000+","images/gomla/logo.webp",B.Ia,"https://play.google.com/store/apps/details?id=com.example.gomla",null)
-B.oh=A.b(s(["Flutter","Firebase","Bloc","Clean Architecture","REST APIs"]),t.s)
-B.J9=A.b(s(["images/stock/logo.webp","images/stock/image1.webp","images/stock/image2.webp","images/stock/image3.webp","images/stock/image4.webp","images/stock/image5.webp","images/stock/image6.webp","images/stock/image7.webp","images/stock/image8.webp"]),t.s)
-B.Nb=new A.hO("Stock Mobile App","A powerful B2B inventory management platform designed for businesses to efficiently track and manage their stock. Built with clean architecture and Bloc pattern for scalable state management. The app achieved remarkable success with 10,000+ downloads and maintains 4.8-star ratings across both Google Play and iOS platforms.",B.oh,B.z,"10,000+","images/stock/logo.webp",B.J9,"https://play.google.com/store/apps/details?id=com.example.stock","https://apps.apple.com/app/stock-mobile/id123456789")
-B.J4=A.b(s(["images/paletta/image1.webp","images/paletta/image2.webp","images/paletta/image3.webp","images/paletta/image4.webp","images/paletta/image5.webp","images/paletta/image6.webp","images/paletta/image7.webp"]),t.s)
-B.Nc=new A.hO("Palleta Mobile App","An innovative mobile application designed for modern businesses. Built with Flutter and clean architecture principles, Palleta offers a seamless user experience with robust performance. The app features intuitive design, efficient state management using Bloc pattern, and seamless integration with Firebase backend services.",B.oh,B.e,"Active Development","images/paletta/logo.webp",B.J4,"https://play.google.com/store/apps/details?id=com.example.palleta",null)
-B.Jc=A.b(s(["Flutter","Firebase","Bloc","SQLite","Hive"]),t.s)
-B.Ne=new A.hO("DrugZa - TagPharma","A specialized healthcare application connecting patients with pharmaceutical services. Features local data storage using SQLite and Hive for offline functionality, ensuring seamless access to medical information. The intuitive design and user-centric approach resulted in a significant 35% increase in customer engagement.",B.Jc,B.e,"High Engagement",null,null,null,null)
-B.II=A.b(s(["Flutter","Firebase","Bloc","REST APIs","E-commerce"]),t.s)
-B.Ng=new A.hO("Ringo - Shahabander","An advanced wholesale e-commerce platform designed for bulk trading operations. Integrated comprehensive shipment tracking and streamlined checkout processes to dramatically improve business efficiency. The solution delivered impressive results: a 60% boost in sales performance and 40% improvement in operational speed.",B.II,B.z,"90% Enhancement",null,null,null,null)
-B.J2=A.b(s(["Flutter","Firebase","Bloc","LMS","Parent Control"]),t.s)
-B.I9=A.b(s(["images/adruse/image1.png","images/adruse/image2.png","images/adruse/image3.png","images/adruse/image4.png","images/adruse/image5.png"]),t.s)
-B.Nh=new A.hO("Adruse Mobile App","A comprehensive Learning Management System (LMS) designed to revolutionize the educational experience. Features interactive learning modules, real-time progress tracking, and dedicated parent portal for monitoring student performance. The platform simplifies education management while providing complete control and transparency for all stakeholders.",B.J2,B.e,"LMS Platform","images/adruse/logo.png",B.I9,null,null)
-B.IY=A.b(s(["Flutter","Bloc","REST APIs","E-commerce","Seller System"]),t.s)
-B.IG=A.b(s(["images/albatal/image1.webp","images/albatal/image2.webp","images/albatal/image3.webp","images/albatal/image4.webp","images/albatal/image5.webp","images/albatal/image6.webp","images/albatal/image7.webp","images/albatal/image8.webp","images/albatal/image9.webp","images/albatal/image10.webp","images/albatal/image11.webp","images/albatal/image12.webp","images/albatal/image13.webp","images/albatal/image14.webp","images/albatal/image15.webp","images/albatal/image16.webp","images/albatal/image17.webp"]),t.s)
-B.Nf=new A.hO("Albatal Mobile App","A full-featured marketplace platform that connects sellers and customers seamlessly. Includes robust seller dashboard for inventory management, order processing, and analytics, while providing customers with a smooth shopping experience. The platform has gained strong market traction with 10,000+ downloads and maintains excellent 4.8-star user ratings.",B.IY,B.z,"5,000+",null,B.IG,null,null)
-B.eC=A.b(s([B.Nd,B.Nb,B.Nc,B.Ne,B.Ng,B.Nh,B.Nf]),A.ay("C<hO>"))
-B.Ib=A.b(s([1116352408,1899447441,3049323471,3921009573,961987163,1508970993,2453635748,2870763221,3624381080,310598401,607225278,1426881987,1925078388,2162078206,2614888103,3248222580,3835390401,4022224774,264347078,604807628,770255983,1249150122,1555081692,1996064986,2554220882,2821834349,2952996808,3210313671,3336571891,3584528711,113926993,338241895,666307205,773529912,1294757372,1396182291,1695183700,1986661051,2177026350,2456956037,2730485921,2820302411,3259730800,3345764771,3516065817,3600352804,4094571909,275423344,430227734,506948616,659060556,883997877,958139571,1322822218,1537002063,1747873779,1955562222,2024104815,2227730452,2361852424,2428436474,2756734187,3204031479,3329325298]),t.t)
+B.I9=A.b(s([B.iL,B.iM]),A.ay("C<xx>"))
+B.Ia=A.b(s([1116352408,1899447441,3049323471,3921009573,961987163,1508970993,2453635748,2870763221,3624381080,310598401,607225278,1426881987,1925078388,2162078206,2614888103,3248222580,3835390401,4022224774,264347078,604807628,770255983,1249150122,1555081692,1996064986,2554220882,2821834349,2952996808,3210313671,3336571891,3584528711,113926993,338241895,666307205,773529912,1294757372,1396182291,1695183700,1986661051,2177026350,2456956037,2730485921,2820302411,3259730800,3345764771,3516065817,3600352804,4094571909,275423344,430227734,506948616,659060556,883997877,958139571,1322822218,1537002063,1747873779,1955562222,2024104815,2227730452,2361852424,2428436474,2756734187,3204031479,3329325298]),t.t)
 B.aI=new A.eG(0,"icon")
 B.aV=new A.eG(1,"input")
 B.ag=new A.eG(2,"label")
@@ -93624,13 +93605,13 @@ B.aR=new A.eG(7,"suffixIcon")
 B.bS=new A.eG(8,"helperError")
 B.c3=new A.eG(9,"counter")
 B.cr=new A.eG(10,"container")
-B.Id=A.b(s([B.aI,B.aV,B.ag,B.aZ,B.b_,B.b0,B.af,B.aR,B.bS,B.c3,B.cr]),A.ay("C<eG>"))
+B.Ic=A.b(s([B.aI,B.aV,B.ag,B.aZ,B.b_,B.b0,B.af,B.aR,B.bS,B.c3,B.cr]),A.ay("C<eG>"))
 B.Qn=new A.ku("Project Manager","Stock Tech","Mohamed is an exceptional Flutter developer. His code is clean, well-organized, and follows best practices. He consistently delivered high-quality work on time and was always proactive in suggesting improvements. Working with him was a pleasure, and the apps he built achieved great success with 10,000+ downloads.")
 B.Qo=new A.ku("Tech Lead","Gomla","Mohamed's approach to code management is outstanding. He writes maintainable code that our team can easily understand and extend. His use of clean architecture and proper state management made our app scalable and performant. He reduced our app load time by 25%, which significantly improved user experience.")
 B.Ql=new A.ku("CEO","The First-Agency","Working with Mohamed has been fantastic. He's not just a developer, but a problem solver. His ability to manage complex projects, communicate effectively with the team, and deliver on time is remarkable. The apps he built for us have been highly successful, and we continue to work with him on new projects.")
 B.Qm=new A.ku("Product Owner","Innovation Company","Mohamed is a team player who understands the importance of clean code and proper documentation. He helped us build apps that achieved 1,000+ downloads with 4.8-star ratings. His code management skills and collaboration with the team made our development process smooth and efficient.")
-B.Ie=A.b(s([B.Qn,B.Qo,B.Ql,B.Qm]),A.ay("C<ku>"))
-B.If=A.b(s([0,0.3,0.7,1]),t.n)
+B.Id=A.b(s([B.Qn,B.Qo,B.Ql,B.Qm]),A.ay("C<ku>"))
+B.Ie=A.b(s([0,0.3,0.7,1]),t.n)
 B.Jk=new A.kc("en","US")
 B.of=A.b(s([B.Jk]),t.ss)
 B.WT=new A.m9(0,0)
@@ -93640,7 +93621,7 @@ B.WX=new A.m9(6,0.11)
 B.WV=new A.m9(8,0.12)
 B.WU=new A.m9(12,0.14)
 B.og=A.b(s([B.WT,B.WY,B.WW,B.WX,B.WV,B.WU]),A.ay("C<m9>"))
-B.eD=A.b(s([0,0.5,1]),t.n)
+B.eC=A.b(s([0,0.5,1]),t.n)
 B.Io=A.b(s([-1,0,0,1,0,0,-1,0,1,0,0,0,-1,1,0,1,1,1,1,0]),t.n)
 B.AP=new A.J5(2,"outer")
 B.mI=new A.A(0.09803921568627451,0,0,0,B.h)
@@ -93650,14 +93631,14 @@ B.Q6=new A.Cz(0,"left")
 B.Q7=new A.Cz(1,"right")
 B.Iq=A.b(s([B.Q6,B.Q7]),A.ay("C<Cz>"))
 B.ar=new A.CM(0,"upstream")
-B.Ir=A.b(s([B.ar,B.m]),A.ay("C<CM>"))
+B.Is=A.b(s([B.ar,B.m]),A.ay("C<CM>"))
 B.bi=new A.CQ(0,"rtl")
 B.az=new A.CQ(1,"ltr")
 B.k4=A.b(s([B.bi,B.az]),A.ay("C<CQ>"))
 B.Cy=new A.t5(0,"auto")
 B.Cz=new A.t5(1,"full")
 B.CA=new A.t5(2,"chromium")
-B.Iw=A.b(s([B.Cy,B.Cz,B.CA]),A.ay("C<t5>"))
+B.Ix=A.b(s([B.Cy,B.Cz,B.CA]),A.ay("C<t5>"))
 B.Wz=new A.iH("Clean & Maintainable Code","I write clean, well-documented code following best practices and design patterns. Your codebase will be maintainable, scalable, and easy for your team to understand and extend.",B.nZ,B.e)
 B.WA=new A.iH("Performance Optimization","I optimize apps for speed and efficiency. Reduced load times by 20-30% in multiple projects, ensuring smooth user experiences even with complex features.",B.o1,B.z)
 B.Ww=new A.iH("Cross-Platform Expertise","Build once, deploy everywhere. I specialize in Flutter development, delivering native-quality apps for both iOS and Android from a single codebase.",B.o0,B.e)
@@ -93666,9 +93647,9 @@ B.Gf=new A.bE(62830,"MaterialIcons",!1)
 B.Wv=new A.iH("Modern Architecture","I implement clean architecture, MVVM, and proper state management (Bloc/Riverpod) to ensure your app is scalable, testable, and future-proof.",B.Gf,B.e)
 B.Gq=new A.bE(983134,"MaterialIcons",!1)
 B.Wx=new A.iH("Team Collaboration","I work seamlessly with teams, communicate clearly, and manage code effectively. Your team will enjoy working with me, and the code will be easy to maintain.",B.Gq,B.z)
-B.Iy=A.b(s([B.Wz,B.WA,B.Ww,B.Wy,B.Wv,B.Wx]),A.ay("C<iH>"))
+B.Iz=A.b(s([B.Wz,B.WA,B.Ww,B.Wy,B.Wv,B.Wx]),A.ay("C<iH>"))
 B.bA=new A.fC(1,"fuchsia")
-B.IA=A.b(s([B.ao,B.bA,B.a0,B.br,B.b5,B.bs]),A.ay("C<fC>"))
+B.IB=A.b(s([B.ao,B.bA,B.a0,B.br,B.b5,B.bs]),A.ay("C<fC>"))
 B.A9=new A.vS(0,"topLeft")
 B.Ac=new A.vS(3,"bottomRight")
 B.WO=new A.m8(B.A9,B.Ac)
@@ -93677,19 +93658,19 @@ B.Aa=new A.vS(1,"topRight")
 B.Ab=new A.vS(2,"bottomLeft")
 B.WP=new A.m8(B.Aa,B.Ab)
 B.WQ=new A.m8(B.Ab,B.Aa)
-B.IB=A.b(s([B.WO,B.WR,B.WP,B.WQ]),A.ay("C<m8>"))
-B.IC=A.b(s(["Flutter","Dart","Bloc Pattern","Firebase","REST APIs","SQLite","Clean Architecture","MVVM"]),t.s)
+B.IC=A.b(s([B.WO,B.WR,B.WP,B.WQ]),A.ay("C<m8>"))
+B.ID=A.b(s(["Flutter","Dart","Bloc Pattern","Firebase","REST APIs","SQLite","Clean Architecture","MVVM"]),t.s)
 B.I3=A.b(s(["Led the design and implementation of Tolet Mobile App","Added maintenance in the High-gold Mobile App"]),t.s)
 B.Fz=new A.j4("The First-Agency","Flutter Developer","2025 \u2013 now",B.I3)
 B.IZ=A.b(s(["Enhanced the design and redesigned screens in Gomla-Mobile App","Reduced app load time by 25% through performance optimization using RiverPod"]),t.s)
 B.FB=new A.j4("Gomla","Flutter Developer (Part-time)","2024 \u2013 2025",B.IZ)
-B.Ih=A.b(s(["Led the design and implementation of Palleta Mobile App","Led design and maintenance of Stock App (B2B), achieving 10,000+ downloads and 4.8-star rating","Delivered Tag-pharma & DrugZa Mobile App with 35% increase in customer engagement","Reduced app load time by 20% through performance optimization using Bloc"]),t.s)
-B.Fy=new A.j4("Stock Tech","Flutter Developer","2024 \u2013 2025",B.Ih)
+B.Ig=A.b(s(["Led the design and implementation of Palleta Mobile App","Led design and maintenance of Stock App (B2B), achieving 10,000+ downloads and 4.8-star rating","Delivered Tag-pharma & DrugZa Mobile App with 35% increase in customer engagement","Reduced app load time by 20% through performance optimization using Bloc"]),t.s)
+B.Fy=new A.j4("Stock Tech","Flutter Developer","2024 \u2013 2025",B.Ig)
 B.Ji=A.b(s(["Developed and deployed 10+ cross-platform mobile applications","Optimized app performance by 30% through debugging and code refactoring","Improved user engagement by 35% through intuitive UI/UX design"]),t.s)
 B.Fx=new A.j4("Freelance (Many Companies)","Flutter Developer","2023 - 2024",B.Ji)
-B.Ig=A.b(s(["Led design and implementation of Al-Taqwa Mobile App (1,000+ downloads, 4.8-star rating)","Delivered Global Dent Mobile App with 35% increase in customer engagement","Reduced app load time by 20% through performance optimization"]),t.s)
-B.FA=new A.j4("Innovation Company","Flutter Developer","2022 \u2013 2023",B.Ig)
-B.ID=A.b(s([B.Fz,B.FB,B.Fy,B.Fx,B.FA]),A.ay("C<j4>"))
+B.If=A.b(s(["Led design and implementation of Al-Taqwa Mobile App (1,000+ downloads, 4.8-star rating)","Delivered Global Dent Mobile App with 35% increase in customer engagement","Reduced app load time by 20% through performance optimization"]),t.s)
+B.FA=new A.j4("Innovation Company","Flutter Developer","2022 \u2013 2023",B.If)
+B.IE=A.b(s([B.Fz,B.FB,B.Fy,B.Fx,B.FA]),A.ay("C<j4>"))
 B.IH=A.b(s(["click","scroll"]),t.s)
 B.Bq=new A.rT()
 B.f1=new A.OF(1,"page")
@@ -93714,9 +93695,28 @@ B.IL=A.b(s([]),t.t)
 B.oj=A.b(s([]),t.ee)
 B.IM=A.b(s([]),t.XS)
 B.ok=A.b(s([B.dv,B.h5,B.dw,B.t,B.T,B.aM,B.a_,B.ew,B.ex]),A.ay("C<fu>"))
+B.Jg=A.b(s(["Flutter","Firebase","Riverpod","Clean Architecture","Payment Gateway"]),t.s)
+B.Ja=A.b(s(["assets/images/gomla/image1.webp","assets/images/gomla/image2.webp","assets/images/gomla/image3.webp","assets/images/gomla/image4.webp"]),t.s)
+B.Ne=new A.hO("Gomla Mobile App","A comprehensive e-commerce solution built with clean architecture principles. Features seamless Firebase backend integration, secure payment processing, and intuitive user experience. This app successfully reached 5,000+ downloads with outstanding 4.8-star ratings, demonstrating reliability and user satisfaction.",B.Jg,B.e,"10,000+","assets/images/gomla/logo.webp",B.Ja,"https://play.google.com/store/apps/details?id=com.example.gomla",null)
+B.oh=A.b(s(["Flutter","Firebase","Bloc","Clean Architecture","REST APIs"]),t.s)
+B.I7=A.b(s(["assets/images/stock/logo.webp","assets/images/stock/image1.webp","assets/images/stock/image2.webp","assets/images/stock/image3.webp","assets/images/stock/image4.webp","assets/images/stock/image5.webp","assets/images/stock/image6.webp","assets/images/stock/image7.webp","assets/images/stock/image8.webp"]),t.s)
+B.Ng=new A.hO("Stock Mobile App","A powerful B2B inventory management platform designed for businesses to efficiently track and manage their stock. Built with clean architecture and Bloc pattern for scalable state management. The app achieved remarkable success with 10,000+ downloads and maintains 4.8-star ratings across both Google Play and iOS platforms.",B.oh,B.z,"10,000+","assets/images/stock/logo.webp",B.I7,"https://play.google.com/store/apps/details?id=com.example.stock","https://apps.apple.com/app/stock-mobile/id123456789")
+B.In=A.b(s(["assets/images/paletta/image1.webp","assets/images/paletta/image2.webp","assets/images/paletta/image3.webp","assets/images/paletta/image4.webp","assets/images/paletta/image5.webp","assets/images/paletta/image6.webp","assets/images/paletta/image7.webp"]),t.s)
+B.Nf=new A.hO("Palleta Mobile App","An innovative mobile application designed for modern businesses. Built with Flutter and clean architecture principles, Palleta offers a seamless user experience with robust performance. The app features intuitive design, efficient state management using Bloc pattern, and seamless integration with Firebase backend services.",B.oh,B.e,"Active Development","assets/images/paletta/logo.webp",B.In,"https://play.google.com/store/apps/details?id=com.example.palleta",null)
+B.Jc=A.b(s(["Flutter","Firebase","Bloc","SQLite","Hive"]),t.s)
+B.Nd=new A.hO("DrugZa - TagPharma","A specialized healthcare application connecting patients with pharmaceutical services. Features local data storage using SQLite and Hive for offline functionality, ensuring seamless access to medical information. The intuitive design and user-centric approach resulted in a significant 35% increase in customer engagement.",B.Jc,B.e,"High Engagement",null,null,null,null)
+B.II=A.b(s(["Flutter","Firebase","Bloc","REST APIs","E-commerce"]),t.s)
+B.Nh=new A.hO("Ringo - Shahabander","An advanced wholesale e-commerce platform designed for bulk trading operations. Integrated comprehensive shipment tracking and streamlined checkout processes to dramatically improve business efficiency. The solution delivered impressive results: a 60% boost in sales performance and 40% improvement in operational speed.",B.II,B.z,"90% Enhancement",null,null,null,null)
+B.J3=A.b(s(["Flutter","Firebase","Bloc","LMS","Parent Control"]),t.s)
+B.J2=A.b(s(["assets/images/adruse/image1.png","assets/images/adruse/image2.png","assets/images/adruse/image3.png","assets/images/adruse/image4.png","assets/images/adruse/image5.png"]),t.s)
+B.Nb=new A.hO("Adruse Mobile App","A comprehensive Learning Management System (LMS) designed to revolutionize the educational experience. Features interactive learning modules, real-time progress tracking, and dedicated parent portal for monitoring student performance. The platform simplifies education management while providing complete control and transparency for all stakeholders.",B.J3,B.e,"LMS Platform","assets/images/adruse/logo.png",B.J2,null,null)
+B.IY=A.b(s(["Flutter","Bloc","REST APIs","E-commerce","Seller System"]),t.s)
+B.Ir=A.b(s(["assets/images/albatal/image1.webp","assets/images/albatal/image2.webp","assets/images/albatal/image3.webp","assets/images/albatal/image4.webp","assets/images/albatal/image5.webp","assets/images/albatal/image6.webp","assets/images/albatal/image7.webp","assets/images/albatal/image8.webp","assets/images/albatal/image9.webp","assets/images/albatal/image10.webp","assets/images/albatal/image11.webp","assets/images/albatal/image12.webp","assets/images/albatal/image13.webp","assets/images/albatal/image14.webp","assets/images/albatal/image15.webp","assets/images/albatal/image16.webp","assets/images/albatal/image17.webp"]),t.s)
+B.Nc=new A.hO("Albatal Mobile App","A full-featured marketplace platform that connects sellers and customers seamlessly. Includes robust seller dashboard for inventory management, order processing, and analytics, while providing customers with a smooth shopping experience. The platform has gained strong market traction with 10,000+ downloads and maintains excellent 4.8-star user ratings.",B.IY,B.z,"5,000+",null,B.Ir,null,null)
+B.eE=A.b(s([B.Ne,B.Ng,B.Nf,B.Nd,B.Nh,B.Nb,B.Nc]),A.ay("C<hO>"))
 B.LF=new A.i(0,2)
 B.Bi=new A.bp(0.75,B.L,B.mI,B.LF,1.5)
-B.J3=A.b(s([B.Bi]),t.V)
+B.J4=A.b(s([B.Bi]),t.V)
 B.eF=A.b(s([B.cI,B.ct,B.fl,B.fm,B.iK]),t.QP)
 B.dB=new A.hH(0,"controlModifier")
 B.dC=new A.hH(1,"shiftModifier")
@@ -94269,28 +94269,28 @@ B.HO=A.b(s([54,null,null,8589935158]),t.Z)
 B.HP=A.b(s([55,null,null,8589935159]),t.Z)
 B.HQ=A.b(s([56,null,null,8589935160]),t.Z)
 B.HS=A.b(s([57,null,null,8589935161]),t.Z)
-B.Is=A.b(s([8589934852,8589934852,8589934853,null]),t.Z)
+B.It=A.b(s([8589934852,8589934852,8589934853,null]),t.Z)
 B.Hq=A.b(s([4294967555,null,4294967555,null]),t.Z)
 B.Hr=A.b(s([4294968065,null,null,8589935154]),t.Z)
 B.Hs=A.b(s([4294968066,null,null,8589935156]),t.Z)
 B.Ht=A.b(s([4294968067,null,null,8589935158]),t.Z)
 B.Hu=A.b(s([4294968068,null,null,8589935160]),t.Z)
 B.Hz=A.b(s([4294968321,null,null,8589935157]),t.Z)
-B.It=A.b(s([8589934848,8589934848,8589934849,null]),t.Z)
+B.Iu=A.b(s([8589934848,8589934848,8589934849,null]),t.Z)
 B.Hp=A.b(s([4294967423,null,null,8589935150]),t.Z)
 B.Hv=A.b(s([4294968069,null,null,8589935153]),t.Z)
 B.Ho=A.b(s([4294967309,null,null,8589935117]),t.Z)
 B.Hw=A.b(s([4294968070,null,null,8589935159]),t.Z)
 B.HA=A.b(s([4294968327,null,null,8589935152]),t.Z)
-B.Iu=A.b(s([8589934854,8589934854,8589934855,null]),t.Z)
+B.Iv=A.b(s([8589934854,8589934854,8589934855,null]),t.Z)
 B.Hx=A.b(s([4294968071,null,null,8589935155]),t.Z)
 B.Hy=A.b(s([4294968072,null,null,8589935161]),t.Z)
-B.Iv=A.b(s([8589934850,8589934850,8589934851,null]),t.Z)
-B.un=new A.dn(["*",B.HB,"+",B.HC,"-",B.HD,".",B.HE,"/",B.HF,"0",B.HG,"1",B.HH,"2",B.HJ,"3",B.HL,"4",B.HM,"5",B.HN,"6",B.HO,"7",B.HP,"8",B.HQ,"9",B.HS,"Alt",B.Is,"AltGraph",B.Hq,"ArrowDown",B.Hr,"ArrowLeft",B.Hs,"ArrowRight",B.Ht,"ArrowUp",B.Hu,"Clear",B.Hz,"Control",B.It,"Delete",B.Hp,"End",B.Hv,"Enter",B.Ho,"Home",B.Hw,"Insert",B.HA,"Meta",B.Iu,"PageDown",B.Hx,"PageUp",B.Hy,"Shift",B.Iv],A.ay("dn<o,R<p?>>"))
+B.Iw=A.b(s([8589934850,8589934850,8589934851,null]),t.Z)
+B.un=new A.dn(["*",B.HB,"+",B.HC,"-",B.HD,".",B.HE,"/",B.HF,"0",B.HG,"1",B.HH,"2",B.HJ,"3",B.HL,"4",B.HM,"5",B.HN,"6",B.HO,"7",B.HP,"8",B.HQ,"9",B.HS,"Alt",B.It,"AltGraph",B.Hq,"ArrowDown",B.Hr,"ArrowLeft",B.Hs,"ArrowRight",B.Ht,"ArrowUp",B.Hu,"Clear",B.Hz,"Control",B.Iu,"Delete",B.Hp,"End",B.Hv,"Enter",B.Ho,"Home",B.Hw,"Insert",B.HA,"Meta",B.Iv,"PageDown",B.Hx,"PageUp",B.Hy,"Shift",B.Iw],A.ay("dn<o,R<p?>>"))
 B.HR=A.b(s([B.os,null,null,B.u8]),t.L)
 B.J_=A.b(s([B.tV,null,null,B.u9]),t.L)
-B.Ic=A.b(s([B.tW,null,null,B.ua]),t.L)
-B.Ix=A.b(s([B.tX,null,null,B.cZ]),t.L)
+B.Ib=A.b(s([B.tW,null,null,B.ua]),t.L)
+B.Iy=A.b(s([B.tX,null,null,B.cZ]),t.L)
 B.Hj=A.b(s([B.tY,null,null,B.ub]),t.L)
 B.Jd=A.b(s([B.tZ,null,null,B.ki]),t.L)
 B.J8=A.b(s([B.u_,null,null,B.eO]),t.L)
@@ -94299,27 +94299,27 @@ B.Jh=A.b(s([B.u1,null,null,B.eP]),t.L)
 B.J7=A.b(s([B.u2,null,null,B.d0]),t.L)
 B.HV=A.b(s([B.u3,null,null,B.kj]),t.L)
 B.Hn=A.b(s([B.u4,null,null,B.d1]),t.L)
-B.I7=A.b(s([B.u5,null,null,B.eQ]),t.L)
+B.I8=A.b(s([B.u5,null,null,B.eQ]),t.L)
 B.J0=A.b(s([B.u6,null,null,B.d2]),t.L)
 B.J1=A.b(s([B.u7,null,null,B.eR]),t.L)
 B.HZ=A.b(s([B.eM,B.eM,B.hl,null]),t.L)
 B.Je=A.b(s([B.hh,null,B.hh,null]),t.L)
-B.Ii=A.b(s([B.bY,null,null,B.d_]),t.L)
-B.Ij=A.b(s([B.bM,null,null,B.d0]),t.L)
-B.Ik=A.b(s([B.bN,null,null,B.d1]),t.L)
+B.Ih=A.b(s([B.bY,null,null,B.d_]),t.L)
+B.Ii=A.b(s([B.bM,null,null,B.d0]),t.L)
+B.Ij=A.b(s([B.bN,null,null,B.d1]),t.L)
 B.Jf=A.b(s([B.bZ,null,null,B.d2]),t.L)
 B.J5=A.b(s([B.kb,null,null,B.kj]),t.L)
 B.I_=A.b(s([B.eL,B.eL,B.hk,null]),t.L)
-B.IE=A.b(s([B.aT,null,null,B.cZ]),t.L)
-B.Il=A.b(s([B.cW,null,null,B.eO]),t.L)
+B.IF=A.b(s([B.aT,null,null,B.cZ]),t.L)
+B.Ik=A.b(s([B.cW,null,null,B.eO]),t.L)
 B.HU=A.b(s([B.hg,null,null,B.kh]),t.L)
-B.Im=A.b(s([B.cX,null,null,B.eQ]),t.L)
+B.Il=A.b(s([B.cX,null,null,B.eQ]),t.L)
 B.J6=A.b(s([B.kc,null,null,B.ki]),t.L)
 B.I0=A.b(s([B.eN,B.eN,B.hm,null]),t.L)
-B.In=A.b(s([B.eJ,null,null,B.eP]),t.L)
+B.Im=A.b(s([B.eJ,null,null,B.eP]),t.L)
 B.IK=A.b(s([B.eK,null,null,B.eR]),t.L)
 B.I1=A.b(s([B.cB,B.cB,B.cY,null]),t.L)
-B.KZ=new A.dn(["*",B.HR,"+",B.J_,"-",B.Ic,".",B.Ix,"/",B.Hj,"0",B.Jd,"1",B.J8,"2",B.HY,"3",B.Jh,"4",B.J7,"5",B.HV,"6",B.Hn,"7",B.I7,"8",B.J0,"9",B.J1,"Alt",B.HZ,"AltGraph",B.Je,"ArrowDown",B.Ii,"ArrowLeft",B.Ij,"ArrowRight",B.Ik,"ArrowUp",B.Jf,"Clear",B.J5,"Control",B.I_,"Delete",B.IE,"End",B.Il,"Enter",B.HU,"Home",B.Im,"Insert",B.J6,"Meta",B.I0,"PageDown",B.In,"PageUp",B.IK,"Shift",B.I1],A.ay("dn<o,R<h?>>"))
+B.KZ=new A.dn(["*",B.HR,"+",B.J_,"-",B.Ib,".",B.Iy,"/",B.Hj,"0",B.Jd,"1",B.J8,"2",B.HY,"3",B.Jh,"4",B.J7,"5",B.HV,"6",B.Hn,"7",B.I8,"8",B.J0,"9",B.J1,"Alt",B.HZ,"AltGraph",B.Je,"ArrowDown",B.Ih,"ArrowLeft",B.Ii,"ArrowRight",B.Ij,"ArrowUp",B.Jf,"Clear",B.J5,"Control",B.I_,"Delete",B.IF,"End",B.Ik,"Enter",B.HU,"Home",B.Il,"Insert",B.J6,"Meta",B.I0,"PageDown",B.Im,"PageUp",B.IK,"Shift",B.I1],A.ay("dn<o,R<h?>>"))
 B.Ly={KeyA:0,KeyB:1,KeyC:2,KeyD:3,KeyE:4,KeyF:5,KeyG:6,KeyH:7,KeyI:8,KeyJ:9,KeyK:10,KeyL:11,KeyM:12,KeyN:13,KeyO:14,KeyP:15,KeyQ:16,KeyR:17,KeyS:18,KeyT:19,KeyU:20,KeyV:21,KeyW:22,KeyX:23,KeyY:24,KeyZ:25,Digit1:26,Digit2:27,Digit3:28,Digit4:29,Digit5:30,Digit6:31,Digit7:32,Digit8:33,Digit9:34,Digit0:35,Minus:36,Equal:37,BracketLeft:38,BracketRight:39,Backslash:40,Semicolon:41,Quote:42,Backquote:43,Comma:44,Period:45,Slash:46}
 B.kn=new A.c_(B.Ly,["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","1","2","3","4","5","6","7","8","9","0","-","=","[","]","\\",";","'","`",",",".","/"],t.li)
 B.Lu={Abort:0,Again:1,AltLeft:2,AltRight:3,ArrowDown:4,ArrowLeft:5,ArrowRight:6,ArrowUp:7,AudioVolumeDown:8,AudioVolumeMute:9,AudioVolumeUp:10,Backquote:11,Backslash:12,Backspace:13,BracketLeft:14,BracketRight:15,BrightnessDown:16,BrightnessUp:17,BrowserBack:18,BrowserFavorites:19,BrowserForward:20,BrowserHome:21,BrowserRefresh:22,BrowserSearch:23,BrowserStop:24,CapsLock:25,Comma:26,ContextMenu:27,ControlLeft:28,ControlRight:29,Convert:30,Copy:31,Cut:32,Delete:33,Digit0:34,Digit1:35,Digit2:36,Digit3:37,Digit4:38,Digit5:39,Digit6:40,Digit7:41,Digit8:42,Digit9:43,DisplayToggleIntExt:44,Eject:45,End:46,Enter:47,Equal:48,Escape:49,Esc:50,F1:51,F10:52,F11:53,F12:54,F13:55,F14:56,F15:57,F16:58,F17:59,F18:60,F19:61,F2:62,F20:63,F21:64,F22:65,F23:66,F24:67,F3:68,F4:69,F5:70,F6:71,F7:72,F8:73,F9:74,Find:75,Fn:76,FnLock:77,GameButton1:78,GameButton10:79,GameButton11:80,GameButton12:81,GameButton13:82,GameButton14:83,GameButton15:84,GameButton16:85,GameButton2:86,GameButton3:87,GameButton4:88,GameButton5:89,GameButton6:90,GameButton7:91,GameButton8:92,GameButton9:93,GameButtonA:94,GameButtonB:95,GameButtonC:96,GameButtonLeft1:97,GameButtonLeft2:98,GameButtonMode:99,GameButtonRight1:100,GameButtonRight2:101,GameButtonSelect:102,GameButtonStart:103,GameButtonThumbLeft:104,GameButtonThumbRight:105,GameButtonX:106,GameButtonY:107,GameButtonZ:108,Help:109,Home:110,Hyper:111,Insert:112,IntlBackslash:113,IntlRo:114,IntlYen:115,KanaMode:116,KeyA:117,KeyB:118,KeyC:119,KeyD:120,KeyE:121,KeyF:122,KeyG:123,KeyH:124,KeyI:125,KeyJ:126,KeyK:127,KeyL:128,KeyM:129,KeyN:130,KeyO:131,KeyP:132,KeyQ:133,KeyR:134,KeyS:135,KeyT:136,KeyU:137,KeyV:138,KeyW:139,KeyX:140,KeyY:141,KeyZ:142,KeyboardLayoutSelect:143,Lang1:144,Lang2:145,Lang3:146,Lang4:147,Lang5:148,LaunchApp1:149,LaunchApp2:150,LaunchAssistant:151,LaunchControlPanel:152,LaunchMail:153,LaunchScreenSaver:154,MailForward:155,MailReply:156,MailSend:157,MediaFastForward:158,MediaPause:159,MediaPlay:160,MediaPlayPause:161,MediaRecord:162,MediaRewind:163,MediaSelect:164,MediaStop:165,MediaTrackNext:166,MediaTrackPrevious:167,MetaLeft:168,MetaRight:169,MicrophoneMuteToggle:170,Minus:171,NonConvert:172,NumLock:173,Numpad0:174,Numpad1:175,Numpad2:176,Numpad3:177,Numpad4:178,Numpad5:179,Numpad6:180,Numpad7:181,Numpad8:182,Numpad9:183,NumpadAdd:184,NumpadBackspace:185,NumpadClear:186,NumpadClearEntry:187,NumpadComma:188,NumpadDecimal:189,NumpadDivide:190,NumpadEnter:191,NumpadEqual:192,NumpadMemoryAdd:193,NumpadMemoryClear:194,NumpadMemoryRecall:195,NumpadMemoryStore:196,NumpadMemorySubtract:197,NumpadMultiply:198,NumpadParenLeft:199,NumpadParenRight:200,NumpadSubtract:201,Open:202,PageDown:203,PageUp:204,Paste:205,Pause:206,Period:207,Power:208,PrintScreen:209,PrivacyScreenToggle:210,Props:211,Quote:212,Resume:213,ScrollLock:214,Select:215,SelectTask:216,Semicolon:217,ShiftLeft:218,ShiftRight:219,ShowAllWindows:220,Slash:221,Sleep:222,Space:223,Super:224,Suspend:225,Tab:226,Turbo:227,Undo:228,WakeUp:229,ZoomToggle:230}
