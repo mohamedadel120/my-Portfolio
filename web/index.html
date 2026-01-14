@@ -37,58 +37,90 @@
 
     <style>
       body {
-        background-color: #030712;
+        background-color: #050816; /* AppColors.background */
         margin: 0;
         display: flex;
         justify-content: center;
         align-items: center;
         height: 100vh;
         overflow: hidden;
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        font-family: "Poppins", sans-serif;
       }
 
       .loader-container {
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 24px;
+        gap: 32px;
+      }
+
+      .spinner-wrapper {
+        position: relative;
+        width: 80px;
+        height: 80px;
       }
 
       .spinner {
-        width: 48px;
-        height: 48px;
-        border: 2px solid #1f2937;
-        border-bottom-color: #6366f1;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        border: 3px solid rgba(0, 217, 255, 0.1); /* AppColors.primary with opacity */
+        border-top: 3px solid #00d9ff; /* AppColors.primary */
         border-radius: 50%;
-        display: inline-block;
-        box-sizing: border-box;
-        animation: rotation 1s linear infinite;
+        animation: rotation 1s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+      }
+
+      .spinner-inner {
+        position: absolute;
+        top: 15%;
+        left: 15%;
+        width: 70%;
+        height: 70%;
+        border: 3px solid rgba(123, 44, 191, 0.1); /* AppColors.secondary with opacity */
+        border-bottom: 3px solid #7b2cbf; /* AppColors.secondary */
+        border-radius: 50%;
+        animation: rotation 1.5s cubic-bezier(0.5, 0, 0.5, 1) infinite reverse;
       }
 
       .loader-text {
-        color: #9ca3af;
-        font-size: 14px;
-        letter-spacing: 0.1em;
+        color: #ffffff;
+        font-size: 16px;
+        letter-spacing: 0.2em;
         text-transform: uppercase;
-        font-weight: 500;
-        animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        font-weight: 600;
+        opacity: 0.8;
+        animation: pulse 2s ease-in-out infinite;
       }
 
       @keyframes rotation {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
       }
 
       @keyframes pulse {
-        0%, 100% { opacity: 1; }
-        50% { opacity: .5; }
+        0%,
+        100% {
+          opacity: 0.4;
+          transform: scale(0.98);
+        }
+        50% {
+          opacity: 0.9;
+          transform: scale(1.02);
+        }
       }
     </style>
   </head>
   <body>
     <div class="loader-container">
-      <div class="spinner"></div>
-      <div class="loader-text">Loading Portfolio</div>
+      <div class="spinner-wrapper">
+        <div class="spinner"></div>
+        <div class="spinner-inner"></div>
+      </div>
+      <div class="loader-text">Loading Mohamed's Portfolio</div>
     </div>
 
     <script src="flutter_bootstrap.js" async></script>

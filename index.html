@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <!--
+  <head>
+    <!--
     If you are serving your web app in a path other than the root, change the
     href value below to reflect the base path you are serving from.
 
@@ -14,196 +14,115 @@
     This is a placeholder for base href that will be replaced by the value of
     the `--base-href` argument provided to `flutter build`.
   -->
-  <base href="/my-Portfolio/">
+    <base href="/my-Portfolio/" />
 
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="description" content="Mohamed Adel - Flutter Developer Portfolio. A modern, animated portfolio website showcasing mobile app development expertise, projects, and experience.">
+    <meta charset="UTF-8" />
+    <meta content="IE=Edge" http-equiv="X-UA-Compatible" />
+    <meta
+      name="description"
+      content="Mohamed Adel - Flutter Developer Portfolio. A modern, animated portfolio website showcasing mobile app development expertise, projects, and experience."
+    />
 
-  <!-- iOS meta tags & icons -->
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="Mohamed Adel">
-  <link rel="apple-touch-icon" href="logo.png">
+    <!-- iOS meta tags & icons -->
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="apple-mobile-web-app-title" content="Mohamed Adel" />
+    <link rel="apple-touch-icon" href="icons/Icon-192.png" />
 
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" href="logo.png"/>
-  <link rel="shortcut icon" type="image/png" href="logo.png"/>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="favicon.png" />
 
-  <title>Mohamed Adel - Flutter Developer Portfolio</title>
-  <link rel="manifest" href="manifest.json">
-  
-  <!-- GSAP Animation Library -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-  
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      background-color: #0A0E27;
-      color: #FFFFFF;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-      min-height: 100vh;
-      position: relative;
-    }
-    
-    .loading-container {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 9999;
-    }
-    
-    .logo-container {
-      position: absolute;
-      top: 30px;
-      left: 30px;
-      animation: fadeIn 0.8s ease-in;
-      z-index: 10000;
-    }
-    
-    .logo {
-      max-width: 250px;
-      width: auto;
-      height: auto;
-      display: block;
-      filter: drop-shadow(0 0 20px rgba(0, 217, 255, 0.4));
-      animation: logoPulse 2s ease-in-out infinite;
-      object-fit: contain;
-    }
-    
-    .logo[src=""],
-    .logo:not([src]) {
-      display: none;
-    }
-    
-    @media (max-width: 768px) {
-      .logo-container {
-        top: 20px;
-        left: 20px;
+    <title>Mohamed Adel - Flutter Developer Portfolio</title>
+    <link rel="manifest" href="manifest.json" />
+
+    <style>
+      body {
+        background-color: #050816; /* AppColors.background */
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        overflow: hidden;
+        font-family: "Poppins", sans-serif;
       }
-      
-      .logo {
-        max-width: 180px;
+
+      .loader-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 32px;
       }
-    }
-    
-    @media (max-width: 480px) {
-      .logo-container {
-        top: 15px;
-        left: 15px;
+
+      .spinner-wrapper {
+        position: relative;
+        width: 80px;
+        height: 80px;
       }
-      
-      .logo {
-        max-width: 150px;
+
+      .spinner {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        border: 3px solid rgba(0, 217, 255, 0.1); /* AppColors.primary with opacity */
+        border-top: 3px solid #00d9ff; /* AppColors.primary */
+        border-radius: 50%;
+        animation: rotation 1s cubic-bezier(0.5, 0, 0.5, 1) infinite;
       }
-    }
-    
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(-20px) scale(0.9);
+
+      .spinner-inner {
+        position: absolute;
+        top: 15%;
+        left: 15%;
+        width: 70%;
+        height: 70%;
+        border: 3px solid rgba(123, 44, 191, 0.1); /* AppColors.secondary with opacity */
+        border-bottom: 3px solid #7b2cbf; /* AppColors.secondary */
+        border-radius: 50%;
+        animation: rotation 1.5s cubic-bezier(0.5, 0, 0.5, 1) infinite reverse;
       }
-      to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
+
+      .loader-text {
+        color: #ffffff;
+        font-size: 16px;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        font-weight: 600;
+        opacity: 0.8;
+        animation: pulse 2s ease-in-out infinite;
       }
-    }
-    
-    @keyframes logoPulse {
-      0%, 100% {
-        opacity: 1;
-        filter: drop-shadow(0 0 20px rgba(0, 217, 255, 0.4));
+
+      @keyframes rotation {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
       }
-      50% {
-        opacity: 0.9;
-        filter: drop-shadow(0 0 25px rgba(0, 217, 255, 0.6));
+
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 0.4;
+          transform: scale(0.98);
+        }
+        50% {
+          opacity: 0.9;
+          transform: scale(1.02);
+        }
       }
-    }
-    
-    .error-message {
-      display: none;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      padding: 20px;
-      background-color: rgba(255, 0, 0, 0.1);
-      border: 1px solid rgba(255, 0, 0, 0.3);
-      border-radius: 8px;
-      max-width: 500px;
-      text-align: center;
-    }
-    
-    .error-message.show {
-      display: block;
-    }
-  </style>
-</head>
-<body>
-  <div class="loading-container">
-    <div class="logo-container">
-      <img src="logo.png" alt="Mohamed Adel Logo" class="logo" id="logo">
+    </style>
+  </head>
+  <body>
+    <div class="loader-container">
+      <div class="spinner-wrapper">
+        <div class="spinner"></div>
+        <div class="spinner-inner"></div>
+      </div>
+      <div class="loader-text">Loading Mohamed's Portfolio</div>
     </div>
-    <div class="error-message" id="error-message">
-      <h3>Failed to load application</h3>
-      <p>Please check the browser console for more details.</p>
-      <p>If the problem persists, try:</p>
-      <ul style="text-align: left; display: inline-block;">
-        <li>Clearing your browser cache</li>
-        <li>Checking your internet connection</li>
-        <li>Ensuring all files are uploaded correctly</li>
-      </ul>
-    </div>
-  </div>
-  
-  <script>
-    // Handle logo image load errors silently
-    var logo = document.getElementById('logo');
-    if (logo) {
-      logo.addEventListener('error', function() {
-        console.warn('Logo image failed to load');
-        this.style.display = 'none';
-      });
-      
-      logo.addEventListener('load', function() {
-        console.log('Logo image loaded successfully');
-      });
-    }
-    
-    window.addEventListener('error', function(e) {
-      // Only show error message for Flutter app errors, not image errors
-      if (e.target && e.target.tagName === 'IMG') {
-        return;
-      }
-      console.error('Error loading Flutter app:', e);
-      document.getElementById('error-message').classList.add('show');
-      if (logo) logo.style.animation = 'none';
-    });
-    
-    window.addEventListener('unhandledrejection', function(e) {
-      console.error('Unhandled promise rejection:', e);
-      document.getElementById('error-message').classList.add('show');
-      if (logo) logo.style.animation = 'none';
-    });
-    
-    // Hide loading indicator when Flutter app loads
-    window.addEventListener('flutter-first-frame', function() {
-      document.querySelector('.loading-container').style.display = 'none';
-    });
-    
-    // Fallback: hide loading screen after 10 seconds if Flutter doesn't load
-    setTimeout(function() {
-      if (document.querySelector('.loading-container').style.display !== 'none') {
-        console.warn('Flutter app taking longer than expected to load...');
-      }
-    }, 10000);
-  </script>
-  
-  <script src="flutter_bootstrap.js" async></script>
-</body>
+
+    <script src="flutter_bootstrap.js" async></script>
+  </body>
 </html>
