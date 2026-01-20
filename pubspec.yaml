@@ -41,6 +41,7 @@ dependencies:
   font_awesome_flutter: ^10.7.0
   http: ^1.6.0
   seo_renderer: ^0.6.0
+  video_player: ^2.10.1
 
 dev_dependencies:
   flutter_test:
@@ -71,6 +72,7 @@ flutter:
     - assets/images/paletta/
     - assets/images/adruse/
     - assets/images/albatal/
+    - assets/videos/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

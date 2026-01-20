@@ -115,6 +115,7 @@ class AppData {
       androidStoreUrl:
           'https://play.google.com/store/apps/details?id=com.example.adruse',
       iosStoreUrl: 'https://apps.apple.com/app/adruse/id123456789',
+      videoUrl: 'assets/videos/adruse_demo.mp4',
     ),
     Project(
       title: 'Albatal Mobile App',
@@ -131,15 +132,6 @@ class AppData {
         'assets/images/albatal/image5.webp',
         'assets/images/albatal/image6.webp',
         'assets/images/albatal/image7.webp',
-        'assets/images/albatal/image8.webp',
-        'assets/images/albatal/image9.webp',
-        'assets/images/albatal/image10.webp',
-        'assets/images/albatal/image11.webp',
-        'assets/images/albatal/image12.webp',
-        'assets/images/albatal/image13.webp',
-        'assets/images/albatal/image14.webp',
-        'assets/images/albatal/image15.webp',
-        'assets/images/albatal/image16.webp',
         'assets/images/albatal/image17.webp',
       ],
     ),

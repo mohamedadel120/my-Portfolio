@@ -9,6 +9,7 @@ import '../../constants/app_data.dart';
 import '../../models/project.dart';
 import '../common/phone_frame.dart';
 import '../common/magnetic_button.dart';
+import '../common/project_video_player.dart';
 
 class StickyProjectShowcase extends StatefulWidget {
   final ValueListenable<double> scrollOffsetListenable;
@@ -280,6 +281,7 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
     final project = AppData.projects[_activeProjectIndex];
     final hasImages =
         project.galleryImages != null && project.galleryImages!.isNotEmpty;
+    final hasVideo = project.videoUrl != null && project.videoUrl!.isNotEmpty;
 
     // Determine Image: Default to first image, or active index
     int safeIndex = 0;
@@ -290,7 +292,10 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
     Widget content;
     Key key;
 
-    if (hasImages) {
+    if (hasVideo) {
+      key = Key('${project.title}-video');
+      content = ProjectVideoPlayer(videoUrl: project.videoUrl!);
+    } else if (hasImages) {
       key = Key('${project.title}-$safeIndex');
       content = _buildPhoneImageContent(project.galleryImages![safeIndex]);
     } else {

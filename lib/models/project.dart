@@ -11,6 +11,7 @@ class Project {
   final List<String>? galleryImages;
   final String? androidStoreUrl;
   final String? iosStoreUrl;
+  final String? videoUrl;
 
   const Project({
     required this.title,
@@ -23,5 +24,6 @@ class Project {
     this.galleryImages,
     this.androidStoreUrl,
     this.iosStoreUrl,
+    this.videoUrl,
   });
 }
