@@ -17,8 +17,13 @@ import '../common/about_visual_branding.dart';
 
 class AboutSection extends StatelessWidget {
   final ValueListenable<double> scrollOffsetListenable;
+  final VoidCallback? onDownloadCV;
 
-  const AboutSection({super.key, required this.scrollOffsetListenable});
+  const AboutSection({
+    super.key,
+    required this.scrollOffsetListenable,
+    this.onDownloadCV,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -152,6 +157,23 @@ class AboutSection extends StatelessWidget {
                         height: 1.6,
                       ),
                     ),
+                    const SizedBox(height: 32),
+                    ElevatedButton.icon(
+                      onPressed: onDownloadCV ?? () {},
+                      icon: const Icon(Icons.download_rounded),
+                      label: const Text('Download Resume'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.primary,
+                        foregroundColor: AppColors.background,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 24,
+                          vertical: 16,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -256,14 +278,35 @@ class AboutSection extends StatelessWidget {
             'opacity': {'from': 0, 'to': 1},
             'y': {'from': 30, 'to': 0},
           },
-          child: Text(
-            AppData.professionalSummary,
-            style: GoogleFonts.poppins(
-              fontSize: 16,
-              color: AppColors.textSecondary,
-              height: 1.8,
-            ),
-            textAlign: TextAlign.center,
+          child: Column(
+            children: [
+              Text(
+                AppData.professionalSummary,
+                style: GoogleFonts.poppins(
+                  fontSize: 16,
+                  color: AppColors.textSecondary,
+                  height: 1.8,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 24),
+              ElevatedButton.icon(
+                onPressed: onDownloadCV ?? () {},
+                icon: const Icon(Icons.download_rounded),
+                label: const Text('Download Resume'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.primary,
+                  foregroundColor: AppColors.background,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 12,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
         const SizedBox(height: 40),

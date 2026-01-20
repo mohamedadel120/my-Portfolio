@@ -210,6 +210,8 @@ class AppData {
   static const String phone = '+201000490576';
   static const String location =
       '5 helme Soliman street El Mataria Cairo, Egypt';
+  static const String cvUrl =
+      'https://raw.githubusercontent.com/mohamedadel120/my-Portfolio/main/assets/resume.pdf'; // Placeholder
 
   // Why Choose Me reasons
   static const List<WhyChooseMeReason> whyChooseMeReasons = [

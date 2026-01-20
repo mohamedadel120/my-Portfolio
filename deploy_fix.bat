@@ -1,27 +1,27 @@
 @echo off
-echo Fixing Deplyment...
+echo Deploying to GitHub Pages...
 echo.
 
 REM 1. Ensure we are in the project root
 cd /d "%~dp0"
 
-REM 2. Run the build script to get fresh assets
+REM 2. Run the build script
+echo Building the project...
 call build_github_pages.bat
 
-REM 3. Sync build/web contents to build/ (the git root for deployment)
-echo Syncing build/web to build...
-xcopy /E /H /Y build\web\* build\
-
-REM 4. Move to the deployment directory
-cd build
-
-REM 5. Stage, commit and push
-echo Staging changes for deployment...
+REM 3. Commit source changes to main
+echo Committing source changes...
 git add .
-git commit -m "chore: deploy latest enhancements to GitHub Pages"
+git commit -m "chore: implement CV download and contact form features"
 git push origin main
 
+REM 4. Deploy build/web to gh-pages branch
+echo Deploying build/web to gh-pages...
+git add -f build/web
+git commit -m "chore: deploy latest build to gh-pages"
+git subtree push --prefix build/web origin gh-pages
+
 echo.
-echo Deployment fix complete! Please wait a minute for GitHub Pages to update.
+echo Deployment complete! Please wait a minute for GitHub Pages to update.
 echo Check: https://mohamedadel120.github.io/my-Portfolio/
 pause

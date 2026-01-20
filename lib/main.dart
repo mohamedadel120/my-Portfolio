@@ -20,6 +20,7 @@ import 'widgets/common/floating_action_menu.dart';
 import 'widgets/common/scroll_to_top_button.dart';
 import 'package:seo_renderer/seo_renderer.dart'; // Step 2: SEO Import
 import 'widgets/common/custom_cursor.dart';
+import 'utils/url_launcher_utils.dart';
 // import 'widgets/common/tour_guide_character.dart'; // Commented out for now
 
 void main() {
@@ -361,7 +362,9 @@ class _PortfolioPageState extends State<PortfolioPage> {
         controller: _scrollController,
         child: HeroSection(
           scrollOffsetListenable: _scrollOffsetNotifier,
-          onViewProjects: () => _scrollToSection(4), // Projects section
+          onViewProjects: () => _scrollToSection(3), // Index 3 for Projects
+          onContactMe: () => _scrollToSection(4), // Index 4 for Contact
+          onDownloadCV: () => UrlLauncherUtils.downloadFile(AppData.cvUrl),
         ),
       ),
     );
@@ -373,7 +376,10 @@ class _PortfolioPageState extends State<PortfolioPage> {
         key: const ValueKey(1),
         index: 1,
         controller: _scrollController,
-        child: AboutSection(scrollOffsetListenable: _scrollOffsetNotifier),
+        child: AboutSection(
+          scrollOffsetListenable: _scrollOffsetNotifier,
+          onDownloadCV: () => UrlLauncherUtils.downloadFile(AppData.cvUrl),
+        ),
       ),
     );
   }

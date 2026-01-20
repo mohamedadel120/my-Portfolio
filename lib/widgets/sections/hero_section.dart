@@ -18,11 +18,15 @@ import '../common/code_snippet.dart';
 class HeroSection extends StatefulWidget {
   final ValueListenable<double> scrollOffsetListenable;
   final VoidCallback? onViewProjects;
+  final VoidCallback? onContactMe;
+  final VoidCallback? onDownloadCV;
 
   const HeroSection({
     super.key,
     required this.scrollOffsetListenable,
     this.onViewProjects,
+    this.onContactMe,
+    this.onDownloadCV,
   });
 
   @override
@@ -310,8 +314,10 @@ class _HeroSectionState extends State<HeroSection>
                         scrollOffset: scrollOffset,
                         sectionStartOffset: sectionStartOffset,
                         speed: -0.1,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                        child: Wrap(
+                          alignment: WrapAlignment.center,
+                          spacing: 20,
+                          runSpacing: 20,
                           children: [
                             MagneticButton(
                                   onTap: widget.onViewProjects ?? () {},
@@ -343,10 +349,52 @@ class _HeroSectionState extends State<HeroSection>
                                   curve: Curves.easeOutBack,
                                 ),
 
-                            const SizedBox(width: 20),
+                            MagneticButton(
+                                  onTap: widget.onDownloadCV ?? () {},
+                                  toxicity: 0.3,
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 40,
+                                      vertical: 20,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                        color: AppColors.primary,
+                                        width: 1,
+                                      ),
+                                      borderRadius: BorderRadius.circular(50),
+                                    ),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Icon(
+                                          Icons.download_rounded,
+                                          color: AppColors.primary,
+                                          size: 18,
+                                        ),
+                                        const SizedBox(width: 8),
+                                        Text(
+                                          'DOWNLOAD CV',
+                                          style: GoogleFonts.oswald(
+                                            color: AppColors.primary,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                            letterSpacing: 1,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                )
+                                .animate()
+                                .fadeIn(delay: 1100.ms, duration: 600.ms)
+                                .scale(
+                                  delay: 1100.ms,
+                                  curve: Curves.easeOutBack,
+                                ),
 
                             MagneticButton(
-                                  onTap: () {}, // TODO: Implement download CV
+                                  onTap: widget.onContactMe ?? () {},
                                   toxicity: 0.3,
                                   child: Container(
                                     padding: const EdgeInsets.symmetric(
