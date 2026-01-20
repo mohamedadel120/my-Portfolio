@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import '../../utils/url_launcher_utils.dart';
 import '../../constants/app_colors.dart';
 import '../../constants/app_data.dart';
 import '../../models/project.dart';
@@ -374,36 +376,86 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
               ),
             ).animate().fadeIn(delay: 100.ms),
             const SizedBox(height: 40),
-            MagneticButton(
-              onTap: () {},
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 24,
-                  vertical: 12,
-                ),
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: AppColors.textPrimary.withOpacity(0.2),
+            Wrap(
+              spacing: 20,
+              runSpacing: 20,
+              children: [
+                if (project.androidStoreUrl != null)
+                  MagneticButton(
+                    onTap: () =>
+                        UrlLauncherUtils.launchURL(project.androidStoreUrl!),
+                    child: Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: AppColors.textPrimary.withOpacity(0.1),
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: AppColors.textPrimary.withOpacity(0.2),
+                        ),
+                      ),
+                      child: const Icon(
+                        FontAwesomeIcons.googlePlay,
+                        size: 20,
+                        color: AppColors.textPrimary,
+                      ),
+                    ),
                   ),
-                  borderRadius: BorderRadius.circular(30),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      "View Case Study",
-                      style: GoogleFonts.poppins(color: AppColors.textPrimary),
+                if (project.iosStoreUrl != null)
+                  MagneticButton(
+                    onTap: () =>
+                        UrlLauncherUtils.launchURL(project.iosStoreUrl!),
+                    child: Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: AppColors.textPrimary.withOpacity(0.1),
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: AppColors.textPrimary.withOpacity(0.2),
+                        ),
+                      ),
+                      child: const Icon(
+                        FontAwesomeIcons.apple,
+                        size: 20,
+                        color: AppColors.textPrimary,
+                      ),
                     ),
-                    const SizedBox(width: 8),
-                    const Icon(
-                      Icons.arrow_outward,
-                      size: 16,
-                      color: AppColors.textPrimary,
+                  ),
+                if (project.androidStoreUrl == null &&
+                    project.iosStoreUrl == null)
+                  MagneticButton(
+                    onTap: () {},
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 24,
+                        vertical: 12,
+                      ),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: AppColors.textPrimary.withOpacity(0.2),
+                        ),
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            "Coming Soon",
+                            style: GoogleFonts.poppins(
+                              color: AppColors.textPrimary,
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          const Icon(
+                            Icons.hourglass_empty,
+                            size: 16,
+                            color: AppColors.textPrimary,
+                          ),
+                        ],
+                      ),
                     ),
-                  ],
-                ),
-              ),
-            ),
+                  ),
+              ],
+            ).animate().fadeIn(delay: 200.ms).slideY(begin: 0.2, end: 0),
           ],
         ),
       ),
