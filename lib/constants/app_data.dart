@@ -80,6 +80,7 @@ class AppData {
           'A specialized healthcare application connecting patients with pharmaceutical services. Features local data storage using SQLite and Hive for offline functionality, ensuring seamless access to medical information. The intuitive design and user-centric approach resulted in a significant 35% increase in customer engagement.',
       tech: ['Flutter', 'Firebase', 'Bloc', 'SQLite', 'Hive'],
       color: Color(0xFF00D9FF),
+      videoUrl: 'assets/videos/drugza_demo.mp4',
       downloads: 'High Engagement',
     ),
     Project(
