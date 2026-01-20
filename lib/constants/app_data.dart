@@ -116,7 +116,6 @@ class AppData {
       androidStoreUrl:
           'https://play.google.com/store/apps/details?id=com.example.adruse',
       iosStoreUrl: 'https://apps.apple.com/app/adruse/id123456789',
-      videoUrl: 'assets/videos/adruse_demo.mp4',
     ),
     Project(
       title: 'Albatal Mobile App',
