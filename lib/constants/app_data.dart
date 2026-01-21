@@ -30,6 +30,7 @@ class AppData {
       ],
       androidStoreUrl:
           'https://play.google.com/store/apps/details?id=com.gomla.store',
+      iosStoreUrl: 'https://apps.apple.com/eg/app/go-gomla/id6742806281',
     ),
     Project(
       title: 'Stock Mobile App',
@@ -52,7 +53,7 @@ class AppData {
       ],
       androidStoreUrl:
           'https://play.google.com/store/apps/details?id=com.spark.stockclientapp',
-      iosStoreUrl: 'https://apps.apple.com/app/stock-mobile/id123456789',
+      iosStoreUrl: 'https://apps.apple.com/eg/app/stock-b2b/id1639101527',
     ),
     Project(
       title: 'Palleta Mobile App',
