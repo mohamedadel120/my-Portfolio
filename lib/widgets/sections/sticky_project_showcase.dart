@@ -478,41 +478,15 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
                   MagneticButton(
                     onTap: () =>
                         UrlLauncherUtils.launchURL(project.androidStoreUrl!),
-                    child: Container(
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: AppColors.textPrimary.withValues(alpha: 0.1),
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          color: AppColors.textPrimary.withValues(alpha: 0.2),
-                        ),
-                      ),
-                      child: const Icon(
-                        FontAwesomeIcons.googlePlay,
-                        size: 20,
-                        color: AppColors.textPrimary,
-                      ),
+                    child: const _StoreIconButton(
+                      icon: FontAwesomeIcons.googlePlay,
                     ),
                   ),
                 if (project.iosStoreUrl != null)
                   MagneticButton(
                     onTap: () =>
                         UrlLauncherUtils.launchURL(project.iosStoreUrl!),
-                    child: Container(
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: AppColors.textPrimary.withValues(alpha: 0.1),
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          color: AppColors.textPrimary.withValues(alpha: 0.2),
-                        ),
-                      ),
-                      child: const Icon(
-                        FontAwesomeIcons.apple,
-                        size: 20,
-                        color: AppColors.textPrimary,
-                      ),
-                    ),
+                    child: const _StoreIconButton(icon: FontAwesomeIcons.apple),
                   ),
                 if (project.androidStoreUrl == null &&
                     project.iosStoreUrl == null)
@@ -705,6 +679,50 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
             .fadeIn(duration: 300.ms)
             .fadeOut(delay: 300.ms),
       ],
+    );
+  }
+}
+
+class _StoreIconButton extends StatefulWidget {
+  final IconData icon;
+
+  const _StoreIconButton({required this.icon});
+
+  @override
+  State<_StoreIconButton> createState() => _StoreIconButtonState();
+}
+
+class _StoreIconButtonState extends State<_StoreIconButton> {
+  bool _isHovered = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return MouseRegion(
+      onEnter: (_) => setState(() => _isHovered = true),
+      onExit: (_) => setState(() => _isHovered = false),
+      cursor: SystemMouseCursors.click,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        curve: Curves.easeOut,
+        padding: const EdgeInsets.all(12),
+        transform: Matrix4.identity()..scale(_isHovered ? 1.1 : 1.0),
+        decoration: BoxDecoration(
+          color: _isHovered
+              ? AppColors.textPrimary
+              : AppColors.textPrimary.withValues(alpha: 0.1),
+          shape: BoxShape.circle,
+          border: Border.all(
+            color: _isHovered
+                ? AppColors.textPrimary
+                : AppColors.textPrimary.withValues(alpha: 0.2),
+          ),
+        ),
+        child: Icon(
+          widget.icon,
+          size: 20,
+          color: _isHovered ? AppColors.background : AppColors.textPrimary,
+        ),
+      ),
     );
   }
 }

@@ -219,7 +219,7 @@ class AppData {
   static const String location =
       '5 helme Soliman street El Mataria Cairo, Egypt';
   static const String cvUrl =
-      'https://raw.githubusercontent.com/mohamedadel120/my-Portfolio/main/assets/resume.pdf'; // Placeholder
+      'https://drive.google.com/file/d/1TTitZq8kB_JfxM2A9MpHiysMYy0hJxOV/view?usp=drive_link';
 
   // Why Choose Me reasons
   static const List<WhyChooseMeReason> whyChooseMeReasons = [
