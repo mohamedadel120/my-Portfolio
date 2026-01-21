@@ -3,7 +3,6 @@ import 'package:flutter/foundation.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:seo_renderer/seo_renderer.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import '../../constants/app_colors.dart';
 import '../../constants/app_data.dart';
 import '../common/section_title.dart';
 import '../common/about_card.dart';
@@ -46,11 +45,14 @@ class AboutSection extends StatelessWidget {
             horizontal: horizontalPadding,
             vertical: verticalPadding,
           ),
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              colors: [AppColors.surfaceLight, AppColors.surface],
+              colors: [
+                Theme.of(context).colorScheme.surface,
+                Theme.of(context).scaffoldBackgroundColor,
+              ],
             ),
           ),
           child: Stack(
@@ -143,7 +145,7 @@ class AboutSection extends StatelessWidget {
                       style: GoogleFonts.poppins(
                         fontSize: 80, // Increased from 48
                         fontWeight: FontWeight.bold,
-                        color: AppColors.textPrimary,
+                        color: Theme.of(context).colorScheme.onSurface,
                         height: 1.0, // Tighter leading
                         letterSpacing: -1.5,
                       ),
@@ -153,7 +155,9 @@ class AboutSection extends StatelessWidget {
                       AppData.professionalSummary,
                       style: GoogleFonts.poppins(
                         fontSize: 20, // Increased from 18
-                        color: AppColors.textSecondary,
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.onSurface.withValues(alpha: 0.7),
                         height: 1.6,
                       ),
                     ),
@@ -163,8 +167,10 @@ class AboutSection extends StatelessWidget {
                       icon: const Icon(Icons.download_rounded),
                       label: const Text('Download Resume'),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.primary,
-                        foregroundColor: AppColors.background,
+                        backgroundColor: Theme.of(context).colorScheme.primary,
+                        foregroundColor: Theme.of(
+                          context,
+                        ).colorScheme.onPrimary,
                         padding: const EdgeInsets.symmetric(
                           horizontal: 24,
                           vertical: 16,
@@ -284,7 +290,9 @@ class AboutSection extends StatelessWidget {
                 AppData.professionalSummary,
                 style: GoogleFonts.poppins(
                   fontSize: 16,
-                  color: AppColors.textSecondary,
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.onSurface.withValues(alpha: 0.7),
                   height: 1.8,
                 ),
                 textAlign: TextAlign.center,
@@ -295,8 +303,8 @@ class AboutSection extends StatelessWidget {
                 icon: const Icon(Icons.download_rounded),
                 label: const Text('Download Resume'),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.primary,
-                  foregroundColor: AppColors.background,
+                  backgroundColor: Theme.of(context).colorScheme.primary,
+                  foregroundColor: Theme.of(context).colorScheme.onPrimary,
                   padding: const EdgeInsets.symmetric(
                     horizontal: 20,
                     vertical: 12,
@@ -390,10 +398,10 @@ class AboutSection extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.all(isMobile ? 24 : 40),
         decoration: BoxDecoration(
-          color: AppColors.surfaceLight.withValues(alpha: 0.5),
+          color: Theme.of(context).colorScheme.surface.withValues(alpha: 0.5),
           borderRadius: BorderRadius.circular(32),
           border: Border.all(
-            color: AppColors.primary.withValues(alpha: 0.1),
+            color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
             width: 1,
           ),
         ),
@@ -405,7 +413,7 @@ class AboutSection extends StatelessWidget {
               style: GoogleFonts.poppins(
                 fontSize: isMobile ? 28 : 36,
                 fontWeight: FontWeight.bold,
-                color: AppColors.textPrimary,
+                color: Theme.of(context).colorScheme.onSurface,
               ),
             ),
             const SizedBox(height: 32),
@@ -414,7 +422,7 @@ class AboutSection extends StatelessWidget {
                 SkillProgressBar(
                   skill: 'Flutter & Dart',
                   progress: 0.95,
-                  color: AppColors.primary,
+                  color: Theme.of(context).colorScheme.primary,
                   scrollOffset: scrollOffset,
                   sectionStartOffset: sectionStartOffset + 500,
                   viewportHeight: viewportHeight,
@@ -424,7 +432,7 @@ class AboutSection extends StatelessWidget {
                 SkillProgressBar(
                   skill: 'Clean Architecture & Bloc',
                   progress: 0.90,
-                  color: AppColors.primary,
+                  color: Theme.of(context).colorScheme.primary,
                   scrollOffset: scrollOffset,
                   sectionStartOffset: sectionStartOffset + 500,
                   viewportHeight: viewportHeight,
@@ -434,7 +442,7 @@ class AboutSection extends StatelessWidget {
                 SkillProgressBar(
                   skill: 'Firebase & REST APIs',
                   progress: 0.88,
-                  color: AppColors.secondary,
+                  color: Theme.of(context).colorScheme.secondary,
                   scrollOffset: scrollOffset,
                   sectionStartOffset: sectionStartOffset + 500,
                   viewportHeight: viewportHeight,

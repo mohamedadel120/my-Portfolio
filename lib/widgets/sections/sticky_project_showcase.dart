@@ -5,7 +5,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../utils/url_launcher_utils.dart';
-import '../../constants/app_colors.dart';
 import '../../constants/app_data.dart';
 import '../common/phone_frame.dart';
 import '../common/magnetic_button.dart';
@@ -79,11 +78,10 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    final isDesktop = screenWidth >= 1024;
 
-    if (!isDesktop) {
-      return const SizedBox.shrink();
-    }
+    // Responsive Config
+    final isMobile = screenWidth < 768;
+    final isTablet = screenWidth >= 768 && screenWidth < 1024;
 
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -197,22 +195,38 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
               });
             }
 
-            // 3. Layout Constants - INCREASED SIZE "Better and Bigger"
-            // Increased from 460x940 to 480x980 for maximum impact
-            final phoneWidth = 480.0;
-            final phoneHeight = 980.0;
+            // 3. Layout Constants - Responsive Sizing
+            final double phoneWidth;
+            final double phoneHeight;
+
+            if (isMobile) {
+              phoneWidth = screenWidth * 0.85; // 85% of screen width
+              phoneHeight = phoneWidth * (980 / 480); // Maintain aspect ratio
+            } else if (isTablet) {
+              phoneWidth = 400.0;
+              phoneHeight = 820.0;
+            } else {
+              // Desktop
+              phoneWidth = 480.0;
+              phoneHeight = 980.0;
+            }
+
+            final safePhoneHeight = phoneHeight > viewportHeight * 0.85
+                ? viewportHeight * 0.85
+                : phoneHeight; // Prevent overflowing viewport height
+
             final sideWidth = (screenWidth - phoneWidth) / 2;
 
             // --- DETERMINISTIC CLAMPED POSITION ---
             // Ensure targetCenter is at least 20px even if viewport is small
-            double targetCenter = (viewportHeight - phoneHeight) / 2;
+            double targetCenter = (viewportHeight - safePhoneHeight) / 2;
             if (targetCenter < 20) targetCenter = 20;
 
             // The phone should stick when showcaseTopInViewport reaches targetCenter
             final double calculatedTop = targetCenter - showcaseTopInViewport;
 
             final double topBound = 0.0;
-            final double bottomBound = _totalHeight - phoneHeight;
+            final double bottomBound = _totalHeight - safePhoneHeight;
             final double clampedTop = calculatedTop.clamp(
               topBound,
               bottomBound,
@@ -248,7 +262,7 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
                       offset: Offset(0, bgClampedTop),
                       child: RepaintBoundary(
                         child: Container(
-                          color: AppColors.background,
+                          color: Theme.of(context).scaffoldBackgroundColor,
                           child: Stack(
                             children: [
                               AnimatedContainer(
@@ -258,9 +272,11 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
                                     begin: Alignment.topLeft,
                                     end: Alignment.bottomRight,
                                     colors: [
-                                      AppColors.background,
+                                      Theme.of(context).scaffoldBackgroundColor,
                                       Color.lerp(
-                                        AppColors.background,
+                                        Theme.of(
+                                          context,
+                                        ).scaffoldBackgroundColor,
                                         AppData
                                             .projects[_activeProjectIndex]
                                             .color,
@@ -286,42 +302,51 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
                       child: RepaintBoundary(
                         child: _buildStickyPhone(
                           phoneWidth,
-                          phoneHeight,
+                          safePhoneHeight,
                           shouldPlayVideo,
                         ),
                       ),
                     ),
                   ),
 
-                  // --- LEFT: Sticky Info ---
+                  // --- INFO: Left (Desktop) or Bottom Overlay (Mobile) ---
                   Positioned(
-                    top: 0,
+                    top: isMobile ? null : 0,
+                    bottom: isMobile ? 0 : null, // Bottom aligned on mobile
                     left: 0,
-                    width: sideWidth,
-                    height: 500,
+                    right: isMobile ? 0 : null, // Full width on mobile
+                    width: isMobile ? null : sideWidth,
+                    height: isMobile ? 300 : 500,
                     child: Transform.translate(
                       offset: Offset(
                         0,
-                        clampedTop + 220,
-                      ), // Adjusted for bigger phone
-                      child: RepaintBoundary(child: _buildLeftInfo(sideWidth)),
+                        isMobile
+                            ? 0 // Fixed at bottom for mobile, or could be sticky?
+                            // For mobile, let's keep it fixed at bottom relative to screen when sticky
+                            // But we need it to fade/change with content.
+                            // Actually, let's use the same clamped sticky logic but with different offset.
+                            : clampedTop + 220,
+                      ),
+                      child: isMobile
+                          ? _buildMobileInfoOverlay()
+                          : RepaintBoundary(child: _buildLeftInfo(sideWidth)),
                     ),
                   ),
 
-                  // --- RIGHT: Tech Stack ---
-                  Positioned(
-                    top: 0,
-                    right: 0,
-                    width: sideWidth,
-                    height: 550, // Increased height for tech stack
-                    child: Transform.translate(
-                      offset: Offset(
-                        0,
-                        clampedTop + 260,
-                      ), // Adjusted for bigger phone
-                      child: RepaintBoundary(child: _buildRightTech(sideWidth)),
+                  // --- RIGHT: Tech Stack (Hidden on Mobile for cleaner look) ---
+                  if (!isMobile)
+                    Positioned(
+                      top: 0,
+                      right: 0,
+                      width: sideWidth,
+                      height: 550,
+                      child: Transform.translate(
+                        offset: Offset(0, clampedTop + 260),
+                        child: RepaintBoundary(
+                          child: _buildRightTech(sideWidth),
+                        ),
+                      ),
                     ),
-                  ),
                 ],
               ),
             );
@@ -456,7 +481,7 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
               project.title,
               style: GoogleFonts.anton(
                 fontSize: 56,
-                color: AppColors.textPrimary,
+                color: Theme.of(context).colorScheme.onSurface,
                 height: 1.0,
               ),
             ).animate().fadeIn().slideX(begin: -0.2),
@@ -465,7 +490,9 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
               project.description,
               style: GoogleFonts.poppins(
                 fontSize: 16,
-                color: AppColors.textSecondary,
+                color: Theme.of(
+                  context,
+                ).colorScheme.onSurface.withValues(alpha: 0.7),
                 height: 1.6,
               ),
             ).animate().fadeIn(delay: 100.ms),
@@ -499,7 +526,9 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
                       ),
                       decoration: BoxDecoration(
                         border: Border.all(
-                          color: AppColors.textPrimary.withValues(alpha: 0.2),
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.onSurface.withValues(alpha: 0.2),
                         ),
                         borderRadius: BorderRadius.circular(30),
                       ),
@@ -509,14 +538,14 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
                           Text(
                             "Coming Soon",
                             style: GoogleFonts.poppins(
-                              color: AppColors.textPrimary,
+                              color: Theme.of(context).colorScheme.onSurface,
                             ),
                           ),
                           const SizedBox(width: 8),
-                          const Icon(
+                          Icon(
                             Icons.hourglass_empty,
                             size: 16,
-                            color: AppColors.textPrimary,
+                            color: Theme.of(context).colorScheme.onSurface,
                           ),
                         ],
                       ),
@@ -552,7 +581,9 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
             "Technologies",
             style: GoogleFonts.spaceMono(
               fontSize: 14,
-              color: AppColors.textSecondary.withValues(alpha: 0.5),
+              color: Theme.of(
+                context,
+              ).colorScheme.onSurface.withValues(alpha: 0.5),
               letterSpacing: 2,
             ),
           ),
@@ -656,7 +687,7 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
                 style: GoogleFonts.outfit(
                   fontSize: 48,
                   fontWeight: FontWeight.bold,
-                  color: AppColors.textPrimary,
+                  color: Theme.of(context).colorScheme.onSurface,
                   height: 1.1,
                 ),
               )
@@ -673,12 +704,81 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
               margin: const EdgeInsets.only(left: 4, top: 4),
               width: 3,
               height: 48,
-              color: AppColors.primary,
+              color: Theme.of(context).colorScheme.primary,
             )
             .animate(onPlay: (c) => c.repeat(reverse: true))
             .fadeIn(duration: 300.ms)
             .fadeOut(delay: 300.ms),
       ],
+    );
+  }
+
+  Widget _buildMobileInfoOverlay() {
+    final project = AppData.projects[_activeProjectIndex];
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.bottomCenter,
+          end: Alignment.topCenter,
+          colors: [
+            Colors.black.withValues(alpha: 0.9),
+            Colors.black.withValues(alpha: 0.6),
+            Colors.transparent,
+          ],
+          stops: const [0.0, 0.6, 1.0],
+        ),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            project.title,
+            style: GoogleFonts.anton(
+              fontSize: 42,
+              color: Colors.white, // Always white on overlay
+              height: 1.0,
+            ),
+          ).animate(key: ValueKey(project.title)).fadeIn().slideY(begin: 0.2),
+          const SizedBox(height: 12),
+          Text(
+                project.description,
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
+                style: GoogleFonts.poppins(
+                  fontSize: 14,
+                  color: Colors.white70,
+                  height: 1.4,
+                ),
+              )
+              .animate(key: ValueKey('${project.title}-desc'))
+              .fadeIn(delay: 100.ms),
+          const SizedBox(height: 20),
+          // Mobile Action Buttons
+          Wrap(
+            spacing: 16,
+            children: [
+              if (project.androidStoreUrl != null)
+                IconButton(
+                  onPressed: () =>
+                      UrlLauncherUtils.launchURL(project.androidStoreUrl!),
+                  icon: const Icon(
+                    FontAwesomeIcons.googlePlay,
+                    color: Colors.white,
+                  ),
+                ),
+              if (project.iosStoreUrl != null)
+                IconButton(
+                  onPressed: () =>
+                      UrlLauncherUtils.launchURL(project.iosStoreUrl!),
+                  icon: const Icon(FontAwesomeIcons.apple, color: Colors.white),
+                ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }
@@ -708,19 +808,23 @@ class _StoreIconButtonState extends State<_StoreIconButton> {
         transform: Matrix4.identity()..scale(_isHovered ? 1.1 : 1.0),
         decoration: BoxDecoration(
           color: _isHovered
-              ? AppColors.textPrimary
-              : AppColors.textPrimary.withValues(alpha: 0.1),
+              ? Theme.of(context).colorScheme.onSurface
+              : Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.1),
           shape: BoxShape.circle,
           border: Border.all(
             color: _isHovered
-                ? AppColors.textPrimary
-                : AppColors.textPrimary.withValues(alpha: 0.2),
+                ? Theme.of(context).colorScheme.onSurface
+                : Theme.of(
+                    context,
+                  ).colorScheme.onSurface.withValues(alpha: 0.2),
           ),
         ),
         child: Icon(
           widget.icon,
           size: 20,
-          color: _isHovered ? AppColors.background : AppColors.textPrimary,
+          color: _isHovered
+              ? Theme.of(context).scaffoldBackgroundColor
+              : Theme.of(context).colorScheme.onSurface,
         ),
       ),
     );

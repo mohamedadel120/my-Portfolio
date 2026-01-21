@@ -3,7 +3,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:seo_renderer/seo_renderer.dart';
-import '../../constants/app_colors.dart';
 import '../../constants/app_data.dart';
 import '../../models/experience.dart';
 import '../common/section_title.dart';
@@ -45,11 +44,14 @@ class ExperienceSection extends StatelessWidget {
             horizontal: horizontalPadding,
             vertical: verticalPadding,
           ),
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              colors: [AppColors.background, AppColors.surface],
+              colors: [
+                Theme.of(context).scaffoldBackgroundColor,
+                Theme.of(context).colorScheme.surface,
+              ],
             ),
           ),
           child: Stack(
@@ -178,14 +180,16 @@ class _ProfessionalExperienceCardState
                           height: 12,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: AppColors.primary,
+                            color: Theme.of(context).colorScheme.primary,
                             border: Border.all(
-                              color: AppColors.background,
+                              color: Theme.of(context).scaffoldBackgroundColor,
                               width: 2,
                             ),
                             boxShadow: [
                               BoxShadow(
-                                color: AppColors.primary.withValues(alpha: 0.4),
+                                color: Theme.of(
+                                  context,
+                                ).colorScheme.primary.withValues(alpha: 0.4),
                                 blurRadius: 8,
                                 spreadRadius: 1,
                               ),
@@ -202,8 +206,10 @@ class _ProfessionalExperienceCardState
                               decoration: BoxDecoration(
                                 gradient: LinearGradient(
                                   colors: [
-                                    AppColors.primary.withValues(alpha: 0.6),
-                                    AppColors.primary.withValues(alpha: 0.2),
+                                    Theme.of(context).colorScheme.primary
+                                        .withValues(alpha: 0.6),
+                                    Theme.of(context).colorScheme.primary
+                                        .withValues(alpha: 0.2),
                                   ],
                                 ),
                               ),
@@ -232,14 +238,18 @@ class _ProfessionalExperienceCardState
                             height: 16,
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              color: AppColors.primary,
+                              color: Theme.of(context).colorScheme.primary,
                               border: Border.all(
-                                color: AppColors.background,
+                                color: Theme.of(
+                                  context,
+                                ).scaffoldBackgroundColor,
                                 width: 3,
                               ),
                               boxShadow: [
                                 BoxShadow(
-                                  color: AppColors.primary.withValues(alpha: 0.4),
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.primary.withValues(alpha: 0.4),
                                   blurRadius: 12,
                                   spreadRadius: 2,
                                 ),
@@ -257,8 +267,10 @@ class _ProfessionalExperienceCardState
                                   begin: Alignment.topCenter,
                                   end: Alignment.bottomCenter,
                                   colors: [
-                                    AppColors.primary.withValues(alpha: 0.6),
-                                    AppColors.primary.withValues(alpha: 0.2),
+                                    Theme.of(context).colorScheme.primary
+                                        .withValues(alpha: 0.6),
+                                    Theme.of(context).colorScheme.primary
+                                        .withValues(alpha: 0.2),
                                   ],
                                 ),
                               ),
@@ -284,10 +296,12 @@ class _ProfessionalExperienceCardState
         widget.isMobile ? 24 : (widget.isTablet ? 28 : 32),
       ),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
-          color: AppColors.primary.withValues(alpha: _isHovered ? 0.4 : 0.15),
+          color: Theme.of(
+            context,
+          ).colorScheme.primary.withValues(alpha: _isHovered ? 0.4 : 0.15),
           width: _isHovered ? 2 : 1.5,
         ),
         boxShadow: [
@@ -321,7 +335,7 @@ class _ProfessionalExperienceCardState
                             ? 22
                             : (widget.isTablet ? 24 : 28),
                         fontWeight: FontWeight.bold,
-                        color: AppColors.primary,
+                        color: Theme.of(context).colorScheme.primary,
                         letterSpacing: 0.3,
                       ),
                     ),
@@ -334,7 +348,7 @@ class _ProfessionalExperienceCardState
                             ? 16
                             : (widget.isTablet ? 18 : 20),
                         fontWeight: FontWeight.w600,
-                        color: AppColors.textPrimary,
+                        color: Theme.of(context).colorScheme.onSurface,
                         letterSpacing: 0.2,
                       ),
                     ),
@@ -350,13 +364,19 @@ class _ProfessionalExperienceCardState
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
-                      AppColors.secondary.withValues(alpha: 0.25),
-                      AppColors.secondary.withValues(alpha: 0.15),
+                      Theme.of(
+                        context,
+                      ).colorScheme.secondary.withValues(alpha: 0.25),
+                      Theme.of(
+                        context,
+                      ).colorScheme.secondary.withValues(alpha: 0.15),
                     ],
                   ),
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
-                    color: AppColors.secondary.withValues(alpha: 0.4),
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.secondary.withValues(alpha: 0.4),
                     width: 1.5,
                   ),
                 ),
@@ -364,7 +384,7 @@ class _ProfessionalExperienceCardState
                   widget.experience.period,
                   style: GoogleFonts.poppins(
                     fontSize: widget.isMobile ? 11 : 13,
-                    color: AppColors.secondary,
+                    color: Theme.of(context).colorScheme.secondary,
                     fontWeight: FontWeight.w600,
                     letterSpacing: 0.5,
                   ),
@@ -379,8 +399,8 @@ class _ProfessionalExperienceCardState
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  AppColors.primary.withValues(alpha: 0.3),
-                  AppColors.primary.withValues(alpha: 0.0),
+                  Theme.of(context).colorScheme.primary.withValues(alpha: 0.3),
+                  Theme.of(context).colorScheme.primary.withValues(alpha: 0.0),
                 ],
               ),
             ),
@@ -401,8 +421,8 @@ class _ProfessionalExperienceCardState
                     ),
                     width: 6,
                     height: 6,
-                    decoration: const BoxDecoration(
-                      color: AppColors.primary,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.primary,
                       shape: BoxShape.circle,
                     ),
                   ),
@@ -413,7 +433,9 @@ class _ProfessionalExperienceCardState
                         achievement,
                         style: GoogleFonts.poppins(
                           fontSize: widget.isMobile ? 14 : 16,
-                          color: AppColors.textSecondary.withValues(alpha: 0.9),
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.onSurface.withValues(alpha: 0.9),
                           height: 1.7,
                           fontWeight: FontWeight.w400,
                           letterSpacing: 0.2,

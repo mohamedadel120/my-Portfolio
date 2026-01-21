@@ -21,7 +21,8 @@ import 'widgets/common/scroll_to_top_button.dart';
 import 'package:seo_renderer/seo_renderer.dart'; // Step 2: SEO Import
 import 'widgets/common/custom_cursor.dart';
 import 'utils/url_launcher_utils.dart';
-// import 'widgets/common/tour_guide_character.dart'; // Commented out for now
+import 'theme/theme_controller.dart';
+import 'theme/app_theme.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -52,28 +53,28 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Initialize ThemeController
+    final themeController = ThemeController();
+
     return RobotDetector(
-      // Step 2: Wrap with RobotDetector
-      child: MaterialApp(
-        title: 'Mohamed Adel - Flutter Developer',
-        debugShowCheckedModeBanner: false,
-        scrollBehavior:
-            CustomScrollBehavior(), // Step 3: Custom Scroll Behavior
-        theme: ThemeData(
-          colorScheme: const ColorScheme.dark(
-            primary: AppColors.primary,
-            secondary: AppColors.secondary,
-            surface: AppColors.surface,
-            onPrimary: Colors.white,
-            onSecondary: Colors.white,
-            onSurface: Colors.white,
-          ),
-          useMaterial3: true,
-        ),
-        builder: (context, child) {
-          return CustomCursor(child: child ?? const SizedBox.shrink());
+      child: ListenableBuilder(
+        listenable: themeController,
+        builder: (context, _) {
+          return MaterialApp(
+            title: 'Mohamed Adel - Flutter Developer',
+            debugShowCheckedModeBanner: false,
+            scrollBehavior: CustomScrollBehavior(),
+            // Define both themes
+            theme: AppTheme.lightTheme,
+            darkTheme: AppTheme.darkTheme,
+            // Use controller's mode
+            themeMode: themeController.themeMode,
+            builder: (context, child) {
+              return CustomCursor(child: child ?? const SizedBox.shrink());
+            },
+            home: PortfolioPage(themeController: themeController),
+          );
         },
-        home: const PortfolioPage(),
       ),
     );
   }
@@ -90,7 +91,9 @@ class CustomScrollBehavior extends MaterialScrollBehavior {
 }
 
 class PortfolioPage extends StatefulWidget {
-  const PortfolioPage({super.key});
+  final ThemeController? themeController;
+
+  const PortfolioPage({super.key, this.themeController});
 
   @override
   State<PortfolioPage> createState() => _PortfolioPageState();
@@ -141,7 +144,7 @@ class _PortfolioPageState extends State<PortfolioPage> {
   Widget build(BuildContext context) {
     return SelectionArea(
       child: Scaffold(
-        backgroundColor: AppColors.background,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         body: Stack(
           children: [
             NotificationListener<ScrollNotification>(
@@ -228,6 +231,15 @@ class _PortfolioPageState extends State<PortfolioPage> {
       // Show menu icon on mobile
       return [
         IconButton(
+          icon: Icon(
+            widget.themeController?.isDarkMode ?? true
+                ? Icons.light_mode_rounded
+                : Icons.dark_mode_rounded,
+            color: AppColors.primary,
+          ),
+          onPressed: () => widget.themeController?.toggleTheme(),
+        ),
+        IconButton(
           icon: const Icon(Icons.menu, color: AppColors.primary),
           onPressed: () {
             // Show bottom sheet with navigation options
@@ -297,6 +309,17 @@ class _PortfolioPageState extends State<PortfolioPage> {
         NavButton(label: 'Experience', onTap: () => _scrollToSection(2)),
         NavButton(label: 'Projects', onTap: () => _scrollToSection(3)),
         NavButton(label: 'Contact', onTap: () => _scrollToSection(4)),
+        const SizedBox(width: 10),
+        IconButton(
+          onPressed: () => widget.themeController?.toggleTheme(),
+          icon: Icon(
+            widget.themeController?.isDarkMode ?? true
+                ? Icons.light_mode_rounded
+                : Icons.dark_mode_rounded,
+            color: AppColors.primary,
+          ),
+          tooltip: 'Toggle Theme',
+        ),
         const SizedBox(width: 20),
       ];
     }

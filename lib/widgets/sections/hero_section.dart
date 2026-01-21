@@ -4,7 +4,6 @@ import 'package:flutter/foundation.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:seo_renderer/seo_renderer.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import '../../constants/app_colors.dart';
 import '../../constants/app_data.dart';
 import '../common/magnetic_button.dart';
 import '../common/scroll_to_explore_indicator.dart';
@@ -65,7 +64,9 @@ class _HeroSectionState extends State<HeroSection>
           height: viewportHeight,
           width: double.infinity,
           clipBehavior: Clip.none, // Allow overflow for aurora blobs
-          decoration: const BoxDecoration(color: AppColors.background),
+          decoration: BoxDecoration(
+            color: Theme.of(context).scaffoldBackgroundColor,
+          ),
           child: Stack(
             children: [
               // Aurora Background
@@ -77,7 +78,9 @@ class _HeroSectionState extends State<HeroSection>
                       return Stack(
                         children: [
                           _buildAuroraBlob(
-                            color: AppColors.primary.withValues(alpha: 0.15),
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.primary.withValues(alpha: 0.15),
                             top:
                                 -100 +
                                 sin(_auroraController.value * 2 * pi) * 50,
@@ -87,7 +90,9 @@ class _HeroSectionState extends State<HeroSection>
                             size: 600,
                           ),
                           _buildAuroraBlob(
-                            color: AppColors.secondary.withValues(alpha: 0.1),
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.secondary.withValues(alpha: 0.1),
                             bottom:
                                 -100 -
                                 sin(_auroraController.value * 2 * pi) * 50,
@@ -239,7 +244,9 @@ class _HeroSectionState extends State<HeroSection>
                                     fontSize: isMobile ? 16 : 20,
                                     letterSpacing: 4,
                                     fontWeight: FontWeight.w500,
-                                    color: AppColors.primary,
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.primary,
                                   ),
                                 )
                                 .animate()
@@ -266,7 +273,9 @@ class _HeroSectionState extends State<HeroSection>
                                             ? 80
                                             : 180, // Massive font
                                         height: 0.9,
-                                        color: AppColors.textPrimary,
+                                        color: Theme.of(
+                                          context,
+                                        ).colorScheme.onSurface,
                                         letterSpacing: -2,
                                       ),
                                     ),
@@ -327,13 +336,17 @@ class _HeroSectionState extends State<HeroSection>
                                       vertical: 20,
                                     ),
                                     decoration: BoxDecoration(
-                                      color: AppColors.primary,
+                                      color: Theme.of(
+                                        context,
+                                      ).colorScheme.primary,
                                       borderRadius: BorderRadius.circular(50),
                                     ),
                                     child: Text(
                                       'VIEW WORK',
                                       style: GoogleFonts.oswald(
-                                        color: AppColors.background,
+                                        color: Theme.of(
+                                          context,
+                                        ).colorScheme.onPrimary,
                                         fontSize: 16,
                                         fontWeight: FontWeight.bold,
                                         letterSpacing: 1,
@@ -358,7 +371,9 @@ class _HeroSectionState extends State<HeroSection>
                                     ),
                                     decoration: BoxDecoration(
                                       border: Border.all(
-                                        color: AppColors.primary,
+                                        color: Theme.of(
+                                          context,
+                                        ).colorScheme.primary,
                                         width: 1,
                                       ),
                                       borderRadius: BorderRadius.circular(50),
@@ -368,14 +383,17 @@ class _HeroSectionState extends State<HeroSection>
                                       children: [
                                         const Icon(
                                           Icons.download_rounded,
-                                          color: AppColors.primary,
+                                          color:
+                                              null, // Inherits from parent or theme
                                           size: 18,
                                         ),
                                         const SizedBox(width: 8),
                                         Text(
                                           'DOWNLOAD CV',
                                           style: GoogleFonts.oswald(
-                                            color: AppColors.primary,
+                                            color: Theme.of(
+                                              context,
+                                            ).colorScheme.primary,
                                             fontSize: 16,
                                             fontWeight: FontWeight.bold,
                                             letterSpacing: 1,
@@ -402,7 +420,10 @@ class _HeroSectionState extends State<HeroSection>
                                     ),
                                     decoration: BoxDecoration(
                                       border: Border.all(
-                                        color: Colors.white24,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onSurface
+                                            .withValues(alpha: 0.24),
                                         width: 1,
                                       ),
                                       borderRadius: BorderRadius.circular(50),
@@ -410,7 +431,9 @@ class _HeroSectionState extends State<HeroSection>
                                     child: Text(
                                       'CONTACT ME',
                                       style: GoogleFonts.oswald(
-                                        color: Colors.white,
+                                        color: Theme.of(
+                                          context,
+                                        ).colorScheme.onSurface,
                                         fontSize: 16,
                                         fontWeight: FontWeight.bold,
                                         letterSpacing: 1,

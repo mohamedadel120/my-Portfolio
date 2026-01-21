@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../../constants/app_colors.dart';
-import '../../constants/app_data.dart';
+import '../../models/why_choose_me_reason.dart';
 import '../common/section_title.dart';
 import '../common/tech_grid_background.dart';
 import '../common/scroll_speed_widget.dart';
@@ -34,6 +33,52 @@ class WhyChooseMeSection extends StatelessWidget {
         ? 80.0
         : 100.0;
 
+    // Local reasons list with theme colors
+    final reasons = [
+      WhyChooseMeReason(
+        title: 'Clean & Maintainable Code',
+        description:
+            'I write clean, well-documented code following best practices and design patterns. Your codebase will be maintainable, scalable, and easy for your team to understand and extend.',
+        icon: Icons.code_rounded,
+        color: Theme.of(context).colorScheme.primary,
+      ),
+      WhyChooseMeReason(
+        title: 'Performance Optimization',
+        description:
+            'I optimize apps for speed and efficiency. Reduced load times by 20-30% in multiple projects, ensuring smooth user experiences even with complex features.',
+        icon: Icons.speed_rounded,
+        color: Theme.of(context).colorScheme.secondary,
+      ),
+      WhyChooseMeReason(
+        title: 'Cross-Platform Expertise',
+        description:
+            'Build once, deploy everywhere. I specialize in Flutter development, delivering native-quality apps for both iOS and Android from a single codebase.',
+        icon: Icons.phone_android_rounded,
+        color: Theme.of(context).colorScheme.primary,
+      ),
+      WhyChooseMeReason(
+        title: 'Proven Track Record',
+        description:
+            '10,000+ downloads, 4.8-star ratings, and successful projects across various industries. I deliver results that matter to your business.',
+        icon: Icons.star_rounded,
+        color: Theme.of(context).colorScheme.secondary,
+      ),
+      WhyChooseMeReason(
+        title: 'Modern Architecture',
+        description:
+            'I implement clean architecture, MVVM, and proper state management (Bloc/Riverpod) to ensure your app is scalable, testable, and future-proof.',
+        icon: Icons.architecture_rounded,
+        color: Theme.of(context).colorScheme.primary,
+      ),
+      WhyChooseMeReason(
+        title: 'Team Collaboration',
+        description:
+            'I work seamlessly with teams, communicate clearly, and manage code effectively. Your team will enjoy working with me, and the code will be easy to maintain.',
+        icon: Icons.people_rounded,
+        color: Theme.of(context).colorScheme.secondary,
+      ),
+    ];
+
     return ValueListenableBuilder<double>(
       valueListenable: scrollOffsetListenable,
       builder: (context, scrollOffset, _) {
@@ -42,11 +87,14 @@ class WhyChooseMeSection extends StatelessWidget {
             horizontal: horizontalPadding,
             vertical: verticalPadding,
           ),
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              colors: [AppColors.surface, AppColors.background],
+              colors: [
+                Theme.of(context).colorScheme.surface,
+                Theme.of(context).scaffoldBackgroundColor,
+              ],
             ),
           ),
           child: Stack(
@@ -111,30 +159,25 @@ class WhyChooseMeSection extends StatelessWidget {
                             spacing: spacing,
                             runSpacing: spacing,
                             alignment: WrapAlignment.start,
-                            children: AppData.whyChooseMeReasons
-                                .asMap()
-                                .entries
-                                .map((entry) {
-                                  final index = entry.key;
-                                  final reason = entry.value;
-                                  final cardWidth = isMobile
-                                      ? constraints.maxWidth
-                                      : (constraints.maxWidth -
-                                                (spacing *
-                                                    (crossAxisCount - 1))) /
-                                            crossAxisCount;
+                            children: reasons.asMap().entries.map((entry) {
+                              final index = entry.key;
+                              final reason = entry.value;
+                              final cardWidth = isMobile
+                                  ? constraints.maxWidth
+                                  : (constraints.maxWidth -
+                                            (spacing * (crossAxisCount - 1))) /
+                                        crossAxisCount;
 
-                                  return SizedBox(
-                                    width: cardWidth,
-                                    child: _WhyChooseMeCard(
-                                      reason: reason,
-                                      index: index,
-                                      isMobile: isMobile,
-                                      isTablet: isTablet,
-                                    ),
-                                  );
-                                })
-                                .toList(),
+                              return SizedBox(
+                                width: cardWidth,
+                                child: _WhyChooseMeCard(
+                                  reason: reason,
+                                  index: index,
+                                  isMobile: isMobile,
+                                  isTablet: isTablet,
+                                ),
+                              );
+                            }).toList(),
                           );
                         },
                       ),
@@ -188,18 +231,22 @@ class _WhyChooseMeCardState extends State<_WhyChooseMeCard> {
             colors: [
               widget.reason.color.withValues(alpha: 0.12),
               widget.reason.color.withValues(alpha: 0.06),
-              AppColors.surface.withValues(alpha: 0.9),
+              Theme.of(context).colorScheme.surface.withValues(alpha: 0.9),
             ],
             stops: const [0.0, 0.5, 1.0],
           ),
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color: widget.reason.color.withValues(alpha: _isHovered ? 0.5 : 0.25),
+            color: widget.reason.color.withValues(
+              alpha: _isHovered ? 0.5 : 0.25,
+            ),
             width: _isHovered ? 2 : 1.5,
           ),
           boxShadow: [
             BoxShadow(
-              color: widget.reason.color.withValues(alpha: _isHovered ? 0.3 : 0.12),
+              color: widget.reason.color.withValues(
+                alpha: _isHovered ? 0.3 : 0.12,
+              ),
               blurRadius: _isHovered ? 30 : 20,
               spreadRadius: _isHovered ? 2 : 0,
               offset: Offset(0, _isHovered ? 8 : 4),
@@ -242,7 +289,7 @@ class _WhyChooseMeCardState extends State<_WhyChooseMeCard> {
               style: GoogleFonts.poppins(
                 fontSize: widget.isMobile ? 18 : (widget.isTablet ? 20 : 22),
                 fontWeight: FontWeight.bold,
-                color: AppColors.textPrimary,
+                color: Theme.of(context).colorScheme.onSurface,
                 letterSpacing: 0.2,
               ),
             ),
@@ -252,7 +299,9 @@ class _WhyChooseMeCardState extends State<_WhyChooseMeCard> {
               widget.reason.description,
               style: GoogleFonts.poppins(
                 fontSize: widget.isMobile ? 13 : (widget.isTablet ? 14 : 15),
-                color: AppColors.textSecondary.withValues(alpha: 0.9),
+                color: Theme.of(
+                  context,
+                ).colorScheme.onSurface.withValues(alpha: 0.9),
                 height: 1.6,
                 letterSpacing: 0.1,
               ),

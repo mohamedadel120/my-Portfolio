@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../../constants/app_colors.dart';
 import '../common/section_title.dart';
 import '../common/tech_grid_background.dart';
 import '../common/scroll_speed_widget.dart';
@@ -41,11 +40,14 @@ class TestimonialsSection extends StatelessWidget {
             horizontal: horizontalPadding,
             vertical: verticalPadding,
           ),
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              colors: [AppColors.background, AppColors.surface],
+              colors: [
+                Theme.of(context).scaffoldBackgroundColor,
+                Theme.of(context).colorScheme.surface,
+              ],
             ),
           ),
           child: Stack(
@@ -184,20 +186,24 @@ class _TestimonialCardState extends State<_TestimonialCard> {
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
-              AppColors.primary.withValues(alpha: 0.1),
-              AppColors.secondary.withValues(alpha: 0.08),
-              AppColors.surface.withValues(alpha: 0.95),
+              Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
+              Theme.of(context).colorScheme.secondary.withValues(alpha: 0.08),
+              Theme.of(context).colorScheme.surface.withValues(alpha: 0.95),
             ],
             stops: const [0.0, 0.5, 1.0],
           ),
           borderRadius: BorderRadius.circular(24),
           border: Border.all(
-            color: AppColors.primary.withValues(alpha: _isHovered ? 0.4 : 0.2),
+            color: Theme.of(
+              context,
+            ).colorScheme.primary.withValues(alpha: _isHovered ? 0.4 : 0.2),
             width: _isHovered ? 2 : 1.5,
           ),
           boxShadow: [
             BoxShadow(
-              color: AppColors.primary.withValues(alpha: _isHovered ? 0.25 : 0.1),
+              color: Theme.of(
+                context,
+              ).colorScheme.primary.withValues(alpha: _isHovered ? 0.25 : 0.1),
               blurRadius: _isHovered ? 30 : 20,
               spreadRadius: _isHovered ? 2 : 0,
               offset: Offset(0, _isHovered ? 8 : 4),
@@ -223,15 +229,19 @@ class _TestimonialCardState extends State<_TestimonialCard> {
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
-                    AppColors.primary.withValues(alpha: 0.3),
-                    AppColors.secondary.withValues(alpha: 0.2),
+                    Theme.of(
+                      context,
+                    ).colorScheme.primary.withValues(alpha: 0.3),
+                    Theme.of(
+                      context,
+                    ).colorScheme.secondary.withValues(alpha: 0.2),
                   ],
                 ),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Icon(
                 Icons.format_quote_rounded,
-                color: AppColors.primary,
+                color: Theme.of(context).colorScheme.primary,
                 size: widget.isMobile ? 28 : 32,
               ),
             ),
@@ -241,7 +251,7 @@ class _TestimonialCardState extends State<_TestimonialCard> {
               children: List.generate(5, (index) {
                 return Icon(
                   Icons.star_rounded,
-                  color: AppColors.primary,
+                  color: Theme.of(context).colorScheme.primary,
                   size: widget.isMobile ? 16 : 18,
                 );
               }),
@@ -252,7 +262,9 @@ class _TestimonialCardState extends State<_TestimonialCard> {
               widget.testimonial.opinion,
               style: GoogleFonts.poppins(
                 fontSize: widget.isMobile ? 14 : (widget.isTablet ? 15 : 16),
-                color: AppColors.textSecondary.withValues(alpha: 0.95),
+                color: Theme.of(
+                  context,
+                ).colorScheme.onSurface.withValues(alpha: 0.95),
                 height: 1.7,
                 letterSpacing: 0.2,
                 fontStyle: FontStyle.italic,
@@ -265,8 +277,12 @@ class _TestimonialCardState extends State<_TestimonialCard> {
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
-                    AppColors.primary.withValues(alpha: 0.3),
-                    AppColors.primary.withValues(alpha: 0.0),
+                    Theme.of(
+                      context,
+                    ).colorScheme.primary.withValues(alpha: 0.3),
+                    Theme.of(
+                      context,
+                    ).colorScheme.primary.withValues(alpha: 0.0),
                   ],
                 ),
               ),
@@ -287,7 +303,9 @@ class _TestimonialCardState extends State<_TestimonialCard> {
                           fontSize: widget.isMobile
                               ? 12
                               : (widget.isTablet ? 13 : 14),
-                          color: AppColors.textSecondary.withValues(alpha: 0.8),
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.onSurface.withValues(alpha: 0.8),
                           letterSpacing: 0.1,
                         ),
                       ),

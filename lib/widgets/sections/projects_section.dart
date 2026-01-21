@@ -3,10 +3,8 @@ import 'package:flutter/foundation.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:seo_renderer/seo_renderer.dart'; // Step 2: SEO Import
 import 'package:flutter_animate/flutter_animate.dart';
-import '../../constants/app_colors.dart';
 import '../../constants/app_data.dart';
 import '../common/section_title.dart';
-import '../common/project_card.dart';
 import '../common/tech_grid_background.dart';
 import '../common/terminal_window.dart';
 import '../common/section_divider.dart';
@@ -35,16 +33,6 @@ class _ProjectsSectionState extends State<ProjectsSection> {
       techSet.addAll(project.tech);
     }
     return techSet;
-  }
-
-  // Filter projects based on selected tech
-  List<dynamic> _getFilteredProjects() {
-    if (_selectedTechFilters.isEmpty) {
-      return AppData.projects;
-    }
-    return AppData.projects.where((project) {
-      return project.tech.any((tech) => _selectedTechFilters.contains(tech));
-    }).toList();
   }
 
   // Calculate project statistics
@@ -122,11 +110,14 @@ class _ProjectsSectionState extends State<ProjectsSection> {
             horizontal: horizontalPadding,
             vertical: verticalPadding,
           ),
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              colors: [AppColors.background, AppColors.surface],
+              colors: [
+                Theme.of(context).scaffoldBackgroundColor,
+                Theme.of(context).colorScheme.surface,
+              ],
             ),
           ),
           child: Stack(
@@ -295,20 +286,24 @@ class _ProjectsSectionState extends State<ProjectsSection> {
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               colors: [
-                AppColors.primary.withValues(alpha: 0.12),
-                AppColors.secondary.withValues(alpha: 0.08),
-                AppColors.primary.withValues(alpha: 0.05),
+                Theme.of(context).colorScheme.primary.withValues(alpha: 0.12),
+                Theme.of(context).colorScheme.secondary.withValues(alpha: 0.08),
+                Theme.of(context).colorScheme.primary.withValues(alpha: 0.05),
               ],
               stops: const [0.0, 0.5, 1.0],
             ),
             borderRadius: BorderRadius.circular(20),
             border: Border.all(
-              color: AppColors.primary.withValues(alpha: 0.2),
+              color: Theme.of(
+                context,
+              ).colorScheme.primary.withValues(alpha: 0.2),
               width: 1.5,
             ),
             boxShadow: [
               BoxShadow(
-                color: AppColors.primary.withValues(alpha: 0.1),
+                color: Theme.of(
+                  context,
+                ).colorScheme.primary.withValues(alpha: 0.1),
                 blurRadius: 20,
                 spreadRadius: 0,
                 offset: const Offset(0, 4),
@@ -325,7 +320,7 @@ class _ProjectsSectionState extends State<ProjectsSection> {
                       : isTablet
                       ? 24
                       : 28,
-                  color: AppColors.textPrimary,
+                  color: Theme.of(context).colorScheme.onSurface,
                   fontWeight: FontWeight.w700,
                   height: 1.3,
                   letterSpacing: -0.5,
@@ -337,8 +332,11 @@ class _ProjectsSectionState extends State<ProjectsSection> {
                 width: 60,
                 height: 3,
                 decoration: BoxDecoration(
-                  gradient: const LinearGradient(
-                    colors: [AppColors.primary, AppColors.secondary],
+                  gradient: LinearGradient(
+                    colors: [
+                      Theme.of(context).colorScheme.primary,
+                      Theme.of(context).colorScheme.secondary,
+                    ],
                   ),
                   borderRadius: BorderRadius.circular(2),
                 ),
@@ -352,7 +350,9 @@ class _ProjectsSectionState extends State<ProjectsSection> {
                       : isTablet
                       ? 15
                       : 17,
-                  color: AppColors.textSecondary.withValues(alpha: 0.9),
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.onSurface.withValues(alpha: 0.7),
                   height: 1.8,
                   letterSpacing: 0.2,
                 ),
@@ -431,85 +431,9 @@ class _ProjectsSectionState extends State<ProjectsSection> {
     double gridSpacing,
     int crossAxisCount,
   ) {
-    if (!isMobile && !isTablet) {
-      return StickyProjectShowcase(
-        scrollOffsetListenable: widget.scrollOffsetListenable,
-      );
-    }
-
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final cardWidth =
-            (constraints.maxWidth - (gridSpacing * (crossAxisCount - 1))) /
-            crossAxisCount;
-        final filteredProjects = _getFilteredProjects();
-
-        if (filteredProjects.isEmpty) {
-          return Container(
-            padding: EdgeInsets.all(isMobile ? 40 : 60),
-            child: Column(
-              children: [
-                Icon(
-                  Icons.search_off_rounded,
-                  size: isMobile ? 64 : 80,
-                  color: AppColors.textSecondary.withValues(alpha: 0.5),
-                ),
-                const SizedBox(height: 16),
-                Text(
-                  'No projects found',
-                  style: GoogleFonts.poppins(
-                    fontSize: isMobile ? 18 : 22,
-                    color: AppColors.textSecondary,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  'Try selecting different tech stacks',
-                  style: GoogleFonts.poppins(
-                    fontSize: isMobile ? 14 : 16,
-                    color: AppColors.textSecondary.withValues(alpha: 0.7),
-                  ),
-                ),
-              ],
-            ),
-          );
-        }
-
-        return Wrap(
-          spacing: gridSpacing,
-          runSpacing: gridSpacing,
-          alignment: WrapAlignment.start,
-          children: List.generate(filteredProjects.length, (index) {
-            final project = filteredProjects[index];
-            final originalIndex = AppData.projects.indexOf(project);
-            return SizedBox(
-              width: cardWidth,
-              child: GSAPEnhancedAnimation(
-                elementId: 'project-card-$originalIndex',
-                scrollOffset: scrollOffset,
-                sectionStartOffset:
-                    sectionStartOffset +
-                    (viewportHeight * 0.25) +
-                    (index * viewportHeight * 0.08),
-                viewportHeight: viewportHeight,
-                ease: 'power3.out',
-                animationConfig: {
-                  'opacity': const {'from': 0, 'to': 1},
-                  'y': const {'from': 80, 'to': 0},
-                  'scale': const {'from': 0.85, 'to': 1.0},
-                  'rotation': {'from': index % 2 == 0 ? -2 : 2, 'to': 0},
-                },
-                child: ProjectCard(
-                  project: project,
-                  delay: 0.ms,
-                  isVisible: true,
-                ),
-              ),
-            );
-          }),
-        );
-      },
+    // Always use Sticky Showcase for all screens
+    return StickyProjectShowcase(
+      scrollOffsetListenable: widget.scrollOffsetListenable,
     );
   }
 } // End of _ProjectsSectionState
@@ -535,20 +459,22 @@ class _ProjectStatsDashboard extends StatelessWidget {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            AppColors.primary.withValues(alpha: 0.15),
-            AppColors.secondary.withValues(alpha: 0.1),
-            AppColors.surface.withValues(alpha: 0.9),
+            Theme.of(context).colorScheme.primary.withValues(alpha: 0.15),
+            Theme.of(context).colorScheme.secondary.withValues(alpha: 0.1),
+            Theme.of(context).colorScheme.surface.withValues(alpha: 0.9),
           ],
           stops: const [0.0, 0.5, 1.0],
         ),
         borderRadius: BorderRadius.circular(24),
         border: Border.all(
-          color: AppColors.primary.withValues(alpha: 0.3),
+          color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.3),
           width: 1.5,
         ),
         boxShadow: [
           BoxShadow(
-            color: AppColors.primary.withValues(alpha: 0.15),
+            color: Theme.of(
+              context,
+            ).colorScheme.primary.withValues(alpha: 0.15),
             blurRadius: 25,
             spreadRadius: 0,
             offset: const Offset(0, 6),
@@ -562,46 +488,46 @@ class _ProjectStatsDashboard extends StatelessWidget {
             icon: Icons.apps_rounded,
             label: 'Projects',
             value: '${stats['totalProjects']}',
-            color: AppColors.primary,
+            color: Theme.of(context).colorScheme.primary,
             isMobile: isMobile,
             isTablet: isTablet,
           ),
           Container(
             width: 1,
             height: isMobile ? 40 : 50,
-            color: AppColors.primary.withValues(alpha: 0.3),
+            color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.3),
           ),
           _StatItem(
             icon: Icons.download_rounded,
             label: 'Downloads',
             value: '${(stats['totalDownloads'] / 1000).toStringAsFixed(0)}K+',
-            color: AppColors.secondary,
+            color: Theme.of(context).colorScheme.secondary,
             isMobile: isMobile,
             isTablet: isTablet,
           ),
           Container(
             width: 1,
             height: isMobile ? 40 : 50,
-            color: AppColors.primary.withValues(alpha: 0.3),
+            color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.3),
           ),
           _StatItem(
             icon: Icons.star_rounded,
             label: 'Rating',
             value: stats['averageRating'].toStringAsFixed(1),
-            color: AppColors.primary,
+            color: Theme.of(context).colorScheme.primary,
             isMobile: isMobile,
             isTablet: isTablet,
           ),
           Container(
             width: 1,
             height: isMobile ? 40 : 50,
-            color: AppColors.primary.withValues(alpha: 0.3),
+            color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.3),
           ),
           _StatItem(
             icon: Icons.code_rounded,
             label: 'Tech Stacks',
             value: '${stats['techStacks']}',
-            color: AppColors.secondary,
+            color: Theme.of(context).colorScheme.secondary,
             isMobile: isMobile,
             isTablet: isTablet,
           ),
@@ -653,7 +579,7 @@ class _StatItem extends StatelessWidget {
           style: GoogleFonts.poppins(
             fontSize: isMobile ? 20 : (isTablet ? 24 : 28),
             fontWeight: FontWeight.bold,
-            color: AppColors.textPrimary,
+            color: Theme.of(context).colorScheme.onSurface,
             letterSpacing: 0.5,
           ),
         ),
@@ -662,7 +588,9 @@ class _StatItem extends StatelessWidget {
           label,
           style: GoogleFonts.poppins(
             fontSize: isMobile ? 11 : (isTablet ? 12 : 13),
-            color: AppColors.textSecondary.withValues(alpha: 0.8),
+            color: Theme.of(
+              context,
+            ).colorScheme.onSurface.withValues(alpha: 0.7),
             letterSpacing: 0.3,
           ),
         ),
@@ -699,7 +627,7 @@ class _TechStackFilter extends StatelessWidget {
           children: [
             Icon(
               Icons.filter_list_rounded,
-              color: AppColors.primary,
+              color: Theme.of(context).colorScheme.primary,
               size: isMobile ? 20 : 24,
             ),
             const SizedBox(width: 8),
@@ -708,7 +636,7 @@ class _TechStackFilter extends StatelessWidget {
               style: GoogleFonts.poppins(
                 fontSize: isMobile ? 16 : (isTablet ? 18 : 20),
                 fontWeight: FontWeight.w600,
-                color: AppColors.textPrimary,
+                color: Theme.of(context).colorScheme.onSurface,
                 letterSpacing: 0.2,
               ),
             ),
@@ -719,13 +647,17 @@ class _TechStackFilter extends StatelessWidget {
                 icon: Icon(
                   Icons.clear_rounded,
                   size: isMobile ? 16 : 18,
-                  color: AppColors.textSecondary,
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.onSurface.withValues(alpha: 0.7),
                 ),
                 label: Text(
                   'Clear',
                   style: GoogleFonts.poppins(
                     fontSize: isMobile ? 12 : 14,
-                    color: AppColors.textSecondary,
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.onSurface.withValues(alpha: 0.6),
                   ),
                 ),
               ),
@@ -798,25 +730,37 @@ class _FilterChipState extends State<_FilterChip> {
             gradient: LinearGradient(
               colors: widget.isSelected
                   ? [
-                      AppColors.primary.withValues(alpha: 0.3),
-                      AppColors.secondary.withValues(alpha: 0.2),
+                      Theme.of(
+                        context,
+                      ).colorScheme.primary.withValues(alpha: 0.3),
+                      Theme.of(
+                        context,
+                      ).colorScheme.secondary.withValues(alpha: 0.2),
                     ]
                   : [
-                      AppColors.surface.withValues(alpha: 0.8),
-                      AppColors.surface.withValues(alpha: 0.6),
+                      Theme.of(
+                        context,
+                      ).colorScheme.surface.withValues(alpha: 0.8),
+                      Theme.of(
+                        context,
+                      ).colorScheme.surface.withValues(alpha: 0.6),
                     ],
             ),
             borderRadius: BorderRadius.circular(20),
             border: Border.all(
               color: widget.isSelected
-                  ? AppColors.primary.withValues(alpha: 0.6)
-                  : AppColors.primary.withValues(alpha: _isHovered ? 0.4 : 0.2),
+                  ? Theme.of(context).colorScheme.primary.withValues(alpha: 0.6)
+                  : Theme.of(context).colorScheme.primary.withValues(
+                      alpha: _isHovered ? 0.4 : 0.2,
+                    ),
               width: widget.isSelected ? 2 : 1.5,
             ),
             boxShadow: widget.isSelected
                 ? [
                     BoxShadow(
-                      color: AppColors.primary.withValues(alpha: 0.3),
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.primary.withValues(alpha: 0.3),
                       blurRadius: 12,
                       spreadRadius: 0,
                       offset: const Offset(0, 4),
@@ -832,7 +776,7 @@ class _FilterChipState extends State<_FilterChip> {
                 Icon(
                   Icons.check_circle_rounded,
                   size: widget.isMobile ? 16 : 18,
-                  color: AppColors.primary,
+                  color: Theme.of(context).colorScheme.primary,
                 ),
               if (widget.isSelected) const SizedBox(width: 6),
               Text(
@@ -843,8 +787,10 @@ class _FilterChipState extends State<_FilterChip> {
                       ? FontWeight.w600
                       : FontWeight.w500,
                   color: widget.isSelected
-                      ? AppColors.textPrimary
-                      : AppColors.textSecondary,
+                      ? Theme.of(context).colorScheme.onSurface
+                      : Theme.of(
+                          context,
+                        ).colorScheme.onSurface.withValues(alpha: 0.7),
                   letterSpacing: 0.2,
                 ),
               ),

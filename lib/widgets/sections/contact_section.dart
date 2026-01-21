@@ -3,7 +3,6 @@ import 'package:flutter/foundation.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import '../../constants/app_colors.dart';
 import '../../constants/app_data.dart';
 import '../common/section_title.dart';
 import '../common/contact_button.dart';
@@ -56,9 +55,9 @@ class ContactSection extends StatelessWidget {
               end: Alignment.bottomRight,
               stops: const [0.0, 0.5, 1.0],
               colors: [
-                AppColors.surface,
-                AppColors.surface.withValues(alpha: 0.95),
-                AppColors.background,
+                Theme.of(context).colorScheme.surface,
+                Theme.of(context).colorScheme.surface.withValues(alpha: 0.95),
+                Theme.of(context).scaffoldBackgroundColor,
               ],
             ),
           ),
@@ -82,7 +81,10 @@ class ContactSection extends StatelessWidget {
                     scrollOffset: scrollOffset,
                     sectionStartOffset: sectionStartOffset,
                     delay: 0.ms,
-                    child: const SectionTitle(title: 'Get In Touch', isVisible: true),
+                    child: const SectionTitle(
+                      title: 'Get In Touch',
+                      isVisible: true,
+                    ),
                   ),
                   SizedBox(height: isMobile ? 24 : 40),
                   GSAPEnhancedAnimation(
@@ -105,13 +107,19 @@ class ContactSection extends StatelessWidget {
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
                           colors: [
-                            AppColors.primary.withValues(alpha: 0.1),
-                            AppColors.secondary.withValues(alpha: 0.05),
+                            Theme.of(
+                              context,
+                            ).colorScheme.primary.withValues(alpha: 0.1),
+                            Theme.of(
+                              context,
+                            ).colorScheme.secondary.withValues(alpha: 0.05),
                           ],
                         ),
                         borderRadius: BorderRadius.circular(30),
                         border: Border.all(
-                          color: AppColors.primary.withValues(alpha: 0.2),
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.primary.withValues(alpha: 0.2),
                           width: 1,
                         ),
                       ),
@@ -123,7 +131,9 @@ class ContactSection extends StatelessWidget {
                               : isTablet
                               ? 18
                               : 20,
-                          color: AppColors.textSecondary,
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.onSurface.withValues(alpha: 0.7),
                           fontWeight: FontWeight.w500,
                         ),
                         textAlign: TextAlign.center,
@@ -165,29 +175,33 @@ class ContactSection extends StatelessWidget {
                                         begin: Alignment.topLeft,
                                         end: Alignment.bottomRight,
                                         colors: [
-                                          AppColors.surface,
-                                          AppColors.surface.withValues(alpha: 0.95),
+                                          Theme.of(context).colorScheme.surface,
+                                          Theme.of(context).colorScheme.surface
+                                              .withValues(alpha: 0.95),
                                         ],
                                       ),
                                       borderRadius: BorderRadius.circular(20),
                                       border: Border.all(
-                                        color: AppColors.primary.withValues(alpha: 
-                                          0.3,
-                                        ),
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .primary
+                                            .withValues(alpha: 0.3),
                                         width: 1.5,
                                       ),
                                       boxShadow: [
                                         BoxShadow(
-                                          color: AppColors.primary.withValues(alpha: 
-                                            0.1,
-                                          ),
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .primary
+                                              .withValues(alpha: 0.1),
                                           blurRadius: 25,
                                           spreadRadius: 0,
                                         ),
                                         BoxShadow(
-                                          color: AppColors.primary.withValues(alpha: 
-                                            0.05,
-                                          ),
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .primary
+                                              .withValues(alpha: 0.05),
                                           blurRadius: 50,
                                           spreadRadius: 0,
                                         ),
@@ -252,12 +266,14 @@ class ContactSection extends StatelessWidget {
                                         decoration: BoxDecoration(
                                           gradient: LinearGradient(
                                             colors: [
-                                              AppColors.primary.withValues(alpha: 
-                                                0.1,
-                                              ),
-                                              AppColors.secondary.withValues(alpha: 
-                                                0.05,
-                                              ),
+                                              Theme.of(context)
+                                                  .colorScheme
+                                                  .primary
+                                                  .withValues(alpha: 0.1),
+                                              Theme.of(context)
+                                                  .colorScheme
+                                                  .secondary
+                                                  .withValues(alpha: 0.05),
                                             ],
                                           ),
                                           borderRadius: BorderRadius.circular(
@@ -269,7 +285,9 @@ class ContactSection extends StatelessWidget {
                                           style: GoogleFonts.poppins(
                                             fontSize: 18,
                                             fontWeight: FontWeight.bold,
-                                            color: AppColors.textPrimary,
+                                            color: Theme.of(
+                                              context,
+                                            ).colorScheme.onSurface,
                                             letterSpacing: 0.5,
                                           ),
                                         ),
@@ -278,7 +296,9 @@ class ContactSection extends StatelessWidget {
                                       ContactButton(
                                         icon: Icons.email,
                                         label: 'Email',
-                                        color: AppColors.primary,
+                                        color: Theme.of(
+                                          context,
+                                        ).colorScheme.primary,
                                         onTap: () async {
                                           final Uri emailUri = Uri(
                                             scheme: 'mailto',
@@ -295,7 +315,9 @@ class ContactSection extends StatelessWidget {
                                       ContactButton(
                                         icon: Icons.code,
                                         label: 'GitHub',
-                                        color: AppColors.secondary,
+                                        color: Theme.of(
+                                          context,
+                                        ).colorScheme.secondary,
                                         onTap: () async {
                                           final Uri githubUri = Uri.parse(
                                             'https://github.com/mohamedadel120',
@@ -311,7 +333,9 @@ class ContactSection extends StatelessWidget {
                                       ContactButton(
                                         icon: Icons.link,
                                         label: 'LinkedIn',
-                                        color: AppColors.primary,
+                                        color: Theme.of(
+                                          context,
+                                        ).colorScheme.primary,
                                         onTap: () async {
                                           final Uri linkedInUri = Uri.parse(
                                             'https://www.linkedin.com/in/mohamed-adel-9454a1183/',
@@ -374,26 +398,36 @@ class ContactSection extends StatelessWidget {
                                           begin: Alignment.topLeft,
                                           end: Alignment.bottomRight,
                                           colors: [
-                                            AppColors.surface,
-                                            AppColors.surface.withValues(alpha: 0.95),
+                                            Theme.of(
+                                              context,
+                                            ).colorScheme.surface,
+                                            Theme.of(context)
+                                                .colorScheme
+                                                .surface
+                                                .withValues(alpha: 0.95),
                                           ],
                                         ),
                                         borderRadius: BorderRadius.circular(20),
                                         border: Border.all(
-                                          color: AppColors.primary.withValues(alpha: 
-                                            0.3,
-                                          ),
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .primary
+                                              .withValues(alpha: 0.3),
                                           width: 1.5,
                                         ),
                                         boxShadow: [
                                           BoxShadow(
-                                            color: AppColors.primary
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .primary
                                                 .withValues(alpha: 0.1),
                                             blurRadius: 25,
                                             spreadRadius: 0,
                                           ),
                                           BoxShadow(
-                                            color: AppColors.primary
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .primary
                                                 .withValues(alpha: 0.05),
                                             blurRadius: 50,
                                             spreadRadius: 0,
@@ -463,12 +497,14 @@ class ContactSection extends StatelessWidget {
                                           decoration: BoxDecoration(
                                             gradient: LinearGradient(
                                               colors: [
-                                                AppColors.primary.withValues(alpha: 
-                                                  0.1,
-                                                ),
-                                                AppColors.secondary.withValues(alpha: 
-                                                  0.05,
-                                                ),
+                                                Theme.of(context)
+                                                    .colorScheme
+                                                    .primary
+                                                    .withValues(alpha: 0.1),
+                                                Theme.of(context)
+                                                    .colorScheme
+                                                    .secondary
+                                                    .withValues(alpha: 0.05),
                                               ],
                                             ),
                                             borderRadius: BorderRadius.circular(
@@ -480,7 +516,9 @@ class ContactSection extends StatelessWidget {
                                             style: GoogleFonts.poppins(
                                               fontSize: 18,
                                               fontWeight: FontWeight.bold,
-                                              color: AppColors.textPrimary,
+                                              color: Theme.of(
+                                                context,
+                                              ).colorScheme.onSurface,
                                               letterSpacing: 0.5,
                                             ),
                                           ),
@@ -489,7 +527,9 @@ class ContactSection extends StatelessWidget {
                                         ContactButton(
                                           icon: Icons.email,
                                           label: 'Email',
-                                          color: AppColors.primary,
+                                          color: Theme.of(
+                                            context,
+                                          ).colorScheme.primary,
                                           onTap: () async {
                                             final Uri emailUri = Uri(
                                               scheme: 'mailto',
@@ -506,7 +546,9 @@ class ContactSection extends StatelessWidget {
                                         ContactButton(
                                           icon: Icons.code,
                                           label: 'GitHub',
-                                          color: AppColors.secondary,
+                                          color: Theme.of(
+                                            context,
+                                          ).colorScheme.secondary,
                                           onTap: () async {
                                             final Uri githubUri = Uri.parse(
                                               'https://github.com/mohamedadel120',
@@ -522,7 +564,9 @@ class ContactSection extends StatelessWidget {
                                         ContactButton(
                                           icon: Icons.link,
                                           label: 'LinkedIn',
-                                          color: AppColors.primary,
+                                          color: Theme.of(
+                                            context,
+                                          ).colorScheme.primary,
                                           onTap: () async {
                                             final Uri linkedInUri = Uri.parse(
                                               'https://www.linkedin.com/in/mohamed-adel-9454a1183/',
@@ -561,18 +605,24 @@ class ContactSection extends StatelessWidget {
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
                           colors: [
-                            AppColors.surface,
-                            AppColors.surface.withValues(alpha: 0.9),
+                            Theme.of(context).colorScheme.surface,
+                            Theme.of(
+                              context,
+                            ).colorScheme.surface.withValues(alpha: 0.9),
                           ],
                         ),
                         borderRadius: BorderRadius.circular(15),
                         border: Border.all(
-                          color: AppColors.primary.withValues(alpha: 0.3),
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.primary.withValues(alpha: 0.3),
                           width: 1.5,
                         ),
                         boxShadow: [
                           BoxShadow(
-                            color: AppColors.primary.withValues(alpha: 0.1),
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.primary.withValues(alpha: 0.1),
                             blurRadius: 20,
                             spreadRadius: 0,
                           ),
@@ -582,7 +632,9 @@ class ContactSection extends StatelessWidget {
                         '© 2024 ${AppData.name} - ${AppData.title} Portfolio. Built with ❤️ using Flutter',
                         style: GoogleFonts.poppins(
                           fontSize: isMobile ? 12 : 14,
-                          color: AppColors.textTertiary,
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.onSurface.withValues(alpha: 0.5),
                         ),
                         textAlign: TextAlign.center,
                       ),
