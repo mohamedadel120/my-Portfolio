@@ -4,7 +4,6 @@ import 'dart:ui';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'constants/app_colors.dart';
 import 'constants/app_data.dart'; // Added this import
 import 'widgets/sections/hero_section.dart';
 import 'widgets/sections/about_section.dart';
@@ -235,17 +234,17 @@ class _PortfolioPageState extends State<PortfolioPage> {
             widget.themeController?.isDarkMode ?? true
                 ? Icons.light_mode_rounded
                 : Icons.dark_mode_rounded,
-            color: AppColors.primary,
+            color: Theme.of(context).colorScheme.primary,
           ),
           onPressed: () => widget.themeController?.toggleTheme(),
         ),
         IconButton(
-          icon: const Icon(Icons.menu, color: AppColors.primary),
+          icon: Icon(Icons.menu, color: Theme.of(context).colorScheme.primary),
           onPressed: () {
             // Show bottom sheet with navigation options
             showModalBottomSheet(
               context: context,
-              backgroundColor: AppColors.surface,
+              backgroundColor: Theme.of(context).colorScheme.surface,
               shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
               ),
@@ -316,7 +315,7 @@ class _PortfolioPageState extends State<PortfolioPage> {
             widget.themeController?.isDarkMode ?? true
                 ? Icons.light_mode_rounded
                 : Icons.dark_mode_rounded,
-            color: AppColors.primary,
+            color: Theme.of(context).colorScheme.primary,
           ),
           tooltip: 'Toggle Theme',
         ),
@@ -329,7 +328,7 @@ class _PortfolioPageState extends State<PortfolioPage> {
     return SliverAppBar(
       floating: true,
       pinned: true,
-      backgroundColor: AppColors.background,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       surfaceTintColor: Colors.transparent,
       elevation: 0,
       title: Builder(
@@ -343,13 +342,18 @@ class _PortfolioPageState extends State<PortfolioPage> {
                     width: isMobile ? 32 : 40,
                     height: isMobile ? 32 : 40,
                     decoration: BoxDecoration(
-                      color: AppColors.primary.withValues(alpha: 0.2),
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.primary.withValues(alpha: 0.2),
                       borderRadius: BorderRadius.circular(8),
-                      border: Border.all(color: AppColors.primary, width: 2),
+                      border: Border.all(
+                        color: Theme.of(context).colorScheme.primary,
+                        width: 2,
+                      ),
                     ),
                     child: Icon(
                       Icons.code,
-                      color: AppColors.primary,
+                      color: Theme.of(context).colorScheme.primary,
                       size: isMobile ? 18 : 24,
                     ),
                   )
@@ -362,7 +366,7 @@ class _PortfolioPageState extends State<PortfolioPage> {
                     style: GoogleFonts.poppins(
                       fontSize: isMobile ? 18 : 24,
                       fontWeight: FontWeight.bold,
-                      color: AppColors.primary,
+                      color: Theme.of(context).colorScheme.primary,
                     ),
                   )
                   .animate()
