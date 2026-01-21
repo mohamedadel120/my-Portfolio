@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'dart:async';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../utils/url_launcher_utils.dart';
 import '../../constants/app_colors.dart';
 import '../../constants/app_data.dart';
-import '../../models/project.dart';
 import '../common/phone_frame.dart';
 import '../common/magnetic_button.dart';
 import '../common/project_video_player.dart';
@@ -28,6 +28,14 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
   int _activeImageIndex = 0;
   int _activeTechLimit = 0; // How many tech items to show
   double? _absoluteTop;
+
+  // Video Control
+  bool _isManuallyPaused = false;
+
+  // Scroll Detection
+  bool _isScrolling = false;
+  Timer? _scrollEndTimer;
+  double _lastScrollOffset = 0;
 
   @override
   void didChangeDependencies() {
@@ -82,6 +90,29 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
         return ValueListenableBuilder<double>(
           valueListenable: widget.scrollOffsetListenable,
           builder: (context, scrollOffset, child) {
+            // Detect manual scroll updates
+            if ((scrollOffset - _lastScrollOffset).abs() > 0.01) {
+              // We can't setState inside build directly usually,
+              // but since we are just debouncing a 'scrolling' state,
+              // we can defer the 'end' timer.
+              // To trigger 'start', we need to be careful not to cause rebuild loops.
+              // However, since we are inside a ValueListenableBuilder, this closure runs on change.
+              // We can safely schedule the timer.
+              if (!_isScrolling) {
+                // Defer state update to next frame to avoid locked build
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  if (mounted && !_isScrolling) {
+                    setState(() => _isScrolling = true);
+                  }
+                });
+              }
+              _scrollEndTimer?.cancel();
+              _scrollEndTimer = Timer(const Duration(milliseconds: 200), () {
+                if (mounted) setState(() => _isScrolling = false);
+              });
+            }
+            _lastScrollOffset = scrollOffset;
+
             final viewportHeight = MediaQuery.of(context).size.height;
 
             // --- DETERMINISTIC STICKY LOGIC ---
@@ -92,17 +123,17 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
             // 1. Where this widget is currently relative to the viewport top
             // Fallback to a safe guess if not yet discovered
             final discoveredTop = _absoluteTop ?? 4000.0;
-            double showcaseTopInViewport = discoveredTop - scrollOffset;
+            final double showcaseTopInViewport = discoveredTop - scrollOffset;
 
             // 2. How much the user has scrolled INTO this specific showcase
-            double relativeScroll = -showcaseTopInViewport;
+            final double relativeScroll = -showcaseTopInViewport;
 
             int newProjectIndex = 0;
             double currentSum = 0;
             double offsetWithinProject = 0;
 
             for (int i = 0; i < AppData.projects.length; i++) {
-              double h = _getProjectHeight(i);
+              final double h = _getProjectHeight(i);
               if (relativeScroll < (currentSum + h)) {
                 newProjectIndex = i;
                 offsetWithinProject = relativeScroll - currentSum;
@@ -117,15 +148,16 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
 
             // Logic: Calculate State
             final project = AppData.projects[newProjectIndex];
-            int imageCount = project.galleryImages?.length ?? 0;
+            final int imageCount = project.galleryImages?.length ?? 0;
 
             // Image Index
             int newImageIndex = 0;
             if (imageCount > 0) {
               if (offsetWithinProject > (_introHeight / 2)) {
-                double imageScroll = offsetWithinProject - (_introHeight / 2);
-                double totalImageScroll = imageCount * _scrollPerImage;
-                double progress = (imageScroll / totalImageScroll).clamp(
+                final double imageScroll =
+                    offsetWithinProject - (_introHeight / 2);
+                final double totalImageScroll = imageCount * _scrollPerImage;
+                final double progress = (imageScroll / totalImageScroll).clamp(
                   0.0,
                   1.0,
                 );
@@ -137,11 +169,11 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
             }
 
             // Tech Stack Progress
-            double projectProgress =
+            final double projectProgress =
                 (offsetWithinProject / _getProjectHeight(newProjectIndex))
                     .clamp(0.0, 1.0);
-            int techCount = project.tech.length;
-            int newTechLimit = (projectProgress * techCount).ceil().clamp(
+            final int techCount = project.tech.length;
+            final int newTechLimit = (projectProgress * techCount).ceil().clamp(
               1,
               techCount,
             );
@@ -152,6 +184,11 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
               WidgetsBinding.instance.addPostFrameCallback((_) {
                 if (mounted) {
                   setState(() {
+                    // Reset manual pause when switching projects
+                    if (_activeProjectIndex != newProjectIndex) {
+                      _isManuallyPaused = false;
+                    }
+
                     _activeProjectIndex = newProjectIndex;
                     _activeImageIndex = newImageIndex;
                     _activeTechLimit = newTechLimit;
@@ -172,14 +209,27 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
             if (targetCenter < 20) targetCenter = 20;
 
             // The phone should stick when showcaseTopInViewport reaches targetCenter
-            double calculatedTop = targetCenter - showcaseTopInViewport;
+            final double calculatedTop = targetCenter - showcaseTopInViewport;
 
-            double topBound = 0.0;
-            double bottomBound = _totalHeight - phoneHeight;
-            double clampedTop = calculatedTop.clamp(topBound, bottomBound);
+            final double topBound = 0.0;
+            final double bottomBound = _totalHeight - phoneHeight;
+            final double clampedTop = calculatedTop.clamp(
+              topBound,
+              bottomBound,
+            );
+
+            // Phone Visibility Logic
+            // We consider the phone visible if a significant portion of it is in the viewport
+            final phoneTopY = showcaseTopInViewport + clampedTop;
+            final phoneBottomY = phoneTopY + phoneHeight;
+            // Visible if top is above bottom of viewport AND bottom is below top of viewport
+            final bool isPhoneInView =
+                phoneTopY < viewportHeight && phoneBottomY > 0;
+            // Auto-play when in view, unless manually paused
+            final bool shouldPlayVideo = isPhoneInView && !_isManuallyPaused;
 
             // Background Sticky Logic
-            double bgClampedTop = (-showcaseTopInViewport).clamp(
+            final double bgClampedTop = (-showcaseTopInViewport).clamp(
               0.0,
               _totalHeight - viewportHeight,
             );
@@ -234,7 +284,11 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
                     child: Transform.translate(
                       offset: Offset(0, clampedTop),
                       child: RepaintBoundary(
-                        child: _buildStickyPhone(phoneWidth, phoneHeight),
+                        child: _buildStickyPhone(
+                          phoneWidth,
+                          phoneHeight,
+                          shouldPlayVideo,
+                        ),
                       ),
                     ),
                   ),
@@ -277,7 +331,7 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
     );
   }
 
-  Widget _buildStickyPhone(double width, double height) {
+  Widget _buildStickyPhone(double width, double height, bool isVisible) {
     final project = AppData.projects[_activeProjectIndex];
     final hasImages =
         project.galleryImages != null && project.galleryImages!.isNotEmpty;
@@ -294,7 +348,42 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
 
     if (hasVideo) {
       key = Key('${project.title}-video');
-      content = ProjectVideoPlayer(videoUrl: project.videoUrl!);
+      content = Stack(
+        fit: StackFit.expand,
+        children: [
+          ProjectVideoPlayer(videoUrl: project.videoUrl!, isVisible: isVisible),
+
+          // Play/Pause Control Overlay
+          Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: () {
+                setState(() {
+                  _isManuallyPaused = !_isManuallyPaused;
+                });
+              },
+              child: Center(
+                child: AnimatedOpacity(
+                  opacity: _isManuallyPaused ? 1.0 : 0.0,
+                  duration: const Duration(milliseconds: 200),
+                  child: Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: Colors.black.withValues(alpha: 0.4),
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(
+                      Icons.play_arrow_rounded,
+                      color: Colors.white,
+                      size: 48,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      );
     } else if (hasImages) {
       key = Key('${project.title}-$safeIndex');
       content = _buildPhoneImageContent(project.galleryImages![safeIndex]);
@@ -307,7 +396,7 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
         child: Icon(
           Icons.layers_outlined,
           size: 80,
-          color: Colors.white.withOpacity(0.5),
+          color: Colors.white.withValues(alpha: 0.5),
         ),
       );
     }
@@ -339,9 +428,9 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               colors: [
-                Colors.black.withOpacity(0.1),
+                Colors.black.withValues(alpha: 0.1),
                 Colors.transparent,
-                Colors.black.withOpacity(0.2),
+                Colors.black.withValues(alpha: 0.2),
               ],
               stops: const [0.0, 0.2, 1.0],
             ),
@@ -392,10 +481,10 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
                     child: Container(
                       padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
-                        color: AppColors.textPrimary.withOpacity(0.1),
+                        color: AppColors.textPrimary.withValues(alpha: 0.1),
                         shape: BoxShape.circle,
                         border: Border.all(
-                          color: AppColors.textPrimary.withOpacity(0.2),
+                          color: AppColors.textPrimary.withValues(alpha: 0.2),
                         ),
                       ),
                       child: const Icon(
@@ -412,10 +501,10 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
                     child: Container(
                       padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
-                        color: AppColors.textPrimary.withOpacity(0.1),
+                        color: AppColors.textPrimary.withValues(alpha: 0.1),
                         shape: BoxShape.circle,
                         border: Border.all(
-                          color: AppColors.textPrimary.withOpacity(0.2),
+                          color: AppColors.textPrimary.withValues(alpha: 0.2),
                         ),
                       ),
                       child: const Icon(
@@ -436,7 +525,7 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
                       ),
                       decoration: BoxDecoration(
                         border: Border.all(
-                          color: AppColors.textPrimary.withOpacity(0.2),
+                          color: AppColors.textPrimary.withValues(alpha: 0.2),
                         ),
                         borderRadius: BorderRadius.circular(30),
                       ),
@@ -470,66 +559,152 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
   Widget _buildRightTech(double width) {
     final project = AppData.projects[_activeProjectIndex];
 
+    // Use activeTechLimit as the index to show.
+    // It cycles from 0 to tech.length-1 based on scroll.
+    final currentIndex = (_activeTechLimit - 1).clamp(
+      0,
+      project.tech.length - 1,
+    );
+    final currentTech = project.tech[currentIndex];
+
     return Container(
       padding: EdgeInsets.symmetric(horizontal: width * 0.15),
       alignment: Alignment.centerLeft,
-      child: AnimatedSwitcher(
-        duration: const Duration(milliseconds: 300),
-        child: Column(
-          key: Key('right-${project.title}'),
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              "Technologies",
-              style: GoogleFonts.spaceMono(
-                fontSize: 14,
-                color: AppColors.textSecondary.withOpacity(0.5),
-                letterSpacing: 2,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            "Technologies",
+            style: GoogleFonts.spaceMono(
+              fontSize: 14,
+              color: AppColors.textSecondary.withValues(alpha: 0.5),
+              letterSpacing: 2,
+            ),
+          ),
+          const SizedBox(height: 32),
+          // Masked Animated Slide
+          ClipRect(
+            child: SizedBox(
+              height: 80, // Slightly increased height
+              child: AnimatedSwitcher(
+                duration: const Duration(milliseconds: 600),
+                transitionBuilder: (Widget child, Animation<double> animation) {
+                  // We only want to animate the OUTGOING text with the switcher.
+                  // The INCOMING text will handle its own staggered animation.
+
+                  final outAnimation =
+                      Tween<Offset>(
+                        begin: const Offset(0.0, -1.0), // Slide out to top
+                        end: Offset.zero,
+                      ).animate(
+                        CurvedAnimation(
+                          parent: animation,
+                          curve: Curves.easeInQuart,
+                        ),
+                      );
+
+                  final outOpacity = Tween<double>(begin: 0.0, end: 1.0)
+                      .animate(
+                        CurvedAnimation(
+                          parent: animation,
+                          curve: Curves.linear,
+                        ),
+                      );
+
+                  if (child.key != ValueKey(currentTech)) {
+                    // Old text slides out AND fades out
+                    return SlideTransition(
+                      position: outAnimation,
+                      child: FadeTransition(opacity: outOpacity, child: child),
+                    );
+                  } else {
+                    // New text stays in place (animation handled internally)
+                    // We must ensure it's visible.
+                    return child;
+                  }
+                },
+                layoutBuilder: (currentChild, previousChildren) {
+                  return Stack(
+                    alignment: Alignment.centerLeft,
+                    children: <Widget>[
+                      ...previousChildren,
+                      if (currentChild != null) currentChild,
+                    ],
+                  );
+                },
+                child: _buildStaggeredTechText(currentTech),
               ),
             ),
-            const SizedBox(height: 32),
-            ...List.generate(project.tech.length, (index) {
-              final isVisible = index < _activeTechLimit;
-              return AnimatedOpacity(
-                duration: const Duration(milliseconds: 400),
-                opacity: isVisible ? 1.0 : 0.2,
-                child: Padding(
-                  padding: const EdgeInsets.only(bottom: 16),
-                  child: Row(
-                    children: [
-                      Container(
-                        width: 8,
-                        height: 8,
-                        decoration: BoxDecoration(
-                          color: isVisible ? project.color : Colors.transparent,
-                          shape: BoxShape.circle,
-                          border: Border.all(
-                            color: project.color.withOpacity(0.5),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 16),
-                      Text(
-                        project.tech[index],
-                        style: GoogleFonts.outfit(
-                          fontSize: 24,
-                          fontWeight: isVisible
-                              ? FontWeight.w600
-                              : FontWeight.w300,
-                          color: isVisible
-                              ? AppColors.textPrimary
-                              : AppColors.textSecondary.withOpacity(0.3),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              );
-            }),
-          ],
-        ),
+          ),
+          // const SizedBox(height: 16),
+
+          // Progress bar or indicator
+          // Row(
+          //   children: List.generate(project.tech.length, (index) {
+          //     final isActive = index == currentIndex;
+          //     return AnimatedContainer(
+          //       duration: const Duration(milliseconds: 300),
+          //       width: isActive ? 24 : 6,
+          //       height: 6,
+          //       margin: const EdgeInsets.only(right: 6),
+          //       decoration: BoxDecoration(
+          //         color: isActive
+          //             ? project.color
+          //             : AppColors.textSecondary.withOpacity(0.2),
+          //         borderRadius: BorderRadius.circular(3),
+          //       ),
+          //     );
+          //   }),
+          // ),
+        ],
       ),
+    );
+  }
+
+  Widget _buildStaggeredTechText(String text) {
+    return Row(
+      key: ValueKey(text),
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        ...text.split('').asMap().entries.map((entry) {
+          final index = entry.key;
+          final char = entry.value;
+
+          // Handle spaces explicitly
+          if (char == ' ') {
+            return const SizedBox(width: 12);
+          }
+
+          return Text(
+                char,
+                style: GoogleFonts.outfit(
+                  fontSize: 48,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.textPrimary,
+                  height: 1.1,
+                ),
+              )
+              .animate()
+              .fadeIn(duration: 1.ms, delay: (index * 60).ms) // Instant "type"
+              .moveY(
+                begin: 2,
+                end: 0,
+                duration: 50.ms,
+                delay: (index * 60).ms,
+              ); // Subtle key press impact
+        }),
+        Container(
+              margin: const EdgeInsets.only(left: 4, top: 4),
+              width: 3,
+              height: 48,
+              color: AppColors.primary,
+            )
+            .animate(onPlay: (c) => c.repeat(reverse: true))
+            .fadeIn(duration: 300.ms)
+            .fadeOut(delay: 300.ms),
+      ],
     );
   }
 }

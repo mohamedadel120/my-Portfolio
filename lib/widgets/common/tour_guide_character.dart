@@ -151,7 +151,7 @@ class _CharacterWidgetState extends State<_CharacterWidget>
                       border: Border.all(color: AppColors.primary, width: 2),
                       boxShadow: [
                         BoxShadow(
-                          color: AppColors.primary.withOpacity(0.3),
+                          color: AppColors.primary.withValues(alpha: 0.3),
                           blurRadius: 20,
                           spreadRadius: 2,
                         ),
@@ -178,7 +178,7 @@ class _CharacterWidgetState extends State<_CharacterWidget>
                     child: Container(
                       width: 16,
                       height: 16,
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         color: AppColors.surface,
                         border: Border(
                           right: BorderSide(color: AppColors.primary, width: 2),
@@ -198,7 +198,7 @@ class _CharacterWidgetState extends State<_CharacterWidget>
               .scale(begin: const Offset(0.8, 0.8), duration: 500.ms)
               .shimmer(
                 duration: 2000.ms,
-                color: AppColors.primary.withOpacity(0.2),
+                color: AppColors.primary.withValues(alpha: 0.2),
               ),
           const SizedBox(height: 8),
           // Cartoon Character (Stash-like)
@@ -267,8 +267,8 @@ class _CoolMascotPainter extends CustomPainter {
       ..shader =
           RadialGradient(
             colors: [
-              const Color(0xFF00D9FF).withOpacity(0.2),
-              const Color(0xFF7B2CBF).withOpacity(0.1),
+              const Color(0xFF00D9FF).withValues(alpha: 0.2),
+              const Color(0xFF7B2CBF).withValues(alpha: 0.1),
               Colors.transparent,
             ],
           ).createShader(
@@ -297,7 +297,7 @@ class _CoolMascotPainter extends CustomPainter {
 
     // Tech lines on body
     final techLinePaint = Paint()
-      ..color = Colors.white.withOpacity(0.3)
+      ..color = Colors.white.withValues(alpha: 0.3)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1;
     canvas.drawLine(
@@ -354,7 +354,7 @@ class _CoolMascotPainter extends CustomPainter {
 
     // Glowing eyes behind glasses
     final eyeGlowPaint = Paint()
-      ..color = const Color(0xFF00D9FF).withOpacity(0.8)
+      ..color = const Color(0xFF00D9FF).withValues(alpha: 0.8)
       ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 5);
     canvas.drawCircle(Offset(centerX - 12, centerY - 25), 6, eyeGlowPaint);
     canvas.drawCircle(Offset(centerX + 12, centerY - 25), 6, eyeGlowPaint);
@@ -515,7 +515,7 @@ class _CoolMascotPainter extends CustomPainter {
 
     // Floating code particles around head (genius aura)
     final particlePaint = Paint()
-      ..color = const Color(0xFF00D9FF).withOpacity(0.6)
+      ..color = const Color(0xFF00D9FF).withValues(alpha: 0.6)
       ..style = PaintingStyle.fill;
     canvas.drawCircle(Offset(centerX - 25, centerY - 35), 2, particlePaint);
     canvas.drawCircle(Offset(centerX + 25, centerY - 35), 2, particlePaint);

@@ -12,7 +12,7 @@ class CustomCursor extends StatefulWidget {
 
 class _CustomCursorState extends State<CustomCursor> {
   Offset _position = Offset.zero;
-  bool _isHovering = false;
+  final bool _isHovering = false;
 
   @override
   void initState() {
@@ -50,7 +50,7 @@ class _CustomCursorState extends State<CustomCursor> {
                 height: _isHovering ? 40 : 20,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Colors.white.withOpacity(0.3),
+                  color: Colors.white.withValues(alpha: 0.3),
                   border: Border.all(color: Colors.white, width: 1.5),
                 ),
               ),

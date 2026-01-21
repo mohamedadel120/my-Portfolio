@@ -131,13 +131,13 @@ class _SkillProgressBarState extends State<SkillProgressBar>
                     gradient: LinearGradient(
                       colors: [
                         widget.color,
-                        widget.color.withOpacity(0.7),
+                        widget.color.withValues(alpha: 0.7),
                       ],
                     ),
                     borderRadius: BorderRadius.circular(4),
                     boxShadow: [
                       BoxShadow(
-                        color: widget.color.withOpacity(0.5),
+                        color: widget.color.withValues(alpha: 0.5),
                         blurRadius: 8,
                         spreadRadius: 0,
                       ),

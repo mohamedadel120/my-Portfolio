@@ -46,7 +46,7 @@ class AboutSection extends StatelessWidget {
             horizontal: horizontalPadding,
             vertical: verticalPadding,
           ),
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
@@ -131,7 +131,7 @@ class AboutSection extends StatelessWidget {
                 scrollOffset: scrollOffset,
                 sectionStartOffset: sectionStartOffset,
                 viewportHeight: viewportHeight,
-                animationConfig: {
+                animationConfig: const {
                   'opacity': {'from': 0, 'to': 1},
                   'x': {'from': -50, 'to': 0},
                 },
@@ -221,8 +221,8 @@ class AboutSection extends StatelessWidget {
             sectionStartOffset: sectionStartOffset + 100,
             viewportHeight: viewportHeight,
             staggerDelay: 0.1,
-            children: [
-              const AboutCard(
+            children: const [
+              AboutCard(
                 icon: Icons.code_rounded,
                 title: 'Clean Code',
                 description:
@@ -230,7 +230,7 @@ class AboutSection extends StatelessWidget {
                 delay: Duration.zero,
                 isVisible: true,
               ),
-              const AboutCard(
+              AboutCard(
                 icon: Icons.rocket_launch_rounded,
                 title: 'Performance',
                 description:
@@ -238,7 +238,7 @@ class AboutSection extends StatelessWidget {
                 delay: Duration.zero,
                 isVisible: true,
               ),
-              const AboutCard(
+              AboutCard(
                 icon: Icons.architecture_rounded,
                 title: 'Architecture',
                 description:
@@ -246,7 +246,7 @@ class AboutSection extends StatelessWidget {
                 delay: Duration.zero,
                 isVisible: true,
               ),
-              const AboutCard(
+              AboutCard(
                 icon: Icons.devices_rounded,
                 title: 'Responsive',
                 description:
@@ -274,7 +274,7 @@ class AboutSection extends StatelessWidget {
           scrollOffset: scrollOffset,
           sectionStartOffset: sectionStartOffset,
           viewportHeight: viewportHeight,
-          animationConfig: {
+          animationConfig: const {
             'opacity': {'from': 0, 'to': 1},
             'y': {'from': 30, 'to': 0},
           },
@@ -311,23 +311,23 @@ class AboutSection extends StatelessWidget {
         ),
         const SizedBox(height: 40),
         // Stats for mobile
-        SingleChildScrollView(
+        const SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Row(
             children: [
-              const ImpactStat(
+              ImpactStat(
                 icon: Icons.download_rounded,
                 value: '10k+',
                 label: 'DOWNLOADS',
               ),
-              const SizedBox(width: 40),
-              const ImpactStat(
+              SizedBox(width: 40),
+              ImpactStat(
                 icon: Icons.star_rounded,
                 value: '4.8',
                 label: 'RATINGS',
               ),
-              const SizedBox(width: 40),
-              const ImpactStat(
+              SizedBox(width: 40),
+              ImpactStat(
                 icon: Icons.workspace_premium_rounded,
                 value: '3+',
                 label: 'YEARS EXP',
@@ -342,22 +342,22 @@ class AboutSection extends StatelessWidget {
           sectionStartOffset: sectionStartOffset + 200,
           viewportHeight: viewportHeight,
           staggerDelay: 0.15,
-          children: [
-            const AboutCard(
+          children: const [
+            AboutCard(
               icon: Icons.code_rounded,
               title: 'Clean Code',
               description: 'Maintainable, scalable, and well-documented code.',
               delay: Duration.zero,
               isVisible: true,
             ),
-            const AboutCard(
+            AboutCard(
               icon: Icons.rocket_launch_rounded,
               title: 'Performance',
               description: 'Optimized speed and 60fps animations.',
               delay: Duration.zero,
               isVisible: true,
             ),
-            const AboutCard(
+            AboutCard(
               icon: Icons.architecture_rounded,
               title: 'Architecture',
               description: 'Enterprise-grade Clean Architecture.',
@@ -383,17 +383,17 @@ class AboutSection extends StatelessWidget {
       scrollOffset: scrollOffset,
       sectionStartOffset: sectionStartOffset + 400,
       viewportHeight: viewportHeight,
-      animationConfig: {
+      animationConfig: const {
         'opacity': {'from': 0, 'to': 1},
         'y': {'from': 40, 'to': 0},
       },
       child: Container(
         padding: EdgeInsets.all(isMobile ? 24 : 40),
         decoration: BoxDecoration(
-          color: AppColors.surfaceLight.withOpacity(0.5),
+          color: AppColors.surfaceLight.withValues(alpha: 0.5),
           borderRadius: BorderRadius.circular(32),
           border: Border.all(
-            color: AppColors.primary.withOpacity(0.1),
+            color: AppColors.primary.withValues(alpha: 0.1),
             width: 1,
           ),
         ),

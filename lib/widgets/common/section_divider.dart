@@ -25,8 +25,8 @@ class SectionDivider extends StatelessWidget {
           gradient: LinearGradient(
             colors: [
               Colors.transparent,
-              AppColors.primary.withOpacity(0.5),
-              AppColors.secondary.withOpacity(0.5),
+              AppColors.primary.withValues(alpha: 0.5),
+              AppColors.secondary.withValues(alpha: 0.5),
               Colors.transparent,
             ],
             stops: const [0.0, 0.3, 0.7, 1.0],

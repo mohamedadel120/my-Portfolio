@@ -187,14 +187,14 @@ class _ProjectGalleryState extends State<ProjectGallery>
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(
-                      color: widget.project.color.withOpacity(
+                      color: widget.project.color.withValues(alpha: 
                         widget.isHovered ? 0.4 : 0.25,
                       ),
                       width: widget.isHovered ? 1.5 : 1,
                     ),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(
+                        color: Colors.black.withValues(alpha: 
                           widget.isHovered ? 0.08 : 0.04,
                         ),
                         blurRadius: widget.isHovered ? 8 : 6,
@@ -259,7 +259,7 @@ class _ProjectGalleryState extends State<ProjectGallery>
                                                   Icons.broken_image_rounded,
                                                   size: 30,
                                                   color: widget.project.color
-                                                      .withOpacity(0.5),
+                                                      .withValues(alpha: 0.5),
                                                 ),
                                               ),
                                         ),
@@ -294,14 +294,14 @@ class _ProjectGalleryState extends State<ProjectGallery>
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
             border: Border.all(
-              color: widget.project.color.withOpacity(
+              color: widget.project.color.withValues(alpha: 
                 widget.isHovered ? 0.4 : 0.25,
               ),
               width: widget.isHovered ? 1.5 : 1,
             ),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(widget.isHovered ? 0.06 : 0.03),
+                color: Colors.black.withValues(alpha: widget.isHovered ? 0.06 : 0.03),
                 blurRadius: widget.isHovered ? 8 : 6,
                 spreadRadius: 0,
               ),
@@ -321,7 +321,7 @@ class _ProjectGalleryState extends State<ProjectGallery>
                         end: Alignment.bottomRight,
                         colors: [
                           AppColors.background,
-                          widget.project.color.withOpacity(0.05),
+                          widget.project.color.withValues(alpha: 0.05),
                         ],
                       ),
                     ),
@@ -361,7 +361,7 @@ class _ProjectGalleryState extends State<ProjectGallery>
                       end: Alignment.bottomCenter,
                       colors: [
                         Colors.transparent,
-                        widget.project.color.withOpacity(
+                        widget.project.color.withValues(alpha: 
                           widget.isHovered ? 0.15 : 0,
                         ),
                       ],
@@ -392,7 +392,7 @@ class _ErrorPlaceholder extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [AppColors.background, color.withOpacity(0.2)],
+          colors: [AppColors.background, color.withValues(alpha: 0.2)],
         ),
       ),
       child: Center(
@@ -412,7 +412,7 @@ class _LoadingPlaceholder extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [AppColors.background, color.withOpacity(0.1)],
+          colors: [AppColors.background, color.withValues(alpha: 0.1)],
         ),
       ),
       child: Center(

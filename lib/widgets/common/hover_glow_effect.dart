@@ -54,7 +54,7 @@ class _HoverGlowEffectState extends State<HoverGlowEffect>
             decoration: BoxDecoration(
               boxShadow: [
                 BoxShadow(
-                  color: widget.glowColor.withOpacity(0.3 * _glowAnimation.value),
+                  color: widget.glowColor.withValues(alpha: 0.3 * _glowAnimation.value),
                   blurRadius: 20 * _glowAnimation.value,
                   spreadRadius: 5 * _glowAnimation.value,
                 ),

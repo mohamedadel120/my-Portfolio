@@ -33,7 +33,7 @@ class CodeShape extends StatelessWidget {
         .then()
         .shimmer(
           duration: 3000.ms,
-          color: AppColors.primary.withOpacity(0.3),
+          color: AppColors.primary.withValues(alpha: 0.3),
         );
   }
 }
@@ -64,7 +64,7 @@ class CodeShapePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size canvasSize) {
     final paint = Paint()
-      ..color = AppColors.primary.withOpacity(0.6)
+      ..color = AppColors.primary.withValues(alpha: 0.6)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 3
       ..strokeCap = StrokeCap.round
@@ -188,7 +188,7 @@ class CodeShapePainter extends CustomPainter {
     canvas.drawRect(rect, paint);
     // Draw lines inside
     final linePaint = Paint()
-      ..color = AppColors.primary.withOpacity(0.3)
+      ..color = AppColors.primary.withValues(alpha: 0.3)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1;
     canvas.drawLine(

@@ -1,3 +1,4 @@
+// ignore_for_file: deprecated_member_use, avoid_web_libraries_in_flutter
 import 'dart:html' as html;
 import 'dart:js' as js;
 import 'package:flutter/material.dart';
@@ -181,7 +182,7 @@ class _GSAPFlutterAnimationState extends State<GSAPFlutterAnimation> {
 
       _isInitialized = true;
     } catch (e) {
-      print('GSAP Flutter Animation error: $e');
+      // print('GSAP Flutter Animation error: $e');
     }
   }
 
@@ -196,8 +197,9 @@ class _GSAPFlutterAnimationState extends State<GSAPFlutterAnimation> {
         if (elementId?.toString() == widget.elementId && mounted) {
           setState(() {
             final dynamic opacityValue = detail['opacity'];
-            if (opacityValue != null)
+            if (opacityValue != null) {
               _opacity = (opacityValue as num).toDouble();
+            }
 
             final dynamic xValue = detail['x'];
             if (xValue != null) _translateX = (xValue as num).toDouble();

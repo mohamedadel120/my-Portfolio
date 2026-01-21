@@ -43,25 +43,25 @@ class _ContactInfoItemState extends State<ContactInfoItem> {
             color: AppColors.background,
             borderRadius: BorderRadius.circular(12),
             border: Border.all(
-              color: AppColors.primary.withOpacity(_isHovered ? 0.4 : 0.1),
+              color: AppColors.primary.withValues(alpha: _isHovered ? 0.4 : 0.1),
               width: _isHovered ? 2 : 1,
             ),
             boxShadow: _isHovered
                 ? [
                     BoxShadow(
-                      color: AppColors.primary.withOpacity(0.3),
+                      color: AppColors.primary.withValues(alpha: 0.3),
                       blurRadius: 20,
                       spreadRadius: 2,
                     ),
                     BoxShadow(
-                      color: AppColors.primary.withOpacity(0.1),
+                      color: AppColors.primary.withValues(alpha: 0.1),
                       blurRadius: 30,
                       spreadRadius: 0,
                     ),
                   ]
                 : [
                     BoxShadow(
-                      color: AppColors.primary.withOpacity(0.05),
+                      color: AppColors.primary.withValues(alpha: 0.05),
                       blurRadius: 10,
                       spreadRadius: 0,
                     ),
@@ -82,17 +82,17 @@ class _ContactInfoItemState extends State<ContactInfoItem> {
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
                           colors: [
-                            AppColors.primary.withOpacity(0.3),
-                            AppColors.primary.withOpacity(0.2),
+                            AppColors.primary.withValues(alpha: 0.3),
+                            AppColors.primary.withValues(alpha: 0.2),
                           ],
                         )
                       : null,
-                  color: _isHovered ? null : AppColors.primary.withOpacity(0.1),
+                  color: _isHovered ? null : AppColors.primary.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(12),
                   boxShadow: _isHovered
                       ? [
                           BoxShadow(
-                            color: AppColors.primary.withOpacity(0.3),
+                            color: AppColors.primary.withValues(alpha: 0.3),
                             blurRadius: 15,
                             spreadRadius: 2,
                           ),

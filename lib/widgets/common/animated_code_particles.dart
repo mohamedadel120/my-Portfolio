@@ -44,7 +44,7 @@ class _CodeParticlesPainter extends CustomPainter {
       final opacity = 0.2 + random.nextDouble() * 0.3;
       
       final paint = Paint()
-        ..color = AppColors.primary.withOpacity(opacity)
+        ..color = AppColors.primary.withValues(alpha: opacity)
         ..style = PaintingStyle.fill;
       
       // Draw as small dot with glow
@@ -56,7 +56,7 @@ class _CodeParticlesPainter extends CustomPainter {
       
       // Glow effect
       final glowPaint = Paint()
-        ..color = AppColors.primary.withOpacity(opacity * 0.3)
+        ..color = AppColors.primary.withValues(alpha: opacity * 0.3)
         ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 3);
       canvas.drawCircle(Offset(x, y), particleSize * 2, glowPaint);
     }

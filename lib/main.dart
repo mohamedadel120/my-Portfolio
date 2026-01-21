@@ -60,7 +60,7 @@ class MyApp extends StatelessWidget {
         scrollBehavior:
             CustomScrollBehavior(), // Step 3: Custom Scroll Behavior
         theme: ThemeData(
-          colorScheme: ColorScheme.dark(
+          colorScheme: const ColorScheme.dark(
             primary: AppColors.primary,
             secondary: AppColors.secondary,
             surface: AppColors.surface,
@@ -320,7 +320,7 @@ class _PortfolioPageState extends State<PortfolioPage> {
                     width: isMobile ? 32 : 40,
                     height: isMobile ? 32 : 40,
                     decoration: BoxDecoration(
-                      color: AppColors.primary.withOpacity(0.2),
+                      color: AppColors.primary.withValues(alpha: 0.2),
                       borderRadius: BorderRadius.circular(8),
                       border: Border.all(color: AppColors.primary, width: 2),
                     ),

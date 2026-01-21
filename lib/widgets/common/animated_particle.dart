@@ -69,7 +69,7 @@ class _AnimatedParticleState extends State<AnimatedParticle>
                             (widget.index % 2 == 0
                                     ? const Color(0xFF00D9FF)
                                     : const Color(0xFF7B2CBF))
-                                .withOpacity(0.5),
+                                .withValues(alpha: 0.5),
                         blurRadius: 8,
                         spreadRadius: 2,
                       ),

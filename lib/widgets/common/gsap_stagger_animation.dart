@@ -1,3 +1,4 @@
+// ignore_for_file: deprecated_member_use, avoid_web_libraries_in_flutter
 import 'dart:html' as html;
 import 'dart:js' as js;
 import 'package:flutter/material.dart';
@@ -132,7 +133,7 @@ class _GSAPStaggerAnimationState extends State<GSAPStaggerAnimation> {
 
       _isInitialized = true;
     } catch (e) {
-      print('GSAP Stagger Animation error: $e');
+      // print('GSAP Stagger Animation error: $e');
     }
   }
 
@@ -406,7 +407,7 @@ class _GSAPEnhancedAnimationState extends State<GSAPEnhancedAnimation> {
       html.window.addEventListener('gsap-enhanced-update', _handleGSAPUpdate);
       _isInitialized = true;
     } catch (e) {
-      print('GSAP Enhanced Animation error: $e');
+      // print('GSAP Enhanced Animation error: $e');
       // On error, ensure content is visible
       if (mounted) {
         _opacity.value = 1.0;
@@ -455,8 +456,9 @@ class _GSAPEnhancedAnimationState extends State<GSAPEnhancedAnimation> {
           }
 
           final dynamic rotationValue = detail['rotation'];
-          if (rotationValue != null)
+          if (rotationValue != null) {
             _rotation.value = (rotationValue as num).toDouble();
+          }
         }
       }
     } catch (e) {

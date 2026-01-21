@@ -31,7 +31,7 @@ class ExperienceCard extends StatelessWidget {
         margin: EdgeInsets.only(bottom: isMobile ? 20 : 30),
         padding: EdgeInsets.all(isMobile ? 20 : (isTablet ? 24 : 30)),
       decoration: BoxDecoration(
-        gradient: LinearGradient(
+        gradient: const LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
@@ -41,12 +41,12 @@ class ExperienceCard extends StatelessWidget {
         ),
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
-          color: AppColors.primary.withOpacity(0.2),
+          color: AppColors.primary.withValues(alpha: 0.2),
           width: 1,
         ),
         boxShadow: [
           BoxShadow(
-            color: AppColors.primary.withOpacity(0.1),
+            color: AppColors.primary.withValues(alpha: 0.1),
             blurRadius: 20,
             spreadRadius: 0,
           ),
@@ -88,10 +88,10 @@ class ExperienceCard extends StatelessWidget {
                   vertical: isMobile ? 6 : 8,
                 ),
                 decoration: BoxDecoration(
-                  color: AppColors.secondary.withOpacity(0.2),
+                  color: AppColors.secondary.withValues(alpha: 0.2),
                   borderRadius: BorderRadius.circular(20),
                   border: Border.all(
-                    color: AppColors.secondary.withOpacity(0.5),
+                    color: AppColors.secondary.withValues(alpha: 0.5),
                     width: 1,
                   ),
                 ),
@@ -151,7 +151,7 @@ class ExperienceCard extends StatelessWidget {
         .then()
         .shimmer(
           duration: 2000.ms,
-          color: const Color(0xFF00D9FF).withOpacity(0.1),
+          color: const Color(0xFF00D9FF).withValues(alpha: 0.1),
         );
   }
 }

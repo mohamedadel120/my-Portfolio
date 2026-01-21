@@ -32,7 +32,7 @@ class TextRevealAnimation extends StatelessWidget {
         .then()
         .shimmer(
           duration: 2000.ms,
-          color: AppColors.primary.withOpacity(0.3),
+          color: AppColors.primary.withValues(alpha: 0.3),
         );
   }
 }

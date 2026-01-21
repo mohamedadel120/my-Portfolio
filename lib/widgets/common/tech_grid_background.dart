@@ -19,7 +19,7 @@ class TechGridBackground extends StatelessWidget {
       offset: Offset(0, parallaxY % 50),
       child: CustomPaint(
         painter: GridPainter(
-          color: AppColors.primary.withOpacity(opacity),
+          color: AppColors.primary.withValues(alpha: opacity),
         ),
         child: Container(),
       ),

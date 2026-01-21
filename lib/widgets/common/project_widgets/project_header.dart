@@ -64,13 +64,13 @@ class ProjectHeader extends StatelessWidget {
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
-                    project.color.withOpacity(0.2),
-                    project.color.withOpacity(0.1),
+                    project.color.withValues(alpha: 0.2),
+                    project.color.withValues(alpha: 0.1),
                   ],
                 ),
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(
-                  color: project.color.withOpacity(0.3),
+                  color: project.color.withValues(alpha: 0.3),
                   width: 1,
                 ),
               ),
@@ -105,13 +105,13 @@ class ProjectHeader extends StatelessWidget {
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
-                    project.color.withOpacity(0.2),
-                    project.color.withOpacity(0.1),
+                    project.color.withValues(alpha: 0.2),
+                    project.color.withValues(alpha: 0.1),
                   ],
                 ),
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(
-                  color: project.color.withOpacity(0.3),
+                  color: project.color.withValues(alpha: 0.3),
                   width: 1,
                 ),
               ),
@@ -168,9 +168,9 @@ class _StoreLink extends StatelessWidget {
           Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: color.withOpacity(0.15),
+                  color: color.withValues(alpha: 0.15),
                   borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: color.withOpacity(0.4), width: 1),
+                  border: Border.all(color: color.withValues(alpha: 0.4), width: 1),
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,

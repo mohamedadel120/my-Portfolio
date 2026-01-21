@@ -75,7 +75,7 @@ class ExpertiseSection extends StatelessWidget {
             horizontal: horizontalPadding,
             vertical: verticalPadding,
           ),
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
@@ -103,7 +103,7 @@ class ExpertiseSection extends StatelessWidget {
                     scrollOffset: scrollOffset,
                     sectionStartOffset: sectionStartOffset,
                     delay: 0.ms,
-                    child: SectionTitle(title: 'Expertise', isVisible: true),
+                    child: const SectionTitle(title: 'Expertise', isVisible: true),
                   ),
                   SizedBox(height: isMobile ? 48 : 72),
                   // Expertise cards
@@ -260,13 +260,13 @@ class _ExpertiseCardUnifiedState extends State<_ExpertiseCardUnified> {
       ease: 'power3.out', // Tip 1: Better easing from the article
       useRandom: false, // Disable random for consistent animations
       animationConfig: {
-        'opacity': {'from': 0, 'to': 1},
+        'opacity': const {'from': 0, 'to': 1},
         'x': {
           'from': animationDirection,
           'to': 0,
         }, // Tip 3: Alternating directions using wrap
-        'y': {'from': 50, 'to': 0}, // Slide up from below
-        'scale': {'from': 0.9, 'to': 1.0}, // Slightly less dramatic scale
+        'y': const {'from': 50, 'to': 0}, // Slide up from below
+        'scale': const {'from': 0.9, 'to': 1.0}, // Slightly less dramatic scale
         'rotation': {
           'from': widget.index % 2 == 0 ? -1.5 : 1.5, // Subtle rotation
           'to': 0,
@@ -285,12 +285,12 @@ class _ExpertiseCardUnifiedState extends State<_ExpertiseCardUnified> {
             color: AppColors.surface,
             borderRadius: BorderRadius.circular(24),
             border: Border.all(
-              color: widget.expertise.color.withOpacity(_isHovered ? 0.4 : 0.2),
+              color: widget.expertise.color.withValues(alpha: _isHovered ? 0.4 : 0.2),
               width: _isHovered ? 2 : 1.5,
             ),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(_isHovered ? 0.15 : 0.08),
+                color: Colors.black.withValues(alpha: _isHovered ? 0.15 : 0.08),
                 blurRadius: _isHovered ? 20 : 12,
                 spreadRadius: _isHovered ? 2 : 0,
                 offset: Offset(0, _isHovered ? 8 : 4),
@@ -312,12 +312,12 @@ class _ExpertiseCardUnifiedState extends State<_ExpertiseCardUnified> {
                   vertical: widget.isMobile ? 20 : (widget.isTablet ? 24 : 28),
                 ),
                 decoration: BoxDecoration(
-                  color: widget.expertise.color.withOpacity(
+                  color: widget.expertise.color.withValues(alpha: 
                     _isHovered ? 0.1 : 0.05,
                   ),
                   borderRadius: BorderRadius.circular(20),
                   border: Border.all(
-                    color: widget.expertise.color.withOpacity(
+                    color: widget.expertise.color.withValues(alpha: 
                       _isHovered ? 0.3 : 0.15,
                     ),
                     width: 1.5,
@@ -331,7 +331,7 @@ class _ExpertiseCardUnifiedState extends State<_ExpertiseCardUnified> {
                       curve: Curves.easeOutCubic,
                       padding: const EdgeInsets.all(14),
                       decoration: BoxDecoration(
-                        color: widget.expertise.color.withOpacity(
+                        color: widget.expertise.color.withValues(alpha: 
                           _isHovered ? 0.15 : 0.08,
                         ),
                         borderRadius: BorderRadius.circular(14),
@@ -374,19 +374,19 @@ class _ExpertiseCardUnifiedState extends State<_ExpertiseCardUnified> {
                   ],
                 ),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               // Clean description section with subtle accent
               Container(
                 padding: EdgeInsets.all(
                   widget.isMobile ? 20 : (widget.isTablet ? 24 : 28),
                 ),
                 decoration: BoxDecoration(
-                  color: AppColors.surface.withOpacity(0.5),
+                  color: AppColors.surface.withValues(alpha: 0.5),
 
                   borderRadius: BorderRadius.circular(20),
                   border: Border(
                     left: BorderSide(
-                      color: widget.expertise.color.withOpacity(0.3),
+                      color: widget.expertise.color.withValues(alpha: 0.3),
                       width: 3,
                     ),
                   ),
@@ -399,7 +399,7 @@ class _ExpertiseCardUnifiedState extends State<_ExpertiseCardUnified> {
                         : widget.isTablet
                         ? 15
                         : 16,
-                    color: AppColors.textSecondary.withOpacity(0.9),
+                    color: AppColors.textSecondary.withValues(alpha: 0.9),
                     height: 1.6,
                     fontWeight: FontWeight.w400,
                   ),

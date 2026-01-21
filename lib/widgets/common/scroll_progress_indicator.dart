@@ -21,14 +21,14 @@ class ScrollProgressIndicator extends StatelessWidget {
       right: 0,
       child: Container(
         height: 3,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           color: AppColors.background,
         ),
         child: FractionallySizedBox(
           alignment: Alignment.centerLeft,
           widthFactor: progress,
           child: Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               gradient: LinearGradient(
                 colors: [AppColors.primary, AppColors.secondary],
               ),

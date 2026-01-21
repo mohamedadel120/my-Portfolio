@@ -57,7 +57,7 @@ class ContactSection extends StatelessWidget {
               stops: const [0.0, 0.5, 1.0],
               colors: [
                 AppColors.surface,
-                AppColors.surface.withOpacity(0.95),
+                AppColors.surface.withValues(alpha: 0.95),
                 AppColors.background,
               ],
             ),
@@ -82,7 +82,7 @@ class ContactSection extends StatelessWidget {
                     scrollOffset: scrollOffset,
                     sectionStartOffset: sectionStartOffset,
                     delay: 0.ms,
-                    child: SectionTitle(title: 'Get In Touch', isVisible: true),
+                    child: const SectionTitle(title: 'Get In Touch', isVisible: true),
                   ),
                   SizedBox(height: isMobile ? 24 : 40),
                   GSAPEnhancedAnimation(
@@ -90,7 +90,7 @@ class ContactSection extends StatelessWidget {
                     scrollOffset: scrollOffset,
                     sectionStartOffset: sectionStartOffset,
                     viewportHeight: viewportHeight,
-                    animationConfig: {
+                    animationConfig: const {
                       'opacity': {'from': 0, 'to': 1},
                       'y': {'from': 30, 'to': 0},
                       'scale': {'from': 0.95, 'to': 1.0},
@@ -105,13 +105,13 @@ class ContactSection extends StatelessWidget {
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
                           colors: [
-                            AppColors.primary.withOpacity(0.1),
-                            AppColors.secondary.withOpacity(0.05),
+                            AppColors.primary.withValues(alpha: 0.1),
+                            AppColors.secondary.withValues(alpha: 0.05),
                           ],
                         ),
                         borderRadius: BorderRadius.circular(30),
                         border: Border.all(
-                          color: AppColors.primary.withOpacity(0.2),
+                          color: AppColors.primary.withValues(alpha: 0.2),
                           width: 1,
                         ),
                       ),
@@ -140,7 +140,7 @@ class ContactSection extends StatelessWidget {
                               scrollOffset: scrollOffset,
                               sectionStartOffset: sectionStartOffset + 100,
                               viewportHeight: viewportHeight,
-                              animationConfig: {
+                              animationConfig: const {
                                 'opacity': {'from': 0, 'to': 1},
                                 'x': {'from': -50, 'to': 0},
                               },
@@ -152,7 +152,7 @@ class ContactSection extends StatelessWidget {
                               scrollOffset: scrollOffset,
                               sectionStartOffset: sectionStartOffset + 200,
                               viewportHeight: viewportHeight,
-                              animationConfig: {
+                              animationConfig: const {
                                 'opacity': {'from': 0, 'to': 1},
                                 'x': {'from': 50, 'to': 0},
                               },
@@ -166,26 +166,26 @@ class ContactSection extends StatelessWidget {
                                         end: Alignment.bottomRight,
                                         colors: [
                                           AppColors.surface,
-                                          AppColors.surface.withOpacity(0.95),
+                                          AppColors.surface.withValues(alpha: 0.95),
                                         ],
                                       ),
                                       borderRadius: BorderRadius.circular(20),
                                       border: Border.all(
-                                        color: AppColors.primary.withOpacity(
+                                        color: AppColors.primary.withValues(alpha: 
                                           0.3,
                                         ),
                                         width: 1.5,
                                       ),
                                       boxShadow: [
                                         BoxShadow(
-                                          color: AppColors.primary.withOpacity(
+                                          color: AppColors.primary.withValues(alpha: 
                                             0.1,
                                           ),
                                           blurRadius: 25,
                                           spreadRadius: 0,
                                         ),
                                         BoxShadow(
-                                          color: AppColors.primary.withOpacity(
+                                          color: AppColors.primary.withValues(alpha: 
                                             0.05,
                                           ),
                                           blurRadius: 50,
@@ -252,10 +252,10 @@ class ContactSection extends StatelessWidget {
                                         decoration: BoxDecoration(
                                           gradient: LinearGradient(
                                             colors: [
-                                              AppColors.primary.withOpacity(
+                                              AppColors.primary.withValues(alpha: 
                                                 0.1,
                                               ),
-                                              AppColors.secondary.withOpacity(
+                                              AppColors.secondary.withValues(alpha: 
                                                 0.05,
                                               ),
                                             ],
@@ -341,7 +341,7 @@ class ContactSection extends StatelessWidget {
                                 scrollOffset: scrollOffset,
                                 sectionStartOffset: sectionStartOffset + 200,
                                 viewportHeight: viewportHeight,
-                                animationConfig: {
+                                animationConfig: const {
                                   'opacity': {'from': 0, 'to': 1},
                                   'x': {'from': -80, 'to': 0},
                                 },
@@ -359,7 +359,7 @@ class ContactSection extends StatelessWidget {
                                 scrollOffset: scrollOffset,
                                 sectionStartOffset: sectionStartOffset + 300,
                                 viewportHeight: viewportHeight,
-                                animationConfig: {
+                                animationConfig: const {
                                   'opacity': {'from': 0, 'to': 1},
                                   'x': {'from': 80, 'to': 0},
                                 },
@@ -375,12 +375,12 @@ class ContactSection extends StatelessWidget {
                                           end: Alignment.bottomRight,
                                           colors: [
                                             AppColors.surface,
-                                            AppColors.surface.withOpacity(0.95),
+                                            AppColors.surface.withValues(alpha: 0.95),
                                           ],
                                         ),
                                         borderRadius: BorderRadius.circular(20),
                                         border: Border.all(
-                                          color: AppColors.primary.withOpacity(
+                                          color: AppColors.primary.withValues(alpha: 
                                             0.3,
                                           ),
                                           width: 1.5,
@@ -388,13 +388,13 @@ class ContactSection extends StatelessWidget {
                                         boxShadow: [
                                           BoxShadow(
                                             color: AppColors.primary
-                                                .withOpacity(0.1),
+                                                .withValues(alpha: 0.1),
                                             blurRadius: 25,
                                             spreadRadius: 0,
                                           ),
                                           BoxShadow(
                                             color: AppColors.primary
-                                                .withOpacity(0.05),
+                                                .withValues(alpha: 0.05),
                                             blurRadius: 50,
                                             spreadRadius: 0,
                                           ),
@@ -463,10 +463,10 @@ class ContactSection extends StatelessWidget {
                                           decoration: BoxDecoration(
                                             gradient: LinearGradient(
                                               colors: [
-                                                AppColors.primary.withOpacity(
+                                                AppColors.primary.withValues(alpha: 
                                                   0.1,
                                                 ),
-                                                AppColors.secondary.withOpacity(
+                                                AppColors.secondary.withValues(alpha: 
                                                   0.05,
                                                 ),
                                               ],
@@ -550,7 +550,7 @@ class ContactSection extends StatelessWidget {
                     scrollOffset: scrollOffset,
                     sectionStartOffset: sectionStartOffset + 500,
                     viewportHeight: viewportHeight,
-                    animationConfig: {
+                    animationConfig: const {
                       'opacity': {'from': 0, 'to': 1},
                       'y': {'from': 20, 'to': 0},
                     },
@@ -562,17 +562,17 @@ class ContactSection extends StatelessWidget {
                           end: Alignment.bottomRight,
                           colors: [
                             AppColors.surface,
-                            AppColors.surface.withOpacity(0.9),
+                            AppColors.surface.withValues(alpha: 0.9),
                           ],
                         ),
                         borderRadius: BorderRadius.circular(15),
                         border: Border.all(
-                          color: AppColors.primary.withOpacity(0.3),
+                          color: AppColors.primary.withValues(alpha: 0.3),
                           width: 1.5,
                         ),
                         boxShadow: [
                           BoxShadow(
-                            color: AppColors.primary.withOpacity(0.1),
+                            color: AppColors.primary.withValues(alpha: 0.1),
                             blurRadius: 20,
                             spreadRadius: 0,
                           ),

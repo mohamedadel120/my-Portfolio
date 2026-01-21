@@ -32,7 +32,7 @@ class ScrollToTopButton extends StatelessWidget {
             .then()
             .shimmer(
               duration: 2000.ms,
-              color: Colors.white.withOpacity(0.3),
+              color: Colors.white.withValues(alpha: 0.3),
             ),
       ),
     );

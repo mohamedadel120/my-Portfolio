@@ -39,7 +39,7 @@ class SectionTitle extends StatelessWidget {
               width: isMobile ? 60 : 100,
               height: isMobile ? 3 : 4,
               decoration: BoxDecoration(
-                gradient: LinearGradient(
+                gradient: const LinearGradient(
                   colors: [AppColors.primary, AppColors.secondary],
                 ),
                 borderRadius: BorderRadius.circular(2),

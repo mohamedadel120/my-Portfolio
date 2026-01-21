@@ -28,7 +28,7 @@ class ProjectInfo extends StatelessWidget {
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
-                  colors: [project.color, project.color.withOpacity(0.5)],
+                  colors: [project.color, project.color.withValues(alpha: 0.5)],
                 ),
                 borderRadius: BorderRadius.circular(2),
               ),
@@ -56,7 +56,7 @@ class ProjectInfo extends StatelessWidget {
           project.description,
           style: GoogleFonts.poppins(
             fontSize: isMobile ? 12 : (isTablet ? 13 : 14),
-            color: AppColors.textSecondary.withOpacity(0.9),
+            color: AppColors.textSecondary.withValues(alpha: 0.9),
             height: isMobile ? 1.5 : 1.6,
             letterSpacing: 0.1,
           ),
@@ -102,9 +102,9 @@ class _TechTag extends StatelessWidget {
         vertical: isMobile ? 2 : 3,
       ),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
+        color: color.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: color.withOpacity(0.3), width: 1),
+        border: Border.all(color: color.withValues(alpha: 0.3), width: 1),
       ),
       child: Text(
         label,

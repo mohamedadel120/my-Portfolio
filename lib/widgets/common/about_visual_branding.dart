@@ -49,7 +49,7 @@ class _AboutVisualBrandingState extends State<AboutVisualBranding>
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   border: Border.all(
-                    color: AppColors.primary.withOpacity(0.1),
+                    color: AppColors.primary.withValues(alpha: 0.1),
                     width: 2,
                   ),
                 ),
@@ -62,7 +62,7 @@ class _AboutVisualBrandingState extends State<AboutVisualBranding>
                 child: CustomPaint(
                   size: Size(isMobile ? 180 : 280, isMobile ? 180 : 280),
                   painter: _DashedCirclePainter(
-                    color: AppColors.secondary.withOpacity(0.2),
+                    color: AppColors.secondary.withValues(alpha: 0.2),
                   ),
                 ),
               ),
@@ -75,13 +75,13 @@ class _AboutVisualBrandingState extends State<AboutVisualBranding>
                 shape: BoxShape.circle,
                 gradient: RadialGradient(
                   colors: [
-                    AppColors.primary.withOpacity(0.2),
+                    AppColors.primary.withValues(alpha: 0.2),
                     Colors.transparent,
                   ],
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: AppColors.primary.withOpacity(0.1),
+                    color: AppColors.primary.withValues(alpha: 0.1),
                     blurRadius: isMobile ? 30 : 50,
                     spreadRadius: isMobile ? 5 : 10,
                   ),
@@ -128,13 +128,13 @@ class _AboutVisualBrandingState extends State<AboutVisualBranding>
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
         decoration: BoxDecoration(
-          color: AppColors.surface.withOpacity(0.8),
+          color: AppColors.surface.withValues(alpha: 0.8),
           borderRadius: BorderRadius.circular(5),
-          border: Border.all(color: AppColors.primary.withOpacity(0.3)),
+          border: Border.all(color: AppColors.primary.withValues(alpha: 0.3)),
         ),
         child: Text(
           '<$text>',
-          style: TextStyle(
+          style: const TextStyle(
             color: AppColors.primary,
             fontSize: 10,
             fontFamily: 'monospace',

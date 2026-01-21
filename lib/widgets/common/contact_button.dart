@@ -38,28 +38,28 @@ class _ContactButtonState extends State<ContactButton> {
           duration: const Duration(milliseconds: 200),
           padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
           decoration: BoxDecoration(
-            color: widget.color.withOpacity(_isHovered ? 0.2 : 0.1),
+            color: widget.color.withValues(alpha: _isHovered ? 0.2 : 0.1),
             borderRadius: BorderRadius.circular(15),
             border: Border.all(
-              color: widget.color.withOpacity(_isHovered ? 0.5 : 0.3),
+              color: widget.color.withValues(alpha: _isHovered ? 0.5 : 0.3),
               width: _isHovered ? 2 : 1,
             ),
             boxShadow: _isHovered
                 ? [
                     BoxShadow(
-                      color: widget.color.withOpacity(0.4),
+                      color: widget.color.withValues(alpha: 0.4),
                       blurRadius: 25,
                       spreadRadius: 3,
                     ),
                     BoxShadow(
-                      color: widget.color.withOpacity(0.2),
+                      color: widget.color.withValues(alpha: 0.2),
                       blurRadius: 40,
                       spreadRadius: 0,
                     ),
                   ]
                 : [
                     BoxShadow(
-                      color: widget.color.withOpacity(0.15),
+                      color: widget.color.withValues(alpha: 0.15),
                       blurRadius: 15,
                       spreadRadius: 0,
                     ),

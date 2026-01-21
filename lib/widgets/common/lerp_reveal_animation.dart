@@ -223,7 +223,7 @@ class _LerpTextRevealState extends State<LerpTextReveal> {
           return TextSpan(
             text: wordIndex < words.length - 1 ? '$word ' : word,
             style: (widget.style ?? const TextStyle()).copyWith(
-              color: (widget.style?.color ?? Colors.white).withOpacity(wordOpacity),
+              color: (widget.style?.color ?? Colors.white).withValues(alpha: wordOpacity),
             ),
           );
         }).toList(),

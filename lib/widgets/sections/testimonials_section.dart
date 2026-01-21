@@ -41,7 +41,7 @@ class TestimonialsSection extends StatelessWidget {
             horizontal: horizontalPadding,
             vertical: verticalPadding,
           ),
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
@@ -71,12 +71,12 @@ class TestimonialsSection extends StatelessWidget {
                     sectionStartOffset: sectionStartOffset,
                     viewportHeight: viewportHeight,
                     ease: 'power2.out',
-                    animationConfig: {
+                    animationConfig: const {
                       'opacity': {'from': 0, 'to': 1},
                       'y': {'from': -30, 'to': 0},
                       'scale': {'from': 0.9, 'to': 1.0},
                     },
-                    child: SectionTitle(
+                    child: const SectionTitle(
                       title: 'Their Opinions',
                       isVisible: true,
                     ),
@@ -91,7 +91,7 @@ class TestimonialsSection extends StatelessWidget {
                     viewportHeight: viewportHeight,
                     staggerDelay: 0.12,
                     staggerFrom: 'start',
-                    animationConfig: {
+                    animationConfig: const {
                       'opacity': {'from': 0, 'to': 1},
                       'y': {'from': 60, 'to': 0},
                       'scale': {'from': 0.9, 'to': 1.0},
@@ -184,26 +184,26 @@ class _TestimonialCardState extends State<_TestimonialCard> {
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
-              AppColors.primary.withOpacity(0.1),
-              AppColors.secondary.withOpacity(0.08),
-              AppColors.surface.withOpacity(0.95),
+              AppColors.primary.withValues(alpha: 0.1),
+              AppColors.secondary.withValues(alpha: 0.08),
+              AppColors.surface.withValues(alpha: 0.95),
             ],
             stops: const [0.0, 0.5, 1.0],
           ),
           borderRadius: BorderRadius.circular(24),
           border: Border.all(
-            color: AppColors.primary.withOpacity(_isHovered ? 0.4 : 0.2),
+            color: AppColors.primary.withValues(alpha: _isHovered ? 0.4 : 0.2),
             width: _isHovered ? 2 : 1.5,
           ),
           boxShadow: [
             BoxShadow(
-              color: AppColors.primary.withOpacity(_isHovered ? 0.25 : 0.1),
+              color: AppColors.primary.withValues(alpha: _isHovered ? 0.25 : 0.1),
               blurRadius: _isHovered ? 30 : 20,
               spreadRadius: _isHovered ? 2 : 0,
               offset: Offset(0, _isHovered ? 8 : 4),
             ),
             BoxShadow(
-              color: Colors.black.withOpacity(_isHovered ? 0.15 : 0.08),
+              color: Colors.black.withValues(alpha: _isHovered ? 0.15 : 0.08),
               blurRadius: _isHovered ? 20 : 10,
               spreadRadius: 0,
               offset: Offset(0, _isHovered ? 6 : 3),
@@ -223,8 +223,8 @@ class _TestimonialCardState extends State<_TestimonialCard> {
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
-                    AppColors.primary.withOpacity(0.3),
-                    AppColors.secondary.withOpacity(0.2),
+                    AppColors.primary.withValues(alpha: 0.3),
+                    AppColors.secondary.withValues(alpha: 0.2),
                   ],
                 ),
                 borderRadius: BorderRadius.circular(12),
@@ -252,7 +252,7 @@ class _TestimonialCardState extends State<_TestimonialCard> {
               widget.testimonial.opinion,
               style: GoogleFonts.poppins(
                 fontSize: widget.isMobile ? 14 : (widget.isTablet ? 15 : 16),
-                color: AppColors.textSecondary.withOpacity(0.95),
+                color: AppColors.textSecondary.withValues(alpha: 0.95),
                 height: 1.7,
                 letterSpacing: 0.2,
                 fontStyle: FontStyle.italic,
@@ -265,8 +265,8 @@ class _TestimonialCardState extends State<_TestimonialCard> {
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
-                    AppColors.primary.withOpacity(0.3),
-                    AppColors.primary.withOpacity(0.0),
+                    AppColors.primary.withValues(alpha: 0.3),
+                    AppColors.primary.withValues(alpha: 0.0),
                   ],
                 ),
               ),
@@ -280,14 +280,14 @@ class _TestimonialCardState extends State<_TestimonialCard> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(height: 4),
+                      const SizedBox(height: 4),
                       Text(
                         '${widget.testimonial.role} • ${widget.testimonial.company}',
                         style: GoogleFonts.poppins(
                           fontSize: widget.isMobile
                               ? 12
                               : (widget.isTablet ? 13 : 14),
-                          color: AppColors.textSecondary.withOpacity(0.8),
+                          color: AppColors.textSecondary.withValues(alpha: 0.8),
                           letterSpacing: 0.1,
                         ),
                       ),

@@ -31,24 +31,24 @@ class PhoneFrame extends StatelessWidget {
           Positioned(
             left: 2,
             top: height * 0.18,
-            child: _SideButton(height: 26, width: 4),
+            child: const _SideButton(height: 26, width: 4),
           ),
           Positioned(
             left: 2,
             top: height * 0.24,
-            child: _SideButton(height: 40, width: 4),
+            child: const _SideButton(height: 40, width: 4),
           ),
           Positioned(
             left: 2,
             top: height * 0.31,
-            child: _SideButton(height: 40, width: 4),
+            child: const _SideButton(height: 40, width: 4),
           ),
 
           // --- BUTTONS (Right Side - Power) ---
           Positioned(
             right: 2,
             top: height * 0.25,
-            child: _SideButton(height: 60, width: 4),
+            child: const _SideButton(height: 60, width: 4),
           ),
 
           // --- MAIN FRAME ---
@@ -59,29 +59,29 @@ class PhoneFrame extends StatelessWidget {
               borderRadius: BorderRadius.circular(44),
 
               // Realistic Metal Shading Gradient
-              gradient: LinearGradient(
+              gradient: const LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: [
-                  const Color(0xFF555555), // Light reflection
-                  const Color(0xFF222222), // Dark metal
-                  const Color(0xFF111111), // Shadow
-                  const Color(0xFF444444), // Rim light
+                  Color(0xFF555555), // Light reflection
+                  Color(0xFF222222), // Dark metal
+                  Color(0xFF111111), // Shadow
+                  Color(0xFF444444), // Rim light
                 ],
-                stops: const [0.0, 0.4, 0.6, 1.0],
+                stops: [0.0, 0.4, 0.6, 1.0],
               ),
 
               boxShadow: [
                 // Deep ambient shadow
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.5),
+                  color: Colors.black.withValues(alpha: 0.5),
                   blurRadius: 50,
                   spreadRadius: -10,
                   offset: const Offset(0, 30),
                 ),
                 // Subtle outline glow
                 BoxShadow(
-                  color: Colors.white.withOpacity(0.05),
+                  color: Colors.white.withValues(alpha: 0.05),
                   blurRadius: 2,
                   spreadRadius: 1,
                   offset: const Offset(0, 0),
@@ -126,7 +126,7 @@ class PhoneFrame extends StatelessWidget {
                           begin: Alignment.topRight,
                           end: Alignment.bottomLeft,
                           colors: [
-                            Colors.white.withOpacity(0.03),
+                            Colors.white.withValues(alpha: 0.03),
                             Colors.transparent,
                             Colors.transparent,
                           ],

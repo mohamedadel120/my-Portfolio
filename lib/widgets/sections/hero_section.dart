@@ -1,5 +1,4 @@
 import 'dart:math';
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -66,7 +65,7 @@ class _HeroSectionState extends State<HeroSection>
           height: viewportHeight,
           width: double.infinity,
           clipBehavior: Clip.none, // Allow overflow for aurora blobs
-          decoration: BoxDecoration(color: AppColors.background),
+          decoration: const BoxDecoration(color: AppColors.background),
           child: Stack(
             children: [
               // Aurora Background
@@ -78,7 +77,7 @@ class _HeroSectionState extends State<HeroSection>
                       return Stack(
                         children: [
                           _buildAuroraBlob(
-                            color: AppColors.primary.withOpacity(0.15),
+                            color: AppColors.primary.withValues(alpha: 0.15),
                             top:
                                 -100 +
                                 sin(_auroraController.value * 2 * pi) * 50,
@@ -88,7 +87,7 @@ class _HeroSectionState extends State<HeroSection>
                             size: 600,
                           ),
                           _buildAuroraBlob(
-                            color: AppColors.secondary.withOpacity(0.1),
+                            color: AppColors.secondary.withValues(alpha: 0.1),
                             bottom:
                                 -100 -
                                 sin(_auroraController.value * 2 * pi) * 50,
@@ -367,7 +366,7 @@ class _HeroSectionState extends State<HeroSection>
                                     child: Row(
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
-                                        Icon(
+                                        const Icon(
                                           Icons.download_rounded,
                                           color: AppColors.primary,
                                           size: 18,
@@ -464,12 +463,12 @@ class _HeroSectionState extends State<HeroSection>
                 height: size,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: color.withOpacity(
-                    0.4,
+                  color: color.withValues(
+                    alpha: 0.4,
                   ), // Reduced opacity as we use blur
                   boxShadow: [
                     BoxShadow(
-                      color: color.withOpacity(0.6),
+                      color: color.withValues(alpha: 0.6),
                       blurRadius: 100,
                       spreadRadius: 20,
                     ),
@@ -478,8 +477,8 @@ class _HeroSectionState extends State<HeroSection>
               )
               .animate(onPlay: (c) => c.repeat(reverse: true))
               .scale(
-                begin: Offset(1, 1),
-                end: Offset(1.2, 1.2),
+                begin: const Offset(1, 1),
+                end: const Offset(1.2, 1.2),
                 duration: 4000.ms,
               ),
     );

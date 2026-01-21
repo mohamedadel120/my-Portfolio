@@ -3,10 +3,11 @@ import '../models/project.dart';
 import '../models/experience.dart';
 import '../models/why_choose_me_reason.dart';
 import '../models/testimonial.dart';
+import '../gen/assets.gen.dart';
 import 'app_colors.dart';
 
 class AppData {
-  static const List<Project> projects = [
+  static final List<Project> projects = [
     Project(
       title: 'Gomla Mobile App',
       description:
@@ -18,39 +19,39 @@ class AppData {
         'Clean Architecture',
         'Payment Gateway',
       ],
-      color: Color(0xFF00D9FF),
+      color: const Color(0xFF00D9FF),
       downloads: '10,000+',
-      logoUrl: 'assets/images/gomla/logo.webp',
+      logoUrl: Assets.images.gomla.logo.path,
       galleryImages: [
-        'assets/images/gomla/image1.webp',
-        'assets/images/gomla/image2.webp',
-        'assets/images/gomla/image3.webp',
-        'assets/images/gomla/image4.webp',
+        Assets.images.gomla.image1.path,
+        Assets.images.gomla.image2.path,
+        Assets.images.gomla.image3.path,
+        Assets.images.gomla.image4.path,
       ],
       androidStoreUrl:
-          'https://play.google.com/store/apps/details?id=com.example.gomla',
+          'https://play.google.com/store/apps/details?id=com.gomla.store',
     ),
     Project(
       title: 'Stock Mobile App',
       description:
           'A powerful B2B inventory management platform designed for businesses to efficiently track and manage their stock. Built with clean architecture and Bloc pattern for scalable state management. The app achieved remarkable success with 10,000+ downloads and maintains 4.8-star ratings across both Google Play and iOS platforms.',
       tech: ['Flutter', 'Firebase', 'Bloc', 'Clean Architecture', 'REST APIs'],
-      color: Color(0xFF7B2CBF),
+      color: const Color(0xFF7B2CBF),
       downloads: '10,000+',
-      logoUrl: 'assets/images/stock/logo.webp',
+      logoUrl: Assets.images.stock.logo.path,
       galleryImages: [
-        'assets/images/stock/logo.webp',
-        'assets/images/stock/image1.webp',
-        'assets/images/stock/image2.webp',
-        'assets/images/stock/image3.webp',
-        'assets/images/stock/image4.webp',
-        'assets/images/stock/image5.webp',
-        'assets/images/stock/image6.webp',
-        'assets/images/stock/image7.webp',
-        'assets/images/stock/image8.webp',
+        Assets.images.stock.logo.path,
+        Assets.images.stock.image1.path,
+        Assets.images.stock.image2.path,
+        Assets.images.stock.image3.path,
+        Assets.images.stock.image4.path,
+        Assets.images.stock.image5.path,
+        Assets.images.stock.image6.path,
+        Assets.images.stock.image7.path,
+        Assets.images.stock.image8.path,
       ],
       androidStoreUrl:
-          'https://play.google.com/store/apps/details?id=com.example.stock',
+          'https://play.google.com/store/apps/details?id=com.spark.stockclientapp',
       iosStoreUrl: 'https://apps.apple.com/app/stock-mobile/id123456789',
     ),
     Project(
@@ -58,32 +59,34 @@ class AppData {
       description:
           'An innovative mobile application designed for modern businesses. Built with Flutter and clean architecture principles, Palleta offers a seamless user experience with robust performance. The app features intuitive design, efficient state management using Bloc pattern, and seamless integration with Firebase backend services.',
       tech: ['Flutter', 'Firebase', 'Bloc', 'Clean Architecture', 'REST APIs'],
-      color: Color(0xFF00D9FF),
+      color: const Color(0xFF00D9FF),
       downloads: 'Active Development',
-      logoUrl: 'assets/images/paletta/logo.webp',
+      logoUrl: Assets.images.paletta.logo.path,
       galleryImages: [
-        // 'assets/images/paletta/logo.webp',
-        'assets/images/paletta/image1.webp',
-        'assets/images/paletta/image2.webp',
-        'assets/images/paletta/image3.webp',
-        'assets/images/paletta/image4.webp',
-        'assets/images/paletta/image5.webp',
-        'assets/images/paletta/image6.webp',
-        'assets/images/paletta/image7.webp',
+        // Assets.images.paletta.logo.path,
+        Assets.images.paletta.image1.path,
+        Assets.images.paletta.image2.path,
+        Assets.images.paletta.image3.path,
+        Assets.images.paletta.image4.path,
+        Assets.images.paletta.image5.path,
+        Assets.images.paletta.image6.path,
+        Assets.images.paletta.image7.path,
       ],
       androidStoreUrl:
-          'https://play.google.com/store/apps/details?id=com.example.palleta',
+          'https://play.google.com/store/apps/details?id=com.spark.palettalientapp',
     ),
     Project(
       title: 'DrugZa - TagPharma',
       description:
           'A specialized healthcare application connecting patients with pharmaceutical services. Features local data storage using SQLite and Hive for offline functionality, ensuring seamless access to medical information. The intuitive design and user-centric approach resulted in a significant 35% increase in customer engagement.',
       tech: ['Flutter', 'Firebase', 'Bloc', 'SQLite', 'Hive'],
-      color: Color(0xFF00D9FF),
-      videoUrl: 'assets/videos/drugza_demo.mp4',
+      androidStoreUrl:
+          'https://play.google.com/store/apps/details?id=com.app.drugza',
+      color: const Color(0xFF00D9FF),
+      videoUrl: Assets.videos.drugzaDemo,
       downloads: 'High Engagement',
     ),
-    Project(
+    const Project(
       title: 'Ringo - Shahabander',
       description:
           'An advanced wholesale e-commerce platform designed for bulk trading operations. Integrated comprehensive shipment tracking and streamlined checkout processes to dramatically improve business efficiency. The solution delivered impressive results: a 60% boost in sales performance and 40% improvement in operational speed.',
@@ -96,22 +99,22 @@ class AppData {
       description:
           'A comprehensive Learning Management System (LMS) designed to revolutionize the educational experience. Features interactive learning modules, real-time progress tracking, and dedicated parent portal for monitoring student performance. The platform simplifies education management while providing complete control and transparency for all stakeholders.',
       tech: ['Flutter', 'Firebase', 'Bloc', 'LMS', 'Parent Control'],
-      color: Color(0xFF00D9FF),
+      color: const Color(0xFF00D9FF),
       downloads: 'LMS Platform',
-      logoUrl: 'assets/images/adruse/Login.png',
+      logoUrl: Assets.images.adruse.login.path,
       galleryImages: [
-        'assets/images/adruse/Login.png',
-        'assets/images/adruse/Primary -1.png',
-        'assets/images/adruse/Primary -1-1.png',
-        'assets/images/adruse/Primary -1-2.png',
-        'assets/images/adruse/Primary -1-3.png',
-        'assets/images/adruse/Primary -1-4.png',
-        'assets/images/adruse/Primary - 3 - Subjects 1.png',
-        'assets/images/adruse/Primary- 4 - Subject Cource Page 1.png',
-        'assets/images/adruse/Primary - 4 - Subject Cource Page 5.png',
-        'assets/images/adruse/Profile.png',
-        'assets/images/adruse/Side Menu.png',
-        'assets/images/adruse/Subscribe.png',
+        Assets.images.adruse.login.path,
+        Assets.images.adruse.primary1.path,
+        Assets.images.adruse.primary11.path,
+        Assets.images.adruse.primary12.path,
+        Assets.images.adruse.primary13.path,
+        Assets.images.adruse.primary14.path,
+        Assets.images.adruse.primary3Subjects1.path,
+        Assets.images.adruse.primary4SubjectCourcePage1.path,
+        Assets.images.adruse.primary4SubjectCourcePage5.path,
+        Assets.images.adruse.profile.path,
+        Assets.images.adruse.sideMenu.path,
+        Assets.images.adruse.subscribe.path,
       ],
       androidStoreUrl:
           'https://play.google.com/store/apps/details?id=com.example.adruse',
@@ -122,17 +125,19 @@ class AppData {
       description:
           'A full-featured marketplace platform that connects sellers and customers seamlessly. Includes robust seller dashboard for inventory management, order processing, and analytics, while providing customers with a smooth shopping experience. The platform has gained strong market traction with 10,000+ downloads and maintains excellent 4.8-star user ratings.',
       tech: ['Flutter', 'Bloc', 'REST APIs', 'E-commerce', 'Seller System'],
-      color: Color(0xFF7B2CBF),
+      androidStoreUrl:
+          'https://play.google.com/store/apps/details?id=com.albatal.alba',
+      color: const Color(0xFF7B2CBF),
       downloads: '5,000+',
       galleryImages: [
-        'assets/images/albatal/image1.webp',
-        'assets/images/albatal/image2.webp',
-        'assets/images/albatal/image3.webp',
-        'assets/images/albatal/image4.webp',
-        'assets/images/albatal/image5.webp',
-        'assets/images/albatal/image6.webp',
-        'assets/images/albatal/image7.webp',
-        'assets/images/albatal/image17.webp',
+        Assets.images.albatal.image1.path,
+        Assets.images.albatal.image2.path,
+        Assets.images.albatal.image3.path,
+        Assets.images.albatal.image4.path,
+        Assets.images.albatal.image5.path,
+        Assets.images.albatal.image6.path,
+        Assets.images.albatal.image7.path,
+        Assets.images.albatal.image17.path,
       ],
     ),
   ];

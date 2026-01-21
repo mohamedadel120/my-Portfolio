@@ -42,7 +42,7 @@ class WhyChooseMeSection extends StatelessWidget {
             horizontal: horizontalPadding,
             vertical: verticalPadding,
           ),
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
@@ -72,12 +72,12 @@ class WhyChooseMeSection extends StatelessWidget {
                     sectionStartOffset: sectionStartOffset,
                     viewportHeight: viewportHeight,
                     ease: 'power2.out',
-                    animationConfig: {
+                    animationConfig: const {
                       'opacity': {'from': 0, 'to': 1},
                       'y': {'from': -30, 'to': 0},
                       'scale': {'from': 0.9, 'to': 1.0},
                     },
-                    child: SectionTitle(
+                    child: const SectionTitle(
                       title: 'Why Choose Me',
                       isVisible: true,
                     ),
@@ -92,7 +92,7 @@ class WhyChooseMeSection extends StatelessWidget {
                     viewportHeight: viewportHeight,
                     staggerDelay: 0.1,
                     staggerFrom: 'start',
-                    animationConfig: {
+                    animationConfig: const {
                       'opacity': {'from': 0, 'to': 1},
                       'y': {'from': 60, 'to': 0},
                       'scale': {'from': 0.9, 'to': 1.0},
@@ -186,20 +186,20 @@ class _WhyChooseMeCardState extends State<_WhyChooseMeCard> {
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
-              widget.reason.color.withOpacity(0.12),
-              widget.reason.color.withOpacity(0.06),
-              AppColors.surface.withOpacity(0.9),
+              widget.reason.color.withValues(alpha: 0.12),
+              widget.reason.color.withValues(alpha: 0.06),
+              AppColors.surface.withValues(alpha: 0.9),
             ],
             stops: const [0.0, 0.5, 1.0],
           ),
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color: widget.reason.color.withOpacity(_isHovered ? 0.5 : 0.25),
+            color: widget.reason.color.withValues(alpha: _isHovered ? 0.5 : 0.25),
             width: _isHovered ? 2 : 1.5,
           ),
           boxShadow: [
             BoxShadow(
-              color: widget.reason.color.withOpacity(_isHovered ? 0.3 : 0.12),
+              color: widget.reason.color.withValues(alpha: _isHovered ? 0.3 : 0.12),
               blurRadius: _isHovered ? 30 : 20,
               spreadRadius: _isHovered ? 2 : 0,
               offset: Offset(0, _isHovered ? 8 : 4),
@@ -219,13 +219,13 @@ class _WhyChooseMeCardState extends State<_WhyChooseMeCard> {
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
-                    widget.reason.color.withOpacity(0.3),
-                    widget.reason.color.withOpacity(0.15),
+                    widget.reason.color.withValues(alpha: 0.3),
+                    widget.reason.color.withValues(alpha: 0.15),
                   ],
                 ),
                 borderRadius: BorderRadius.circular(14),
                 border: Border.all(
-                  color: widget.reason.color.withOpacity(0.4),
+                  color: widget.reason.color.withValues(alpha: 0.4),
                   width: 1.5,
                 ),
               ),
@@ -252,7 +252,7 @@ class _WhyChooseMeCardState extends State<_WhyChooseMeCard> {
               widget.reason.description,
               style: GoogleFonts.poppins(
                 fontSize: widget.isMobile ? 13 : (widget.isTablet ? 14 : 15),
-                color: AppColors.textSecondary.withOpacity(0.9),
+                color: AppColors.textSecondary.withValues(alpha: 0.9),
                 height: 1.6,
                 letterSpacing: 0.1,
               ),

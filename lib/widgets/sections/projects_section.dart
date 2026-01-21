@@ -122,7 +122,7 @@ class _ProjectsSectionState extends State<ProjectsSection> {
             horizontal: horizontalPadding,
             vertical: verticalPadding,
           ),
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
@@ -185,286 +185,39 @@ class _ProjectsSectionState extends State<ProjectsSection> {
               Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  GSAPEnhancedAnimation(
-                    elementId: 'projects-title',
-                    scrollOffset: scrollOffset,
-                    sectionStartOffset: sectionStartOffset,
-                    viewportHeight: viewportHeight,
-                    ease: 'power2.out',
-                    animationConfig: {
-                      'opacity': {'from': 0, 'to': 1},
-                      'y': {'from': -30, 'to': 0},
-                      'scale': {'from': 0.9, 'to': 1.0},
-                    },
-                    child: TextRenderer(
-                      text: 'My Projects',
-                      child: SectionTitle(
-                        title: 'My Projects',
-                        isVisible: true,
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: isMobile ? 24 : 32),
-                  GSAPEnhancedAnimation(
-                    elementId: 'projects-divider',
-                    scrollOffset: scrollOffset,
-                    sectionStartOffset:
-                        sectionStartOffset + (viewportHeight * 0.05),
-                    viewportHeight: viewportHeight,
-                    ease: 'power2.out',
-                    animationConfig: {
-                      'opacity': {'from': 0, 'to': 1},
-                      'scale': {'from': 0, 'to': 1.0},
-                    },
-                    child: SectionDivider(
-                      scrollOffset: scrollOffset,
-                      delay: 0.ms,
-                    ),
+                  ..._buildSectionHeader(
+                    scrollOffset,
+                    sectionStartOffset,
+                    viewportHeight,
+                    isMobile,
+                    isTablet,
                   ),
                   SizedBox(height: isMobile ? 40 : 48),
-                  GSAPEnhancedAnimation(
-                    elementId: 'projects-intro',
-                    scrollOffset: scrollOffset,
-                    sectionStartOffset:
-                        sectionStartOffset + (viewportHeight * 0.1),
-                    viewportHeight: viewportHeight,
-                    ease: 'power2.out',
-                    animationConfig: {
-                      'opacity': {'from': 0, 'to': 1},
-                      'y': {'from': 40, 'to': 0},
-                      'scale': {'from': 0.95, 'to': 1.0},
-                    },
-                    child: Container(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: isMobile
-                            ? 20
-                            : isTablet
-                            ? 28
-                            : 36,
-                        vertical: isMobile
-                            ? 24
-                            : isTablet
-                            ? 28
-                            : 32,
-                      ),
-                      margin: EdgeInsets.only(bottom: isMobile ? 40 : 48),
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                          colors: [
-                            AppColors.primary.withOpacity(0.12),
-                            AppColors.secondary.withOpacity(0.08),
-                            AppColors.primary.withOpacity(0.05),
-                          ],
-                          stops: const [0.0, 0.5, 1.0],
-                        ),
-                        borderRadius: BorderRadius.circular(20),
-                        border: Border.all(
-                          color: AppColors.primary.withOpacity(0.2),
-                          width: 1.5,
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: AppColors.primary.withOpacity(0.1),
-                            blurRadius: 20,
-                            spreadRadius: 0,
-                            offset: const Offset(0, 4),
-                          ),
-                        ],
-                      ),
-                      child: Column(
-                        children: [
-                          // Enhanced narrative text
-                          Text(
-                            'The journey starts with a closer look.',
-                            style: GoogleFonts.poppins(
-                              fontSize: isMobile
-                                  ? 20
-                                  : isTablet
-                                  ? 24
-                                  : 28,
-                              color: AppColors.textPrimary,
-                              fontWeight: FontWeight.w700,
-                              height: 1.3,
-                              letterSpacing: -0.5,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                          SizedBox(height: isMobile ? 16 : 20),
-                          Container(
-                            width: 60,
-                            height: 3,
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [
-                                  AppColors.primary,
-                                  AppColors.secondary,
-                                ],
-                              ),
-                              borderRadius: BorderRadius.circular(2),
-                            ),
-                          ),
-                          SizedBox(height: isMobile ? 16 : 20),
-                          Text(
-                            'Discover a better way to build, where development feels effortless, apps perform seamlessly, and users come alive in smooth experiences. With clean architecture, powerful state management, and intuitive design, your project is unforgettable.',
-                            style: GoogleFonts.poppins(
-                              fontSize: isMobile
-                                  ? 14
-                                  : isTablet
-                                  ? 15
-                                  : 17,
-                              color: AppColors.textSecondary.withOpacity(0.9),
-                              height: 1.8,
-                              letterSpacing: 0.2,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: isMobile ? 40 : 48),
-                  // Project Statistics Dashboard
-                  GSAPEnhancedAnimation(
-                    elementId: 'projects-stats',
-                    scrollOffset: scrollOffset,
-                    sectionStartOffset:
-                        sectionStartOffset + (viewportHeight * 0.15),
-                    viewportHeight: viewportHeight,
-                    ease: 'power2.out',
-                    animationConfig: {
-                      'opacity': {'from': 0, 'to': 1},
-                      'y': {'from': 40, 'to': 0},
-                      'scale': {'from': 0.95, 'to': 1.0},
-                    },
-                    child: _ProjectStatsDashboard(
-                      stats: _getProjectStats(),
-                      isMobile: isMobile,
-                      isTablet: isTablet,
-                    ),
+                  _buildStatsArea(
+                    scrollOffset,
+                    sectionStartOffset,
+                    viewportHeight,
+                    isMobile,
+                    isTablet,
                   ),
                   SizedBox(height: isMobile ? 32 : 40),
-                  // Tech Stack Filter Chips
-                  GSAPEnhancedAnimation(
-                    elementId: 'projects-filters',
-                    scrollOffset: scrollOffset,
-                    sectionStartOffset:
-                        sectionStartOffset + (viewportHeight * 0.18),
-                    viewportHeight: viewportHeight,
-                    ease: 'power2.out',
-                    animationConfig: {
-                      'opacity': {'from': 0, 'to': 1},
-                      'y': {'from': 30, 'to': 0},
-                    },
-                    child: _TechStackFilter(
-                      allTechStacks: _getAllTechStacks(),
-                      selectedFilters: _selectedTechFilters,
-                      onFilterChanged: (filters) {
-                        setState(() {
-                          _selectedTechFilters = filters;
-                        });
-                      },
-                      isMobile: isMobile,
-                      isTablet: isTablet,
-                    ),
+                  _buildFilterArea(
+                    scrollOffset,
+                    sectionStartOffset,
+                    viewportHeight,
+                    isMobile,
+                    isTablet,
                   ),
                   SizedBox(height: isMobile ? 32 : 40),
-                  // Enhanced project cards with GSAP animations
-                  // Enhanced project cards with GSAP animations
-                  if (!isMobile && !isTablet)
-                    StickyProjectShowcase(
-                      scrollOffsetListenable: widget.scrollOffsetListenable,
-                    )
-                  else
-                    LayoutBuilder(
-                      builder: (context, constraints) {
-                        // Calculate card width based on crossAxisCount
-                        final cardWidth =
-                            (constraints.maxWidth -
-                                (gridSpacing * (crossAxisCount - 1))) /
-                            crossAxisCount;
-
-                        final filteredProjects = _getFilteredProjects();
-
-                        if (filteredProjects.isEmpty) {
-                          return Container(
-                            padding: EdgeInsets.all(isMobile ? 40 : 60),
-                            child: Column(
-                              children: [
-                                Icon(
-                                  Icons.search_off_rounded,
-                                  size: isMobile ? 64 : 80,
-                                  color: AppColors.textSecondary.withOpacity(
-                                    0.5,
-                                  ),
-                                ),
-                                SizedBox(height: 16),
-                                Text(
-                                  'No projects found',
-                                  style: GoogleFonts.poppins(
-                                    fontSize: isMobile ? 18 : 22,
-                                    color: AppColors.textSecondary,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                                SizedBox(height: 8),
-                                Text(
-                                  'Try selecting different tech stacks',
-                                  style: GoogleFonts.poppins(
-                                    fontSize: isMobile ? 14 : 16,
-                                    color: AppColors.textSecondary.withOpacity(
-                                      0.7,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          );
-                        }
-
-                        return Wrap(
-                          spacing: gridSpacing,
-                          runSpacing: gridSpacing,
-                          alignment: WrapAlignment.start,
-                          children: List.generate(filteredProjects.length, (
-                            index,
-                          ) {
-                            final project = filteredProjects[index];
-                            final originalIndex = AppData.projects.indexOf(
-                              project,
-                            );
-                            return SizedBox(
-                              width: cardWidth,
-                              child: GSAPEnhancedAnimation(
-                                elementId: 'project-card-$originalIndex',
-                                scrollOffset: scrollOffset,
-                                sectionStartOffset:
-                                    sectionStartOffset +
-                                    (viewportHeight * 0.25) +
-                                    (index * viewportHeight * 0.08),
-                                viewportHeight: viewportHeight,
-                                ease: 'power3.out',
-                                animationConfig: {
-                                  'opacity': {'from': 0, 'to': 1},
-                                  'y': {'from': 80, 'to': 0},
-                                  'scale': {'from': 0.85, 'to': 1.0},
-                                  'rotation': {
-                                    'from': index % 2 == 0 ? -2 : 2,
-                                    'to': 0,
-                                  },
-                                },
-                                child: ProjectCard(
-                                  project: project,
-                                  delay: 0.ms,
-                                  isVisible: true,
-                                ),
-                              ),
-                            );
-                          }),
-                        );
-                      },
-                    ),
+                  _buildProjectsGrid(
+                    scrollOffset,
+                    sectionStartOffset,
+                    viewportHeight,
+                    isMobile,
+                    isTablet,
+                    gridSpacing,
+                    crossAxisCount,
+                  ),
                 ],
               ),
             ],
@@ -473,7 +226,293 @@ class _ProjectsSectionState extends State<ProjectsSection> {
       },
     );
   }
-}
+
+  List<Widget> _buildSectionHeader(
+    double scrollOffset,
+    double sectionStartOffset,
+    double viewportHeight,
+    bool isMobile,
+    bool isTablet,
+  ) {
+    return [
+      GSAPEnhancedAnimation(
+        elementId: 'projects-title',
+        scrollOffset: scrollOffset,
+        sectionStartOffset: sectionStartOffset,
+        viewportHeight: viewportHeight,
+        ease: 'power2.out',
+        animationConfig: const {
+          'opacity': {'from': 0, 'to': 1},
+          'y': {'from': -30, 'to': 0},
+          'scale': {'from': 0.9, 'to': 1.0},
+        },
+        child: const TextRenderer(
+          text: 'My Projects',
+          child: SectionTitle(title: 'My Projects', isVisible: true),
+        ),
+      ),
+      SizedBox(height: isMobile ? 24 : 32),
+      GSAPEnhancedAnimation(
+        elementId: 'projects-divider',
+        scrollOffset: scrollOffset,
+        sectionStartOffset: sectionStartOffset + (viewportHeight * 0.05),
+        viewportHeight: viewportHeight,
+        ease: 'power2.out',
+        animationConfig: const {
+          'opacity': {'from': 0, 'to': 1},
+          'scale': {'from': 0, 'to': 1.0},
+        },
+        child: SectionDivider(scrollOffset: scrollOffset, delay: 0.ms),
+      ),
+      SizedBox(height: isMobile ? 40 : 48),
+      GSAPEnhancedAnimation(
+        elementId: 'projects-intro',
+        scrollOffset: scrollOffset,
+        sectionStartOffset: sectionStartOffset + (viewportHeight * 0.1),
+        viewportHeight: viewportHeight,
+        ease: 'power2.out',
+        animationConfig: const {
+          'opacity': {'from': 0, 'to': 1},
+          'y': {'from': 40, 'to': 0},
+          'scale': {'from': 0.95, 'to': 1.0},
+        },
+        child: Container(
+          padding: EdgeInsets.symmetric(
+            horizontal: isMobile
+                ? 20
+                : isTablet
+                ? 28
+                : 36,
+            vertical: isMobile
+                ? 24
+                : isTablet
+                ? 28
+                : 32,
+          ),
+          margin: EdgeInsets.only(bottom: isMobile ? 40 : 48),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                AppColors.primary.withValues(alpha: 0.12),
+                AppColors.secondary.withValues(alpha: 0.08),
+                AppColors.primary.withValues(alpha: 0.05),
+              ],
+              stops: const [0.0, 0.5, 1.0],
+            ),
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(
+              color: AppColors.primary.withValues(alpha: 0.2),
+              width: 1.5,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: AppColors.primary.withValues(alpha: 0.1),
+                blurRadius: 20,
+                spreadRadius: 0,
+                offset: const Offset(0, 4),
+              ),
+            ],
+          ),
+          child: Column(
+            children: [
+              Text(
+                'The journey starts with a closer look.',
+                style: GoogleFonts.poppins(
+                  fontSize: isMobile
+                      ? 20
+                      : isTablet
+                      ? 24
+                      : 28,
+                  color: AppColors.textPrimary,
+                  fontWeight: FontWeight.w700,
+                  height: 1.3,
+                  letterSpacing: -0.5,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: isMobile ? 16 : 20),
+              Container(
+                width: 60,
+                height: 3,
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    colors: [AppColors.primary, AppColors.secondary],
+                  ),
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+              SizedBox(height: isMobile ? 16 : 20),
+              Text(
+                'Discover a better way to build, where development feels effortless, apps perform seamlessly, and users come alive in smooth experiences. With clean architecture, powerful state management, and intuitive design, your project is unforgettable.',
+                style: GoogleFonts.poppins(
+                  fontSize: isMobile
+                      ? 14
+                      : isTablet
+                      ? 15
+                      : 17,
+                  color: AppColors.textSecondary.withValues(alpha: 0.9),
+                  height: 1.8,
+                  letterSpacing: 0.2,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+        ),
+      ),
+    ];
+  }
+
+  Widget _buildStatsArea(
+    double scrollOffset,
+    double sectionStartOffset,
+    double viewportHeight,
+    bool isMobile,
+    bool isTablet,
+  ) {
+    return GSAPEnhancedAnimation(
+      elementId: 'projects-stats',
+      scrollOffset: scrollOffset,
+      sectionStartOffset: sectionStartOffset + (viewportHeight * 0.15),
+      viewportHeight: viewportHeight,
+      ease: 'power2.out',
+      animationConfig: const {
+        'opacity': {'from': 0, 'to': 1},
+        'y': {'from': 40, 'to': 0},
+        'scale': {'from': 0.95, 'to': 1.0},
+      },
+      child: _ProjectStatsDashboard(
+        stats: _getProjectStats(),
+        isMobile: isMobile,
+        isTablet: isTablet,
+      ),
+    );
+  }
+
+  Widget _buildFilterArea(
+    double scrollOffset,
+    double sectionStartOffset,
+    double viewportHeight,
+    bool isMobile,
+    bool isTablet,
+  ) {
+    return GSAPEnhancedAnimation(
+      elementId: 'projects-filters',
+      scrollOffset: scrollOffset,
+      sectionStartOffset: sectionStartOffset + (viewportHeight * 0.18),
+      viewportHeight: viewportHeight,
+      ease: 'power2.out',
+      animationConfig: const {
+        'opacity': {'from': 0, 'to': 1},
+        'y': {'from': 30, 'to': 0},
+      },
+      child: _TechStackFilter(
+        allTechStacks: _getAllTechStacks(),
+        selectedFilters: _selectedTechFilters,
+        onFilterChanged: (filters) {
+          setState(() {
+            _selectedTechFilters = filters;
+          });
+        },
+        isMobile: isMobile,
+        isTablet: isTablet,
+      ),
+    );
+  }
+
+  Widget _buildProjectsGrid(
+    double scrollOffset,
+    double sectionStartOffset,
+    double viewportHeight,
+    bool isMobile,
+    bool isTablet,
+    double gridSpacing,
+    int crossAxisCount,
+  ) {
+    if (!isMobile && !isTablet) {
+      return StickyProjectShowcase(
+        scrollOffsetListenable: widget.scrollOffsetListenable,
+      );
+    }
+
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final cardWidth =
+            (constraints.maxWidth - (gridSpacing * (crossAxisCount - 1))) /
+            crossAxisCount;
+        final filteredProjects = _getFilteredProjects();
+
+        if (filteredProjects.isEmpty) {
+          return Container(
+            padding: EdgeInsets.all(isMobile ? 40 : 60),
+            child: Column(
+              children: [
+                Icon(
+                  Icons.search_off_rounded,
+                  size: isMobile ? 64 : 80,
+                  color: AppColors.textSecondary.withValues(alpha: 0.5),
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  'No projects found',
+                  style: GoogleFonts.poppins(
+                    fontSize: isMobile ? 18 : 22,
+                    color: AppColors.textSecondary,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'Try selecting different tech stacks',
+                  style: GoogleFonts.poppins(
+                    fontSize: isMobile ? 14 : 16,
+                    color: AppColors.textSecondary.withValues(alpha: 0.7),
+                  ),
+                ),
+              ],
+            ),
+          );
+        }
+
+        return Wrap(
+          spacing: gridSpacing,
+          runSpacing: gridSpacing,
+          alignment: WrapAlignment.start,
+          children: List.generate(filteredProjects.length, (index) {
+            final project = filteredProjects[index];
+            final originalIndex = AppData.projects.indexOf(project);
+            return SizedBox(
+              width: cardWidth,
+              child: GSAPEnhancedAnimation(
+                elementId: 'project-card-$originalIndex',
+                scrollOffset: scrollOffset,
+                sectionStartOffset:
+                    sectionStartOffset +
+                    (viewportHeight * 0.25) +
+                    (index * viewportHeight * 0.08),
+                viewportHeight: viewportHeight,
+                ease: 'power3.out',
+                animationConfig: {
+                  'opacity': const {'from': 0, 'to': 1},
+                  'y': const {'from': 80, 'to': 0},
+                  'scale': const {'from': 0.85, 'to': 1.0},
+                  'rotation': {'from': index % 2 == 0 ? -2 : 2, 'to': 0},
+                },
+                child: ProjectCard(
+                  project: project,
+                  delay: 0.ms,
+                  isVisible: true,
+                ),
+              ),
+            );
+          }),
+        );
+      },
+    );
+  }
+} // End of _ProjectsSectionState
 
 // Project Statistics Dashboard Widget
 class _ProjectStatsDashboard extends StatelessWidget {
@@ -496,20 +535,20 @@ class _ProjectStatsDashboard extends StatelessWidget {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            AppColors.primary.withOpacity(0.15),
-            AppColors.secondary.withOpacity(0.1),
-            AppColors.surface.withOpacity(0.9),
+            AppColors.primary.withValues(alpha: 0.15),
+            AppColors.secondary.withValues(alpha: 0.1),
+            AppColors.surface.withValues(alpha: 0.9),
           ],
           stops: const [0.0, 0.5, 1.0],
         ),
         borderRadius: BorderRadius.circular(24),
         border: Border.all(
-          color: AppColors.primary.withOpacity(0.3),
+          color: AppColors.primary.withValues(alpha: 0.3),
           width: 1.5,
         ),
         boxShadow: [
           BoxShadow(
-            color: AppColors.primary.withOpacity(0.15),
+            color: AppColors.primary.withValues(alpha: 0.15),
             blurRadius: 25,
             spreadRadius: 0,
             offset: const Offset(0, 6),
@@ -530,7 +569,7 @@ class _ProjectStatsDashboard extends StatelessWidget {
           Container(
             width: 1,
             height: isMobile ? 40 : 50,
-            color: AppColors.primary.withOpacity(0.3),
+            color: AppColors.primary.withValues(alpha: 0.3),
           ),
           _StatItem(
             icon: Icons.download_rounded,
@@ -543,7 +582,7 @@ class _ProjectStatsDashboard extends StatelessWidget {
           Container(
             width: 1,
             height: isMobile ? 40 : 50,
-            color: AppColors.primary.withOpacity(0.3),
+            color: AppColors.primary.withValues(alpha: 0.3),
           ),
           _StatItem(
             icon: Icons.star_rounded,
@@ -556,7 +595,7 @@ class _ProjectStatsDashboard extends StatelessWidget {
           Container(
             width: 1,
             height: isMobile ? 40 : 50,
-            color: AppColors.primary.withOpacity(0.3),
+            color: AppColors.primary.withValues(alpha: 0.3),
           ),
           _StatItem(
             icon: Icons.code_rounded,
@@ -598,10 +637,13 @@ class _StatItem extends StatelessWidget {
           padding: EdgeInsets.all(isMobile ? 10 : 12),
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              colors: [color.withOpacity(0.3), color.withOpacity(0.15)],
+              colors: [
+                color.withValues(alpha: 0.3),
+                color.withValues(alpha: 0.15),
+              ],
             ),
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: color.withOpacity(0.4), width: 1.5),
+            border: Border.all(color: color.withValues(alpha: 0.4), width: 1.5),
           ),
           child: Icon(icon, color: color, size: isMobile ? 24 : 28),
         ),
@@ -615,12 +657,12 @@ class _StatItem extends StatelessWidget {
             letterSpacing: 0.5,
           ),
         ),
-        SizedBox(height: 4),
+        const SizedBox(height: 4),
         Text(
           label,
           style: GoogleFonts.poppins(
             fontSize: isMobile ? 11 : (isTablet ? 12 : 13),
-            color: AppColors.textSecondary.withOpacity(0.8),
+            color: AppColors.textSecondary.withValues(alpha: 0.8),
             letterSpacing: 0.3,
           ),
         ),
@@ -660,7 +702,7 @@ class _TechStackFilter extends StatelessWidget {
               color: AppColors.primary,
               size: isMobile ? 20 : 24,
             ),
-            SizedBox(width: 8),
+            const SizedBox(width: 8),
             Text(
               'Filter by Tech Stack',
               style: GoogleFonts.poppins(
@@ -756,25 +798,25 @@ class _FilterChipState extends State<_FilterChip> {
             gradient: LinearGradient(
               colors: widget.isSelected
                   ? [
-                      AppColors.primary.withOpacity(0.3),
-                      AppColors.secondary.withOpacity(0.2),
+                      AppColors.primary.withValues(alpha: 0.3),
+                      AppColors.secondary.withValues(alpha: 0.2),
                     ]
                   : [
-                      AppColors.surface.withOpacity(0.8),
-                      AppColors.surface.withOpacity(0.6),
+                      AppColors.surface.withValues(alpha: 0.8),
+                      AppColors.surface.withValues(alpha: 0.6),
                     ],
             ),
             borderRadius: BorderRadius.circular(20),
             border: Border.all(
               color: widget.isSelected
-                  ? AppColors.primary.withOpacity(0.6)
-                  : AppColors.primary.withOpacity(_isHovered ? 0.4 : 0.2),
+                  ? AppColors.primary.withValues(alpha: 0.6)
+                  : AppColors.primary.withValues(alpha: _isHovered ? 0.4 : 0.2),
               width: widget.isSelected ? 2 : 1.5,
             ),
             boxShadow: widget.isSelected
                 ? [
                     BoxShadow(
-                      color: AppColors.primary.withOpacity(0.3),
+                      color: AppColors.primary.withValues(alpha: 0.3),
                       blurRadius: 12,
                       spreadRadius: 0,
                       offset: const Offset(0, 4),
@@ -792,7 +834,7 @@ class _FilterChipState extends State<_FilterChip> {
                   size: widget.isMobile ? 16 : 18,
                   color: AppColors.primary,
                 ),
-              if (widget.isSelected) SizedBox(width: 6),
+              if (widget.isSelected) const SizedBox(width: 6),
               Text(
                 widget.label,
                 style: GoogleFonts.poppins(

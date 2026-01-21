@@ -1,3 +1,4 @@
+// ignore_for_file: deprecated_member_use, avoid_web_libraries_in_flutter
 import 'dart:html' as html;
 import 'dart:js' as js;
 import 'package:flutter/material.dart';
@@ -48,7 +49,7 @@ class _GSAPScrollTriggerState extends State<GSAPScrollTrigger> {
 
     try {
       final uniqueId = 'gsap-trigger-${widget.triggerId}-${_triggerCounter++}';
-      
+
       // Create marker element
       _markerElement = html.DivElement()
         ..id = uniqueId
@@ -64,11 +65,13 @@ class _GSAPScrollTriggerState extends State<GSAPScrollTrigger> {
       html.document.body!.append(_markerElement!);
 
       // Initialize GSAP ScrollTrigger
-      final config = widget.animationConfig ?? {
-        'opacity': {'from': 0, 'to': 1},
-        'y': {'from': 50, 'to': 0},
-        'scale': {'from': 0.8, 'to': 1.0},
-      };
+      final config =
+          widget.animationConfig ??
+          {
+            'opacity': {'from': 0, 'to': 1},
+            'y': {'from': 50, 'to': 0},
+            'scale': {'from': 0.8, 'to': 1.0},
+          };
 
       js.context.callMethod('eval', [
         '''
@@ -95,12 +98,12 @@ class _GSAPScrollTriggerState extends State<GSAPScrollTrigger> {
             }
           }
         })();
-        '''
+        ''',
       ]);
 
       _isInitialized = true;
     } catch (e) {
-      print('GSAP ScrollTrigger error: $e');
+      // print('GSAP ScrollTrigger error: $e');
     }
   }
 
@@ -142,10 +145,7 @@ class GSAPAnimatedWidget extends StatelessWidget {
         : progress.clamp(0.0, 1.0);
 
     final animatedTranslate = translate != null
-        ? Offset(
-            translate!.dx * (1 - progress),
-            translate!.dy * (1 - progress),
-          )
+        ? Offset(translate!.dx * (1 - progress), translate!.dy * (1 - progress))
         : Offset.zero;
 
     final animatedScale = scale != null
@@ -161,10 +161,7 @@ class GSAPAnimatedWidget extends StatelessWidget {
         ..translate(animatedTranslate.dx, animatedTranslate.dy)
         ..scale(animatedScale)
         ..rotateZ(animatedRotation),
-      child: Opacity(
-        opacity: animatedOpacity,
-        child: child,
-      ),
+      child: Opacity(opacity: animatedOpacity, child: child),
     );
   }
 }

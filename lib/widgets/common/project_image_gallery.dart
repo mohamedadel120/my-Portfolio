@@ -53,7 +53,7 @@ class _ProjectImageGalleryState extends State<ProjectImageGallery> {
           color: AppColors.surface,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color: widget.projectColor.withOpacity(0.3),
+            color: widget.projectColor.withValues(alpha: 0.3),
             width: 2,
           ),
         ),
@@ -66,8 +66,8 @@ class _ProjectImageGalleryState extends State<ProjectImageGallery> {
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
-                    widget.projectColor.withOpacity(0.2),
-                    widget.projectColor.withOpacity(0.1),
+                    widget.projectColor.withValues(alpha: 0.2),
+                    widget.projectColor.withValues(alpha: 0.1),
                   ],
                 ),
                 borderRadius: const BorderRadius.vertical(
@@ -102,14 +102,14 @@ class _ProjectImageGalleryState extends State<ProjectImageGallery> {
                     ),
                   ),
                   IconButton(
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.close_rounded,
                       color: AppColors.textPrimary,
                       size: 28,
                     ),
                     onPressed: () => Navigator.of(context).pop(),
                     style: IconButton.styleFrom(
-                      backgroundColor: Colors.white.withOpacity(0.1),
+                      backgroundColor: Colors.white.withValues(alpha: 0.1),
                       shape: const CircleBorder(),
                     ),
                   ),
@@ -135,12 +135,12 @@ class _ProjectImageGalleryState extends State<ProjectImageGallery> {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(15),
                           border: Border.all(
-                            color: widget.projectColor.withOpacity(0.2),
+                            color: widget.projectColor.withValues(alpha: 0.2),
                             width: 1,
                           ),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withOpacity(0.3),
+                              color: Colors.black.withValues(alpha: 0.3),
                               blurRadius: 20,
                               spreadRadius: 5,
                             ),
@@ -213,7 +213,7 @@ class _ProjectImageGalleryState extends State<ProjectImageGallery> {
                           child: Container(
                             padding: const EdgeInsets.all(8),
                             decoration: BoxDecoration(
-                              color: Colors.black.withOpacity(0.5),
+                              color: Colors.black.withValues(alpha: 0.5),
                               shape: BoxShape.circle,
                             ),
                             child: Icon(
@@ -239,7 +239,7 @@ class _ProjectImageGalleryState extends State<ProjectImageGallery> {
                           child: Container(
                             padding: const EdgeInsets.all(8),
                             decoration: BoxDecoration(
-                              color: Colors.black.withOpacity(0.5),
+                              color: Colors.black.withValues(alpha: 0.5),
                               shape: BoxShape.circle,
                             ),
                             child: Icon(
@@ -277,7 +277,7 @@ class _ProjectImageGalleryState extends State<ProjectImageGallery> {
                       decoration: BoxDecoration(
                         color: _currentIndex == index
                             ? widget.projectColor
-                            : widget.projectColor.withOpacity(0.3),
+                            : widget.projectColor.withValues(alpha: 0.3),
                         borderRadius: BorderRadius.circular(4),
                       ),
                     ),

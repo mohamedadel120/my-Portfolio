@@ -56,19 +56,19 @@ class _AboutCardState extends State<AboutCard> {
                         ),
                         decoration: BoxDecoration(
                           color: _isHovered
-                              ? AppColors.primary.withOpacity(0.1)
-                              : AppColors.surface.withOpacity(0.7),
+                              ? AppColors.primary.withValues(alpha: 0.1)
+                              : AppColors.surface.withValues(alpha: 0.7),
                           borderRadius: BorderRadius.circular(24),
                           border: Border.all(
                             color: _isHovered
-                                ? AppColors.primary.withOpacity(0.5)
-                                : AppColors.primary.withOpacity(0.1),
+                                ? AppColors.primary.withValues(alpha: 0.5)
+                                : AppColors.primary.withValues(alpha: 0.1),
                             width: 1.5,
                           ),
                           boxShadow: [
                             BoxShadow(
                               color: _isHovered
-                                  ? AppColors.primary.withOpacity(0.2)
+                                  ? AppColors.primary.withValues(alpha: 0.2)
                                   : Colors.transparent,
                               blurRadius: 30,
                               spreadRadius: -5,
@@ -84,7 +84,7 @@ class _AboutCardState extends State<AboutCard> {
                                   decoration: BoxDecoration(
                                     color: _isHovered
                                         ? AppColors.primary
-                                        : AppColors.primary.withOpacity(0.1),
+                                        : AppColors.primary.withValues(alpha: 0.1),
                                     shape: BoxShape.circle,
                                   ),
                                   child: Icon(
@@ -100,7 +100,7 @@ class _AboutCardState extends State<AboutCard> {
                                 .then()
                                 .shimmer(
                                   duration: 1500.ms,
-                                  color: AppColors.primary.withOpacity(0.3),
+                                  color: AppColors.primary.withValues(alpha: 0.3),
                                 ),
                             const SizedBox(height: 20),
                             Text(

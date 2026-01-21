@@ -31,7 +31,7 @@ class GlitchText extends StatelessWidget {
             style: GoogleFonts.spaceMono(
               fontSize: fontSize,
               fontWeight: fontWeight,
-              color: Colors.red.withOpacity(0.7),
+              color: Colors.red.withValues(alpha: 0.7),
             ),
           ),
         ),
@@ -43,7 +43,7 @@ class GlitchText extends StatelessWidget {
             style: GoogleFonts.spaceMono(
               fontSize: fontSize,
               fontWeight: fontWeight,
-              color: Colors.blue.withOpacity(0.7),
+              color: Colors.blue.withValues(alpha: 0.7),
             ),
           ),
         ),
@@ -62,7 +62,7 @@ class GlitchText extends StatelessWidget {
         .fadeIn(duration: 600.ms)
         .shimmer(
           duration: 2000.ms,
-          color: AppColors.primary.withOpacity(0.3),
+          color: AppColors.primary.withValues(alpha: 0.3),
         );
   }
 }

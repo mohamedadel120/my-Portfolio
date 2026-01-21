@@ -4,8 +4,13 @@ import '../../constants/app_colors.dart';
 
 class ProjectVideoPlayer extends StatefulWidget {
   final String videoUrl;
+  final bool isVisible;
 
-  const ProjectVideoPlayer({super.key, required this.videoUrl});
+  const ProjectVideoPlayer({
+    super.key,
+    required this.videoUrl,
+    this.isVisible = false,
+  });
 
   @override
   State<ProjectVideoPlayer> createState() => _ProjectVideoPlayerState();
@@ -22,6 +27,18 @@ class _ProjectVideoPlayerState extends State<ProjectVideoPlayer> {
     _initializeVideo();
   }
 
+  @override
+  void didUpdateWidget(ProjectVideoPlayer oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.isVisible != oldWidget.isVisible && _initialized && !_hasError) {
+      if (widget.isVisible) {
+        _controller.play();
+      } else {
+        _controller.pause();
+      }
+    }
+  }
+
   Future<void> _initializeVideo() async {
     try {
       if (widget.videoUrl.startsWith('http')) {
@@ -33,9 +50,12 @@ class _ProjectVideoPlayerState extends State<ProjectVideoPlayer> {
       }
 
       await _controller.initialize();
-      _controller.setLooping(true);
-      _controller.setVolume(0.0); // Mute by default for background appeal
-      _controller.play();
+      await _controller.setLooping(true);
+      await _controller.setVolume(0.0); // Mute by default
+
+      if (widget.isVisible) {
+        await _controller.play();
+      }
 
       if (mounted) {
         setState(() {

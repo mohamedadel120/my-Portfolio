@@ -45,7 +45,7 @@ class ExperienceSection extends StatelessWidget {
             horizontal: horizontalPadding,
             vertical: verticalPadding,
           ),
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
@@ -73,7 +73,7 @@ class ExperienceSection extends StatelessWidget {
                     scrollOffset: scrollOffset,
                     sectionStartOffset: sectionStartOffset,
                     delay: 0.ms,
-                    child: SectionTitle(
+                    child: const SectionTitle(
                       title: 'Work Experience',
                       isVisible: true,
                     ),
@@ -154,14 +154,14 @@ class _ProfessionalExperienceCardState
         ease: 'power3.out',
         useRandom: false,
         animationConfig: {
-          'opacity': {'from': 0, 'to': 1},
+          'opacity': const {'from': 0, 'to': 1},
           'x': {
             'from': isEven ? -80 : 80, // Alternate slide directions
             'to': 0,
           },
-          'y': {'from': 60, 'to': 0},
-          'scale': {'from': 0.92, 'to': 1.0},
-          'rotation': {'from': 0, 'to': 0},
+          'y': const {'from': 60, 'to': 0},
+          'scale': const {'from': 0.92, 'to': 1.0},
+          'rotation': const {'from': 0, 'to': 0},
         },
         child: MouseRegion(
           onEnter: (_) => setState(() => _isHovered = true),
@@ -185,7 +185,7 @@ class _ProfessionalExperienceCardState
                             ),
                             boxShadow: [
                               BoxShadow(
-                                color: AppColors.primary.withOpacity(0.4),
+                                color: AppColors.primary.withValues(alpha: 0.4),
                                 blurRadius: 8,
                                 spreadRadius: 1,
                               ),
@@ -202,8 +202,8 @@ class _ProfessionalExperienceCardState
                               decoration: BoxDecoration(
                                 gradient: LinearGradient(
                                   colors: [
-                                    AppColors.primary.withOpacity(0.6),
-                                    AppColors.primary.withOpacity(0.2),
+                                    AppColors.primary.withValues(alpha: 0.6),
+                                    AppColors.primary.withValues(alpha: 0.2),
                                   ],
                                 ),
                               ),
@@ -239,7 +239,7 @@ class _ProfessionalExperienceCardState
                               ),
                               boxShadow: [
                                 BoxShadow(
-                                  color: AppColors.primary.withOpacity(0.4),
+                                  color: AppColors.primary.withValues(alpha: 0.4),
                                   blurRadius: 12,
                                   spreadRadius: 2,
                                 ),
@@ -257,8 +257,8 @@ class _ProfessionalExperienceCardState
                                   begin: Alignment.topCenter,
                                   end: Alignment.bottomCenter,
                                   colors: [
-                                    AppColors.primary.withOpacity(0.6),
-                                    AppColors.primary.withOpacity(0.2),
+                                    AppColors.primary.withValues(alpha: 0.6),
+                                    AppColors.primary.withValues(alpha: 0.2),
                                   ],
                                 ),
                               ),
@@ -287,12 +287,12 @@ class _ProfessionalExperienceCardState
         color: AppColors.surface,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
-          color: AppColors.primary.withOpacity(_isHovered ? 0.4 : 0.15),
+          color: AppColors.primary.withValues(alpha: _isHovered ? 0.4 : 0.15),
           width: _isHovered ? 2 : 1.5,
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(_isHovered ? 0.2 : 0.1),
+            color: Colors.black.withValues(alpha: _isHovered ? 0.2 : 0.1),
             blurRadius: _isHovered ? 24 : 16,
             spreadRadius: _isHovered ? 2 : 0,
             offset: Offset(0, _isHovered ? 10 : 6),
@@ -350,13 +350,13 @@ class _ProfessionalExperienceCardState
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
-                      AppColors.secondary.withOpacity(0.25),
-                      AppColors.secondary.withOpacity(0.15),
+                      AppColors.secondary.withValues(alpha: 0.25),
+                      AppColors.secondary.withValues(alpha: 0.15),
                     ],
                   ),
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
-                    color: AppColors.secondary.withOpacity(0.4),
+                    color: AppColors.secondary.withValues(alpha: 0.4),
                     width: 1.5,
                   ),
                 ),
@@ -379,8 +379,8 @@ class _ProfessionalExperienceCardState
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  AppColors.primary.withOpacity(0.3),
-                  AppColors.primary.withOpacity(0.0),
+                  AppColors.primary.withValues(alpha: 0.3),
+                  AppColors.primary.withValues(alpha: 0.0),
                 ],
               ),
             ),
@@ -401,7 +401,7 @@ class _ProfessionalExperienceCardState
                     ),
                     width: 6,
                     height: 6,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: AppColors.primary,
                       shape: BoxShape.circle,
                     ),
@@ -413,7 +413,7 @@ class _ProfessionalExperienceCardState
                         achievement,
                         style: GoogleFonts.poppins(
                           fontSize: widget.isMobile ? 14 : 16,
-                          color: AppColors.textSecondary.withOpacity(0.9),
+                          color: AppColors.textSecondary.withValues(alpha: 0.9),
                           height: 1.7,
                           fontWeight: FontWeight.w400,
                           letterSpacing: 0.2,

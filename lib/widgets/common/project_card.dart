@@ -122,7 +122,7 @@ class _ProjectCardState extends State<ProjectCard>
                   color: AppColors.surface,
                   borderRadius: BorderRadius.circular(24),
                   border: Border.all(
-                    color: widget.project.color.withOpacity(
+                    color: widget.project.color.withValues(alpha: 
                       _isHovered ? 0.6 : 0.2,
                     ),
                     width: _isHovered ? 2 : 1.5,
@@ -130,7 +130,7 @@ class _ProjectCardState extends State<ProjectCard>
                   boxShadow: [
                     // Dynamic shadow acting as light source
                     BoxShadow(
-                      color: widget.project.color.withOpacity(
+                      color: widget.project.color.withValues(alpha: 
                         _isHovered ? 0.2 : 0.05,
                       ),
                       blurRadius: _isHovered ? 30 : 20,
@@ -141,7 +141,7 @@ class _ProjectCardState extends State<ProjectCard>
                       ),
                     ),
                     BoxShadow(
-                      color: Colors.black.withOpacity(_isHovered ? 0.3 : 0.1),
+                      color: Colors.black.withValues(alpha: _isHovered ? 0.3 : 0.1),
                       blurRadius: _isHovered ? 20 : 15,
                       offset: const Offset(0, 10),
                     ),

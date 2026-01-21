@@ -28,8 +28,8 @@ class ProjectActionButton extends StatelessWidget {
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [
-                project.color.withOpacity(0.3),
-                project.color.withOpacity(0.0),
+                project.color.withValues(alpha: 0.3),
+                project.color.withValues(alpha: 0.0),
               ],
             ),
           ),
@@ -59,12 +59,12 @@ class ProjectActionButton extends StatelessWidget {
               ),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  colors: [project.color, project.color.withOpacity(0.8)],
+                  colors: [project.color, project.color.withValues(alpha: 0.8)],
                 ),
                 borderRadius: BorderRadius.circular(12),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(isHovered ? 0.15 : 0.08),
+                    color: Colors.black.withValues(alpha: isHovered ? 0.15 : 0.08),
                     blurRadius: isHovered ? 12 : 8,
                     spreadRadius: 0,
                     offset: Offset(0, isHovered ? 4 : 2),
