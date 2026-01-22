@@ -13,6 +13,7 @@ import '../common/code_shape.dart';
 import '../common/scroll_speed_widget.dart';
 import '../common/gsap_stagger_animation.dart';
 import 'sticky_project_showcase.dart';
+import '../../utils/device_utils.dart';
 
 class ProjectsSection extends StatefulWidget {
   final ValueListenable<double> scrollOffsetListenable;
@@ -70,37 +71,30 @@ class _ProjectsSectionState extends State<ProjectsSection> {
     // Estimate: Hero + About + Stats + Experience sections
     final sectionStartOffset = viewportHeight * 4;
 
-    // Responsive breakpoints
-    final isMobile = screenWidth < 768;
-    final isTablet = screenWidth >= 768 && screenWidth < 1024;
+    final isXS = DeviceUtils.isExtraSmall(screenWidth);
+    final isMobile = DeviceUtils.isMobile(screenWidth);
+    final isTablet = DeviceUtils.isTablet(screenWidth);
+    final isLowSpec = DeviceUtils.isLowSpecDevice(context);
 
     // Responsive padding
-    final horizontalPadding = isMobile
-        ? 20.0
-        : isTablet
-        ? 30.0
-        : 40.0;
-    final verticalPadding = isMobile
-        ? 60.0
-        : isTablet
-        ? 70.0
-        : 80.0;
+    final horizontalPadding = DeviceUtils.getHorizontalPadding(screenWidth);
+    final verticalPadding = DeviceUtils.getVerticalPadding(screenWidth);
 
     // Responsive grid columns - better breakpoints
     final crossAxisCount = isMobile
         ? 1
         : isTablet
-        ? 2
-        : screenWidth < 1400
-        ? 2
-        : 3; // 3 columns on very large screens
+            ? 2
+            : screenWidth < 1400
+                ? 2
+                : 3; // 3 columns on very large screens
 
     // Responsive spacing
     final gridSpacing = isMobile
         ? 16.0
         : isTablet
-        ? 20.0
-        : 24.0;
+            ? 20.0
+            : 24.0;
 
     return ValueListenableBuilder<double>(
       valueListenable: widget.scrollOffsetListenable,
@@ -129,13 +123,13 @@ class _ProjectsSectionState extends State<ProjectsSection> {
                 speed: -0.2, // Parallax effect
                 child: TechGridBackground(
                   scrollOffset: scrollOffset,
-                  opacity: 0.08,
+                  opacity: isLowSpec ? 0.03 : 0.08,
                 ),
               ),
               // Floating code shapes
               FloatingCodeShapes(scrollOffset: scrollOffset),
-              // Decorative code shapes (hidden on mobile)
-              if (!isMobile)
+              // Decorative code shapes (hidden on mobile/XS)
+              if (!isMobile && !isXS)
                 Positioned(
                   top: isTablet ? 50 : 60,
                   left: isTablet ? 50 : 80,
@@ -225,6 +219,10 @@ class _ProjectsSectionState extends State<ProjectsSection> {
     bool isMobile,
     bool isTablet,
   ) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isXS = DeviceUtils.isExtraSmall(screenWidth);
+    final isLowSpec = DeviceUtils.isLowSpecDevice(context);
+
     return [
       GSAPEnhancedAnimation(
         elementId: 'projects-title',
@@ -272,13 +270,13 @@ class _ProjectsSectionState extends State<ProjectsSection> {
             horizontal: isMobile
                 ? 20
                 : isTablet
-                ? 28
-                : 36,
+                    ? 28
+                    : 36,
             vertical: isMobile
                 ? 24
                 : isTablet
-                ? 28
-                : 32,
+                    ? 28
+                    : 32,
           ),
           margin: EdgeInsets.only(bottom: isMobile ? 40 : 48),
           decoration: BoxDecoration(
@@ -296,8 +294,8 @@ class _ProjectsSectionState extends State<ProjectsSection> {
             border: Border.all(
               color: Theme.of(
                 context,
-              ).colorScheme.primary.withValues(alpha: 0.2),
-              width: 1.5,
+              ).colorScheme.primary.withValues(alpha: isLowSpec ? 0.4 : 0.2),
+              width: isXS ? 1 : 1.5,
             ),
             boxShadow: [
               BoxShadow(
@@ -315,15 +313,11 @@ class _ProjectsSectionState extends State<ProjectsSection> {
               Text(
                 'The journey starts with a closer look.',
                 style: GoogleFonts.poppins(
-                  fontSize: isMobile
-                      ? 20
-                      : isTablet
-                      ? 24
-                      : 28,
+                  fontSize: isXS ? 18 : (isMobile ? 20 : (isTablet ? 24 : 28)),
                   color: Theme.of(context).colorScheme.onSurface,
                   fontWeight: FontWeight.w700,
                   height: 1.3,
-                  letterSpacing: -0.5,
+                  letterSpacing: isXS ? -0.2 : -0.5,
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -348,8 +342,8 @@ class _ProjectsSectionState extends State<ProjectsSection> {
                   fontSize: isMobile
                       ? 14
                       : isTablet
-                      ? 15
-                      : 17,
+                          ? 15
+                          : 17,
                   color: Theme.of(
                     context,
                   ).colorScheme.onSurface.withValues(alpha: 0.7),
@@ -751,8 +745,8 @@ class _FilterChipState extends State<_FilterChip> {
               color: widget.isSelected
                   ? Theme.of(context).colorScheme.primary.withValues(alpha: 0.6)
                   : Theme.of(context).colorScheme.primary.withValues(
-                      alpha: _isHovered ? 0.4 : 0.2,
-                    ),
+                        alpha: _isHovered ? 0.4 : 0.2,
+                      ),
               width: widget.isSelected ? 2 : 1.5,
             ),
             boxShadow: widget.isSelected
@@ -783,9 +777,8 @@ class _FilterChipState extends State<_FilterChip> {
                 widget.label,
                 style: GoogleFonts.poppins(
                   fontSize: widget.isMobile ? 12 : 14,
-                  fontWeight: widget.isSelected
-                      ? FontWeight.w600
-                      : FontWeight.w500,
+                  fontWeight:
+                      widget.isSelected ? FontWeight.w600 : FontWeight.w500,
                   color: widget.isSelected
                       ? Theme.of(context).colorScheme.onSurface
                       : Theme.of(

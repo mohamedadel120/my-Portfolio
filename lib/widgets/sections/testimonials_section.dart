@@ -5,6 +5,7 @@ import '../common/section_title.dart';
 import '../common/tech_grid_background.dart';
 import '../common/scroll_speed_widget.dart';
 import '../common/gsap_stagger_animation.dart';
+import '../../utils/device_utils.dart';
 
 class TestimonialsSection extends StatelessWidget {
   final ValueListenable<double> scrollOffsetListenable;
@@ -18,19 +19,13 @@ class TestimonialsSection extends StatelessWidget {
     // Estimate: Hero + About + Stats + Expertise + Experience + Projects + Why Choose Me sections
     final sectionStartOffset = viewportHeight * 5.5;
 
-    final isMobile = screenWidth < 768;
-    final isTablet = screenWidth >= 768 && screenWidth < 1024;
+    final isXS = DeviceUtils.isExtraSmall(screenWidth);
+    final isMobile = DeviceUtils.isMobile(screenWidth);
+    final isTablet = DeviceUtils.isTablet(screenWidth);
+    final isLowSpec = DeviceUtils.isLowSpecDevice(context);
 
-    final horizontalPadding = isMobile
-        ? 20.0
-        : isTablet
-        ? 30.0
-        : 40.0;
-    final verticalPadding = isMobile
-        ? 60.0
-        : isTablet
-        ? 80.0
-        : 100.0;
+    final horizontalPadding = DeviceUtils.getHorizontalPadding(screenWidth);
+    final verticalPadding = DeviceUtils.getVerticalPadding(screenWidth);
 
     return ValueListenableBuilder<double>(
       valueListenable: scrollOffsetListenable,
@@ -60,7 +55,7 @@ class TestimonialsSection extends StatelessWidget {
                 speed: -0.15,
                 child: TechGridBackground(
                   scrollOffset: scrollOffset,
-                  opacity: 0.05,
+                  opacity: isLowSpec ? 0.02 : 0.05,
                 ),
               ),
               // Main content
@@ -83,7 +78,7 @@ class TestimonialsSection extends StatelessWidget {
                       isVisible: true,
                     ),
                   ),
-                  SizedBox(height: isMobile ? 32 : 48),
+                  SizedBox(height: isXS ? 24 : (isMobile ? 32 : 48)),
                   // Testimonials grid
                   GSAPStaggerAnimation(
                     groupId: 'testimonials-grid',
@@ -101,7 +96,8 @@ class TestimonialsSection extends StatelessWidget {
                     children: [
                       LayoutBuilder(
                         builder: (context, constraints) {
-                          final spacing = isMobile ? 20.0 : 28.0;
+                          final spacing =
+                              isXS ? 16.0 : (isMobile ? 20.0 : 28.0);
 
                           final hardcodedTestimonials = [
                             (
@@ -116,7 +112,8 @@ class TestimonialsSection extends StatelessWidget {
                             spacing: spacing,
                             runSpacing: spacing,
                             alignment: WrapAlignment.center,
-                            children: hardcodedTestimonials.asMap().entries.map((
+                            children:
+                                hardcodedTestimonials.asMap().entries.map((
                               entry,
                             ) {
                               final index = entry.key;
@@ -172,6 +169,9 @@ class _TestimonialCardState extends State<_TestimonialCard> {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isXS = DeviceUtils.isExtraSmall(screenWidth);
+
     return MouseRegion(
       onEnter: (_) => setState(() => _isHovered = true),
       onExit: (_) => setState(() => _isHovered = false),
@@ -179,7 +179,7 @@ class _TestimonialCardState extends State<_TestimonialCard> {
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeOutCubic,
         padding: EdgeInsets.all(
-          widget.isMobile ? 24 : (widget.isTablet ? 28 : 32),
+          isXS ? 16 : (widget.isMobile ? 24 : (widget.isTablet ? 28 : 32)),
         ),
         decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -242,26 +242,28 @@ class _TestimonialCardState extends State<_TestimonialCard> {
               child: Icon(
                 Icons.format_quote_rounded,
                 color: Theme.of(context).colorScheme.primary,
-                size: widget.isMobile ? 28 : 32,
+                size: isXS ? 24 : (widget.isMobile ? 28 : 32),
               ),
             ),
-            SizedBox(height: widget.isMobile ? 16 : 20),
+            SizedBox(height: isXS ? 16 : 20),
             // Rating stars
             Row(
               children: List.generate(5, (index) {
                 return Icon(
                   Icons.star_rounded,
                   color: Theme.of(context).colorScheme.primary,
-                  size: widget.isMobile ? 16 : 18,
+                  size: isXS ? 14 : (widget.isMobile ? 16 : 18),
                 );
               }),
             ),
-            SizedBox(height: widget.isMobile ? 16 : 20),
+            SizedBox(height: isXS ? 16 : 20),
             // Opinion text
             Text(
               widget.testimonial.opinion,
               style: GoogleFonts.poppins(
-                fontSize: widget.isMobile ? 14 : (widget.isTablet ? 15 : 16),
+                fontSize: isXS
+                    ? 13
+                    : (widget.isMobile ? 14 : (widget.isTablet ? 15 : 16)),
                 color: Theme.of(
                   context,
                 ).colorScheme.onSurface.withValues(alpha: 0.95),
@@ -270,7 +272,7 @@ class _TestimonialCardState extends State<_TestimonialCard> {
                 fontStyle: FontStyle.italic,
               ),
             ),
-            SizedBox(height: widget.isMobile ? 20 : 24),
+            SizedBox(height: isXS ? 20 : 24),
             // Divider
             Container(
               height: 1,
@@ -287,7 +289,7 @@ class _TestimonialCardState extends State<_TestimonialCard> {
                 ),
               ),
             ),
-            SizedBox(height: widget.isMobile ? 16 : 20),
+            SizedBox(height: isXS ? 16 : 20),
             // Author info
             Row(
               children: [
@@ -300,9 +302,11 @@ class _TestimonialCardState extends State<_TestimonialCard> {
                       Text(
                         '${widget.testimonial.role} • ${widget.testimonial.company}',
                         style: GoogleFonts.poppins(
-                          fontSize: widget.isMobile
-                              ? 12
-                              : (widget.isTablet ? 13 : 14),
+                          fontSize: isXS
+                              ? 11
+                              : (widget.isMobile
+                                  ? 12
+                                  : (widget.isTablet ? 13 : 14)),
                           color: Theme.of(
                             context,
                           ).colorScheme.onSurface.withValues(alpha: 0.8),

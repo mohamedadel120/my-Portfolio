@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../utils/url_launcher_utils.dart';
+import '../../utils/device_utils.dart';
 import '../../constants/app_data.dart';
 import '../common/phone_frame.dart';
 import '../common/magnetic_button.dart';
@@ -80,8 +81,10 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
     final screenWidth = MediaQuery.of(context).size.width;
 
     // Responsive Config
-    final isMobile = screenWidth < 768;
-    final isTablet = screenWidth >= 768 && screenWidth < 1024;
+    final isXS = DeviceUtils.isExtraSmall(screenWidth);
+    final isMobile = DeviceUtils.isMobile(screenWidth);
+    final isTablet = DeviceUtils.isTablet(screenWidth);
+    final isLowSpec = DeviceUtils.isLowSpecDevice(context);
 
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -160,9 +163,9 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
                   1.0,
                 );
                 newImageIndex = (progress * imageCount).floor().clamp(
-                  0,
-                  imageCount - 1,
-                );
+                      0,
+                      imageCount - 1,
+                    );
               }
             }
 
@@ -172,9 +175,9 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
                     .clamp(0.0, 1.0);
             final int techCount = project.tech.length;
             final int newTechLimit = (projectProgress * techCount).ceil().clamp(
-              1,
-              techCount,
-            );
+                  1,
+                  techCount,
+                );
 
             if (newProjectIndex != _activeProjectIndex ||
                 newImageIndex != _activeImageIndex ||
@@ -196,24 +199,39 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
             }
 
             // 3. Layout Constants - Responsive Sizing
+            // Using iPhone-like aspect ratio (9:19.5 ≈ 1:2.17)
+            const double phoneAspectRatio = 19.5 / 9; // ~2.17
+
             final double phoneWidth;
             final double phoneHeight;
 
-            if (isMobile) {
-              phoneWidth = screenWidth * 0.85; // 85% of screen width
-              phoneHeight = phoneWidth * (980 / 480); // Maintain aspect ratio
+            if (isXS) {
+              // XS: Use percentage but cap at 240px max
+              final calcWidth = screenWidth * 0.7;
+              phoneWidth = calcWidth > 240 ? 240 : calcWidth;
+              phoneHeight = phoneWidth * phoneAspectRatio;
+            } else if (isMobile) {
+              // Mobile: Use percentage but cap at 280px max
+              final calcWidth = screenWidth * 0.65;
+              phoneWidth = calcWidth > 280 ? 280 : calcWidth;
+              phoneHeight = phoneWidth * phoneAspectRatio;
             } else if (isTablet) {
-              phoneWidth = 400.0;
-              phoneHeight = 820.0;
+              // Tablet: Fixed size with proper aspect ratio
+              phoneWidth = 280.0;
+              phoneHeight = phoneWidth * phoneAspectRatio;
             } else {
-              // Desktop
-              phoneWidth = 480.0;
-              phoneHeight = 980.0;
+              // Desktop: Larger fixed size with proper aspect ratio
+              phoneWidth = 340.0;
+              phoneHeight = phoneWidth * phoneAspectRatio;
             }
 
-            final safePhoneHeight = phoneHeight > viewportHeight * 0.85
-                ? viewportHeight * 0.85
-                : phoneHeight; // Prevent overflowing viewport height
+            // On mobile, limit phone height to leave space for overlay (300px)
+            final double maxMobilePhoneHeight = isMobile
+                ? viewportHeight * 0.55 // Leave ~45% for overlay and padding
+                : viewportHeight * 0.85;
+            final safePhoneHeight = phoneHeight > maxMobilePhoneHeight
+                ? maxMobilePhoneHeight
+                : phoneHeight;
 
             final sideWidth = (screenWidth - phoneWidth) / 2;
 
@@ -268,22 +286,29 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
                               AnimatedContainer(
                                 duration: const Duration(milliseconds: 1000),
                                 decoration: BoxDecoration(
-                                  gradient: LinearGradient(
-                                    begin: Alignment.topLeft,
-                                    end: Alignment.bottomRight,
-                                    colors: [
-                                      Theme.of(context).scaffoldBackgroundColor,
-                                      Color.lerp(
-                                        Theme.of(
-                                          context,
-                                        ).scaffoldBackgroundColor,
-                                        AppData
-                                            .projects[_activeProjectIndex]
-                                            .color,
-                                        0.05,
-                                      )!,
-                                    ],
-                                  ),
+                                  gradient: isLowSpec
+                                      ? null
+                                      : LinearGradient(
+                                          begin: Alignment.topLeft,
+                                          end: Alignment.bottomRight,
+                                          colors: [
+                                            Theme.of(context)
+                                                .scaffoldBackgroundColor,
+                                            Color.lerp(
+                                              Theme.of(
+                                                context,
+                                              ).scaffoldBackgroundColor,
+                                              AppData
+                                                  .projects[_activeProjectIndex]
+                                                  .color,
+                                              0.05,
+                                            )!,
+                                          ],
+                                        ),
+                                  color: isLowSpec
+                                      ? Theme.of(context)
+                                          .scaffoldBackgroundColor
+                                      : null,
                                 ),
                               ),
                             ],
@@ -310,28 +335,32 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
                   ),
 
                   // --- INFO: Left (Desktop) or Bottom Overlay (Mobile) ---
-                  Positioned(
-                    top: isMobile ? null : 0,
-                    bottom: isMobile ? 0 : null, // Bottom aligned on mobile
-                    left: 0,
-                    right: isMobile ? 0 : null, // Full width on mobile
-                    width: isMobile ? null : sideWidth,
-                    height: isMobile ? 300 : 500,
-                    child: Transform.translate(
-                      offset: Offset(
-                        0,
-                        isMobile
-                            ? 0 // Fixed at bottom for mobile, or could be sticky?
-                            // For mobile, let's keep it fixed at bottom relative to screen when sticky
-                            // But we need it to fade/change with content.
-                            // Actually, let's use the same clamped sticky logic but with different offset.
-                            : clampedTop + 220,
+                  if (isMobile)
+                    Positioned(
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      height: viewportHeight,
+                      child: Transform.translate(
+                        offset: Offset(0, bgClampedTop),
+                        child: Align(
+                          alignment: Alignment.bottomCenter,
+                          child: _buildMobileInfoOverlay(),
+                        ),
                       ),
-                      child: isMobile
-                          ? _buildMobileInfoOverlay()
-                          : RepaintBoundary(child: _buildLeftInfo(sideWidth)),
+                    )
+                  else
+                    Positioned(
+                      top: 0,
+                      left: 0,
+                      width: sideWidth,
+                      height: 500,
+                      child: Transform.translate(
+                        offset: Offset(0, clampedTop + 220),
+                        child:
+                            RepaintBoundary(child: _buildLeftInfo(sideWidth)),
+                      ),
                     ),
-                  ),
 
                   // --- RIGHT: Tech Stack (Hidden on Mobile for cleaner look) ---
                   if (!isMobile)
@@ -598,24 +627,23 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
                   // We only want to animate the OUTGOING text with the switcher.
                   // The INCOMING text will handle its own staggered animation.
 
-                  final outAnimation =
-                      Tween<Offset>(
-                        begin: const Offset(0.0, -1.0), // Slide out to top
-                        end: Offset.zero,
-                      ).animate(
-                        CurvedAnimation(
-                          parent: animation,
-                          curve: Curves.easeInQuart,
-                        ),
-                      );
+                  final outAnimation = Tween<Offset>(
+                    begin: const Offset(0.0, -1.0), // Slide out to top
+                    end: Offset.zero,
+                  ).animate(
+                    CurvedAnimation(
+                      parent: animation,
+                      curve: Curves.easeInQuart,
+                    ),
+                  );
 
-                  final outOpacity = Tween<double>(begin: 0.0, end: 1.0)
-                      .animate(
-                        CurvedAnimation(
-                          parent: animation,
-                          curve: Curves.linear,
-                        ),
-                      );
+                  final outOpacity =
+                      Tween<double>(begin: 0.0, end: 1.0).animate(
+                    CurvedAnimation(
+                      parent: animation,
+                      curve: Curves.linear,
+                    ),
+                  );
 
                   if (child.key != ValueKey(currentTech)) {
                     // Old text slides out AND fades out
@@ -683,14 +711,14 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
           }
 
           return Text(
-                char,
-                style: GoogleFonts.outfit(
-                  fontSize: 48,
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).colorScheme.onSurface,
-                  height: 1.1,
-                ),
-              )
+            char,
+            style: GoogleFonts.outfit(
+              fontSize: 48,
+              fontWeight: FontWeight.bold,
+              color: Theme.of(context).colorScheme.onSurface,
+              height: 1.1,
+            ),
+          )
               .animate()
               .fadeIn(duration: 1.ms, delay: (index * 60).ms) // Instant "type"
               .moveY(
@@ -701,11 +729,11 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
               ); // Subtle key press impact
         }),
         Container(
-              margin: const EdgeInsets.only(left: 4, top: 4),
-              width: 3,
-              height: 48,
-              color: Theme.of(context).colorScheme.primary,
-            )
+          margin: const EdgeInsets.only(left: 4, top: 4),
+          width: 3,
+          height: 48,
+          color: Theme.of(context).colorScheme.primary,
+        )
             .animate(onPlay: (c) => c.repeat(reverse: true))
             .fadeIn(duration: 300.ms)
             .fadeOut(delay: 300.ms),
@@ -744,15 +772,15 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
           ).animate(key: ValueKey(project.title)).fadeIn().slideY(begin: 0.2),
           const SizedBox(height: 12),
           Text(
-                project.description,
-                maxLines: 3,
-                overflow: TextOverflow.ellipsis,
-                style: GoogleFonts.poppins(
-                  fontSize: 14,
-                  color: Colors.white70,
-                  height: 1.4,
-                ),
-              )
+            project.description,
+            maxLines: 3,
+            overflow: TextOverflow.ellipsis,
+            style: GoogleFonts.poppins(
+              fontSize: 14,
+              color: Colors.white70,
+              height: 1.4,
+            ),
+          )
               .animate(key: ValueKey('${project.title}-desc'))
               .fadeIn(delay: 100.ms),
           const SizedBox(height: 20),

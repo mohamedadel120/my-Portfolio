@@ -6,6 +6,7 @@ import '../common/section_title.dart';
 import '../common/tech_grid_background.dart';
 import '../common/scroll_speed_widget.dart';
 import '../common/gsap_stagger_animation.dart';
+import '../../utils/device_utils.dart';
 
 class WhyChooseMeSection extends StatelessWidget {
   final ValueListenable<double> scrollOffsetListenable;
@@ -19,19 +20,13 @@ class WhyChooseMeSection extends StatelessWidget {
     // Estimate: Hero + About + Stats + Expertise sections
     final sectionStartOffset = viewportHeight * 3.5;
 
-    final isMobile = screenWidth < 768;
-    final isTablet = screenWidth >= 768 && screenWidth < 1024;
+    final isXS = DeviceUtils.isExtraSmall(screenWidth);
+    final isMobile = DeviceUtils.isMobile(screenWidth);
+    final isTablet = DeviceUtils.isTablet(screenWidth);
+    final isLowSpec = DeviceUtils.isLowSpecDevice(context);
 
-    final horizontalPadding = isMobile
-        ? 20.0
-        : isTablet
-        ? 30.0
-        : 40.0;
-    final verticalPadding = isMobile
-        ? 60.0
-        : isTablet
-        ? 80.0
-        : 100.0;
+    final horizontalPadding = DeviceUtils.getHorizontalPadding(screenWidth);
+    final verticalPadding = DeviceUtils.getVerticalPadding(screenWidth);
 
     // Local reasons list with theme colors
     final reasons = [
@@ -107,7 +102,7 @@ class WhyChooseMeSection extends StatelessWidget {
                 speed: -0.15,
                 child: TechGridBackground(
                   scrollOffset: scrollOffset,
-                  opacity: 0.05,
+                  opacity: isLowSpec ? 0.02 : 0.05,
                 ),
               ),
               // Main content
@@ -130,7 +125,7 @@ class WhyChooseMeSection extends StatelessWidget {
                       isVisible: true,
                     ),
                   ),
-                  SizedBox(height: isMobile ? 32 : 48),
+                  SizedBox(height: isXS ? 24 : (isMobile ? 32 : 48)),
                   // Reasons grid
                   GSAPStaggerAnimation(
                     groupId: 'why-choose-me-reasons',
@@ -148,12 +143,10 @@ class WhyChooseMeSection extends StatelessWidget {
                     children: [
                       LayoutBuilder(
                         builder: (context, constraints) {
-                          final crossAxisCount = isMobile
-                              ? 1
-                              : isTablet
-                              ? 2
-                              : 3;
-                          final spacing = isMobile ? 16.0 : 24.0;
+                          final crossAxisCount =
+                              isXS ? 1 : (isMobile ? 1 : (isTablet ? 2 : 3));
+                          final spacing =
+                              isXS ? 12.0 : (isMobile ? 16.0 : 24.0);
 
                           return Wrap(
                             spacing: spacing,
@@ -165,8 +158,8 @@ class WhyChooseMeSection extends StatelessWidget {
                               final cardWidth = isMobile
                                   ? constraints.maxWidth
                                   : (constraints.maxWidth -
-                                            (spacing * (crossAxisCount - 1))) /
-                                        crossAxisCount;
+                                          (spacing * (crossAxisCount - 1))) /
+                                      crossAxisCount;
 
                               return SizedBox(
                                 width: cardWidth,
@@ -215,6 +208,9 @@ class _WhyChooseMeCardState extends State<_WhyChooseMeCard> {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isXS = DeviceUtils.isExtraSmall(screenWidth);
+
     return MouseRegion(
       onEnter: (_) => setState(() => _isHovered = true),
       onExit: (_) => setState(() => _isHovered = false),
@@ -222,7 +218,7 @@ class _WhyChooseMeCardState extends State<_WhyChooseMeCard> {
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeOutCubic,
         padding: EdgeInsets.all(
-          widget.isMobile ? 20 : (widget.isTablet ? 24 : 28),
+          isXS ? 14 : (widget.isMobile ? 20 : (widget.isTablet ? 24 : 28)),
         ),
         decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -262,7 +258,7 @@ class _WhyChooseMeCardState extends State<_WhyChooseMeCard> {
           children: [
             // Icon
             Container(
-              padding: EdgeInsets.all(widget.isMobile ? 12 : 14),
+              padding: EdgeInsets.all(isXS ? 10 : (widget.isMobile ? 12 : 14)),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
@@ -279,26 +275,30 @@ class _WhyChooseMeCardState extends State<_WhyChooseMeCard> {
               child: Icon(
                 widget.reason.icon,
                 color: widget.reason.color,
-                size: widget.isMobile ? 28 : 32,
+                size: isXS ? 24 : (widget.isMobile ? 28 : 32),
               ),
             ),
-            SizedBox(height: widget.isMobile ? 16 : 20),
+            SizedBox(height: isXS ? 16 : 20),
             // Title
             Text(
               widget.reason.title,
               style: GoogleFonts.poppins(
-                fontSize: widget.isMobile ? 18 : (widget.isTablet ? 20 : 22),
+                fontSize: isXS
+                    ? 16
+                    : (widget.isMobile ? 18 : (widget.isTablet ? 20 : 22)),
                 fontWeight: FontWeight.bold,
                 color: Theme.of(context).colorScheme.onSurface,
                 letterSpacing: 0.2,
               ),
             ),
-            SizedBox(height: widget.isMobile ? 10 : 12),
+            SizedBox(height: isXS ? 8 : 12),
             // Description
             Text(
               widget.reason.description,
               style: GoogleFonts.poppins(
-                fontSize: widget.isMobile ? 13 : (widget.isTablet ? 14 : 15),
+                fontSize: isXS
+                    ? 12
+                    : (widget.isMobile ? 13 : (widget.isTablet ? 14 : 15)),
                 color: Theme.of(
                   context,
                 ).colorScheme.onSurface.withValues(alpha: 0.9),

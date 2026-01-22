@@ -12,6 +12,7 @@ import '../common/tech_grid_background.dart';
 import '../common/scroll_triggered_animation.dart';
 import '../common/gsap_stagger_animation.dart';
 import '../common/scroll_speed_widget.dart';
+import '../../utils/device_utils.dart';
 
 class ContactSection extends StatelessWidget {
   final ValueListenable<double> scrollOffsetListenable;
@@ -26,20 +27,14 @@ class ContactSection extends StatelessWidget {
     final sectionStartOffset = viewportHeight * 5;
 
     // Responsive breakpoints
-    final isMobile = screenWidth < 768;
-    final isTablet = screenWidth >= 768 && screenWidth < 1024;
+    final isXS = DeviceUtils.isExtraSmall(screenWidth);
+    final isMobile = DeviceUtils.isMobile(screenWidth);
+    final isTablet = DeviceUtils.isTablet(screenWidth);
+    final isLowSpec = DeviceUtils.isLowSpecDevice(context);
 
     // Responsive padding
-    final horizontalPadding = isMobile
-        ? 20.0
-        : isTablet
-        ? 30.0
-        : 40.0;
-    final verticalPadding = isMobile
-        ? 60.0
-        : isTablet
-        ? 80.0
-        : 100.0;
+    final horizontalPadding = DeviceUtils.getHorizontalPadding(screenWidth);
+    final verticalPadding = DeviceUtils.getVerticalPadding(screenWidth);
 
     return ValueListenableBuilder<double>(
       valueListenable: scrollOffsetListenable,
@@ -70,7 +65,7 @@ class ContactSection extends StatelessWidget {
                 speed: -0.15, // Parallax effect
                 child: TechGridBackground(
                   scrollOffset: scrollOffset,
-                  opacity: 0.08,
+                  opacity: isLowSpec ? 0.03 : 0.08,
                 ),
               ),
               // Main content
@@ -99,8 +94,8 @@ class ContactSection extends StatelessWidget {
                     },
                     child: Container(
                       padding: EdgeInsets.symmetric(
-                        horizontal: isMobile ? 20 : 40,
-                        vertical: isMobile ? 12 : 16,
+                        horizontal: isXS ? 16 : (isMobile ? 20 : 40),
+                        vertical: isXS ? 10 : (isMobile ? 12 : 16),
                       ),
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
@@ -126,11 +121,9 @@ class ContactSection extends StatelessWidget {
                       child: Text(
                         'Let\'s build something amazing together!',
                         style: GoogleFonts.poppins(
-                          fontSize: isMobile
-                              ? 16
-                              : isTablet
-                              ? 18
-                              : 20,
+                          fontSize: isXS
+                              ? 14
+                              : (isMobile ? 16 : (isTablet ? 18 : 20)),
                           color: Theme.of(
                             context,
                           ).colorScheme.onSurface.withValues(alpha: 0.7),
@@ -169,14 +162,17 @@ class ContactSection extends StatelessWidget {
                               child: Column(
                                 children: [
                                   Container(
-                                    padding: EdgeInsets.all(isMobile ? 24 : 30),
+                                    padding: EdgeInsets.all(
+                                        isXS ? 16 : (isMobile ? 24 : 30)),
                                     decoration: BoxDecoration(
                                       gradient: LinearGradient(
                                         begin: Alignment.topLeft,
                                         end: Alignment.bottomRight,
                                         colors: [
                                           Theme.of(context).colorScheme.surface,
-                                          Theme.of(context).colorScheme.surface
+                                          Theme.of(context)
+                                              .colorScheme
+                                              .surface
                                               .withValues(alpha: 0.95),
                                         ],
                                       ),
@@ -259,9 +255,9 @@ class ContactSection extends StatelessWidget {
                                   Column(
                                     children: [
                                       Container(
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 20,
-                                          vertical: 8,
+                                        padding: EdgeInsets.symmetric(
+                                          horizontal: isXS ? 14 : 20,
+                                          vertical: isXS ? 6 : 8,
                                         ),
                                         decoration: BoxDecoration(
                                           gradient: LinearGradient(
@@ -283,7 +279,7 @@ class ContactSection extends StatelessWidget {
                                         child: Text(
                                           'Connect With Me',
                                           style: GoogleFonts.poppins(
-                                            fontSize: 18,
+                                            fontSize: isXS ? 16 : 18,
                                             fontWeight: FontWeight.bold,
                                             color: Theme.of(
                                               context,
@@ -631,7 +627,7 @@ class ContactSection extends StatelessWidget {
                       child: Text(
                         '© 2024 ${AppData.name} - ${AppData.title} Portfolio. Built with ❤️ using Flutter',
                         style: GoogleFonts.poppins(
-                          fontSize: isMobile ? 12 : 14,
+                          fontSize: isXS ? 10 : (isMobile ? 12 : 14),
                           color: Theme.of(
                             context,
                           ).colorScheme.onSurface.withValues(alpha: 0.5),

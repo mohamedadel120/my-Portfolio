@@ -7,6 +7,7 @@ import '../common/tech_grid_background.dart';
 import '../common/scroll_triggered_animation.dart';
 import '../common/scroll_speed_widget.dart';
 import '../common/gsap_stagger_animation.dart';
+import '../../utils/device_utils.dart';
 
 class ExpertiseSection extends StatelessWidget {
   final ValueListenable<double> scrollOffsetListenable;
@@ -20,19 +21,13 @@ class ExpertiseSection extends StatelessWidget {
     // Estimate: Hero + About + Stats sections
     final sectionStartOffset = viewportHeight * 2.5;
 
-    final isMobile = screenWidth < 768;
-    final isTablet = screenWidth >= 768 && screenWidth < 1024;
+    final isXS = DeviceUtils.isExtraSmall(screenWidth);
+    final isMobile = DeviceUtils.isMobile(screenWidth);
+    final isTablet = DeviceUtils.isTablet(screenWidth);
+    final isLowSpec = DeviceUtils.isLowSpecDevice(context);
 
-    final horizontalPadding = isMobile
-        ? 20.0
-        : isTablet
-        ? 30.0
-        : 40.0;
-    final verticalPadding = isMobile
-        ? 60.0
-        : isTablet
-        ? 80.0
-        : 100.0;
+    final horizontalPadding = DeviceUtils.getHorizontalPadding(screenWidth);
+    final verticalPadding = DeviceUtils.getVerticalPadding(screenWidth);
 
     // Expertise areas inspired by CHD Art Maker's service grid
     final expertiseAreas = [
@@ -94,7 +89,7 @@ class ExpertiseSection extends StatelessWidget {
                 speed: -0.2,
                 child: TechGridBackground(
                   scrollOffset: scrollOffset,
-                  opacity: 0.06,
+                  opacity: isLowSpec ? 0.02 : 0.06,
                 ),
               ),
               // Main content
@@ -110,7 +105,7 @@ class ExpertiseSection extends StatelessWidget {
                       isVisible: true,
                     ),
                   ),
-                  SizedBox(height: isMobile ? 48 : 72),
+                  SizedBox(height: isXS ? 32 : (isMobile ? 48 : 72)),
                   // Expertise cards
                   isMobile
                       ? Column(
@@ -250,6 +245,11 @@ class _ExpertiseCardUnifiedState extends State<_ExpertiseCardUnified> {
     // GSAP handles all scroll animations
 
     // Determine animation direction based on index
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isXS = DeviceUtils.isExtraSmall(screenWidth);
+    final isLowSpec = DeviceUtils.isLowSpecDevice(context);
+
+    // Determine animation direction based on index
     final isLeftCard = widget.index % 2 == 0;
     final animationDirection = isLeftCard
         ? -100
@@ -258,8 +258,7 @@ class _ExpertiseCardUnifiedState extends State<_ExpertiseCardUnified> {
     return GSAPEnhancedAnimation(
       elementId: 'expertise-card-${widget.index}',
       scrollOffset: widget.scrollOffset,
-      sectionStartOffset:
-          widget.sectionStartOffset +
+      sectionStartOffset: widget.sectionStartOffset +
           (widget.index * widget.viewportHeight * 0.08), // Closer spacing
       viewportHeight: widget.viewportHeight,
       ease: 'power3.out', // Tip 1: Better easing from the article
@@ -273,7 +272,9 @@ class _ExpertiseCardUnifiedState extends State<_ExpertiseCardUnified> {
         'y': const {'from': 50, 'to': 0}, // Slide up from below
         'scale': const {'from': 0.9, 'to': 1.0}, // Slightly less dramatic scale
         'rotation': {
-          'from': widget.index % 2 == 0 ? -1.5 : 1.5, // Subtle rotation
+          'from': (isLowSpec || isXS)
+              ? 0
+              : (widget.index % 2 == 0 ? -1.5 : 1.5), // Subtle rotation
           'to': 0,
         },
       },
@@ -284,7 +285,7 @@ class _ExpertiseCardUnifiedState extends State<_ExpertiseCardUnified> {
           duration: const Duration(milliseconds: 400),
           curve: Curves.easeOutCubic,
           padding: EdgeInsets.all(
-            widget.isMobile ? 20 : (widget.isTablet ? 24 : 28),
+            isXS ? 16 : (widget.isMobile ? 20 : (widget.isTablet ? 24 : 28)),
           ),
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.surface,
@@ -313,10 +314,12 @@ class _ExpertiseCardUnifiedState extends State<_ExpertiseCardUnified> {
               // Clean title section with icon
               Container(
                 padding: EdgeInsets.symmetric(
-                  horizontal: widget.isMobile
-                      ? 20
-                      : (widget.isTablet ? 24 : 28),
-                  vertical: widget.isMobile ? 20 : (widget.isTablet ? 24 : 28),
+                  horizontal: isXS
+                      ? 14
+                      : (widget.isMobile ? 20 : (widget.isTablet ? 24 : 28)),
+                  vertical: isXS
+                      ? 14
+                      : (widget.isMobile ? 20 : (widget.isTablet ? 24 : 28)),
                 ),
                 decoration: BoxDecoration(
                   color: widget.expertise.color.withValues(
@@ -352,9 +355,11 @@ class _ExpertiseCardUnifiedState extends State<_ExpertiseCardUnified> {
                         child: Icon(
                           widget.expertise.icon,
                           color: widget.expertise.color,
-                          size: widget.isMobile
-                              ? 32
-                              : (widget.isTablet ? 36 : 40),
+                          size: isXS
+                              ? 24
+                              : (widget.isMobile
+                                  ? 32
+                                  : (widget.isTablet ? 36 : 40)),
                         ),
                       ),
                     ),
@@ -365,12 +370,16 @@ class _ExpertiseCardUnifiedState extends State<_ExpertiseCardUnified> {
                         curve: Curves.easeOutCubic,
                         style: GoogleFonts.poppins(
                           fontSize: _isHovered
-                              ? (widget.isMobile
-                                    ? 21
-                                    : (widget.isTablet ? 23 : 25))
-                              : (widget.isMobile
-                                    ? 20
-                                    : (widget.isTablet ? 22 : 24)),
+                              ? (isXS
+                                  ? 18
+                                  : (widget.isMobile
+                                      ? 21
+                                      : (widget.isTablet ? 23 : 25)))
+                              : (isXS
+                                  ? 16
+                                  : (widget.isMobile
+                                      ? 20
+                                      : (widget.isTablet ? 22 : 24))),
                           fontWeight: FontWeight.w600,
                           color: Theme.of(context).colorScheme.onSurface,
                           letterSpacing: _isHovered ? 0.6 : 0.3,
@@ -391,7 +400,6 @@ class _ExpertiseCardUnifiedState extends State<_ExpertiseCardUnified> {
                   color: Theme.of(
                     context,
                   ).colorScheme.surface.withValues(alpha: 0.5),
-
                   borderRadius: BorderRadius.circular(20),
                   border: Border(
                     left: BorderSide(
@@ -406,8 +414,8 @@ class _ExpertiseCardUnifiedState extends State<_ExpertiseCardUnified> {
                     fontSize: widget.isMobile
                         ? 14
                         : widget.isTablet
-                        ? 15
-                        : 16,
+                            ? 15
+                            : 16,
                     color: Theme.of(
                       context,
                     ).colorScheme.onSurface.withValues(alpha: 0.7),

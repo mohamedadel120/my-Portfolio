@@ -3,7 +3,6 @@ import 'package:flutter/foundation.dart';
 import 'dart:ui';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'constants/app_data.dart'; // Added this import
 import 'widgets/sections/hero_section.dart';
 import 'widgets/sections/about_section.dart';
@@ -22,6 +21,7 @@ import 'widgets/common/custom_cursor.dart';
 import 'utils/url_launcher_utils.dart';
 import 'theme/theme_controller.dart';
 import 'theme/app_theme.dart';
+import 'utils/device_utils.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -83,10 +83,10 @@ class MyApp extends StatelessWidget {
 class CustomScrollBehavior extends MaterialScrollBehavior {
   @override
   Set<PointerDeviceKind> get dragDevices => {
-    PointerDeviceKind.touch,
-    PointerDeviceKind.mouse,
-    PointerDeviceKind.trackpad,
-  };
+        PointerDeviceKind.touch,
+        PointerDeviceKind.mouse,
+        PointerDeviceKind.trackpad,
+      };
 }
 
 class PortfolioPage extends StatefulWidget {
@@ -113,19 +113,22 @@ class _PortfolioPageState extends State<PortfolioPage> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    // Performance: Pre-cache critical assets early
-    // Cache UI specific assets
-    precacheImage(const AssetImage('assets/images/gomla/logo.webp'), context);
-    // Add other critical logos or hero backgrounds here
+    final screenWidth = MediaQuery.of(context).size.width;
 
-    // Cache all project logos and gallery images for smoother scrolling
-    for (var project in AppData.projects) {
-      if (project.logoUrl != null) {
-        precacheImage(AssetImage(project.logoUrl!), context);
-      }
-      if (project.galleryImages != null) {
-        for (var image in project.galleryImages!) {
-          precacheImage(AssetImage(image), context);
+    // Performance: Only pre-cache images on desktop (mobile has limited memory)
+    if (DeviceUtils.isDesktop(screenWidth)) {
+      // Cache UI specific assets
+      precacheImage(const AssetImage('assets/images/gomla/logo.webp'), context);
+
+      // Cache all project logos and gallery images for smoother scrolling
+      for (var project in AppData.projects) {
+        if (project.logoUrl != null) {
+          precacheImage(AssetImage(project.logoUrl!), context);
+        }
+        if (project.galleryImages != null) {
+          for (var image in project.galleryImages!) {
+            precacheImage(AssetImage(image), context);
+          }
         }
       }
     }
@@ -194,7 +197,7 @@ class _PortfolioPageState extends State<PortfolioPage> {
             Builder(
               builder: (context) {
                 final screenWidth = MediaQuery.of(context).size.width;
-                final isMobile = screenWidth < 768;
+                final isMobile = DeviceUtils.isMobile(screenWidth);
                 return Positioned(
                   bottom: isMobile ? 100 : 30,
                   right: isMobile ? 20 : 30,
@@ -225,7 +228,7 @@ class _PortfolioPageState extends State<PortfolioPage> {
 
   List<Widget> _buildAppBarActions(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    final isMobile = screenWidth < 768;
+    final isMobile = DeviceUtils.isMobile(screenWidth);
     if (isMobile) {
       // Show menu icon on mobile
       return [
@@ -325,56 +328,47 @@ class _PortfolioPageState extends State<PortfolioPage> {
   }
 
   SliverAppBar _buildAppBar(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isMobile = DeviceUtils.isMobile(screenWidth);
+
     return SliverAppBar(
       floating: true,
       pinned: true,
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       surfaceTintColor: Colors.transparent,
       elevation: 0,
-      title: Builder(
-        builder: (context) {
-          final screenWidth = MediaQuery.of(context).size.width;
-          final isMobile = screenWidth < 768;
-          return Row(
-            children: [
-              // Logo placeholder
-              Container(
-                    width: isMobile ? 32 : 40,
-                    height: isMobile ? 32 : 40,
-                    decoration: BoxDecoration(
-                      color: Theme.of(
-                        context,
-                      ).colorScheme.primary.withValues(alpha: 0.2),
-                      borderRadius: BorderRadius.circular(8),
-                      border: Border.all(
-                        color: Theme.of(context).colorScheme.primary,
-                        width: 2,
-                      ),
-                    ),
-                    child: Icon(
-                      Icons.code,
-                      color: Theme.of(context).colorScheme.primary,
-                      size: isMobile ? 18 : 24,
-                    ),
-                  )
-                  .animate()
-                  .fadeIn(duration: 400.ms)
-                  .scale(delay: 200.ms, duration: 400.ms),
-              SizedBox(width: isMobile ? 8 : 12),
-              Text(
-                    isMobile ? '<MA />' : '<Mohamed Adel />',
-                    style: GoogleFonts.poppins(
-                      fontSize: isMobile ? 18 : 24,
-                      fontWeight: FontWeight.bold,
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                  )
-                  .animate()
-                  .fadeIn(delay: 200.ms, duration: 600.ms)
-                  .slideX(begin: -0.3, end: 0, delay: 200.ms, duration: 600.ms),
-            ],
-          );
-        },
+      title: Row(
+        children: [
+          // Logo placeholder - no animation on low-spec
+          Container(
+            width: isMobile ? 32 : 40,
+            height: isMobile ? 32 : 40,
+            decoration: BoxDecoration(
+              color: Theme.of(
+                context,
+              ).colorScheme.primary.withValues(alpha: 0.2),
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(
+                color: Theme.of(context).colorScheme.primary,
+                width: 2,
+              ),
+            ),
+            child: Icon(
+              Icons.code,
+              color: Theme.of(context).colorScheme.primary,
+              size: isMobile ? 18 : 24,
+            ),
+          ),
+          SizedBox(width: isMobile ? 8 : 12),
+          Text(
+            isMobile ? '<MA />' : '<Mohamed Adel />',
+            style: GoogleFonts.poppins(
+              fontSize: isMobile ? 18 : 24,
+              fontWeight: FontWeight.bold,
+              color: Theme.of(context).colorScheme.primary,
+            ),
+          ),
+        ],
       ),
       centerTitle: false,
       actions: _buildAppBarActions(context),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../constants/app_colors.dart';
+import '../../utils/device_utils.dart';
 
 class TechGridBackground extends StatelessWidget {
   final double scrollOffset;
@@ -13,15 +14,23 @@ class TechGridBackground extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isLowSpec = DeviceUtils.isLowSpecDevice(context);
+    final isMobile = DeviceUtils.isMobile(screenWidth);
+
+    final gridSpacing = isLowSpec ? 100.0 : (isMobile ? 60.0 : 50.0);
     final parallaxY = scrollOffset * 0.2;
-    
+
     return Transform.translate(
-      offset: Offset(0, parallaxY % 50),
-      child: CustomPaint(
-        painter: GridPainter(
-          color: AppColors.primary.withValues(alpha: opacity),
+      offset: Offset(0, parallaxY % gridSpacing),
+      child: RepaintBoundary(
+        child: CustomPaint(
+          painter: GridPainter(
+            color: AppColors.primary.withValues(alpha: opacity),
+            gridSpacing: gridSpacing,
+          ),
+          child: Container(),
         ),
-        child: Container(),
       ),
     );
   }
@@ -29,8 +38,9 @@ class TechGridBackground extends StatelessWidget {
 
 class GridPainter extends CustomPainter {
   final Color color;
+  final double gridSpacing;
 
-  GridPainter({required this.color});
+  GridPainter({required this.color, required this.gridSpacing});
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -39,7 +49,7 @@ class GridPainter extends CustomPainter {
       ..strokeWidth = 1;
 
     // Draw vertical lines
-    for (double x = 0; x < size.width; x += 50) {
+    for (double x = 0; x < size.width; x += gridSpacing) {
       canvas.drawLine(
         Offset(x, 0),
         Offset(x, size.height),
@@ -48,7 +58,7 @@ class GridPainter extends CustomPainter {
     }
 
     // Draw horizontal lines
-    for (double y = 0; y < size.height; y += 50) {
+    for (double y = 0; y < size.height; y += gridSpacing) {
       canvas.drawLine(
         Offset(0, y),
         Offset(size.width, y),
@@ -58,6 +68,6 @@ class GridPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+  bool shouldRepaint(covariant GridPainter oldDelegate) =>
+      oldDelegate.color != color || oldDelegate.gridSpacing != gridSpacing;
 }
-

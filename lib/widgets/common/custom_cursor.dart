@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import '../../utils/device_utils.dart';
 
 class CustomCursor extends StatefulWidget {
   final Widget child;
@@ -17,8 +18,6 @@ class _CustomCursorState extends State<CustomCursor> {
   @override
   void initState() {
     super.initState();
-    // Hide default cursor
-    // MouseCursor.defer; // We might want to use SystemMouseCursors.none but wrapped in a MouseRegion
   }
 
   void _onHover(PointerHoverEvent event) {
@@ -29,8 +28,10 @@ class _CustomCursorState extends State<CustomCursor> {
 
   @override
   Widget build(BuildContext context) {
-    // Only show custom cursor on platforms with mouse (web desktop)
-    // For simplicity, we assume web here since it's a portfolio.
+    final screenWidth = MediaQuery.of(context).size.width;
+    if (DeviceUtils.isMobile(screenWidth)) {
+      return widget.child;
+    }
 
     return MouseRegion(
       cursor: SystemMouseCursors.none, // Hide default cursor

@@ -13,6 +13,7 @@ import '../common/gsap_stagger_animation.dart';
 import '../common/scroll_speed_widget.dart';
 import '../common/impact_stat.dart';
 import '../common/about_visual_branding.dart';
+import '../../utils/device_utils.dart';
 
 class AboutSection extends StatelessWidget {
   final ValueListenable<double> scrollOffsetListenable;
@@ -30,12 +31,11 @@ class AboutSection extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
     final sectionStartOffset = viewportHeight;
 
-    final isMobile = screenWidth < 768;
-    final isTablet = screenWidth >= 768 && screenWidth < 1200;
     final isDesktop = screenWidth >= 1200;
+    final isLowSpec = DeviceUtils.isLowSpecDevice(context);
 
-    final horizontalPadding = isMobile ? 24.0 : (isTablet ? 40.0 : 80.0);
-    final verticalPadding = isMobile ? 60.0 : (isTablet ? 80.0 : 120.0);
+    final horizontalPadding = DeviceUtils.getHorizontalPadding(screenWidth);
+    final verticalPadding = DeviceUtils.getVerticalPadding(screenWidth);
 
     return ValueListenableBuilder<double>(
       valueListenable: scrollOffsetListenable,
@@ -64,7 +64,7 @@ class AboutSection extends StatelessWidget {
                 speed: -0.1,
                 child: TechGridBackground(
                   scrollOffset: scrollOffset,
-                  opacity: 0.05,
+                  opacity: isLowSpec ? 0.02 : 0.05,
                 ),
               ),
 
@@ -143,10 +143,10 @@ class AboutSection extends StatelessWidget {
                     Text(
                       'Crafting Exceptional\nDigital Experiences',
                       style: GoogleFonts.poppins(
-                        fontSize: 80, // Increased from 48
+                        fontSize: 80,
                         fontWeight: FontWeight.bold,
                         color: Theme.of(context).colorScheme.onSurface,
-                        height: 1.0, // Tighter leading
+                        height: 1.0,
                         letterSpacing: -1.5,
                       ),
                     ),
@@ -154,7 +154,7 @@ class AboutSection extends StatelessWidget {
                     Text(
                       AppData.professionalSummary,
                       style: GoogleFonts.poppins(
-                        fontSize: 20, // Increased from 18
+                        fontSize: 20,
                         color: Theme.of(
                           context,
                         ).colorScheme.onSurface.withValues(alpha: 0.7),
@@ -187,27 +187,26 @@ class AboutSection extends StatelessWidget {
               // Impact Stats
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children:
-                    [
-                          const ImpactStat(
-                            icon: Icons.download_rounded,
-                            value: '10k+',
-                            label: 'DOWNLOADS',
-                          ),
-                          const ImpactStat(
-                            icon: Icons.star_rounded,
-                            value: '4.8',
-                            label: 'RATINGS',
-                          ),
-                          const ImpactStat(
-                            icon: Icons.workspace_premium_rounded,
-                            value: '3+',
-                            label: 'YEARS EXP',
-                          ),
-                        ]
-                        .animate(interval: 200.ms)
-                        .fadeIn()
-                        .slideX(begin: -0.2, end: 0),
+                children: [
+                  const ImpactStat(
+                    icon: Icons.download_rounded,
+                    value: '10k+',
+                    label: 'DOWNLOADS',
+                  ),
+                  const ImpactStat(
+                    icon: Icons.star_rounded,
+                    value: '4.8',
+                    label: 'RATINGS',
+                  ),
+                  const ImpactStat(
+                    icon: Icons.workspace_premium_rounded,
+                    value: '3+',
+                    label: 'YEARS EXP',
+                  ),
+                ]
+                    .animate(interval: 200.ms)
+                    .fadeIn()
+                    .slideX(begin: -0.2, end: 0),
               ),
               const SizedBox(height: 80),
               // Visual Branding element
@@ -273,6 +272,9 @@ class AboutSection extends StatelessWidget {
     double sectionStartOffset,
     double scrollOffset,
   ) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isXS = DeviceUtils.isExtraSmall(screenWidth);
+
     return Column(
       children: [
         GSAPEnhancedAnimation(
@@ -289,7 +291,7 @@ class AboutSection extends StatelessWidget {
               Text(
                 AppData.professionalSummary,
                 style: GoogleFonts.poppins(
-                  fontSize: 16,
+                  fontSize: isXS ? 14 : 16,
                   color: Theme.of(
                     context,
                   ).colorScheme.onSurface.withValues(alpha: 0.7),
@@ -305,9 +307,9 @@ class AboutSection extends StatelessWidget {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Theme.of(context).colorScheme.primary,
                   foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 20,
-                    vertical: 12,
+                  padding: EdgeInsets.symmetric(
+                    horizontal: isXS ? 16 : 20,
+                    vertical: isXS ? 10 : 12,
                   ),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
@@ -319,29 +321,27 @@ class AboutSection extends StatelessWidget {
         ),
         const SizedBox(height: 40),
         // Stats for mobile
-        const SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            children: [
-              ImpactStat(
-                icon: Icons.download_rounded,
-                value: '10k+',
-                label: 'DOWNLOADS',
-              ),
-              SizedBox(width: 40),
-              ImpactStat(
-                icon: Icons.star_rounded,
-                value: '4.8',
-                label: 'RATINGS',
-              ),
-              SizedBox(width: 40),
-              ImpactStat(
-                icon: Icons.workspace_premium_rounded,
-                value: '3+',
-                label: 'YEARS EXP',
-              ),
-            ],
-          ),
+        Wrap(
+          alignment: WrapAlignment.center,
+          spacing: isXS ? 20 : 40,
+          runSpacing: 20,
+          children: const [
+            ImpactStat(
+              icon: Icons.download_rounded,
+              value: '10k+',
+              label: 'DOWNLOADS',
+            ),
+            ImpactStat(
+              icon: Icons.star_rounded,
+              value: '4.8',
+              label: 'RATINGS',
+            ),
+            ImpactStat(
+              icon: Icons.workspace_premium_rounded,
+              value: '3+',
+              label: 'YEARS EXP',
+            ),
+          ],
         ),
         const SizedBox(height: 60),
         GSAPStaggerAnimation(
@@ -384,7 +384,10 @@ class AboutSection extends StatelessWidget {
     double sectionStartOffset,
     double scrollOffset,
   ) {
-    final isMobile = MediaQuery.of(context).size.width < 768;
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isXS = DeviceUtils.isExtraSmall(screenWidth);
+    final isMobile = DeviceUtils.isMobile(screenWidth);
+    final isLowSpec = DeviceUtils.isLowSpecDevice(context);
 
     return GSAPEnhancedAnimation(
       elementId: 'about-skills',
@@ -398,8 +401,11 @@ class AboutSection extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.all(isMobile ? 24 : 40),
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.surface.withValues(alpha: 0.5),
-          borderRadius: BorderRadius.circular(32),
+          color: Theme.of(context)
+              .colorScheme
+              .surface
+              .withValues(alpha: isLowSpec ? 0.8 : 0.5),
+          borderRadius: BorderRadius.circular(isXS ? 24 : 32),
           border: Border.all(
             color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
             width: 1,
@@ -411,7 +417,7 @@ class AboutSection extends StatelessWidget {
             Text(
               'Technical Skills',
               style: GoogleFonts.poppins(
-                fontSize: isMobile ? 28 : 36,
+                fontSize: isXS ? 24 : (isMobile ? 28 : 36),
                 fontWeight: FontWeight.bold,
                 color: Theme.of(context).colorScheme.onSurface,
               ),

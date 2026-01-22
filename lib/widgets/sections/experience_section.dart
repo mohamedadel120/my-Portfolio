@@ -10,6 +10,7 @@ import '../common/tech_grid_background.dart';
 import '../common/scroll_triggered_animation.dart';
 import '../common/scroll_speed_widget.dart';
 import '../common/gsap_stagger_animation.dart';
+import '../../utils/device_utils.dart';
 
 class ExperienceSection extends StatelessWidget {
   final ValueListenable<double> scrollOffsetListenable;
@@ -22,19 +23,13 @@ class ExperienceSection extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
     final sectionStartOffset = viewportHeight * 3;
 
-    final isMobile = screenWidth < 768;
-    final isTablet = screenWidth >= 768 && screenWidth < 1024;
+    final isXS = DeviceUtils.isExtraSmall(screenWidth);
+    final isMobile = DeviceUtils.isMobile(screenWidth);
+    final isTablet = DeviceUtils.isTablet(screenWidth);
+    final isLowSpec = DeviceUtils.isLowSpecDevice(context);
 
-    final horizontalPadding = isMobile
-        ? 20.0
-        : isTablet
-        ? 30.0
-        : 40.0;
-    final verticalPadding = isMobile
-        ? 60.0
-        : isTablet
-        ? 80.0
-        : 100.0;
+    final horizontalPadding = DeviceUtils.getHorizontalPadding(screenWidth);
+    final verticalPadding = DeviceUtils.getVerticalPadding(screenWidth);
 
     return ValueListenableBuilder<double>(
       valueListenable: scrollOffsetListenable,
@@ -64,7 +59,7 @@ class ExperienceSection extends StatelessWidget {
                 speed: -0.15,
                 child: TechGridBackground(
                   scrollOffset: scrollOffset,
-                  opacity: 0.05,
+                  opacity: isLowSpec ? 0.02 : 0.05,
                 ),
               ),
               // Main content
@@ -80,7 +75,7 @@ class ExperienceSection extends StatelessWidget {
                       isVisible: true,
                     ),
                   ),
-                  SizedBox(height: isMobile ? 48 : 72),
+                  SizedBox(height: isXS ? 32 : (isMobile ? 48 : 72)),
                   // Professional timeline-style experience cards
                   ...AppData.experiences.asMap().entries.map((entry) {
                     final index = entry.key;
@@ -141,16 +136,18 @@ class _ProfessionalExperienceCardState
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isXS = DeviceUtils.isExtraSmall(screenWidth);
+
     // Alternate card positions for visual interest
     final isEven = widget.index % 2 == 0;
 
     return Padding(
-      padding: EdgeInsets.only(bottom: widget.isMobile ? 32 : 48),
+      padding: EdgeInsets.only(bottom: isXS ? 24 : (widget.isMobile ? 32 : 48)),
       child: GSAPEnhancedAnimation(
         elementId: 'experience-card-${widget.index}',
         scrollOffset: widget.scrollOffset,
-        sectionStartOffset:
-            widget.sectionStartOffset +
+        sectionStartOffset: widget.sectionStartOffset +
             (widget.index * widget.viewportHeight * 0.1),
         viewportHeight: widget.viewportHeight,
         ease: 'power3.out',
@@ -206,9 +203,13 @@ class _ProfessionalExperienceCardState
                               decoration: BoxDecoration(
                                 gradient: LinearGradient(
                                   colors: [
-                                    Theme.of(context).colorScheme.primary
+                                    Theme.of(context)
+                                        .colorScheme
+                                        .primary
                                         .withValues(alpha: 0.6),
-                                    Theme.of(context).colorScheme.primary
+                                    Theme.of(context)
+                                        .colorScheme
+                                        .primary
                                         .withValues(alpha: 0.2),
                                   ],
                                 ),
@@ -220,7 +221,7 @@ class _ProfessionalExperienceCardState
                     ),
                     const SizedBox(height: 20),
                     // Card content
-                    _buildCardContent(),
+                    _buildCardContent(isXS),
                   ],
                 )
               : Row(
@@ -267,9 +268,13 @@ class _ProfessionalExperienceCardState
                                   begin: Alignment.topCenter,
                                   end: Alignment.bottomCenter,
                                   colors: [
-                                    Theme.of(context).colorScheme.primary
+                                    Theme.of(context)
+                                        .colorScheme
+                                        .primary
                                         .withValues(alpha: 0.6),
-                                    Theme.of(context).colorScheme.primary
+                                    Theme.of(context)
+                                        .colorScheme
+                                        .primary
                                         .withValues(alpha: 0.2),
                                   ],
                                 ),
@@ -280,7 +285,7 @@ class _ProfessionalExperienceCardState
                     ),
                     const SizedBox(width: 32),
                     // Card content
-                    Expanded(child: _buildCardContent()),
+                    Expanded(child: _buildCardContent(isXS)),
                   ],
                 ),
         ),
@@ -288,12 +293,12 @@ class _ProfessionalExperienceCardState
     );
   }
 
-  Widget _buildCardContent() {
+  Widget _buildCardContent(bool isXS) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 400),
       curve: Curves.easeOutCubic,
       padding: EdgeInsets.all(
-        widget.isMobile ? 24 : (widget.isTablet ? 28 : 32),
+        isXS ? 16 : (widget.isMobile ? 24 : (widget.isTablet ? 28 : 32)),
       ),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
@@ -331,22 +336,26 @@ class _ProfessionalExperienceCardState
                     Text(
                       widget.experience.company,
                       style: GoogleFonts.poppins(
-                        fontSize: widget.isMobile
-                            ? 22
-                            : (widget.isTablet ? 24 : 28),
+                        fontSize: isXS
+                            ? 18
+                            : (widget.isMobile
+                                ? 22
+                                : (widget.isTablet ? 24 : 28)),
                         fontWeight: FontWeight.bold,
                         color: Theme.of(context).colorScheme.primary,
                         letterSpacing: 0.3,
                       ),
                     ),
-                    SizedBox(height: widget.isMobile ? 8 : 12),
+                    SizedBox(height: isXS ? 8 : 12),
                     // Role
                     Text(
                       widget.experience.role,
                       style: GoogleFonts.poppins(
-                        fontSize: widget.isMobile
-                            ? 16
-                            : (widget.isTablet ? 18 : 20),
+                        fontSize: isXS
+                            ? 14
+                            : (widget.isMobile
+                                ? 16
+                                : (widget.isTablet ? 18 : 20)),
                         fontWeight: FontWeight.w600,
                         color: Theme.of(context).colorScheme.onSurface,
                         letterSpacing: 0.2,
@@ -358,8 +367,8 @@ class _ProfessionalExperienceCardState
               // Period badge
               Container(
                 padding: EdgeInsets.symmetric(
-                  horizontal: widget.isMobile ? 14 : 18,
-                  vertical: widget.isMobile ? 8 : 10,
+                  horizontal: isXS ? 10 : (widget.isMobile ? 14 : 18),
+                  vertical: isXS ? 6 : (widget.isMobile ? 8 : 10),
                 ),
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
@@ -383,7 +392,7 @@ class _ProfessionalExperienceCardState
                 child: Text(
                   widget.experience.period,
                   style: GoogleFonts.poppins(
-                    fontSize: widget.isMobile ? 11 : 13,
+                    fontSize: isXS ? 10 : (widget.isMobile ? 11 : 13),
                     color: Theme.of(context).colorScheme.secondary,
                     fontWeight: FontWeight.w600,
                     letterSpacing: 0.5,
@@ -392,7 +401,7 @@ class _ProfessionalExperienceCardState
               ),
             ],
           ),
-          SizedBox(height: widget.isMobile ? 20 : 28),
+          SizedBox(height: isXS ? 16 : 28),
           // Divider
           Container(
             height: 1,
@@ -405,22 +414,23 @@ class _ProfessionalExperienceCardState
               ),
             ),
           ),
-          SizedBox(height: widget.isMobile ? 20 : 28),
+          SizedBox(height: isXS ? 16 : 28),
           // Achievements list
           ...widget.experience.achievements.map((achievement) {
             return Padding(
-              padding: EdgeInsets.only(bottom: widget.isMobile ? 14 : 18),
+              padding: EdgeInsets.only(
+                  bottom: isXS ? 10 : (widget.isMobile ? 14 : 18)),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // Professional bullet point
                   Container(
                     margin: EdgeInsets.only(
-                      top: widget.isMobile ? 6 : 8,
+                      top: isXS ? 6 : (widget.isMobile ? 6 : 8),
                       right: 16,
                     ),
-                    width: 6,
-                    height: 6,
+                    width: isXS ? 4 : 6,
+                    height: isXS ? 4 : 6,
                     decoration: BoxDecoration(
                       color: Theme.of(context).colorScheme.primary,
                       shape: BoxShape.circle,
@@ -432,7 +442,7 @@ class _ProfessionalExperienceCardState
                       child: Text(
                         achievement,
                         style: GoogleFonts.poppins(
-                          fontSize: widget.isMobile ? 14 : 16,
+                          fontSize: isXS ? 13 : (widget.isMobile ? 14 : 16),
                           color: Theme.of(
                             context,
                           ).colorScheme.onSurface.withValues(alpha: 0.9),
