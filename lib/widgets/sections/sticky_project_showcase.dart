@@ -698,48 +698,52 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
   }
 
   Widget _buildStaggeredTechText(String text) {
-    return Row(
-      key: ValueKey(text),
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        ...text.split('').asMap().entries.map((entry) {
-          final index = entry.key;
-          final char = entry.value;
+    // Calculate appropriate font size based on text length
+    final fontSize = text.length > 10 ? 36.0 : 48.0;
 
-          // Handle spaces explicitly
-          if (char == ' ') {
-            return const SizedBox(width: 12);
-          }
+    return FittedBox(
+      fit: BoxFit.scaleDown,
+      alignment: Alignment.centerLeft,
+      child: Row(
+        key: ValueKey(text),
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          ...text.split('').asMap().entries.map((entry) {
+            final index = entry.key;
+            final char = entry.value;
 
-          return Text(
-            char,
-            style: GoogleFonts.outfit(
-              fontSize: 48,
-              fontWeight: FontWeight.bold,
-              color: Theme.of(context).colorScheme.onSurface,
-              height: 1.1,
-            ),
+            // Handle spaces explicitly
+            if (char == ' ') {
+              return SizedBox(width: fontSize * 0.25);
+            }
+
+            return Text(
+              char,
+              style: GoogleFonts.outfit(
+                fontSize: fontSize,
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).colorScheme.onSurface,
+                height: 1.1,
+              ),
+            ).animate().fadeIn(duration: 1.ms, delay: (index * 60).ms).moveY(
+                  begin: 2,
+                  end: 0,
+                  duration: 50.ms,
+                  delay: (index * 60).ms,
+                );
+          }),
+          Container(
+            margin: const EdgeInsets.only(left: 4, top: 4),
+            width: 3,
+            height: fontSize,
+            color: Theme.of(context).colorScheme.primary,
           )
-              .animate()
-              .fadeIn(duration: 1.ms, delay: (index * 60).ms) // Instant "type"
-              .moveY(
-                begin: 2,
-                end: 0,
-                duration: 50.ms,
-                delay: (index * 60).ms,
-              ); // Subtle key press impact
-        }),
-        Container(
-          margin: const EdgeInsets.only(left: 4, top: 4),
-          width: 3,
-          height: 48,
-          color: Theme.of(context).colorScheme.primary,
-        )
-            .animate(onPlay: (c) => c.repeat(reverse: true))
-            .fadeIn(duration: 300.ms)
-            .fadeOut(delay: 300.ms),
-      ],
+              .animate(onPlay: (c) => c.repeat(reverse: true))
+              .fadeIn(duration: 300.ms)
+              .fadeOut(delay: 300.ms),
+        ],
+      ),
     );
   }
 

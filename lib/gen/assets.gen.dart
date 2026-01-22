@@ -97,8 +97,7 @@ class $AssetsImagesAdruseGen {
 
   /// File path: assets/images/adruse/Primary - 4 - Subject Cource Page 5.png
   AssetGenImage get primary4SubjectCourcePage5 => const AssetGenImage(
-    'assets/images/adruse/Primary - 4 - Subject Cource Page 5.png',
-  );
+      'assets/images/adruse/Primary - 4 - Subject Cource Page 5.png');
 
   /// File path: assets/images/adruse/Primary -1-1.png
   AssetGenImage get primary11 =>
@@ -126,8 +125,7 @@ class $AssetsImagesAdruseGen {
 
   /// File path: assets/images/adruse/Primary- 4 - Subject Cource Page 1.png
   AssetGenImage get primary4SubjectCourcePage1 => const AssetGenImage(
-    'assets/images/adruse/Primary- 4 - Subject Cource Page 1.png',
-  );
+      'assets/images/adruse/Primary- 4 - Subject Cource Page 1.png');
 
   /// File path: assets/images/adruse/Profile.png
   AssetGenImage get profile =>
@@ -171,35 +169,35 @@ class $AssetsImagesAdruseGen {
 
   /// List of all assets
   List<AssetGenImage> get values => [
-    calendar1,
-    calendar5,
-    downloads1,
-    downloads6,
-    home,
-    login1,
-    login2,
-    login3,
-    login,
-    primary3Subjects1,
-    primary4SubjectCourcePage5,
-    primary11,
-    primary12,
-    primary13,
-    primary14,
-    primary15,
-    primary1,
-    primary4SubjectCourcePage1,
-    profile,
-    sideMenu,
-    subscribe1,
-    subscribe,
-    image1,
-    image2,
-    image3,
-    image4,
-    image5,
-    logo,
-  ];
+        calendar1,
+        calendar5,
+        downloads1,
+        downloads6,
+        home,
+        login1,
+        login2,
+        login3,
+        login,
+        primary3Subjects1,
+        primary4SubjectCourcePage5,
+        primary11,
+        primary12,
+        primary13,
+        primary14,
+        primary15,
+        primary1,
+        primary4SubjectCourcePage1,
+        profile,
+        sideMenu,
+        subscribe1,
+        subscribe,
+        image1,
+        image2,
+        image3,
+        image4,
+        image5,
+        logo
+      ];
 }
 
 class $AssetsImagesAlbatalGen {
@@ -238,16 +236,8 @@ class $AssetsImagesAlbatalGen {
       const AssetGenImage('assets/images/albatal/image7.webp');
 
   /// List of all assets
-  List<AssetGenImage> get values => [
-    image1,
-    image17,
-    image2,
-    image3,
-    image4,
-    image5,
-    image6,
-    image7,
-  ];
+  List<AssetGenImage> get values =>
+      [image1, image17, image2, image3, image4, image5, image6, image7];
 }
 
 class $AssetsImagesGomlaGen {
@@ -313,16 +303,8 @@ class $AssetsImagesPalettaGen {
       const AssetGenImage('assets/images/paletta/logo.webp');
 
   /// List of all assets
-  List<AssetGenImage> get values => [
-    image1,
-    image2,
-    image3,
-    image4,
-    image5,
-    image6,
-    image7,
-    logo,
-  ];
+  List<AssetGenImage> get values =>
+      [image1, image2, image3, image4, image5, image6, image7, logo];
 }
 
 class $AssetsImagesStockGen {
@@ -365,17 +347,8 @@ class $AssetsImagesStockGen {
       const AssetGenImage('assets/images/stock/logo.webp');
 
   /// List of all assets
-  List<AssetGenImage> get values => [
-    image1,
-    image2,
-    image3,
-    image4,
-    image5,
-    image6,
-    image7,
-    image8,
-    logo,
-  ];
+  List<AssetGenImage> get values =>
+      [image1, image2, image3, image4, image5, image6, image7, image8, logo];
 }
 
 class Assets {
@@ -452,8 +425,15 @@ class AssetGenImage {
     );
   }
 
-  ImageProvider provider({AssetBundle? bundle, String? package}) {
-    return AssetImage(_assetName, bundle: bundle, package: package);
+  ImageProvider provider({
+    AssetBundle? bundle,
+    String? package,
+  }) {
+    return AssetImage(
+      _assetName,
+      bundle: bundle,
+      package: package,
+    );
   }
 
   String get path => _assetName;

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 import '../../constants/app_colors.dart';
+import '../../utils/device_utils.dart';
 
 class ProjectVideoPlayer extends StatefulWidget {
   final String videoUrl;
@@ -17,48 +18,70 @@ class ProjectVideoPlayer extends StatefulWidget {
 }
 
 class _ProjectVideoPlayerState extends State<ProjectVideoPlayer> {
-  late VideoPlayerController _controller;
+  VideoPlayerController? _controller;
   bool _initialized = false;
   bool _hasError = false;
+  bool _isLowSpec = false;
 
   @override
   void initState() {
     super.initState();
-    _initializeVideo();
+    // Initialize video immediately only on desktop
+    // On mobile, delay initialization until visible
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _isLowSpec = DeviceUtils.isLowSpecDevice(context);
+
+    if (!_isLowSpec && _controller == null) {
+      // Desktop: Initialize immediately
+      _initializeVideo();
+    }
   }
 
   @override
   void didUpdateWidget(ProjectVideoPlayer oldWidget) {
     super.didUpdateWidget(oldWidget);
+
+    // On low-spec: Only initialize when visible for the first time
+    if (_isLowSpec && widget.isVisible && _controller == null) {
+      _initializeVideo();
+    }
+
     if (widget.isVisible != oldWidget.isVisible && _initialized && !_hasError) {
       if (widget.isVisible) {
-        _controller.play();
+        _controller?.play();
       } else {
-        _controller.pause();
+        _controller?.pause();
       }
     }
   }
 
   Future<void> _initializeVideo() async {
     try {
+      late VideoPlayerController controller;
+
       if (widget.videoUrl.startsWith('http')) {
-        _controller = VideoPlayerController.networkUrl(
+        controller = VideoPlayerController.networkUrl(
           Uri.parse(widget.videoUrl),
         );
       } else {
-        _controller = VideoPlayerController.asset(widget.videoUrl);
+        controller = VideoPlayerController.asset(widget.videoUrl);
       }
 
-      await _controller.initialize();
-      await _controller.setLooping(true);
-      await _controller.setVolume(0.0); // Mute by default
+      await controller.initialize();
+      await controller.setLooping(true);
+      await controller.setVolume(0.0); // Mute by default
 
       if (widget.isVisible) {
-        await _controller.play();
+        await controller.play();
       }
 
       if (mounted) {
         setState(() {
+          _controller = controller;
           _initialized = true;
           _hasError = false;
         });
@@ -75,7 +98,7 @@ class _ProjectVideoPlayerState extends State<ProjectVideoPlayer> {
 
   @override
   void dispose() {
-    _controller.dispose();
+    _controller?.dispose();
     super.dispose();
   }
 
@@ -86,6 +109,31 @@ class _ProjectVideoPlayerState extends State<ProjectVideoPlayer> {
         color: Colors.black,
         child: const Center(
           child: Icon(Icons.error_outline, color: Colors.white, size: 40),
+        ),
+      );
+    }
+
+    // On low-spec, show play button if not yet initialized
+    if (_isLowSpec && !_initialized) {
+      return Container(
+        color: Colors.black,
+        child: Center(
+          child: IconButton(
+            onPressed: _initializeVideo,
+            iconSize: 60,
+            icon: Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: AppColors.primary.withValues(alpha: 0.8),
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(
+                Icons.play_arrow_rounded,
+                color: Colors.white,
+                size: 40,
+              ),
+            ),
+          ),
         ),
       );
     }
@@ -103,8 +151,8 @@ class _ProjectVideoPlayerState extends State<ProjectVideoPlayer> {
       color: Colors.black,
       child: Center(
         child: AspectRatio(
-          aspectRatio: _controller.value.aspectRatio,
-          child: VideoPlayer(_controller),
+          aspectRatio: _controller!.value.aspectRatio,
+          child: VideoPlayer(_controller!),
         ),
       ),
     );
