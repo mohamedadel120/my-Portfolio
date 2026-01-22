@@ -225,9 +225,9 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
               phoneHeight = phoneWidth * phoneAspectRatio;
             }
 
-            // On mobile, limit phone height to leave space for overlay (300px)
+            // On mobile, limit phone height to leave space for overlay
             final double maxMobilePhoneHeight = isMobile
-                ? viewportHeight * 0.55 // Leave ~45% for overlay and padding
+                ? viewportHeight * 0.50 // 50% of viewport for phone
                 : viewportHeight * 0.85;
             final safePhoneHeight = phoneHeight > maxMobilePhoneHeight
                 ? maxMobilePhoneHeight
@@ -236,8 +236,10 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
             final sideWidth = (screenWidth - phoneWidth) / 2;
 
             // --- DETERMINISTIC CLAMPED POSITION ---
-            // Ensure targetCenter is at least 20px even if viewport is small
-            double targetCenter = (viewportHeight - safePhoneHeight) / 2;
+            // On mobile, position phone near top (less empty space)
+            double targetCenter = isMobile
+                ? 60 // Fixed 60px from top on mobile
+                : (viewportHeight - safePhoneHeight) / 2;
             if (targetCenter < 20) targetCenter = 20;
 
             // The phone should stick when showcaseTopInViewport reaches targetCenter
@@ -743,50 +745,57 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
 
   Widget _buildMobileInfoOverlay() {
     final project = AppData.projects[_activeProjectIndex];
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isXS = DeviceUtils.isExtraSmall(screenWidth);
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
+      padding: EdgeInsets.symmetric(
+        horizontal: isXS ? 16 : 24,
+        vertical: isXS ? 20 : 32,
+      ),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.bottomCenter,
           end: Alignment.topCenter,
           colors: [
-            Colors.black.withValues(alpha: 0.9),
-            Colors.black.withValues(alpha: 0.6),
+            Colors.black.withValues(alpha: 0.95),
+            Colors.black.withValues(alpha: 0.7),
             Colors.transparent,
           ],
-          stops: const [0.0, 0.6, 1.0],
+          stops: const [0.0, 0.7, 1.0],
         ),
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // Title - NO animation for performance
           Text(
             project.title,
+            key: ValueKey('title-${project.title}'),
             style: GoogleFonts.anton(
-              fontSize: 42,
-              color: Colors.white, // Always white on overlay
+              fontSize: isXS ? 28 : 36, // Smaller on XS screens
+              color: Colors.white,
               height: 1.0,
             ),
-          ).animate(key: ValueKey(project.title)).fadeIn().slideY(begin: 0.2),
-          const SizedBox(height: 12),
+          ),
+          SizedBox(height: isXS ? 8 : 12),
+          // Description - NO animation for performance
           Text(
             project.description,
-            maxLines: 3,
+            key: ValueKey('desc-${project.title}'),
+            maxLines: isXS ? 2 : 3,
             overflow: TextOverflow.ellipsis,
             style: GoogleFonts.poppins(
-              fontSize: 14,
+              fontSize: isXS ? 12 : 14,
               color: Colors.white70,
               height: 1.4,
             ),
-          )
-              .animate(key: ValueKey('${project.title}-desc'))
-              .fadeIn(delay: 100.ms),
-          const SizedBox(height: 20),
-          // Mobile Action Buttons
+          ),
+          SizedBox(height: isXS ? 12 : 20),
+          // Mobile Action Buttons - NO animation
           Wrap(
-            spacing: 16,
+            spacing: 12,
             children: [
               if (project.androidStoreUrl != null)
                 IconButton(
@@ -795,13 +804,18 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
                   icon: const Icon(
                     FontAwesomeIcons.googlePlay,
                     color: Colors.white,
+                    size: 20,
                   ),
                 ),
               if (project.iosStoreUrl != null)
                 IconButton(
                   onPressed: () =>
                       UrlLauncherUtils.launchURL(project.iosStoreUrl!),
-                  icon: const Icon(FontAwesomeIcons.apple, color: Colors.white),
+                  icon: const Icon(
+                    FontAwesomeIcons.apple,
+                    color: Colors.white,
+                    size: 20,
+                  ),
                 ),
             ],
           ),

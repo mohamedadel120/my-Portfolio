@@ -246,7 +246,7 @@ class _HeroSectionState extends State<HeroSection>
                       ScrollSpeedWidget(
                         scrollOffset: scrollOffset,
                         sectionStartOffset: sectionStartOffset,
-                        speed: -0.1,
+                        speed: isLowSpec ? 0 : -0.1, // No parallax on low-spec
                         child: Text(
                           "HELLO I'M",
                           style: GoogleFonts.oswald(
@@ -257,10 +257,7 @@ class _HeroSectionState extends State<HeroSection>
                               context,
                             ).colorScheme.primary,
                           ),
-                        )
-                            .animate()
-                            .fadeIn(duration: 800.ms, delay: 200.ms)
-                            .slideY(begin: 0.2, end: 0),
+                        ),
                       ),
 
                       const SizedBox(height: 20),
@@ -269,7 +266,7 @@ class _HeroSectionState extends State<HeroSection>
                       ScrollSpeedWidget(
                         scrollOffset: scrollOffset,
                         sectionStartOffset: sectionStartOffset,
-                        speed: 0.05,
+                        speed: isLowSpec ? 0 : 0.05,
                         child: TextRenderer(
                           text: AppData.name.toUpperCase(),
                           child: FittedBox(
@@ -277,9 +274,7 @@ class _HeroSectionState extends State<HeroSection>
                             child: Text(
                               AppData.name.toUpperCase(),
                               style: GoogleFonts.anton(
-                                fontSize: isXS
-                                    ? 60
-                                    : (isMobile ? 100 : 180), // Massive font
+                                fontSize: isXS ? 60 : (isMobile ? 100 : 180),
                                 height: 0.9,
                                 color: Theme.of(
                                   context,
@@ -288,21 +283,14 @@ class _HeroSectionState extends State<HeroSection>
                               ),
                             ),
                           ),
-                        )
-                            .animate()
-                            .fadeIn(duration: 1000.ms, delay: 400.ms)
-                            .moveY(
-                              begin: 50,
-                              end: 0,
-                              curve: Curves.easeOutExpo,
-                            ),
+                        ),
                       ),
 
                       // Role / Subtitle
                       ScrollSpeedWidget(
                         scrollOffset: scrollOffset,
                         sectionStartOffset: sectionStartOffset,
-                        speed: -0.05,
+                        speed: isLowSpec ? 0 : -0.05,
                         child: TextRenderer(
                           text: '${AppData.title} | ${AppData.subtitle}',
                           child: Text(
@@ -315,10 +303,7 @@ class _HeroSectionState extends State<HeroSection>
                               height: 1.5,
                             ),
                           ),
-                        )
-                            .animate()
-                            .fadeIn(duration: 1000.ms, delay: 600.ms)
-                            .slideY(begin: 0.2, end: 0),
+                        ),
                       ),
 
                       const SizedBox(height: 60),
@@ -327,19 +312,21 @@ class _HeroSectionState extends State<HeroSection>
                       ScrollSpeedWidget(
                         scrollOffset: scrollOffset,
                         sectionStartOffset: sectionStartOffset,
-                        speed: -0.1,
+                        speed: isLowSpec ? 0 : -0.1,
                         child: Wrap(
                           alignment: WrapAlignment.center,
-                          spacing: 20,
-                          runSpacing: 20,
+                          spacing: isXS ? 12 : 20,
+                          runSpacing: isXS ? 12 : 20,
                           children: [
                             MagneticButton(
                               onTap: widget.onViewProjects ?? () {},
-                              toxicity: 0.5,
+                              toxicity: isLowSpec
+                                  ? 0
+                                  : 0.5, // Disable magnetic on low-spec
                               child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 40,
-                                  vertical: 20,
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: isXS ? 28 : 40,
+                                  vertical: isXS ? 14 : 20,
                                 ),
                                 decoration: BoxDecoration(
                                   color: Theme.of(
@@ -353,26 +340,20 @@ class _HeroSectionState extends State<HeroSection>
                                     color: Theme.of(
                                       context,
                                     ).colorScheme.onPrimary,
-                                    fontSize: 16,
+                                    fontSize: isXS ? 14 : 16,
                                     fontWeight: FontWeight.bold,
                                     letterSpacing: 1,
                                   ),
                                 ),
                               ),
-                            )
-                                .animate()
-                                .fadeIn(delay: 1000.ms, duration: 600.ms)
-                                .scale(
-                                  delay: 1000.ms,
-                                  curve: Curves.easeOutBack,
-                                ),
+                            ),
                             MagneticButton(
                               onTap: widget.onDownloadCV ?? () {},
-                              toxicity: 0.3,
+                              toxicity: isLowSpec ? 0 : 0.3,
                               child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 40,
-                                  vertical: 20,
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: isXS ? 28 : 40,
+                                  vertical: isXS ? 14 : 20,
                                 ),
                                 decoration: BoxDecoration(
                                   border: Border.all(
@@ -386,20 +367,20 @@ class _HeroSectionState extends State<HeroSection>
                                 child: Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    const Icon(
+                                    Icon(
                                       Icons.download_rounded,
                                       color:
-                                          null, // Inherits from parent or theme
-                                      size: 18,
+                                          Theme.of(context).colorScheme.primary,
+                                      size: isXS ? 16 : 18,
                                     ),
-                                    const SizedBox(width: 8),
+                                    SizedBox(width: isXS ? 6 : 8),
                                     Text(
                                       'DOWNLOAD CV',
                                       style: GoogleFonts.oswald(
                                         color: Theme.of(
                                           context,
                                         ).colorScheme.primary,
-                                        fontSize: 16,
+                                        fontSize: isXS ? 14 : 16,
                                         fontWeight: FontWeight.bold,
                                         letterSpacing: 1,
                                       ),
@@ -407,20 +388,14 @@ class _HeroSectionState extends State<HeroSection>
                                   ],
                                 ),
                               ),
-                            )
-                                .animate()
-                                .fadeIn(delay: 1100.ms, duration: 600.ms)
-                                .scale(
-                                  delay: 1100.ms,
-                                  curve: Curves.easeOutBack,
-                                ),
+                            ),
                             MagneticButton(
                               onTap: widget.onContactMe ?? () {},
-                              toxicity: 0.3,
+                              toxicity: isLowSpec ? 0 : 0.3,
                               child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 40,
-                                  vertical: 20,
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: isXS ? 28 : 40,
+                                  vertical: isXS ? 14 : 20,
                                 ),
                                 decoration: BoxDecoration(
                                   border: Border.all(
@@ -438,19 +413,13 @@ class _HeroSectionState extends State<HeroSection>
                                     color: Theme.of(
                                       context,
                                     ).colorScheme.onSurface,
-                                    fontSize: 16,
+                                    fontSize: isXS ? 14 : 16,
                                     fontWeight: FontWeight.bold,
                                     letterSpacing: 1,
                                   ),
                                 ),
                               ),
-                            )
-                                .animate()
-                                .fadeIn(delay: 1200.ms, duration: 600.ms)
-                                .scale(
-                                  delay: 1200.ms,
-                                  curve: Curves.easeOutBack,
-                                ),
+                            ),
                           ],
                         ),
                       ),
