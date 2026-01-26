@@ -338,118 +338,28 @@ class _HeroDesktopViewState extends State<HeroDesktopView>
                             ),
                           ),
 
-                          const SizedBox(height: 60),
+                          const SizedBox(height: 40),
 
-                          // Actions
+                          // "runPortfolio();" Text Label
                           ScrollSpeedWidget(
                             scrollOffset: scrollOffset,
                             sectionStartOffset: sectionStartOffset,
                             speed: isLowSpec ? 0 : -0.1,
-                            child: Wrap(
-                              alignment: WrapAlignment.center,
-                              spacing: 20,
-                              runSpacing: 20,
+                            child: Column(
                               children: [
-                                MagneticButton(
-                                  onTap: widget.onViewProjects ?? () {},
-                                  toxicity: isLowSpec ? 0 : 0.5,
-                                  child: Container(
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: 40,
-                                      vertical: 20,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      color:
-                                          Theme.of(context).colorScheme.primary,
-                                      borderRadius: BorderRadius.circular(50),
-                                    ),
-                                    child: Text(
-                                      'VIEW WORK',
-                                      style: GoogleFonts.oswald(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .onPrimary,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                        letterSpacing: 1,
-                                      ),
-                                    ),
+                                Text(
+                                  'discripe my world',
+                                  style: GoogleFonts.firaCode(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .primary
+                                        .withOpacity(0.8),
                                   ),
                                 ),
-                                MagneticButton(
-                                  onTap: widget.onDownloadCV ?? () {},
-                                  toxicity: isLowSpec ? 0 : 0.3,
-                                  child: Container(
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: 40,
-                                      vertical: 20,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .primary,
-                                        width: 1,
-                                      ),
-                                      borderRadius: BorderRadius.circular(50),
-                                    ),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Icon(
-                                          Icons.download_rounded,
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .primary,
-                                          size: 18,
-                                        ),
-                                        SizedBox(width: 8),
-                                        Text(
-                                          'DOWNLOAD CV',
-                                          style: GoogleFonts.oswald(
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .primary,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold,
-                                            letterSpacing: 1,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                MagneticButton(
-                                  onTap: widget.onContactMe ?? () {},
-                                  toxicity: isLowSpec ? 0 : 0.3,
-                                  child: Container(
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: 40,
-                                      vertical: 20,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .onSurface
-                                            .withValues(alpha: 0.24),
-                                        width: 1,
-                                      ),
-                                      borderRadius: BorderRadius.circular(50),
-                                    ),
-                                    child: Text(
-                                      'CONTACT ME',
-                                      style: GoogleFonts.oswald(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .onSurface,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                        letterSpacing: 1,
-                                      ),
-                                    ),
-                                  ),
-                                ),
+                                const SizedBox(height: 16),
+                                const CustomNavBar(),
                               ],
                             ),
                           ),
@@ -479,18 +389,58 @@ class _HeroDesktopViewState extends State<HeroDesktopView>
                     ),
                   ),
 
+                  // Download CV Button - Bottom Right
+                  Positioned(
+                    bottom: 40,
+                    right: 40,
+                    child: MagneticButton(
+                      onTap: widget.onDownloadCV ?? () {},
+                      toxicity: 0.3,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 24, vertical: 12),
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).scaffoldBackgroundColor,
+                          borderRadius: BorderRadius.circular(50),
+                          border: Border.all(
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onSurface
+                                .withOpacity(0.3),
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.2),
+                              blurRadius: 10,
+                              offset: const Offset(0, 4),
+                            ),
+                          ],
+                        ),
+                        child: Row(
+                          children: [
+                            Text(
+                              'Download CV',
+                              style: GoogleFonts.poppins(
+                                fontWeight: FontWeight.w500,
+                                color: Theme.of(context).colorScheme.onSurface,
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                            Icon(
+                              Icons.download_rounded,
+                              size: 18,
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+
                   // Scroll indicator
                   ScrollToExploreIndicator(
                     scrollOffset: scrollOffset,
                     onTap: widget.onViewProjects,
-                  ),
-
-                  // Top Navigation Bar
-                  const Positioned(
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    child: CustomNavBar(),
                   ),
                 ],
               ),
