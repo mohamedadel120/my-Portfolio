@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../../constants/app_colors.dart';
-import '../../constants/app_data.dart';
+import '../../core/constants/app_colors.dart';
+import '../../core/constants/app_data.dart';
 
 class FloatingActionMenu extends StatefulWidget {
   const FloatingActionMenu({super.key});

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import '../../constants/app_colors.dart';
+import '../../core/constants/app_colors.dart';
 
 class SectionDivider extends StatelessWidget {
   final double scrollOffset;

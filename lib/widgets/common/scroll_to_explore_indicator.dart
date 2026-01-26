@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import '../../constants/app_colors.dart';
+import '../../core/constants/app_colors.dart';
 
 /// Scroll to explore indicator - inspired by Lightship RV
 /// Shows animated text prompting user to scroll

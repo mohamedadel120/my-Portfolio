@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../../../models/project.dart';
+import '../../../features/projects/domain/entities/project_entity.dart';
 import '../project_image_gallery.dart';
 
 class ProjectActionButton extends StatelessWidget {

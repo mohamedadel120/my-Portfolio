@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
-import '../../constants/app_colors.dart';
+import '../../core/constants/app_colors.dart';
 import '../../utils/device_utils.dart';
 
 class ProjectVideoPlayer extends StatefulWidget {

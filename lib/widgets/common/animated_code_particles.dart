@@ -1,6 +1,6 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
-import '../../constants/app_colors.dart';
+import '../../core/constants/app_colors.dart';
 import '../../utils/device_utils.dart';
 
 class AnimatedCodeParticles extends StatelessWidget {

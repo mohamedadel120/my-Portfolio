@@ -2,7 +2,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import '../../constants/app_colors.dart';
+import '../../core/constants/app_colors.dart';
 
 class TourGuideCharacter extends StatelessWidget {
   final double scrollOffset;

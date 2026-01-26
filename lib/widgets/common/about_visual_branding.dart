@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
-import '../../constants/app_colors.dart';
+import '../../core/constants/app_colors.dart';
 
 class AboutVisualBranding extends StatefulWidget {
   final double scrollOffset;

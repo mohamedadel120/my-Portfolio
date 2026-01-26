@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import '../../../models/project.dart';
-import '../../../constants/app_colors.dart';
+import '../../../features/projects/domain/entities/project_entity.dart';
+import '../../../core/constants/app_colors.dart';
 import '../project_image_gallery.dart';
 
 class ProjectGallery extends StatefulWidget {

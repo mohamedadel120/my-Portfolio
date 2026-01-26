@@ -1,7 +1,7 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import '../../constants/app_colors.dart';
+import '../../core/constants/app_colors.dart';
 
 class CodeShape extends StatelessWidget {
   final double scrollOffset;

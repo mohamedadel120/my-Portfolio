@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:http/http.dart' as http;
-import '../../constants/app_colors.dart';
-import '../../constants/app_data.dart';
+import '../../core/constants/app_colors.dart';
+import '../../core/constants/app_data.dart';
 
 class ContactForm extends StatefulWidget {
   final bool isVisible;

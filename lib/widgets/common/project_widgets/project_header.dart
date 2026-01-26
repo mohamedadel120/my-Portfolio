@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../../../models/project.dart';
+import '../../../features/projects/domain/entities/project_entity.dart';
 
 class ProjectHeader extends StatelessWidget {
   final Project project;

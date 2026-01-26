@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../../../constants/app_colors.dart';
-import '../../../models/project.dart';
+import '../../../core/constants/app_colors.dart';
+import '../../../features/projects/domain/entities/project_entity.dart';
 import 'project_widgets/project_header.dart';
 import 'project_widgets/project_gallery.dart';
 import 'project_widgets/project_info.dart';
