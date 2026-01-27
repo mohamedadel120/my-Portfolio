@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../utils/device_utils.dart';
 import '../../core/navigation/page_transitions.dart';
 import '../../features/hero/presentation/pages/hero_section.dart';
 import '../../features/about/presentation/pages/about_page.dart';
@@ -64,16 +65,29 @@ class _HomeWrapperState extends State<_HomeWrapper> {
 
   @override
   Widget build(BuildContext context) {
+    final isMobile = DeviceUtils.isMobile(MediaQuery.of(context).size.width);
+
+    if (isMobile) {
+      return Scaffold(
+        body: HeroSection(
+          scrollOffsetListenable: _notifier,
+          onViewProjects: () => Navigator.pushNamed(context, '/projects'),
+          onContactMe: () => Navigator.pushNamed(context, '/contact'),
+        ),
+      );
+    }
+
     return Scaffold(
       body: SingleChildScrollView(
         controller: _scrollController,
-        child: SizedBox(
-          height: MediaQuery.of(context).size.height, // Full screen only
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            minHeight: MediaQuery.of(context).size.height,
+          ),
           child: HeroSection(
             scrollOffsetListenable: _notifier,
             onViewProjects: () => Navigator.pushNamed(context, '/projects'),
             onContactMe: () => Navigator.pushNamed(context, '/contact'),
-            // We'll update HeroSection to add more callbacks or just buttons
           ),
         ),
       ),

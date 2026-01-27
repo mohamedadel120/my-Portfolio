@@ -11,6 +11,7 @@ import '../../../../../widgets/common/scroll_to_explore_indicator.dart';
 import '../../../../../widgets/common/scroll_speed_widget.dart';
 import '../../../../../widgets/common/animated_code_particles.dart';
 import '../../../../../widgets/common/floating_code_shapes.dart';
+import '../../../../../widgets/navigation/mobile_menu_section.dart';
 import '../../cubit/hero_cubit.dart';
 import '../../cubit/hero_state.dart';
 
@@ -75,278 +76,309 @@ class _HeroMobileViewState extends State<HeroMobileView>
         return ValueListenableBuilder<double>(
           valueListenable: widget.scrollOffsetListenable,
           builder: (context, scrollOffset, _) {
-            return Container(
-              height: viewportHeight,
-              width: double.infinity,
-              clipBehavior: Clip.none,
-              decoration: BoxDecoration(
-                color: Theme.of(context).scaffoldBackgroundColor,
-              ),
-              child: Stack(
-                children: [
-                  // Aurora Background
-                  Positioned.fill(
-                    child: RepaintBoundary(
-                      child: isLowSpec || !heroData.showAurora
-                          ? Container()
-                          : AnimatedBuilder(
-                              animation: _auroraController,
-                              builder: (context, child) {
-                                return Stack(
-                                  children: [
-                                    _buildAuroraBlob(
-                                      color: Theme.of(
-                                        context,
-                                      )
-                                          .colorScheme
-                                          .primary
-                                          .withValues(alpha: 0.15),
-                                      top: -100 +
-                                          sin(_auroraController.value *
-                                                  2 *
-                                                  pi) *
-                                              50,
-                                      left: -100 +
-                                          cos(_auroraController.value *
-                                                  2 *
-                                                  pi) *
-                                              50,
-                                      size: 400,
-                                    ),
-                                    _buildAuroraBlob(
-                                      color: Theme.of(
-                                        context,
-                                      )
-                                          .colorScheme
-                                          .secondary
-                                          .withValues(alpha: 0.1),
-                                      bottom: -100 -
-                                          sin(_auroraController.value *
-                                                  2 *
-                                                  pi) *
-                                              50,
-                                      right: -100 -
-                                          cos(_auroraController.value *
-                                                  2 *
-                                                  pi) *
-                                              50,
-                                      size: 300,
-                                    ),
-                                  ],
-                                );
-                              },
-                            ),
-                    ),
-                  ),
-
-                  // Animated Code Particles
-                  RepaintBoundary(
-                    child: AnimatedCodeParticles(
-                      scrollOffset: scrollOffset,
-                      particleCount: isLowSpec ? 10 : 30,
-                    ),
-                  ),
-
-                  // Floating Code Shapes
-                  RepaintBoundary(
-                    child: FloatingCodeShapes(scrollOffset: scrollOffset),
-                  ),
-
-                  // Main content
-                  Center(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
+            return RefreshIndicator(
+              onRefresh: () async {
+                // Trigger a reload of the hero data
+                context.read<HeroCubit>().loadHeroData();
+                // Add a small delay to let the animation play
+                await Future.delayed(const Duration(seconds: 1));
+              },
+              child: SingleChildScrollView(
+                physics:
+                    const AlwaysScrollableScrollPhysics(), // Ensure scroll even if content fits
+                child: Column(
+                  children: [
+                    // 1. HERO SECTION (Full Viewport Height)
+                    Container(
+                      height: viewportHeight, // Fixed height for hero part
+                      width: double.infinity,
+                      clipBehavior: Clip.none,
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).scaffoldBackgroundColor,
+                      ),
+                      child: Stack(
+                        alignment: Alignment.center,
                         children: [
-                          // Editorial "Hello"
-                          ScrollSpeedWidget(
-                            scrollOffset: scrollOffset,
-                            sectionStartOffset: sectionStartOffset,
-                            speed: isLowSpec ? 0 : -0.1,
-                            child: Text(
-                              heroData.helloGreeting,
-                              style: GoogleFonts.oswald(
-                                fontSize: 16,
-                                letterSpacing: 4,
-                                fontWeight: FontWeight.w500,
-                                color: Theme.of(context).colorScheme.primary,
-                              ),
-                            ),
-                          ),
-
-                          const SizedBox(height: 20),
-
-                          // Giant Name
-                          ScrollSpeedWidget(
-                            scrollOffset: scrollOffset,
-                            sectionStartOffset: sectionStartOffset,
-                            speed: isLowSpec ? 0 : 0.05,
-                            child: TextRenderer(
-                              text: heroData.name.toUpperCase(),
-                              child: FittedBox(
-                                fit: BoxFit.scaleDown,
-                                child: Text(
-                                  heroData.name.toUpperCase(),
-                                  style: GoogleFonts.anton(
-                                    fontSize: isXS ? 60 : 100,
-                                    height: 0.9,
-                                    color:
-                                        Theme.of(context).colorScheme.onSurface,
-                                    letterSpacing: -2,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-
-                          // Role / Subtitle
-                          ScrollSpeedWidget(
-                            scrollOffset: scrollOffset,
-                            sectionStartOffset: sectionStartOffset,
-                            speed: isLowSpec ? 0 : -0.05,
-                            child: TextRenderer(
-                              text: '${heroData.title} | ${heroData.subtitle}',
-                              child: Text(
-                                '${heroData.title} & ${heroData.subtitle}',
-                                textAlign: TextAlign.center,
-                                style: GoogleFonts.poppins(
-                                  fontSize: isXS ? 14 : 18,
-                                  fontWeight: FontWeight.w300,
-                                  color: Colors.white70,
-                                  height: 1.5,
-                                ),
-                              ),
-                            ),
-                          ),
-
-                          const SizedBox(height: 60),
-
-                          // Actions
-                          ScrollSpeedWidget(
-                            scrollOffset: scrollOffset,
-                            sectionStartOffset: sectionStartOffset,
-                            speed: isLowSpec ? 0 : -0.1,
-                            child: Wrap(
-                              alignment: WrapAlignment.center,
-                              spacing: isXS ? 12 : 20,
-                              runSpacing: isXS ? 12 : 20,
-                              children: [
-                                MagneticButton(
-                                  onTap: widget.onViewProjects ?? () {},
-                                  toxicity: isLowSpec ? 0 : 0.5,
-                                  child: Container(
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: isXS ? 28 : 40,
-                                      vertical: isXS ? 14 : 20,
+                          // Aurora Background
+                          Positioned.fill(
+                            child: RepaintBoundary(
+                              child: isLowSpec || !heroData.showAurora
+                                  ? Container()
+                                  : AnimatedBuilder(
+                                      animation: _auroraController,
+                                      builder: (context, child) {
+                                        return Stack(
+                                          children: [
+                                            _buildAuroraBlob(
+                                              color: Theme.of(
+                                                context,
+                                              )
+                                                  .colorScheme
+                                                  .primary
+                                                  .withValues(alpha: 0.15),
+                                              top: -100 +
+                                                  sin(_auroraController.value *
+                                                          2 *
+                                                          pi) *
+                                                      50,
+                                              left: -100 +
+                                                  cos(_auroraController.value *
+                                                          2 *
+                                                          pi) *
+                                                      50,
+                                              size: 400,
+                                            ),
+                                            _buildAuroraBlob(
+                                              color: Theme.of(
+                                                context,
+                                              )
+                                                  .colorScheme
+                                                  .secondary
+                                                  .withValues(alpha: 0.1),
+                                              bottom: -100 -
+                                                  sin(_auroraController.value *
+                                                          2 *
+                                                          pi) *
+                                                      50,
+                                              right: -100 -
+                                                  cos(_auroraController.value *
+                                                          2 *
+                                                          pi) *
+                                                      50,
+                                              size: 300,
+                                            ),
+                                          ],
+                                        );
+                                      },
                                     ),
-                                    decoration: BoxDecoration(
+                            ),
+                          ),
+
+                          // Animated Code Particles
+                          Positioned.fill(
+                            child: RepaintBoundary(
+                              child: AnimatedCodeParticles(
+                                scrollOffset: scrollOffset,
+                                particleCount: isLowSpec ? 10 : 30,
+                              ),
+                            ),
+                          ),
+
+                          // Floating Code Shapes
+                          Positioned.fill(
+                            child: RepaintBoundary(
+                              child: FloatingCodeShapes(
+                                  scrollOffset: scrollOffset),
+                            ),
+                          ),
+
+                          // Main content
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                // Editorial "Hello"
+                                ScrollSpeedWidget(
+                                  scrollOffset: scrollOffset,
+                                  sectionStartOffset: sectionStartOffset,
+                                  speed: isLowSpec ? 0 : -0.1,
+                                  child: Text(
+                                    heroData.helloGreeting,
+                                    style: GoogleFonts.oswald(
+                                      fontSize: 16,
+                                      letterSpacing: 4,
+                                      fontWeight: FontWeight.w500,
                                       color:
                                           Theme.of(context).colorScheme.primary,
-                                      borderRadius: BorderRadius.circular(50),
                                     ),
-                                    child: Text(
-                                      'VIEW WORK',
-                                      style: GoogleFonts.oswald(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .onPrimary,
-                                        fontSize: isXS ? 14 : 16,
-                                        fontWeight: FontWeight.bold,
-                                        letterSpacing: 1,
+                                  ),
+                                ),
+
+                                const SizedBox(height: 20),
+
+                                // Giant Name
+                                ScrollSpeedWidget(
+                                  scrollOffset: scrollOffset,
+                                  sectionStartOffset: sectionStartOffset,
+                                  speed: isLowSpec ? 0 : 0.05,
+                                  child: TextRenderer(
+                                    text: heroData.name.toUpperCase(),
+                                    child: FittedBox(
+                                      fit: BoxFit.scaleDown,
+                                      child: Text(
+                                        heroData.name.toUpperCase(),
+                                        style: GoogleFonts.anton(
+                                          fontSize: isXS ? 60 : 100,
+                                          height: 0.9,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onSurface,
+                                          letterSpacing: -2,
+                                        ),
                                       ),
                                     ),
                                   ),
                                 ),
-                                MagneticButton(
-                                  onTap: widget.onDownloadCV ?? () {},
-                                  toxicity: isLowSpec ? 0 : 0.3,
-                                  child: Container(
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: isXS ? 28 : 40,
-                                      vertical: isXS ? 14 : 20,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .primary,
-                                        width: 1,
+
+                                // Role / Subtitle
+                                ScrollSpeedWidget(
+                                  scrollOffset: scrollOffset,
+                                  sectionStartOffset: sectionStartOffset,
+                                  speed: isLowSpec ? 0 : -0.05,
+                                  child: TextRenderer(
+                                    text:
+                                        '${heroData.title} | ${heroData.subtitle}',
+                                    child: Text(
+                                      '${heroData.title} & ${heroData.subtitle}',
+                                      textAlign: TextAlign.center,
+                                      style: GoogleFonts.poppins(
+                                        fontSize: isXS ? 14 : 18,
+                                        fontWeight: FontWeight.w300,
+                                        color: Colors.white70,
+                                        height: 1.5,
                                       ),
-                                      borderRadius: BorderRadius.circular(50),
                                     ),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Icon(
-                                          Icons.download_rounded,
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .primary,
-                                          size: isXS ? 16 : 18,
-                                        ),
-                                        SizedBox(width: isXS ? 6 : 8),
-                                        Text(
-                                          'DOWNLOAD CV',
-                                          style: GoogleFonts.oswald(
+                                  ),
+                                ),
+
+                                const SizedBox(height: 60),
+
+                                // Actions
+                                ScrollSpeedWidget(
+                                  scrollOffset: scrollOffset,
+                                  sectionStartOffset: sectionStartOffset,
+                                  speed: isLowSpec ? 0 : -0.1,
+                                  child: Wrap(
+                                    alignment: WrapAlignment.center,
+                                    spacing: isXS ? 12 : 20,
+                                    runSpacing: isXS ? 12 : 20,
+                                    children: [
+                                      MagneticButton(
+                                        onTap: widget.onViewProjects ?? () {},
+                                        toxicity: isLowSpec ? 0 : 0.5,
+                                        child: Container(
+                                          padding: EdgeInsets.symmetric(
+                                            horizontal: isXS ? 28 : 40,
+                                            vertical: isXS ? 14 : 20,
+                                          ),
+                                          decoration: BoxDecoration(
                                             color: Theme.of(context)
                                                 .colorScheme
                                                 .primary,
-                                            fontSize: isXS ? 14 : 16,
-                                            fontWeight: FontWeight.bold,
-                                            letterSpacing: 1,
+                                            borderRadius:
+                                                BorderRadius.circular(50),
+                                          ),
+                                          child: Text(
+                                            'VIEW WORK',
+                                            style: GoogleFonts.oswald(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .onPrimary,
+                                              fontSize: isXS ? 14 : 16,
+                                              fontWeight: FontWeight.bold,
+                                              letterSpacing: 1,
+                                            ),
                                           ),
                                         ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                MagneticButton(
-                                  onTap: widget.onContactMe ?? () {},
-                                  toxicity: isLowSpec ? 0 : 0.3,
-                                  child: Container(
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: isXS ? 28 : 40,
-                                      vertical: isXS ? 14 : 20,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .onSurface
-                                            .withValues(alpha: 0.24),
-                                        width: 1,
                                       ),
-                                      borderRadius: BorderRadius.circular(50),
-                                    ),
-                                    child: Text(
-                                      'CONTACT ME',
-                                      style: GoogleFonts.oswald(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .onSurface,
-                                        fontSize: isXS ? 14 : 16,
-                                        fontWeight: FontWeight.bold,
-                                        letterSpacing: 1,
+                                      MagneticButton(
+                                        onTap: widget.onDownloadCV ?? () {},
+                                        toxicity: isLowSpec ? 0 : 0.3,
+                                        child: Container(
+                                          padding: EdgeInsets.symmetric(
+                                            horizontal: isXS ? 28 : 40,
+                                            vertical: isXS ? 14 : 20,
+                                          ),
+                                          decoration: BoxDecoration(
+                                            border: Border.all(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .primary,
+                                              width: 1,
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(50),
+                                          ),
+                                          child: Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Icon(
+                                                Icons.download_rounded,
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .primary,
+                                                size: isXS ? 16 : 18,
+                                              ),
+                                              SizedBox(width: isXS ? 6 : 8),
+                                              Text(
+                                                'DOWNLOAD CV',
+                                                style: GoogleFonts.oswald(
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .primary,
+                                                  fontSize: isXS ? 14 : 16,
+                                                  fontWeight: FontWeight.bold,
+                                                  letterSpacing: 1,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
                                       ),
-                                    ),
+                                      MagneticButton(
+                                        onTap: widget.onContactMe ?? () {},
+                                        toxicity: isLowSpec ? 0 : 0.3,
+                                        child: Container(
+                                          padding: EdgeInsets.symmetric(
+                                            horizontal: isXS ? 28 : 40,
+                                            vertical: isXS ? 14 : 20,
+                                          ),
+                                          decoration: BoxDecoration(
+                                            border: Border.all(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .onSurface
+                                                  .withValues(alpha: 0.24),
+                                              width: 1,
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(50),
+                                          ),
+                                          child: Text(
+                                            'CONTACT ME',
+                                            style: GoogleFonts.oswald(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .onSurface,
+                                              fontSize: isXS ? 14 : 16,
+                                              fontWeight: FontWeight.bold,
+                                              letterSpacing: 1,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ],
                             ),
                           ),
+
+                          // Scroll indicator
+                          ScrollToExploreIndicator(
+                            scrollOffset: scrollOffset,
+                            onTap: widget.onViewProjects,
+                          ),
                         ],
                       ),
                     ),
-                  ),
 
-                  // Scroll indicator
-                  ScrollToExploreIndicator(
-                    scrollOffset: scrollOffset,
-                    onTap: widget.onViewProjects,
-                  ),
-                ],
+                    // 2. MENU SECTION (Below the fold)
+                    const MobileMenuSection(),
+                  ],
+                ),
               ),
             );
           },

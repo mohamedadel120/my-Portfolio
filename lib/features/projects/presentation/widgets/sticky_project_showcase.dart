@@ -1,15 +1,18 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
 import 'dart:async';
+import 'dart:ui';
+
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import '../../../../utils/url_launcher_utils.dart';
+
 import '../../../../utils/device_utils.dart';
-import '../../../../widgets/common/phone_frame.dart';
+import '../../../../utils/url_launcher_utils.dart';
 import '../../../../widgets/common/magnetic_button.dart';
-import '../../../../widgets/common/project_video_player.dart';
+import '../../../../widgets/common/phone_frame.dart';
 import '../../domain/entities/project_entity.dart';
+import '../../../../widgets/common/project_video_player.dart';
 
 class StickyProjectShowcase extends StatefulWidget {
   final ValueListenable<double> scrollOffsetListenable;
@@ -55,6 +58,12 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
         }
       }
     });
+  }
+
+  @override
+  void dispose() {
+    _scrollEndTimer?.cancel();
+    super.dispose();
   }
 
   // Config
@@ -195,8 +204,8 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
             // 3. Layout Constants - Responsive Sizing
             const double phoneAspectRatio = 19.5 / 9;
 
-            final double phoneWidth;
-            final double phoneHeight;
+            double phoneWidth;
+            double phoneHeight;
 
             if (isXS) {
               final calcWidth = screenWidth * 0.7;
@@ -214,11 +223,17 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
               phoneHeight = phoneWidth * phoneAspectRatio;
             }
 
+            // [FIX] Ensure aspect ratio is preserved if height is constrained
             final double maxMobilePhoneHeight =
-                isMobile ? viewportHeight * 0.50 : viewportHeight * 0.85;
-            final safePhoneHeight = phoneHeight > maxMobilePhoneHeight
-                ? maxMobilePhoneHeight
-                : phoneHeight;
+                isMobile ? viewportHeight * 0.55 : viewportHeight * 0.85;
+
+            if (phoneHeight > maxMobilePhoneHeight) {
+              // If height exceeds limit, cap height and reduce width to match ratio
+              phoneHeight = maxMobilePhoneHeight;
+              phoneWidth = phoneHeight / phoneAspectRatio;
+            }
+
+            final safePhoneHeight = phoneHeight;
 
             final sideWidth = (screenWidth - phoneWidth) / 2;
 
@@ -334,9 +349,9 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
                       top: 0,
                       left: 0,
                       width: sideWidth,
-                      height: 500,
+                      height: 700,
                       child: Transform.translate(
-                        offset: Offset(0, clampedTop + 220),
+                        offset: Offset(0, clampedTop + 150),
                         child:
                             RepaintBoundary(child: _buildLeftInfo(sideWidth)),
                       ),
@@ -348,9 +363,9 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
                       top: 0,
                       right: 0,
                       width: sideWidth,
-                      height: 550,
+                      height: 750,
                       child: Transform.translate(
-                        offset: Offset(0, clampedTop + 260),
+                        offset: Offset(0, clampedTop + 200),
                         child: RepaintBoundary(
                           child: _buildRightTech(sideWidth),
                         ),
@@ -690,75 +705,180 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
     final screenWidth = MediaQuery.of(context).size.width;
     final isXS = DeviceUtils.isExtraSmall(screenWidth);
 
-    return Container(
-      padding: EdgeInsets.symmetric(
-        horizontal: isXS ? 16 : 24,
-        vertical: isXS ? 20 : 32,
-      ),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.bottomCenter,
-          end: Alignment.topCenter,
-          colors: [
-            Colors.black.withValues(alpha: 0.95),
-            Colors.black.withValues(alpha: 0.7),
-            Colors.transparent,
-          ],
-          stops: const [0.0, 0.7, 1.0],
+    return Align(
+      alignment: Alignment.bottomCenter,
+      child: ClipRRect(
+        // Optional: Rounded corners at the top for a "card" feel
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+          child: Container(
+            width: double.infinity,
+            padding: const EdgeInsets.only(top: 20),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.bottomCenter,
+                end: Alignment.topCenter,
+                colors: [
+                  Colors.black.withValues(alpha: 0.8),
+                  Colors.black.withValues(alpha: 0.6),
+                  Colors.black.withValues(alpha: 0.2),
+                  Colors.transparent,
+                ],
+                stops: const [0.0, 0.4, 0.7, 1.0],
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.2),
+                  blurRadius: 20,
+                  spreadRadius: 5,
+                ),
+              ],
+            ),
+            child: Material(
+              color: Colors.transparent,
+              child: SafeArea(
+                top: false,
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(
+                    isXS ? 20 : 32,
+                    0,
+                    isXS ? 20 : 32,
+                    isXS ? 30 : 40,
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Title
+                      Text(
+                        project.title.toUpperCase(),
+                        key: ValueKey('title-${project.title}'),
+                        style: GoogleFonts.anton(
+                          fontSize: isXS ? 36 : 48,
+                          color: Colors.white,
+                          height: 0.9,
+                          shadows: [
+                            Shadow(
+                              color: Colors.black.withValues(alpha: 0.5),
+                              blurRadius: 10,
+                              offset: const Offset(0, 4),
+                            ),
+                          ],
+                        ),
+                      )
+                          .animate()
+                          .fadeIn(duration: 400.ms)
+                          .slideY(begin: 0.2, end: 0),
+
+                      const SizedBox(height: 16),
+
+                      // Description
+                      Text(
+                        project.description,
+                        key: ValueKey('desc-${project.title}'),
+                        maxLines: 3,
+                        overflow: TextOverflow.ellipsis,
+                        style: GoogleFonts.outfit(
+                          fontSize: isXS ? 14 : 16,
+                          color: Colors.white.withValues(alpha: 0.85),
+                          height: 1.4,
+                          fontWeight: FontWeight.w300,
+                        ),
+                      ).animate().fadeIn(delay: 150.ms, duration: 400.ms),
+
+                      const SizedBox(height: 24),
+
+                      // Buttons
+                      Wrap(
+                        spacing: 16,
+                        runSpacing: 16,
+                        children: [
+                          if (project.androidStoreUrl != null)
+                            _GlassIconButton(
+                              icon: FontAwesomeIcons.googlePlay,
+                              onTap: () => UrlLauncherUtils.launchURL(
+                                  project.androidStoreUrl!),
+                            ),
+                          if (project.iosStoreUrl != null)
+                            _GlassIconButton(
+                              icon: FontAwesomeIcons.apple,
+                              onTap: () => UrlLauncherUtils.launchURL(
+                                  project.iosStoreUrl!),
+                            ),
+                          if (project.androidStoreUrl == null &&
+                              project.iosStoreUrl == null)
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 16, vertical: 8),
+                              decoration: BoxDecoration(
+                                border: Border.all(color: Colors.white30),
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: Text(
+                                "Coming Soon",
+                                style: GoogleFonts.poppins(
+                                    color: Colors.white70, fontSize: 12),
+                              ),
+                            ),
+                        ],
+                      )
+                          .animate()
+                          .fadeIn(delay: 200.ms, duration: 300.ms)
+                          .slideY(begin: 0.2, end: 0),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
         ),
       ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            project.title,
-            key: ValueKey('title-${project.title}'),
-            style: GoogleFonts.anton(
-              fontSize: isXS ? 28 : 36,
-              color: Colors.white,
-              height: 1.0,
+    );
+  }
+}
+
+class _GlassIconButton extends StatefulWidget {
+  final IconData icon;
+  final VoidCallback onTap;
+
+  const _GlassIconButton({required this.icon, required this.onTap});
+
+  @override
+  State<_GlassIconButton> createState() => _GlassIconButtonState();
+}
+
+class _GlassIconButtonState extends State<_GlassIconButton> {
+  bool _isHovered = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return MouseRegion(
+      onEnter: (_) => setState(() => _isHovered = true),
+      onExit: (_) => setState(() => _isHovered = false),
+      cursor: SystemMouseCursors.click,
+      child: GestureDetector(
+        onTap: widget.onTap,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            color:
+                _isHovered ? Colors.white : Colors.white.withValues(alpha: 0.1),
+            shape: BoxShape.circle,
+            border: Border.all(
+              color: _isHovered
+                  ? Colors.white
+                  : Colors.white.withValues(alpha: 0.3),
             ),
           ),
-          SizedBox(height: isXS ? 8 : 12),
-          Text(
-            project.description,
-            key: ValueKey('desc-${project.title}'),
-            maxLines: isXS ? 2 : 3,
-            overflow: TextOverflow.ellipsis,
-            style: GoogleFonts.poppins(
-              fontSize: isXS ? 12 : 14,
-              color: Colors.white70,
-              height: 1.4,
-            ),
+          child: Icon(
+            widget.icon,
+            color: _isHovered ? Colors.black : Colors.white,
+            size: 22,
           ),
-          SizedBox(height: isXS ? 12 : 20),
-          Wrap(
-            spacing: 12,
-            children: [
-              if (project.androidStoreUrl != null)
-                IconButton(
-                  onPressed: () =>
-                      UrlLauncherUtils.launchURL(project.androidStoreUrl!),
-                  icon: const Icon(
-                    FontAwesomeIcons.googlePlay,
-                    color: Colors.white,
-                    size: 20,
-                  ),
-                ),
-              if (project.iosStoreUrl != null)
-                IconButton(
-                  onPressed: () =>
-                      UrlLauncherUtils.launchURL(project.iosStoreUrl!),
-                  icon: const Icon(
-                    FontAwesomeIcons.apple,
-                    color: Colors.white,
-                    size: 20,
-                  ),
-                ),
-            ],
-          ),
-        ],
+        ),
       ),
     );
   }
