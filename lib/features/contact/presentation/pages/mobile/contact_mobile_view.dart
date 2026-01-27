@@ -304,9 +304,9 @@ class ContactMobileView extends StatelessWidget {
                                     const SizedBox(height: 20),
                                     ...contactData.socialLinks.map((link) {
                                       IconData icon;
-                                      if (link.name == 'Email')
+                                      if (link.name == 'Email') {
                                         icon = Icons.email;
-                                      else if (link.name == 'GitHub')
+                                      } else if (link.name == 'GitHub')
                                         icon = Icons.code;
                                       else if (link.name == 'LinkedIn')
                                         icon = Icons.link;

@@ -348,7 +348,7 @@ class _HeroDesktopViewState extends State<HeroDesktopView>
                             child: Column(
                               children: [
                                 Text(
-                                  'discripe my world',
+                                  'welcome to my universe 🌌 ',
                                   style: GoogleFonts.firaCode(
                                     fontSize: 16,
                                     fontWeight: FontWeight.w500,
