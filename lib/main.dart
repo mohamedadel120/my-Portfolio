@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'dart:ui';
 import 'package:seo_renderer/seo_renderer.dart';
 import 'core/navigation/app_router.dart';
-import 'widgets/common/custom_cursor.dart';
+import 'widgets/common/adaptive_cursor.dart';
 import 'core/theme/theme_controller.dart';
 import 'core/theme/app_theme.dart';
 
@@ -54,7 +54,7 @@ class MyApp extends StatelessWidget {
             darkTheme: AppTheme.darkTheme,
             themeMode: themeController.themeMode,
             builder: (context, child) {
-              return CustomCursor(child: child ?? const SizedBox.shrink());
+              return AdaptiveCursor(child: child ?? const SizedBox.shrink());
             },
             // Use Routing instead of Home
             initialRoute: '/',

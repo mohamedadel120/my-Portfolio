@@ -14,6 +14,7 @@ import '../../../../../widgets/common/gsap_stagger_animation.dart';
 import '../../../../../widgets/common/scroll_speed_widget.dart';
 import '../../../../../widgets/common/impact_stat.dart';
 import '../../../../../widgets/common/about_visual_branding.dart';
+import '../../../../../widgets/common/spotlight_card.dart';
 import '../../cubit/about_cubit.dart';
 import '../../cubit/about_state.dart';
 
@@ -230,12 +231,16 @@ class AboutDesktopView extends StatelessWidget {
                                     icon = Icons.code_rounded;
                                 }
 
-                                return AboutCard(
-                                  icon: icon,
-                                  title: feature.title,
-                                  description: feature.description,
-                                  delay: Duration.zero,
-                                  isVisible: true,
+                                return SpotlightCard(
+                                  spotlightColor:
+                                      Theme.of(context).colorScheme.primary,
+                                  child: AboutCard(
+                                    icon: icon,
+                                    title: feature.title,
+                                    description: feature.description,
+                                    delay: Duration.zero,
+                                    isVisible: true,
+                                  ),
                                 );
                               }).toList(),
                             ),

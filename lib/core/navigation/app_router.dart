@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../utils/device_utils.dart';
+import '../../utils/url_launcher_utils.dart';
+import '../../core/constants/app_data.dart';
 import '../../core/navigation/page_transitions.dart';
 import '../../features/hero/presentation/pages/hero_section.dart';
 import '../../features/about/presentation/pages/about_page.dart';
@@ -67,12 +69,18 @@ class _HomeWrapperState extends State<_HomeWrapper> {
   Widget build(BuildContext context) {
     final isMobile = DeviceUtils.isMobile(MediaQuery.of(context).size.width);
 
+    // Common logic for download CV
+    void onDownloadCV() {
+      UrlLauncherUtils.launchURL(AppData.cvUrl);
+    }
+
     if (isMobile) {
       return Scaffold(
         body: HeroSection(
           scrollOffsetListenable: _notifier,
           onViewProjects: () => Navigator.pushNamed(context, '/projects'),
           onContactMe: () => Navigator.pushNamed(context, '/contact'),
+          onDownloadCV: onDownloadCV,
         ),
       );
     }
@@ -88,6 +96,7 @@ class _HomeWrapperState extends State<_HomeWrapper> {
             scrollOffsetListenable: _notifier,
             onViewProjects: () => Navigator.pushNamed(context, '/projects'),
             onContactMe: () => Navigator.pushNamed(context, '/contact'),
+            onDownloadCV: onDownloadCV,
           ),
         ),
       ),

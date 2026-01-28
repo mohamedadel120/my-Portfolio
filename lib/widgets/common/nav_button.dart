@@ -12,20 +12,20 @@ class NavButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MagneticButton(
-          onTap: onTap,
-          toxicity: 0.4,
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            child: Text(
-              label,
-              style: GoogleFonts.poppins(
-                color: Colors.white70,
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
+      onTap: onTap,
+      force: 0.4,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        child: Text(
+          label,
+          style: GoogleFonts.poppins(
+            color: Colors.white70,
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
           ),
-        )
+        ),
+      ),
+    )
         .animate()
         .fadeIn(duration: 400.ms)
         .slideY(begin: -0.2, end: 0, duration: 400.ms);

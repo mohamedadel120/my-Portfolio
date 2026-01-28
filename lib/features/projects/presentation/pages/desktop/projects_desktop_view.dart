@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:seo_renderer/seo_renderer.dart';
-import '../../../../../widgets/common/section_title.dart';
+
+import '../../../../../widgets/common/decryption_text.dart';
 import '../../../../../widgets/common/section_divider.dart';
 import '../../../../../widgets/common/tech_grid_background.dart';
 import '../../../../../widgets/common/floating_code_shapes.dart';
@@ -122,10 +123,18 @@ class ProjectsDesktopView extends StatelessWidget {
                           'y': {'from': -30, 'to': 0},
                           'scale': {'from': 0.9, 'to': 1.0},
                         },
-                        child: const TextRenderer(
+                        child: TextRenderer(
                           text: 'My Projects',
-                          child: SectionTitle(
-                              title: 'My Projects', isVisible: true),
+                          child: DecryptionText(
+                            text: 'MY PROJECTS',
+                            startAnimating: true,
+                            style: TextStyle(
+                              fontSize: 48,
+                              fontWeight: FontWeight.bold,
+                              color: Theme.of(context).colorScheme.primary,
+                              letterSpacing: 2.0,
+                            ),
+                          ),
                         ),
                       ),
                       const SizedBox(height: 32),

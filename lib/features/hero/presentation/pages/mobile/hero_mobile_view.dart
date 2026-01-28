@@ -257,7 +257,7 @@ class _HeroMobileViewState extends State<HeroMobileView>
                                     children: [
                                       MagneticButton(
                                         onTap: widget.onViewProjects ?? () {},
-                                        toxicity: isLowSpec ? 0 : 0.5,
+                                        force: isLowSpec ? 0 : 0.5,
                                         child: Container(
                                           padding: EdgeInsets.symmetric(
                                             horizontal: isXS ? 28 : 40,
@@ -285,7 +285,7 @@ class _HeroMobileViewState extends State<HeroMobileView>
                                       ),
                                       MagneticButton(
                                         onTap: widget.onDownloadCV ?? () {},
-                                        toxicity: isLowSpec ? 0 : 0.3,
+                                        force: isLowSpec ? 0 : 0.3,
                                         child: Container(
                                           padding: EdgeInsets.symmetric(
                                             horizontal: isXS ? 28 : 40,
@@ -329,7 +329,7 @@ class _HeroMobileViewState extends State<HeroMobileView>
                                       ),
                                       MagneticButton(
                                         onTap: widget.onContactMe ?? () {},
-                                        toxicity: isLowSpec ? 0 : 0.3,
+                                        force: isLowSpec ? 0 : 0.3,
                                         child: Container(
                                           padding: EdgeInsets.symmetric(
                                             horizontal: isXS ? 28 : 40,

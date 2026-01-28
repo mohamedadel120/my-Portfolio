@@ -17,6 +17,7 @@ import '../../cubit/hero_cubit.dart';
 import '../../cubit/hero_state.dart';
 import '../../../../../../widgets/navigation/custom_nav_bar.dart';
 import '../../../../../../widgets/common/code_styled_subtitle.dart';
+import '../../widgets/hero_3d_tilt_card.dart';
 
 class HeroDesktopView extends StatefulWidget {
   final ValueListenable<double> scrollOffsetListenable;
@@ -259,132 +260,137 @@ class _HeroDesktopViewState extends State<HeroDesktopView>
 
                   // Main content
                   Center(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          // Editorial "Hello"
-                          ScrollSpeedWidget(
-                            scrollOffset: scrollOffset,
-                            sectionStartOffset: sectionStartOffset,
-                            speed: isLowSpec ? 0 : -0.1,
-                            child: Text(
-                              heroData.helloGreeting,
-                              style: GoogleFonts.oswald(
-                                fontSize: 20,
-                                letterSpacing: 4,
-                                fontWeight: FontWeight.w500,
-                                color: Theme.of(context).colorScheme.primary,
-                              ),
-                            ),
-                          ),
-
-                          // Opening Bracket
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 100, bottom: 20),
+                    child: Hero3DTiltCard(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisSize: MainAxisSize
+                              .min, // Important for tilt card sizing
+                          children: [
+                            // Editorial "Hello"
+                            ScrollSpeedWidget(
+                              scrollOffset: scrollOffset,
+                              sectionStartOffset: sectionStartOffset,
+                              speed: isLowSpec ? 0 : -0.1,
                               child: Text(
-                                '[',
-                                style: TextStyle(
-                                  fontFamily: 'FiraCode',
-                                  fontSize: 60,
-                                  fontWeight: FontWeight.w100,
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .primary
-                                      .withOpacity(0.3),
+                                heroData.helloGreeting,
+                                style: GoogleFonts.oswald(
+                                  fontSize: 20,
+                                  letterSpacing: 4,
+                                  fontWeight: FontWeight.w500,
+                                  color: Theme.of(context).colorScheme.primary,
                                 ),
                               ),
                             ),
-                          ),
 
-                          const SizedBox(height: 20),
-
-                          // Giant Name
-                          ScrollSpeedWidget(
-                            scrollOffset: scrollOffset,
-                            sectionStartOffset: sectionStartOffset,
-                            speed: isLowSpec ? 0 : 0.05,
-                            child: TextRenderer(
-                              text: heroData.name.toUpperCase(),
-                              child: FittedBox(
-                                fit: BoxFit.scaleDown,
+                            // Opening Bracket
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 100, bottom: 20),
                                 child: Text(
-                                  heroData.name.toUpperCase(),
-                                  style: GoogleFonts.anton(
-                                    fontSize: 180,
-                                    height: 0.9,
-                                    color:
-                                        Theme.of(context).colorScheme.onSurface,
-                                    letterSpacing: -2,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-
-                          // Role / Subtitle
-                          ScrollSpeedWidget(
-                            scrollOffset: scrollOffset,
-                            sectionStartOffset: sectionStartOffset,
-                            speed: isLowSpec ? 0 : -0.05,
-                            child: CodeStyledSubtitle(
-                              title: heroData.title,
-                              subtitle: heroData.subtitle,
-                            ),
-                          ),
-
-                          const SizedBox(height: 40),
-
-                          // "runPortfolio();" Text Label
-                          ScrollSpeedWidget(
-                            scrollOffset: scrollOffset,
-                            sectionStartOffset: sectionStartOffset,
-                            speed: isLowSpec ? 0 : -0.1,
-                            child: Column(
-                              children: [
-                                Text(
-                                  'welcome to my universe 🌌 ',
-                                  style: GoogleFonts.firaCode(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500,
+                                  '[',
+                                  style: TextStyle(
+                                    fontFamily: 'FiraCode',
+                                    fontSize: 60,
+                                    fontWeight: FontWeight.w100,
                                     color: Theme.of(context)
                                         .colorScheme
                                         .primary
-                                        .withOpacity(0.8),
+                                        .withOpacity(0.3),
                                   ),
-                                ),
-                                const SizedBox(height: 16),
-                                const CustomNavBar(),
-                              ],
-                            ),
-                          ),
-
-                          // Code Decoration Bracket (Bottom Right of actions)
-                          const SizedBox(height: 20),
-                          Align(
-                            alignment: Alignment.centerRight,
-                            child: Padding(
-                              padding: const EdgeInsets.only(right: 100),
-                              child: Text(
-                                ']',
-                                style: TextStyle(
-                                  fontFamily: 'FiraCode',
-                                  fontSize: 60,
-                                  fontWeight: FontWeight.w100,
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .primary
-                                      .withOpacity(0.3),
                                 ),
                               ),
                             ),
-                          ),
-                        ],
+
+                            const SizedBox(height: 20),
+
+                            // Giant Name
+                            ScrollSpeedWidget(
+                              scrollOffset: scrollOffset,
+                              sectionStartOffset: sectionStartOffset,
+                              speed: isLowSpec ? 0 : 0.05,
+                              child: TextRenderer(
+                                text: heroData.name.toUpperCase(),
+                                child: FittedBox(
+                                  fit: BoxFit.scaleDown,
+                                  child: Text(
+                                    heroData.name.toUpperCase(),
+                                    style: GoogleFonts.anton(
+                                      fontSize: 180,
+                                      height: 0.9,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onSurface,
+                                      letterSpacing: -2,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+
+                            // Role / Subtitle
+                            ScrollSpeedWidget(
+                              scrollOffset: scrollOffset,
+                              sectionStartOffset: sectionStartOffset,
+                              speed: isLowSpec ? 0 : -0.05,
+                              child: CodeStyledSubtitle(
+                                title: heroData.title,
+                                subtitle: heroData.subtitle,
+                              ),
+                            ),
+
+                            const SizedBox(height: 40),
+
+                            // "runPortfolio();" Text Label
+                            ScrollSpeedWidget(
+                              scrollOffset: scrollOffset,
+                              sectionStartOffset: sectionStartOffset,
+                              speed: isLowSpec ? 0 : -0.1,
+                              child: Column(
+                                children: [
+                                  Text(
+                                    'welcome to my universe 🌌 ',
+                                    style: GoogleFonts.firaCode(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .primary
+                                          .withOpacity(0.8),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 16),
+                                  const CustomNavBar(),
+                                ],
+                              ),
+                            ),
+
+                            // Code Decoration Bracket (Bottom Right of actions)
+                            const SizedBox(height: 20),
+                            Align(
+                              alignment: Alignment.centerRight,
+                              child: Padding(
+                                padding: const EdgeInsets.only(right: 100),
+                                child: Text(
+                                  ']',
+                                  style: TextStyle(
+                                    fontFamily: 'FiraCode',
+                                    fontSize: 60,
+                                    fontWeight: FontWeight.w100,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .primary
+                                        .withOpacity(0.3),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -395,7 +401,7 @@ class _HeroDesktopViewState extends State<HeroDesktopView>
                     right: 40,
                     child: MagneticButton(
                       onTap: widget.onDownloadCV ?? () {},
-                      toxicity: 0.3,
+                      force: 0.3,
                       child: Container(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 24, vertical: 12),
