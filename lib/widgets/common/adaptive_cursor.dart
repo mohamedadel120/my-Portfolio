@@ -1,4 +1,6 @@
+import 'dart:ui'; // For ImageFilter
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 
 enum CursorType {
   defaultCursor,
@@ -41,33 +43,55 @@ class _AdaptiveCursorState extends State<AdaptiveCursor> {
           widget.child,
 
           // Custom Cursor Overlay
-          IgnorePointer(
-            child: ValueListenableBuilder<CursorType>(
-              valueListenable: cursorController,
-              builder: (context, type, _) {
-                return AnimatedPositioned(
-                  duration:
-                      const Duration(milliseconds: 50), // Immediate follow
-                  left: _mousePos.dx - _getSize(type) / 2,
-                  top: _mousePos.dy - _getSize(type) / 2,
-                  child: AnimatedContainer(
-                    duration: const Duration(milliseconds: 200),
-                    curve: Curves.easeOutExpo,
-                    width: _getSize(type),
-                    height: _getSize(type),
-                    decoration: BoxDecoration(
-                      color: _getColor(type, context),
-                      shape: BoxShape.circle,
-                      border: _getBorder(type, context),
-                    ),
+          ValueListenableBuilder<CursorType>(
+            valueListenable: cursorController,
+            builder: (context, type, _) {
+              final isPointer = type == CursorType.pointer;
+
+              return AnimatedPositioned(
+                duration: const Duration(milliseconds: 50), // Immediate follow
+                left: _mousePos.dx - _getSize(type) / 2,
+                top: _mousePos.dy - _getSize(type) / 2,
+                child: IgnorePointer(
+                  child: ExcludeSemantics(
+                    child: _buildCursor(type, context, isPointer),
                   ),
-                );
-              },
-            ),
+                ),
+              );
+            },
           ),
         ],
       ),
     );
+  }
+
+  Widget _buildCursor(CursorType type, BuildContext context, bool isPointer) {
+    Widget cursor = AnimatedContainer(
+      duration: const Duration(milliseconds: 200),
+      curve: Curves.easeOutExpo,
+      width: _getSize(type),
+      height: _getSize(type),
+      decoration: BoxDecoration(
+        color: _getColor(type, context),
+        shape: BoxShape.circle,
+        border: _getBorder(type, context),
+        boxShadow: _getBoxShadow(type, context),
+      ),
+    );
+
+    // Apply Glassmorphism and Pulse only for pointer
+    if (isPointer) {
+      cursor = ClipOval(
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+          child: cursor,
+        ),
+      )
+          .animate(onPlay: (c) => c.repeat(reverse: true))
+          .scaleXY(end: 1.1, duration: 1000.ms, curve: Curves.easeInOut);
+    }
+
+    return cursor;
   }
 
   double _getSize(CursorType type) {
@@ -86,7 +110,7 @@ class _AdaptiveCursorState extends State<AdaptiveCursor> {
 
     switch (type) {
       case CursorType.pointer:
-        return Colors.transparent; // Ring style
+        return primary.withOpacity(0.15); // Subtle fill
       case CursorType.text:
         return primary.withOpacity(0.1);
       case CursorType.defaultCursor:
@@ -102,6 +126,23 @@ class _AdaptiveCursorState extends State<AdaptiveCursor> {
         return Border.all(color: primary, width: 2);
       case CursorType.defaultCursor:
         return null;
+      default:
+        return null;
+    }
+  }
+
+  List<BoxShadow>? _getBoxShadow(CursorType type, BuildContext context) {
+    final primary = Theme.of(context).colorScheme.primary;
+
+    switch (type) {
+      case CursorType.pointer:
+        return [
+          BoxShadow(
+            color: primary.withOpacity(0.4),
+            blurRadius: 15,
+            spreadRadius: 2,
+          ),
+        ];
       default:
         return null;
     }

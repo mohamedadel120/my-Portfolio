@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:seo_renderer/seo_renderer.dart';
 import '../../../../widgets/common/gsap_stagger_animation.dart';
 import '../../domain/entities/experience_entity.dart';
 
@@ -341,19 +340,16 @@ class _ProfessionalExperienceCardState
                     ),
                   ),
                   Expanded(
-                    child: TextRenderer(
-                      text: achievement,
-                      child: Text(
-                        achievement,
-                        style: GoogleFonts.poppins(
-                          fontSize: isXS ? 13 : (widget.isMobile ? 14 : 16),
-                          color: Theme.of(
-                            context,
-                          ).colorScheme.onSurface.withValues(alpha: 0.9),
-                          height: 1.7,
-                          fontWeight: FontWeight.w400,
-                          letterSpacing: 0.2,
-                        ),
+                    child: Text(
+                      achievement,
+                      style: GoogleFonts.poppins(
+                        fontSize: isXS ? 13 : (widget.isMobile ? 14 : 16),
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.onSurface.withValues(alpha: 0.9),
+                        height: 1.7,
+                        fontWeight: FontWeight.w400,
+                        letterSpacing: 0.2,
                       ),
                     ),
                   ),

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'dart:ui';
-import 'package:seo_renderer/seo_renderer.dart';
 import 'core/navigation/app_router.dart';
 import 'widgets/common/adaptive_cursor.dart';
 import 'core/theme/theme_controller.dart';
@@ -42,26 +41,24 @@ class MyApp extends StatelessWidget {
     // Initialize ThemeController
     final themeController = ThemeController();
 
-    return RobotDetector(
-      child: ListenableBuilder(
-        listenable: themeController,
-        builder: (context, _) {
-          return MaterialApp(
-            title: 'Mohamed Adel - Flutter Developer',
-            debugShowCheckedModeBanner: false,
-            scrollBehavior: CustomScrollBehavior(),
-            theme: AppTheme.lightTheme,
-            darkTheme: AppTheme.darkTheme,
-            themeMode: themeController.themeMode,
-            builder: (context, child) {
-              return AdaptiveCursor(child: child ?? const SizedBox.shrink());
-            },
-            // Use Routing instead of Home
-            initialRoute: '/',
-            onGenerateRoute: AppRouter.onGenerateRoute,
-          );
-        },
-      ),
+    return ListenableBuilder(
+      listenable: themeController,
+      builder: (context, _) {
+        return MaterialApp(
+          title: 'Mohamed Adel - Flutter Developer',
+          debugShowCheckedModeBanner: false,
+          scrollBehavior: CustomScrollBehavior(),
+          theme: AppTheme.lightTheme,
+          darkTheme: AppTheme.darkTheme,
+          themeMode: themeController.themeMode,
+          builder: (context, child) {
+            return AdaptiveCursor(child: child ?? const SizedBox.shrink());
+          },
+          // Use Routing instead of Home
+          initialRoute: '/',
+          onGenerateRoute: AppRouter.onGenerateRoute,
+        );
+      },
     );
   }
 }

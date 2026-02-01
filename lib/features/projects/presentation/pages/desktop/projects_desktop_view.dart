@@ -2,7 +2,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:seo_renderer/seo_renderer.dart';
 
 import '../../../../../widgets/common/decryption_text.dart';
 import '../../../../../widgets/common/section_divider.dart';
@@ -123,17 +122,14 @@ class ProjectsDesktopView extends StatelessWidget {
                           'y': {'from': -30, 'to': 0},
                           'scale': {'from': 0.9, 'to': 1.0},
                         },
-                        child: TextRenderer(
-                          text: 'My Projects',
-                          child: DecryptionText(
-                            text: 'MY PROJECTS',
-                            startAnimating: true,
-                            style: TextStyle(
-                              fontSize: 48,
-                              fontWeight: FontWeight.bold,
-                              color: Theme.of(context).colorScheme.primary,
-                              letterSpacing: 2.0,
-                            ),
+                        child: DecryptionText(
+                          text: 'MY PROJECTS',
+                          startAnimating: true,
+                          style: TextStyle(
+                            fontSize: 48,
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).colorScheme.primary,
+                            letterSpacing: 2.0,
                           ),
                         ),
                       ),

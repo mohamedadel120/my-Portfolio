@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../utils/device_utils.dart';
-import '../../utils/url_launcher_utils.dart';
-import '../../core/constants/app_data.dart';
 import '../../core/navigation/page_transitions.dart';
-import '../../features/hero/presentation/pages/hero_section.dart';
+import '../../features/home/presentation/pages/home_page.dart';
 import '../../features/about/presentation/pages/about_page.dart';
 import '../../features/experience/presentation/pages/experience_page.dart';
 import '../../features/projects/presentation/pages/projects_page.dart';
@@ -13,13 +10,8 @@ class AppRouter {
   static Route<dynamic>? onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
       case '/':
-        // Special case: Hero is the Home (no wrapper needed as it handles its own internal structure
-        // usually, but here we just render the Section wrapped in a Page/Scaffold logic
-        // or just the HeroSection itself if adapted).
-        // Since HeroSection currently assumes it's part of a scroll, we might need a wrapper
-        // OR we modify HeroSection to be a standalone landing page.
-        // Let's assume we update HeroSection to work standalone.
-        return MaterialPageRoute(builder: (_) => const _HomeWrapper());
+        // Single Page Layout - All sections in one scrollable view
+        return MaterialPageRoute(builder: (_) => const HomePage());
 
       case '/about':
         return CodingTransition(page: const AboutPage());
@@ -34,72 +26,7 @@ class AppRouter {
         return CodingTransition(page: const ContactPage());
 
       default:
-        return MaterialPageRoute(builder: (_) => const _HomeWrapper());
+        return MaterialPageRoute(builder: (_) => const HomePage());
     }
-  }
-}
-
-class _HomeWrapper extends StatefulWidget {
-  const _HomeWrapper();
-
-  @override
-  State<_HomeWrapper> createState() => _HomeWrapperState();
-}
-
-class _HomeWrapperState extends State<_HomeWrapper> {
-  final _scrollController = ScrollController();
-  final _notifier = ValueNotifier<double>(0.0);
-
-  @override
-  void initState() {
-    super.initState();
-    _scrollController.addListener(() {
-      _notifier.value = _scrollController.offset;
-    });
-  }
-
-  @override
-  void dispose() {
-    _scrollController.dispose();
-    _notifier.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final isMobile = DeviceUtils.isMobile(MediaQuery.of(context).size.width);
-
-    // Common logic for download CV
-    void onDownloadCV() {
-      UrlLauncherUtils.launchURL(AppData.cvUrl);
-    }
-
-    if (isMobile) {
-      return Scaffold(
-        body: HeroSection(
-          scrollOffsetListenable: _notifier,
-          onViewProjects: () => Navigator.pushNamed(context, '/projects'),
-          onContactMe: () => Navigator.pushNamed(context, '/contact'),
-          onDownloadCV: onDownloadCV,
-        ),
-      );
-    }
-
-    return Scaffold(
-      body: SingleChildScrollView(
-        controller: _scrollController,
-        child: ConstrainedBox(
-          constraints: BoxConstraints(
-            minHeight: MediaQuery.of(context).size.height,
-          ),
-          child: HeroSection(
-            scrollOffsetListenable: _notifier,
-            onViewProjects: () => Navigator.pushNamed(context, '/projects'),
-            onContactMe: () => Navigator.pushNamed(context, '/contact'),
-            onDownloadCV: onDownloadCV,
-          ),
-        ),
-      ),
-    );
   }
 }

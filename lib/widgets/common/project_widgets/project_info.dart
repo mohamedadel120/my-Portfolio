@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:seo_renderer/seo_renderer.dart';
 import '../../../features/projects/domain/entities/project_entity.dart';
 import '../../../core/constants/app_colors.dart';
 
@@ -34,19 +33,16 @@ class ProjectInfo extends StatelessWidget {
               ),
             ),
             Expanded(
-              child: TextRenderer(
-                text: project.title,
-                child: Text(
-                  project.title,
-                  style: GoogleFonts.poppins(
-                    fontSize: isMobile ? 18 : (isTablet ? 20 : 22),
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.textPrimary,
-                    letterSpacing: 0.2,
-                  ),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
+              child: Text(
+                project.title,
+                style: GoogleFonts.poppins(
+                  fontSize: isMobile ? 18 : (isTablet ? 20 : 22),
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.textPrimary,
+                  letterSpacing: 0.2,
                 ),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
               ),
             ),
           ],

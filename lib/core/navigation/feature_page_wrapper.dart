@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import '../../widgets/common/scroll_indicator.dart';
 
 /// A wrapper that provides a virtual scroll environment for sections that expect
 /// to be part of a larger scroll view.
@@ -36,20 +37,12 @@ class _FeaturePageWrapperState extends State<FeaturePageWrapper> {
   void initState() {
     super.initState();
     _controller = ScrollController();
-    // Initialize notification with the virtual offset so animations trigger immediately if needed
-    // Actually, usually they trigger when current >= trigger.
-    // If virtualOffset is 4000 (Projects), and real is 0.
-    // Total = 4000.
-    // Projects animation triggers at 4000 * 0.8 = 3200.
-    // 4000 >= 3200 -> Visible. Perfect.
     _scrollNotifier = ValueNotifier<double>(widget.virtualOffset);
 
     _controller.addListener(_onScroll);
   }
 
   void _onScroll() {
-    // We add the virtual offset to the real scroll offset
-    // This tricks the child widgets into thinking they are far down the page
     _scrollNotifier.value = _controller.offset + widget.virtualOffset;
   }
 
@@ -80,10 +73,44 @@ class _FeaturePageWrapperState extends State<FeaturePageWrapper> {
           onPressed: () => Navigator.of(context).pop(),
         ),
       ),
-      body: SingleChildScrollView(
-        controller: _controller,
-        physics: const ClampingScrollPhysics(), // Match the main site physics
-        child: widget.builder(context, _scrollNotifier),
+      body: Stack(
+        children: [
+          SingleChildScrollView(
+            controller: _controller,
+            physics: const ClampingScrollPhysics(),
+            child: widget.builder(context, _scrollNotifier),
+          ),
+
+          // Scroll Indicator (aligned to the right)
+          Positioned(
+            bottom: 40,
+            right: 20,
+            child: ValueListenableBuilder<double>(
+              valueListenable: _scrollNotifier,
+              builder: (context, totalOffset, _) {
+                // We want the indicator to hide only when near the bottom
+                final localOffset = totalOffset - widget.virtualOffset;
+
+                double opacity = 1.0;
+                if (_controller.hasClients &&
+                    _controller.position.hasContentDimensions) {
+                  final max = _controller.position.maxScrollExtent;
+                  if (max > 0) {
+                    // Start fading out in the last 100 pixels
+                    opacity = ((max - localOffset) / 100.0).clamp(0.0, 1.0);
+                  } else {
+                    // Page is not scrollable (content fits in one screen)
+                    opacity = 0.0;
+                  }
+                }
+
+                return Center(
+                  child: ScrollIndicator(opacity: opacity),
+                );
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
