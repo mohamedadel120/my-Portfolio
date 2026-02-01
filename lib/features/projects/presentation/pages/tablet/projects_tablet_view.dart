@@ -2,7 +2,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:seo_renderer/seo_renderer.dart';
 import '../../../../../widgets/common/section_title.dart';
 import '../../../../../widgets/common/section_divider.dart';
 import '../../../../../widgets/common/tech_grid_background.dart';
@@ -117,11 +116,8 @@ class ProjectsTabletView extends StatelessWidget {
                           'y': {'from': -30, 'to': 0},
                           'scale': {'from': 0.9, 'to': 1.0},
                         },
-                        child: const TextRenderer(
-                          text: 'My Projects',
-                          child: SectionTitle(
-                              title: 'My Projects', isVisible: true),
-                        ),
+                        child: const SectionTitle(
+                            title: 'My Projects', isVisible: true),
                       ),
                       const SizedBox(height: 32),
                       GSAPEnhancedAnimation(

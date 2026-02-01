@@ -741,10 +741,12 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
                 top: false,
                 child: Padding(
                   padding: EdgeInsets.fromLTRB(
-                    isXS ? 20 : 32,
+                    isXS ? 24 : 36,
                     0,
-                    isXS ? 20 : 32,
-                    isXS ? 30 : 40,
+                    isXS
+                        ? 80
+                        : 100, // Significant gutter for the ScrollIndicator
+                    isXS ? 40 : 50,
                   ),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
@@ -756,13 +758,16 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
                         project.title.toUpperCase(),
                         key: ValueKey('title-${project.title}'),
                         style: GoogleFonts.anton(
-                          fontSize: isXS ? 36 : 48,
+                          fontSize: isXS
+                              ? 28
+                              : 38, // Further reduced for better balance
                           color: Colors.white,
-                          height: 0.9,
+                          height: 1.0,
+                          letterSpacing: 1.2,
                           shadows: [
                             Shadow(
-                              color: Colors.black.withValues(alpha: 0.5),
-                              blurRadius: 10,
+                              color: Colors.black.withValues(alpha: 0.8),
+                              blurRadius: 15,
                               offset: const Offset(0, 4),
                             ),
                           ],
@@ -772,19 +777,22 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
                           .fadeIn(duration: 400.ms)
                           .slideY(begin: 0.2, end: 0),
 
-                      const SizedBox(height: 16),
+                      const SizedBox(height: 12),
 
                       // Description
                       Text(
                         project.description,
                         key: ValueKey('desc-${project.title}'),
-                        maxLines: 3,
+                        maxLines: 6, // Allow even more lines
                         overflow: TextOverflow.ellipsis,
                         style: GoogleFonts.outfit(
-                          fontSize: isXS ? 14 : 16,
-                          color: Colors.white.withValues(alpha: 0.85),
-                          height: 1.4,
-                          fontWeight: FontWeight.w300,
+                          fontSize: isXS
+                              ? 13
+                              : 15, // Slightly smaller for premium feel
+                          color: Colors.white.withValues(alpha: 0.9),
+                          height: 1.5,
+                          fontWeight: FontWeight.w400,
+                          letterSpacing: 0.2,
                         ),
                       ).animate().fadeIn(delay: 150.ms, duration: 400.ms),
 

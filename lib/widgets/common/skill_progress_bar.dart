@@ -40,8 +40,8 @@ class _SkillProgressBarState extends State<SkillProgressBar>
       duration: const Duration(milliseconds: 1500),
       vsync: this,
     );
-    _progressAnimation = Tween<double>(begin: 0.0, end: widget.progress)
-        .animate(CurvedAnimation(
+    _progressAnimation =
+        Tween<double>(begin: 0.0, end: widget.progress).animate(CurvedAnimation(
       parent: _controller,
       curve: Curves.easeOutCubic,
     ));
@@ -59,8 +59,9 @@ class _SkillProgressBarState extends State<SkillProgressBar>
 
   void _checkVisibility() {
     final delayOffset = widget.delay.inMilliseconds * 0.2;
-    final triggerPoint = widget.sectionStartOffset - (widget.viewportHeight * 0.5) + delayOffset;
-    
+    final triggerPoint =
+        widget.sectionStartOffset - (widget.viewportHeight * 0.5) + delayOffset;
+
     if (_maxScroll >= triggerPoint && !_hasAnimated) {
       _hasAnimated = true;
       _controller.forward();
@@ -76,16 +77,16 @@ class _SkillProgressBarState extends State<SkillProgressBar>
   @override
   Widget build(BuildContext context) {
     _checkVisibility();
-    
+
     final screenWidth = MediaQuery.of(context).size.width;
     final isMobile = screenWidth < 768;
-    
+
     return AnimatedBuilder(
       animation: _progressAnimation,
       builder: (context, child) {
         final currentProgress = _progressAnimation.value;
         final percentage = (currentProgress * 100).toInt();
-        
+
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -95,21 +96,22 @@ class _SkillProgressBarState extends State<SkillProgressBar>
               children: [
                 Flexible(
                   child: Text(
-                    widget.skill,
-                    style: GoogleFonts.poppins(
-                      fontSize: isMobile ? 14 : 16,
-                      fontWeight: FontWeight.w600,
+                    widget.skill.toUpperCase(),
+                    style: GoogleFonts.orbitron(
+                      fontSize: isMobile ? 12 : 14,
+                      fontWeight: FontWeight.bold,
                       color: AppColors.textPrimary,
+                      letterSpacing: 2,
                     ),
                     overflow: TextOverflow.ellipsis,
-                    maxLines: 2,
+                    maxLines: 1,
                   ),
                 ),
                 const SizedBox(width: 8),
                 Text(
                   '$percentage%',
-                  style: GoogleFonts.poppins(
-                    fontSize: isMobile ? 13 : 14,
+                  style: GoogleFonts.spaceMono(
+                    fontSize: isMobile ? 12 : 13,
                     color: widget.color,
                     fontWeight: FontWeight.bold,
                   ),
@@ -118,10 +120,10 @@ class _SkillProgressBarState extends State<SkillProgressBar>
             ),
             const SizedBox(height: 8),
             Container(
-              height: 8,
+              height: 4, // Thinner, more elegant
               decoration: BoxDecoration(
                 color: AppColors.surface,
-                borderRadius: BorderRadius.circular(4),
+                borderRadius: BorderRadius.circular(2),
               ),
               child: FractionallySizedBox(
                 alignment: Alignment.centerLeft,
@@ -130,16 +132,16 @@ class _SkillProgressBarState extends State<SkillProgressBar>
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       colors: [
+                        widget.color.withValues(alpha: 0.3),
                         widget.color,
-                        widget.color.withValues(alpha: 0.7),
                       ],
                     ),
-                    borderRadius: BorderRadius.circular(4),
+                    borderRadius: BorderRadius.circular(2),
                     boxShadow: [
                       BoxShadow(
-                        color: widget.color.withValues(alpha: 0.5),
-                        blurRadius: 8,
-                        spreadRadius: 0,
+                        color: widget.color.withValues(alpha: 0.8),
+                        blurRadius: 10,
+                        spreadRadius: 1,
                       ),
                     ],
                   ),
@@ -152,4 +154,3 @@ class _SkillProgressBarState extends State<SkillProgressBar>
     );
   }
 }
-

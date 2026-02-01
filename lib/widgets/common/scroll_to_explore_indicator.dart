@@ -32,49 +32,45 @@ class ScrollToExploreIndicator extends StatelessWidget {
       return const SizedBox.shrink();
     }
 
-    return Positioned(
-      bottom: isMobile ? 40 : 60,
-      left: 0,
-      right: 0,
-      child: Opacity(
-        opacity: opacity,
-        child: GestureDetector(
-          onTap: onTap,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                    'Scroll to explore',
-                    style: GoogleFonts.poppins(
-                      fontSize: isMobile ? 12 : 14,
-                      color: AppColors.textSecondary,
-                      fontWeight: FontWeight.w500,
-                      letterSpacing: 1.5,
-                    ),
-                  )
-                  .animate(onPlay: (controller) => controller.repeat())
-                  .fadeIn(duration: 1000.ms)
-                  .then()
-                  .fadeOut(duration: 1000.ms),
-              const SizedBox(height: 8),
-              Icon(
-                    Icons.keyboard_arrow_down_rounded,
-                    color: AppColors.primary,
-                    size: isMobile ? 24 : 28,
-                  )
-                  .animate(onPlay: (controller) => controller.repeat())
-                  .fadeIn(duration: 800.ms)
-                  .then()
-                  .moveY(
-                    begin: 0,
-                    end: 8,
-                    duration: 1000.ms,
-                    curve: Curves.easeInOut,
-                  )
-                  .then()
-                  .fadeOut(duration: 800.ms),
-            ],
-          ),
+    return AnimatedOpacity(
+      duration: const Duration(milliseconds: 300),
+      opacity: opacity,
+      child: GestureDetector(
+        onTap: onTap,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              'Scroll to explore',
+              style: GoogleFonts.poppins(
+                fontSize: isMobile ? 12 : 14,
+                color: AppColors.textSecondary,
+                fontWeight: FontWeight.w500,
+                letterSpacing: 1.5,
+              ),
+            )
+                .animate(onPlay: (controller) => controller.repeat())
+                .fadeIn(duration: 1000.ms)
+                .then()
+                .fadeOut(duration: 1000.ms),
+            const SizedBox(height: 8),
+            Icon(
+              Icons.keyboard_arrow_down_rounded,
+              color: AppColors.primary,
+              size: isMobile ? 24 : 28,
+            )
+                .animate(onPlay: (controller) => controller.repeat())
+                .fadeIn(duration: 800.ms)
+                .then()
+                .moveY(
+                  begin: 0,
+                  end: 8,
+                  duration: 1000.ms,
+                  curve: Curves.easeInOut,
+                )
+                .then()
+                .fadeOut(duration: 800.ms),
+          ],
         ),
       ),
     );

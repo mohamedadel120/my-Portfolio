@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../../../../../utils/device_utils.dart';
-import '../../../../../widgets/common/section_title.dart';
+
 import '../../../../../widgets/common/tech_grid_background.dart';
 import '../../../../../widgets/common/scroll_speed_widget.dart';
 import '../../../../../widgets/common/scroll_triggered_animation.dart';
+import '../../../../../widgets/common/decryption_text.dart';
 import '../../cubit/experience_cubit.dart';
 import '../../cubit/experience_state.dart';
 import '../../widgets/professional_experience_card.dart';
@@ -65,9 +66,15 @@ class ExperienceDesktopView extends StatelessWidget {
                         scrollOffset: scrollOffset,
                         sectionStartOffset: sectionStartOffset,
                         delay: 0.ms,
-                        child: const SectionTitle(
-                          title: 'Work Experience',
-                          isVisible: true,
+                        child: DecryptionText(
+                          text: 'WORK EXPERIENCE',
+                          startAnimating: true,
+                          style: TextStyle(
+                            fontSize: 48,
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).colorScheme.primary,
+                            letterSpacing: 2.0,
+                          ),
                         ),
                       ),
                       const SizedBox(height: 72),
