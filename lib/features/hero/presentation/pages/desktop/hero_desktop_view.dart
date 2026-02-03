@@ -7,6 +7,7 @@ import '../../../../../utils/device_utils.dart';
 import '../../../../../widgets/common/magnetic_button.dart';
 import '../../cubit/hero_cubit.dart';
 import '../../cubit/hero_state.dart';
+import '../../../../../widgets/common/adaptive_cursor.dart';
 
 class HeroDesktopView extends StatefulWidget {
   final ValueListenable<double> scrollOffsetListenable;
@@ -210,39 +211,31 @@ class _HeroDesktopViewState extends State<HeroDesktopView> {
       BuildContext context, String label, IconData icon, VoidCallback? onTap) {
     return MagneticButton(
       onTap: onTap ?? () {},
-      child: MouseRegion(
-        cursor: SystemMouseCursors.click,
-        child: Container(
-          decoration: BoxDecoration(
-            border: Border(
-              bottom: BorderSide(
-                color: Theme.of(context).colorScheme.primary,
-                width: 2,
+      cursorType: CursorType.click,
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.transparent, // Explicitly transparent
+        ),
+        padding: const EdgeInsets.only(bottom: 8),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              label,
+              style: GoogleFonts.oswald(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                letterSpacing: 1,
+                color: Theme.of(context).colorScheme.onSurface,
               ),
             ),
-            color: Colors.transparent, // Explicitly transparent
-          ),
-          padding: const EdgeInsets.only(bottom: 8),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                label,
-                style: GoogleFonts.oswald(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 1,
-                  color: Theme.of(context).colorScheme.onSurface,
-                ),
-              ),
-              const SizedBox(width: 8),
-              Icon(
-                icon,
-                size: 18,
-                color: Theme.of(context).colorScheme.primary,
-              ),
-            ],
-          ),
+            const SizedBox(width: 8),
+            Icon(
+              icon,
+              size: 18,
+              color: Theme.of(context).colorScheme.primary,
+            ),
+          ],
         ),
       ),
     );

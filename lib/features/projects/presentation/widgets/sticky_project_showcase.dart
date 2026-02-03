@@ -565,8 +565,18 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
               fontSize: 14,
               color: Theme.of(
                 context,
-              ).colorScheme.onSurface.withValues(alpha: 0.5),
+              )
+                  .colorScheme
+                  .onSurface
+                  .withValues(alpha: 0.8), // Increased opacity
               letterSpacing: 2,
+              shadows: [
+                Shadow(
+                  color: Colors.black.withValues(alpha: 0.8),
+                  blurRadius: 4,
+                  offset: const Offset(1, 1),
+                ),
+              ],
             ),
           ),
           const SizedBox(height: 32),
@@ -643,6 +653,13 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
                 fontWeight: FontWeight.bold,
                 color: Theme.of(context).colorScheme.onSurface,
                 height: 1.1,
+                shadows: [
+                  Shadow(
+                    color: Colors.black.withValues(alpha: 0.8),
+                    blurRadius: 4,
+                    offset: const Offset(1, 1),
+                  ),
+                ],
               ),
             ).animate().fadeIn(duration: 1.ms, delay: (index * 60).ms).moveY(
                   begin: 2,
