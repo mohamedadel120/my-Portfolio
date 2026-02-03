@@ -12,7 +12,6 @@ import '../../../../../widgets/common/terminal_window.dart';
 import '../../../../../widgets/common/scroll_speed_widget.dart';
 import '../../../../../widgets/common/gsap_stagger_animation.dart';
 import '../../widgets/project_stats_dashboard.dart';
-import '../../widgets/tech_stack_filter.dart';
 import '../../widgets/sticky_project_showcase.dart';
 import '../../cubit/projects_cubit.dart';
 import '../../cubit/projects_state.dart';
@@ -256,6 +255,19 @@ class ProjectsDesktopView extends StatelessWidget {
 
                       const SizedBox(height: 48),
 
+                      Text(
+                        "A selection of my recent work in mobile and web development.",
+                        style: GoogleFonts.spaceMono(
+                          color: Theme.of(context)
+                              .colorScheme
+                              .onSurface
+                              .withValues(alpha: 0.6),
+                          fontSize: 14,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 60),
+
                       // Stats
                       GSAPEnhancedAnimation(
                         elementId: 'projects-stats',
@@ -275,36 +287,6 @@ class ProjectsDesktopView extends StatelessWidget {
                           isTablet: isTablet,
                         ),
                       ),
-
-                      const SizedBox(height: 40),
-
-                      // Filters
-                      GSAPEnhancedAnimation(
-                        elementId: 'projects-filters',
-                        scrollOffset: scrollOffset,
-                        sectionStartOffset:
-                            sectionStartOffset + (viewportHeight * 0.18),
-                        viewportHeight: viewportHeight,
-                        ease: 'power2.out',
-                        animationConfig: const {
-                          'opacity': {'from': 0, 'to': 1},
-                          'y': {'from': 30, 'to': 0},
-                        },
-                        child: TechStackFilter(
-                          allTechStacks: _getAllTechStacks(projects),
-                          selectedFilters:
-                              context.read<ProjectsCubit>().selectedFilters,
-                          onFilterChanged: (filters) {
-                            context
-                                .read<ProjectsCubit>()
-                                .filterProjects(filters);
-                          },
-                          isMobile: false,
-                          isTablet: isTablet,
-                        ),
-                      ),
-
-                      const SizedBox(height: 40),
 
                       // Project Showcase
                       StickyProjectShowcase(

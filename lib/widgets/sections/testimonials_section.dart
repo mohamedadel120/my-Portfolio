@@ -94,10 +94,13 @@ class TestimonialsSection extends StatelessWidget {
                       'scale': {'from': 0.9, 'to': 1.0},
                     },
                     children: [
-                      LayoutBuilder(
-                        builder: (context, constraints) {
+                      Builder(
+                        builder: (context) {
                           final spacing =
                               isXS ? 16.0 : (isMobile ? 20.0 : 28.0);
+                          // Calculate available width from screenWidth and padding
+                          final availableWidth =
+                              screenWidth - (horizontalPadding * 2);
 
                           final hardcodedTestimonials = [
                             (
@@ -119,7 +122,7 @@ class TestimonialsSection extends StatelessWidget {
                               final index = entry.key;
                               final testimonial = entry.value;
                               final cardWidth = isMobile || isTablet
-                                  ? constraints.maxWidth
+                                  ? availableWidth
                                   : 600.0; // Fixed width for single testimonial
 
                               return SizedBox(

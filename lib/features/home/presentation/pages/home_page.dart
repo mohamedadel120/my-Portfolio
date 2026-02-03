@@ -10,6 +10,7 @@ import '../../../experience/presentation/pages/experience_section.dart';
 import '../../../projects/presentation/pages/projects_section.dart';
 import '../../../contact/presentation/pages/contact_section.dart';
 import '../../../../widgets/common/scroll_indicator.dart';
+import '../../../../widgets/navigation/nav_bar_item.dart';
 
 /// Responsive Home Page:
 /// - Desktop: Single-page scroll with top nav bar and all sections stacked
@@ -143,8 +144,9 @@ class _HomePageState extends State<HomePage> {
           // Side Scroll Indicator (Desktop only)
           if (!isMobile)
             Positioned(
-              bottom: 40,
-              right: 20, // Aligned with the mockup preference
+              top: MediaQuery.of(context).size.height / 2, // Start from center
+              bottom: 40, // Leave space at the bottom
+              right: 40, // Slightly more padding
               child: ValueListenableBuilder<double>(
                 valueListenable: _scrollNotifier,
                 builder: (context, scrollOffset, _) {
@@ -157,7 +159,10 @@ class _HomePageState extends State<HomePage> {
                       opacity = ((max - scrollOffset) / 100.0).clamp(0.0, 1.0);
                     }
                   }
-                  return ScrollIndicator(opacity: opacity);
+                  return ScrollIndicator(
+                    opacity: opacity,
+                    isExpanded: true, // Enable expanded mode
+                  );
                 },
               ),
             ),
@@ -167,67 +172,162 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildNavBar(BuildContext context, bool isMobile) {
+    return _InteractiveNavBar(
+      scrollNotifier: _scrollNotifier,
+      isMobile: isMobile,
+      onScrollToSection: (key) => _scrollToSection(key),
+      onDownloadCV: _onDownloadCV,
+      heroKey: _heroKey,
+      aboutKey: _aboutKey,
+      expertiseKey: _expertiseKey,
+      experienceKey: _experienceKey,
+      projectsKey: _projectsKey,
+      contactKey: _contactKey,
+    );
+  }
+}
+
+class _InteractiveNavBar extends StatefulWidget {
+  final ValueNotifier<double> scrollNotifier;
+  final bool isMobile;
+  final Function(GlobalKey) onScrollToSection;
+  final VoidCallback onDownloadCV;
+  final GlobalKey heroKey;
+  final GlobalKey aboutKey;
+  final GlobalKey expertiseKey;
+  final GlobalKey experienceKey;
+  final GlobalKey projectsKey;
+  final GlobalKey contactKey;
+
+  const _InteractiveNavBar({
+    required this.scrollNotifier,
+    required this.isMobile,
+    required this.onScrollToSection,
+    required this.onDownloadCV,
+    required this.heroKey,
+    required this.aboutKey,
+    required this.expertiseKey,
+    required this.experienceKey,
+    required this.projectsKey,
+    required this.contactKey,
+  });
+
+  @override
+  State<_InteractiveNavBar> createState() => _InteractiveNavBarState();
+}
+
+class _InteractiveNavBarState extends State<_InteractiveNavBar> {
+  bool _isHovered = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final primary = Theme.of(context).colorScheme.primary;
+
     return ValueListenableBuilder<double>(
-      valueListenable: _scrollNotifier,
+      valueListenable: widget.scrollNotifier,
       builder: (context, scrollOffset, _) {
-        final opacity = isMobile ? 0.0 : (scrollOffset / 200).clamp(0.0, 1.0);
+        final opacity =
+            widget.isMobile ? 0.0 : (scrollOffset / 200).clamp(0.0, 1.0);
 
-        return Container(
-          padding: EdgeInsets.symmetric(
-            horizontal: isMobile ? 20 : 40,
-            vertical: 16,
-          ),
-          decoration: BoxDecoration(
-            color: Theme.of(context).scaffoldBackgroundColor.withValues(
-                  alpha: isMobile ? 0.0 : 0.7 + (opacity * 0.3),
-                ),
-            border: Border(
-              bottom: BorderSide(
-                color: Theme.of(context).colorScheme.primary.withValues(
-                      alpha: isMobile ? 0.0 : 0.1,
-                    ),
-              ),
+        return MouseRegion(
+          onEnter: (_) => setState(() => _isHovered = true),
+          onExit: (_) => setState(() => _isHovered = false),
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 300),
+            padding: EdgeInsets.symmetric(
+              horizontal: widget.isMobile ? 20 : 40,
+              vertical: 16,
             ),
-          ),
-          child: Row(
-            children: [
-              // Logo / Name
-              GestureDetector(
-                onTap: () => isMobile ? null : _scrollToSection(_heroKey),
-                child: Text(
-                  'MOHAMED ADEL',
-                  style: GoogleFonts.orbitron(
-                    fontSize: isMobile ? 16 : 18,
-                    fontWeight: FontWeight.bold,
-                    color: Theme.of(context).colorScheme.primary,
-                    letterSpacing: 2,
+            decoration: BoxDecoration(
+              color: Theme.of(context).scaffoldBackgroundColor.withValues(
+                    alpha: widget.isMobile ? 0.0 : 0.7 + (opacity * 0.3),
                   ),
+              border: Border(
+                bottom: BorderSide(
+                  color: _isHovered
+                      ? primary.withValues(alpha: 0.5)
+                      : Theme.of(context).colorScheme.primary.withValues(
+                            alpha: widget.isMobile ? 0.0 : 0.1,
+                          ),
+                  width: _isHovered ? 2.0 : 1.0,
                 ),
               ),
-
-              const Spacer(),
-
-              if (!isMobile) ...[
-                // Navigation Links (Desktop)
-                Expanded(
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      children: [
-                        _navLink(context, 'HOME', _heroKey),
-                        _navLink(context, 'ABOUT', _aboutKey),
-                        _navLink(context, 'EXPERTISE', _expertiseKey),
-                        _navLink(context, 'EXPERIENCE', _experienceKey),
-                        _navLink(context, 'PROJECTS', _projectsKey),
-                        _navLink(context, 'CONTACT', _contactKey),
-                      ],
+              boxShadow: _isHovered
+                  ? [
+                      BoxShadow(
+                        color: primary.withValues(alpha: 0.15),
+                        blurRadius: 20,
+                        spreadRadius: 1,
+                      )
+                    ]
+                  : [],
+            ),
+            child: Row(
+              children: [
+                // Logo / Name
+                GestureDetector(
+                  onTap: () => widget.isMobile
+                      ? null
+                      : widget.onScrollToSection(widget.heroKey),
+                  child: Text(
+                    'MOHAMED ADEL',
+                    style: GoogleFonts.orbitron(
+                      fontSize: widget.isMobile ? 16 : 18,
+                      fontWeight: FontWeight.bold,
+                      color: primary,
+                      letterSpacing: 2,
                     ),
                   ),
                 ),
-                const SizedBox(width: 12),
-                _buildDownloadButton(context),
+
+                const Spacer(),
+
+                if (!widget.isMobile) ...[
+                  // Navigation Links (Desktop)
+                  Expanded(
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: [
+                          NavBarItem(
+                            title: 'HOME',
+                            onTap: () =>
+                                widget.onScrollToSection(widget.heroKey),
+                          ),
+                          NavBarItem(
+                            title: 'ABOUT',
+                            onTap: () =>
+                                widget.onScrollToSection(widget.aboutKey),
+                          ),
+                          NavBarItem(
+                            title: 'EXPERTISE',
+                            onTap: () =>
+                                widget.onScrollToSection(widget.expertiseKey),
+                          ),
+                          NavBarItem(
+                            title: 'EXPERIENCE',
+                            onTap: () =>
+                                widget.onScrollToSection(widget.experienceKey),
+                          ),
+                          NavBarItem(
+                            title: 'PROJECTS',
+                            onTap: () =>
+                                widget.onScrollToSection(widget.projectsKey),
+                          ),
+                          NavBarItem(
+                            title: 'CONTACT',
+                            onTap: () =>
+                                widget.onScrollToSection(widget.contactKey),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  _buildDownloadButton(context),
+                ],
               ],
-            ],
+            ),
           ),
         );
       },
@@ -236,7 +336,7 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildDownloadButton(BuildContext context) {
     return TextButton(
-      onPressed: _onDownloadCV,
+      onPressed: widget.onDownloadCV,
       style: TextButton.styleFrom(
         backgroundColor: Theme.of(context).colorScheme.primary,
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
@@ -251,25 +351,6 @@ class _HomePageState extends State<HomePage> {
           fontWeight: FontWeight.bold,
           color: Colors.black,
           letterSpacing: 1,
-        ),
-      ),
-    );
-  }
-
-  Widget _navLink(BuildContext context, String label, GlobalKey targetKey) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: InkWell(
-        onTap: () => _scrollToSection(targetKey),
-        hoverColor: Colors.transparent,
-        child: Text(
-          label,
-          style: GoogleFonts.spaceMono(
-            fontSize: 13,
-            fontWeight: FontWeight.w500,
-            color: Colors.white70,
-            letterSpacing: 1,
-          ),
         ),
       ),
     );

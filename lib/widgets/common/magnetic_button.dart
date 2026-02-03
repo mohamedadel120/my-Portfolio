@@ -5,20 +5,21 @@ class MagneticButton extends StatefulWidget {
   final Widget child;
   final VoidCallback? onTap;
   final double force; // How strong the magnet is (0.0 to 1.0)
+  final CursorType cursorType;
 
   const MagneticButton({
     super.key,
     required this.child,
     this.onTap,
     this.force = 0.5,
+    this.cursorType = CursorType.pointer,
   });
 
   @override
   State<MagneticButton> createState() => _MagneticButtonState();
 }
 
-class _MagneticButtonState extends State<MagneticButton>
-    with SingleTickerProviderStateMixin {
+class _MagneticButtonState extends State<MagneticButton> {
   Offset _offset = Offset.zero;
 
   @override
@@ -26,7 +27,7 @@ class _MagneticButtonState extends State<MagneticButton>
     return GestureDetector(
       onTap: widget.onTap,
       child: MouseRegion(
-        onEnter: (_) => cursorController.setCursor(CursorType.pointer),
+        onEnter: (_) => cursorController.setCursor(widget.cursorType),
         onExit: (_) {
           cursorController.setCursor(CursorType.defaultCursor);
           setState(() => _offset = Offset.zero);

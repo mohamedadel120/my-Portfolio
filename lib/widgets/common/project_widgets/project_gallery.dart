@@ -153,7 +153,7 @@ class _ProjectGalleryState extends State<ProjectGallery>
 
     if (widget.project.galleryImages != null &&
         widget.project.galleryImages!.isNotEmpty) {
-      return _buildScrollableGallery(isMobile, isTablet);
+      return _buildScrollableGallery(isMobile, isTablet, screenWidth);
     } else if (widget.project.logoUrl != null ||
         widget.project.imageUrl != null) {
       return _buildStaticImage();
@@ -161,7 +161,8 @@ class _ProjectGalleryState extends State<ProjectGallery>
     return const SizedBox.shrink();
   }
 
-  Widget _buildScrollableGallery(bool isMobile, bool isTablet) {
+  Widget _buildScrollableGallery(
+      bool isMobile, bool isTablet, double screenWidth) {
     return GestureDetector(
       onTap: () {
         showDialog(
@@ -176,132 +177,26 @@ class _ProjectGalleryState extends State<ProjectGallery>
       onTapDown: (_) => _pauseAutoScroll(),
       onTapUp: (_) => _resumeAutoScroll(),
       onTapCancel: () => _resumeAutoScroll(),
-      child:
-          MouseRegion(
-                onEnter: (_) => _pauseAutoScroll(),
-                onExit: (_) => _resumeAutoScroll(),
-                child: Container(
-                  margin: EdgeInsets.only(
-                    bottom: isMobile ? 4 : (isTablet ? 6 : 8),
-                  ),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(
-                      color: widget.project.color.withValues(alpha: 
-                        widget.isHovered ? 0.4 : 0.25,
-                      ),
-                      width: widget.isHovered ? 1.5 : 1,
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withValues(alpha: 
-                          widget.isHovered ? 0.08 : 0.04,
-                        ),
-                        blurRadius: widget.isHovered ? 8 : 6,
-                        spreadRadius: 0,
-                      ),
-                    ],
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(12),
-                    child: LayoutBuilder(
-                      builder: (context, constraints) {
-                        final crossAxisCount = isMobile ? 2 : 3;
-                        const crossAxisSpacing = 4.0;
-                        final itemCount = widget.project.galleryImages!.length;
-                        final thumbnailItemWidth =
-                            (constraints.maxWidth -
-                                (crossAxisCount - 1) * crossAxisSpacing) /
-                            crossAxisCount;
-                        final thumbnailItemHeight = thumbnailItemWidth;
-
-                        return SizedBox(
-                          height: thumbnailItemHeight,
-                          child: GestureDetector(
-                            onVerticalDragUpdate: (_) {},
-                            onVerticalDragEnd: (_) {},
-                            onVerticalDragCancel: () {},
-                            child: NotificationListener<ScrollNotification>(
-                              onNotification: (notification) => true,
-                              child: ListView.builder(
-                                controller: _thumbnailScrollController,
-                                scrollDirection: Axis.horizontal,
-                                physics: const NeverScrollableScrollPhysics(),
-                                itemCount: itemCount,
-                                itemBuilder: (context, index) {
-                                  return Container(
-                                    width: thumbnailItemWidth,
-                                    margin: EdgeInsets.only(
-                                      right: index < itemCount - 1
-                                          ? crossAxisSpacing
-                                          : 0,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      color: AppColors.background,
-                                      borderRadius: BorderRadius.circular(4),
-                                    ),
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(4),
-                                      child: Hero(
-                                        tag:
-                                            'project_gallery_image_${widget.project.title}_$index',
-                                        child: Image.asset(
-                                          widget.project.galleryImages![index],
-                                          fit: BoxFit.cover,
-                                          errorBuilder:
-                                              (
-                                                context,
-                                                error,
-                                                stackTrace,
-                                              ) => Container(
-                                                color: AppColors.background,
-                                                child: Icon(
-                                                  Icons.broken_image_rounded,
-                                                  size: 30,
-                                                  color: widget.project.color
-                                                      .withValues(alpha: 0.5),
-                                                ),
-                                              ),
-                                        ),
-                                      ),
-                                    ),
-                                  );
-                                },
-                              ),
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                ),
-              )
-              .animate(autoPlay: widget.isVisible)
-              .fadeIn(delay: widget.delay + 100.ms, duration: 600.ms)
-              .scale(
-                delay: widget.delay + 100.ms,
-                begin: const Offset(0.9, 0.9),
-                duration: 600.ms,
-              ),
-    );
-  }
-
-  Widget _buildStaticImage() {
-    return Container(
-          height: 110,
-          width: double.infinity,
-          margin: const EdgeInsets.only(bottom: 16),
+      child: MouseRegion(
+        onEnter: (_) => _pauseAutoScroll(),
+        onExit: (_) => _resumeAutoScroll(),
+        child: Container(
+          margin: EdgeInsets.only(
+            bottom: isMobile ? 4 : (isTablet ? 6 : 8),
+          ),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
             border: Border.all(
-              color: widget.project.color.withValues(alpha: 
-                widget.isHovered ? 0.4 : 0.25,
+              color: widget.project.color.withValues(
+                alpha: widget.isHovered ? 0.4 : 0.25,
               ),
               width: widget.isHovered ? 1.5 : 1,
             ),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withValues(alpha: widget.isHovered ? 0.06 : 0.03),
+                color: Colors.black.withValues(
+                  alpha: widget.isHovered ? 0.08 : 0.04,
+                ),
                 blurRadius: widget.isHovered ? 8 : 6,
                 spreadRadius: 0,
               ),
@@ -309,70 +204,183 @@ class _ProjectGalleryState extends State<ProjectGallery>
           ),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(12),
-            child: Stack(
-              fit: StackFit.expand,
-              children: [
-                if (widget.project.logoUrl != null)
-                  Container(
-                    decoration: BoxDecoration(
-                      color: AppColors.background,
-                      gradient: LinearGradient(
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                        colors: [
-                          AppColors.background,
-                          widget.project.color.withValues(alpha: 0.05),
-                        ],
+            // Use screenWidth-based sizing instead of LayoutBuilder
+            // to prevent layout re-entrancy issues
+            child: Builder(
+              builder: (context) {
+                // Calculate available width based on screen size and layout
+                // ProjectCard padding is ~20-28px, gallery has additional margins
+                final cardPadding = isMobile ? 20.0 : (isTablet ? 24.0 : 28.0);
+                // Assume container takes most of screen width minus card padding and margin
+                final availableWidth = screenWidth - (cardPadding * 2) - 40;
+
+                final crossAxisCount = isMobile ? 2 : 3;
+                const crossAxisSpacing = 4.0;
+                final itemCount = widget.project.galleryImages!.length;
+                final thumbnailItemWidth =
+                    (availableWidth - (crossAxisCount - 1) * crossAxisSpacing) /
+                        crossAxisCount;
+                final thumbnailItemHeight =
+                    thumbnailItemWidth.clamp(60.0, 200.0);
+
+                return SizedBox(
+                  height: thumbnailItemHeight,
+                  child: GestureDetector(
+                    onVerticalDragUpdate: (_) {},
+                    onVerticalDragEnd: (_) {},
+                    onVerticalDragCancel: () {},
+                    child: NotificationListener<ScrollNotification>(
+                      onNotification: (notification) => true,
+                      child: ListView.builder(
+                        controller: _thumbnailScrollController,
+                        scrollDirection: Axis.horizontal,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: itemCount,
+                        itemBuilder: (context, index) {
+                          return Container(
+                            width: thumbnailItemWidth,
+                            margin: EdgeInsets.only(
+                              right:
+                                  index < itemCount - 1 ? crossAxisSpacing : 0,
+                            ),
+                            decoration: BoxDecoration(
+                              color: AppColors.background,
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(4),
+                              child: Hero(
+                                tag:
+                                    'project_gallery_image_${widget.project.title}_$index',
+                                child: Image.asset(
+                                  widget.project.galleryImages![index],
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (
+                                    context,
+                                    error,
+                                    stackTrace,
+                                  ) =>
+                                      Container(
+                                    color: AppColors.background,
+                                    child: Icon(
+                                      Icons.broken_image_rounded,
+                                      size: 30,
+                                      color: widget.project.color
+                                          .withValues(alpha: 0.5),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          );
+                        },
                       ),
                     ),
-                    child: Center(
-                      child: Image.asset(
-                        widget.project.logoUrl!,
-                        fit: BoxFit.contain,
-                        width: double.infinity,
-                        height: double.infinity,
-                        errorBuilder: (context, error, stackTrace) =>
-                            _ErrorPlaceholder(color: widget.project.color),
-                      ),
-                    ),
-                  )
-                else if (widget.project.imageUrl != null)
-                  Hero(
-                    tag: 'project_image_${widget.project.title}',
-                    child: Image.network(
-                      widget.project.imageUrl!,
-                      fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) =>
-                          _ErrorPlaceholder(color: widget.project.color),
-                      loadingBuilder: (context, child, loadingProgress) {
-                        if (loadingProgress == null) return child;
-                        return _LoadingPlaceholder(
-                          color: widget.project.color,
-                          progress: loadingProgress,
-                        );
-                      },
-                    ),
                   ),
-                AnimatedContainer(
-                  duration: const Duration(milliseconds: 300),
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                        Colors.transparent,
-                        widget.project.color.withValues(alpha: 
-                          widget.isHovered ? 0.15 : 0,
-                        ),
-                      ],
-                    ),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-              ],
+                );
+              },
             ),
           ),
-        )
+        ),
+      )
+          .animate(autoPlay: widget.isVisible)
+          .fadeIn(delay: widget.delay + 100.ms, duration: 600.ms)
+          .scale(
+            delay: widget.delay + 100.ms,
+            begin: const Offset(0.9, 0.9),
+            duration: 600.ms,
+          ),
+    );
+  }
+
+  Widget _buildStaticImage() {
+    return Container(
+      height: 110,
+      width: double.infinity,
+      margin: const EdgeInsets.only(bottom: 16),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: widget.project.color.withValues(
+            alpha: widget.isHovered ? 0.4 : 0.25,
+          ),
+          width: widget.isHovered ? 1.5 : 1,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color:
+                Colors.black.withValues(alpha: widget.isHovered ? 0.06 : 0.03),
+            blurRadius: widget.isHovered ? 8 : 6,
+            spreadRadius: 0,
+          ),
+        ],
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(12),
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            if (widget.project.logoUrl != null)
+              Container(
+                decoration: BoxDecoration(
+                  color: AppColors.background,
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      AppColors.background,
+                      widget.project.color.withValues(alpha: 0.05),
+                    ],
+                  ),
+                ),
+                child: Center(
+                  child: Image.asset(
+                    widget.project.logoUrl!,
+                    fit: BoxFit.contain,
+                    width: double.infinity,
+                    height: double.infinity,
+                    errorBuilder: (context, error, stackTrace) =>
+                        _ErrorPlaceholder(color: widget.project.color),
+                  ),
+                ),
+              )
+            else if (widget.project.imageUrl != null)
+              Hero(
+                tag: 'project_image_${widget.project.title}',
+                child: Image.network(
+                  widget.project.imageUrl!,
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) =>
+                      _ErrorPlaceholder(color: widget.project.color),
+                  loadingBuilder: (context, child, loadingProgress) {
+                    if (loadingProgress == null) return child;
+                    return _LoadingPlaceholder(
+                      color: widget.project.color,
+                      progress: loadingProgress,
+                    );
+                  },
+                ),
+              ),
+            AnimatedContainer(
+              duration: const Duration(milliseconds: 300),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Colors.transparent,
+                    widget.project.color.withValues(
+                      alpha: widget.isHovered ? 0.15 : 0,
+                    ),
+                  ],
+                ),
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
+          ],
+        ),
+      ),
+    )
         .animate(autoPlay: widget.isVisible)
         .fadeIn(delay: widget.delay + 100.ms, duration: 600.ms)
         .scale(

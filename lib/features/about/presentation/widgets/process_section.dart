@@ -70,28 +70,24 @@ class ProcessSection extends StatelessWidget {
             ),
           ).animate().fadeIn(delay: 100.ms).moveY(begin: 20, end: 0),
           const SizedBox(height: 60),
-          LayoutBuilder(
-            builder: (context, constraints) {
-              if (isMobile) {
-                return Column(
-                  children: steps.asMap().entries.map((entry) {
-                    return _buildStepItem(context, entry.value, entry.key,
-                        isMobile: true);
-                  }).toList(),
+          // Use isMobile directly instead of LayoutBuilder to prevent layout re-entrancy
+          if (isMobile)
+            Column(
+              children: steps.asMap().entries.map((entry) {
+                return _buildStepItem(context, entry.value, entry.key,
+                    isMobile: true);
+              }).toList(),
+            )
+          else
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: steps.asMap().entries.map((entry) {
+                return Expanded(
+                  child: _buildStepItem(context, entry.value, entry.key,
+                      isMobile: false),
                 );
-              } else {
-                return Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: steps.asMap().entries.map((entry) {
-                    return Expanded(
-                      child: _buildStepItem(context, entry.value, entry.key,
-                          isMobile: false),
-                    );
-                  }).toList(),
-                );
-              }
-            },
-          ),
+              }).toList(),
+            ),
         ],
       ),
     );
