@@ -219,53 +219,56 @@ class AboutDesktopView extends StatelessWidget {
                                   flex: 2,
                                   child: BentoTile(
                                     title: 'Experience',
-                                    child: GridView.count(
-                                      crossAxisCount: 2,
-                                      mainAxisSpacing: 16,
-                                      crossAxisSpacing: 16,
-                                      physics:
-                                          const NeverScrollableScrollPhysics(),
-                                      children:
-                                          aboutData.features.map((feature) {
-                                        return Container(
-                                          padding: const EdgeInsets.all(16),
-                                          decoration: BoxDecoration(
-                                            color: Colors.white
-                                                .withValues(alpha: 0.03),
-                                            borderRadius:
-                                                BorderRadius.circular(16),
-                                          ),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Icon(Icons.bolt,
-                                                  color: AppColors.primary,
-                                                  size: 20),
-                                              const SizedBox(height: 12),
-                                              Text(
-                                                feature.title,
-                                                style: GoogleFonts.orbitron(
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Colors.white,
+                                    child: Expanded(
+                                      child: GridView.count(
+                                        crossAxisCount: 2,
+                                        mainAxisSpacing: 16,
+                                        crossAxisSpacing: 16,
+                                        physics:
+                                            const NeverScrollableScrollPhysics(),
+                                        children:
+                                            aboutData.features.map((feature) {
+                                          return Container(
+                                            padding: const EdgeInsets.all(16),
+                                            decoration: BoxDecoration(
+                                              color: Colors.white
+                                                  .withValues(alpha: 0.03),
+                                              borderRadius:
+                                                  BorderRadius.circular(16),
+                                            ),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Icon(Icons.bolt,
+                                                    color: AppColors.primary,
+                                                    size: 20),
+                                                const SizedBox(height: 12),
+                                                Text(
+                                                  feature.title,
+                                                  style: GoogleFonts.orbitron(
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.white,
+                                                  ),
                                                 ),
-                                              ),
-                                              const SizedBox(height: 8),
-                                              Text(
-                                                feature.description,
-                                                style: GoogleFonts.poppins(
-                                                  fontSize: 12,
-                                                  color: Colors.white
-                                                      .withValues(alpha: 0.5),
+                                                const SizedBox(height: 8),
+                                                Text(
+                                                  feature.description,
+                                                  style: GoogleFonts.poppins(
+                                                    fontSize: 12,
+                                                    color: Colors.white
+                                                        .withValues(alpha: 0.5),
+                                                  ),
+                                                  maxLines: 2,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
                                                 ),
-                                                maxLines: 2,
-                                                overflow: TextOverflow.ellipsis,
-                                              ),
-                                            ],
-                                          ),
-                                        );
-                                      }).toList(),
+                                              ],
+                                            ),
+                                          );
+                                        }).toList(),
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -282,27 +285,30 @@ class AboutDesktopView extends StatelessWidget {
                                   flex: 1,
                                   child: BentoTile(
                                     title: 'Proficiency',
-                                    child: ListView(
-                                      physics:
-                                          const NeverScrollableScrollPhysics(),
-                                      children:
-                                          aboutData.skills.take(4).map((skill) {
-                                        return Padding(
-                                          padding:
-                                              const EdgeInsets.only(bottom: 20),
-                                          child: SkillProgressBar(
-                                            skill: skill.name,
-                                            progress: skill.progress,
-                                            scrollOffset: scrollOffset,
-                                            sectionStartOffset:
-                                                sectionStartOffset + 400,
-                                            viewportHeight: viewportHeight,
-                                            color: skill.isPrimary
-                                                ? AppColors.primary
-                                                : AppColors.secondary,
-                                          ),
-                                        );
-                                      }).toList(),
+                                    child: Expanded(
+                                      child: ListView(
+                                        physics:
+                                            const NeverScrollableScrollPhysics(),
+                                        children: aboutData.skills
+                                            .take(4)
+                                            .map((skill) {
+                                          return Padding(
+                                            padding: const EdgeInsets.only(
+                                                bottom: 20),
+                                            child: SkillProgressBar(
+                                              skill: skill.name,
+                                              progress: skill.progress,
+                                              scrollOffset: scrollOffset,
+                                              sectionStartOffset:
+                                                  sectionStartOffset + 400,
+                                              viewportHeight: viewportHeight,
+                                              color: skill.isPrimary
+                                                  ? AppColors.primary
+                                                  : AppColors.secondary,
+                                            ),
+                                          );
+                                        }).toList(),
+                                      ),
                                     ),
                                   ),
                                 ),

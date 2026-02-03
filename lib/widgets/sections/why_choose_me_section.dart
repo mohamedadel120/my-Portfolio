@@ -141,12 +141,15 @@ class WhyChooseMeSection extends StatelessWidget {
                       'scale': {'from': 0.9, 'to': 1.0},
                     },
                     children: [
-                      LayoutBuilder(
-                        builder: (context, constraints) {
+                      Builder(
+                        builder: (context) {
                           final crossAxisCount =
                               isXS ? 1 : (isMobile ? 1 : (isTablet ? 2 : 3));
                           final spacing =
                               isXS ? 12.0 : (isMobile ? 16.0 : 24.0);
+                          // Calculate available width from screenWidth and padding
+                          final availableWidth =
+                              screenWidth - (horizontalPadding * 2);
 
                           return Wrap(
                             spacing: spacing,
@@ -156,8 +159,8 @@ class WhyChooseMeSection extends StatelessWidget {
                               final index = entry.key;
                               final reason = entry.value;
                               final cardWidth = isMobile
-                                  ? constraints.maxWidth
-                                  : (constraints.maxWidth -
+                                  ? availableWidth
+                                  : (availableWidth -
                                           (spacing * (crossAxisCount - 1))) /
                                       crossAxisCount;
 
