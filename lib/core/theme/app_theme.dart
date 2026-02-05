@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../constants/app_colors.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
   // Dark Theme (Default/Coding Mode)
@@ -7,6 +8,8 @@ class AppTheme {
     useMaterial3: true,
     brightness: Brightness.dark,
     scaffoldBackgroundColor: AppColors.background,
+    textTheme: GoogleFonts.vt323TextTheme(
+        ThemeData.dark().textTheme), // Pixel Arcade Font
     colorScheme: const ColorScheme.dark(
       primary: AppColors.primary,
       secondary: AppColors.secondary,
@@ -23,6 +26,8 @@ class AppTheme {
     useMaterial3: true,
     brightness: Brightness.light,
     scaffoldBackgroundColor: Colors.white,
+    textTheme: GoogleFonts.vt323TextTheme(
+        ThemeData.light().textTheme), // Pixel Arcade Font
     colorScheme: const ColorScheme.light(
       primary: AppColors.primary, // Neon Green accent even in light mode
       secondary: Color(0xFF424242),
