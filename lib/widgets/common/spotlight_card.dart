@@ -45,7 +45,7 @@ class _SpotlightCardState extends State<SpotlightCard> {
                   painter: _SpotlightPainter(
                     position: _mousePos,
                     radius: widget.radius,
-                    color: widget.spotlightColor.withOpacity(widget.intensity),
+                    color: widget.spotlightColor.withValues(alpha: widget.intensity),
                   ),
                 ),
               ),
@@ -60,7 +60,7 @@ class _SpotlightCardState extends State<SpotlightCard> {
                     position: _mousePos,
                     radius: widget.radius,
                     color: widget.spotlightColor
-                        .withOpacity(widget.intensity * 2), // Brighter border
+                        .withValues(alpha: widget.intensity * 2), // Brighter border
                   ),
                 ),
               ),

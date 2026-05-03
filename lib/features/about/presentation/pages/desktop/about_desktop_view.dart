@@ -240,7 +240,7 @@ class AboutDesktopView extends StatelessWidget {
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
-                                                Icon(Icons.bolt,
+                                                const Icon(Icons.bolt,
                                                     color: AppColors.primary,
                                                     size: 20),
                                                 const SizedBox(height: 12),
@@ -312,11 +312,11 @@ class AboutDesktopView extends StatelessWidget {
                                     ),
                                   ),
                                 ),
-                                Expanded(
+                                const Expanded(
                                   flex: 2,
                                   child: BentoTile(
                                     title: 'Process',
-                                    child: const ProcessSection(),
+                                    child: ProcessSection(),
                                   ),
                                 ),
                               ],

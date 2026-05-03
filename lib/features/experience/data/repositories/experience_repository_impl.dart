@@ -1,14 +1,14 @@
 import '../../domain/entities/experience_entity.dart';
 import '../../domain/repositories/experience_repository.dart';
-import '../datasources/experience_local_data_source.dart';
+import '../datasources/experience_remote_data_source.dart';
 
 class ExperienceRepositoryImpl implements ExperienceRepository {
-  final ExperienceLocalDataSource localDataSource;
+  final ExperienceRemoteDataSource remoteDataSource;
 
-  ExperienceRepositoryImpl(this.localDataSource);
+  ExperienceRepositoryImpl(this.remoteDataSource);
 
   @override
   Future<List<Experience>> getExperiences() async {
-    return await localDataSource.getExperiences();
+    return await remoteDataSource.getExperiences();
   }
 }

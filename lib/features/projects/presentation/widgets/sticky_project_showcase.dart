@@ -893,7 +893,7 @@ class _StoreIconButtonState extends State<_StoreIconButton> {
         duration: const Duration(milliseconds: 200),
         curve: Curves.easeOut,
         padding: const EdgeInsets.all(12),
-        transform: Matrix4.identity()..scale(_isHovered ? 1.1 : 1.0),
+        transform: Matrix4.identity()..multiply(Matrix4.diagonal3Values(_isHovered ? 1.1 : 1.0, _isHovered ? 1.1 : 1.0, 1.0)),
         decoration: BoxDecoration(
           color: _isHovered
               ? Theme.of(context).colorScheme.onSurface

@@ -83,8 +83,8 @@ class _DecryptionTextState extends State<DecryptionText> {
   }
 
   String _obfuscateFull(String input) {
-    return List.generate(input.length, (_) {
-      if (input[_] == ' ') return ' ';
+    return List.generate(input.length, (index) {
+      if (input[index] == ' ') return ' ';
       return _chars[_random.nextInt(_chars.length)];
     }).join('');
   }

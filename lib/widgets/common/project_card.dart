@@ -103,7 +103,11 @@ class _ProjectCardState extends State<ProjectCard>
                 ..setEntry(3, 2, 0.001) // Perspective
                 ..rotateX(tiltX)
                 ..rotateY(tiltY)
-                ..scale(_isHovered ? 1.02 : 1.0),
+                ..multiply(Matrix4.diagonal3Values(
+                  _isHovered ? 1.02 : 1.0,
+                  _isHovered ? 1.02 : 1.0,
+                  1.0,
+                )),
               alignment: Alignment.center,
               child: child,
             );

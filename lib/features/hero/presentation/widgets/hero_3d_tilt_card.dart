@@ -92,11 +92,11 @@ class _Hero3DTiltCardState extends State<Hero3DTiltCard>
                                 offset.dy * 2,
                               ),
                               colors: [
-                                Colors.white.withOpacity(0.0),
-                                Colors.white.withOpacity(0.05 +
+                                Colors.white.withValues(alpha: 0.0),
+                                Colors.white.withValues(alpha: 0.05 +
                                     (_glowController.value *
                                         0.02)), // Pulse sheen
-                                Colors.white.withOpacity(0.0),
+                                Colors.white.withValues(alpha: 0.0),
                               ],
                               stops: const [0.0, 0.5, 1.0],
                             ),

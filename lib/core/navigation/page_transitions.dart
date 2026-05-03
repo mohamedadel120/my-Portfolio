@@ -141,15 +141,15 @@ class _GlassCard extends StatelessWidget {
           width: 380,
           height: 220,
           decoration: BoxDecoration(
-            color: Theme.of(context).scaffoldBackgroundColor.withOpacity(0.4),
+            color: Theme.of(context).scaffoldBackgroundColor.withValues(alpha: 0.4),
             borderRadius: BorderRadius.circular(24),
             border: Border.all(
-              color: primary.withOpacity(0.3),
+              color: primary.withValues(alpha: 0.3),
               width: 1,
             ),
             boxShadow: [
               BoxShadow(
-                color: primary.withOpacity(0.05),
+                color: primary.withValues(alpha: 0.05),
                 blurRadius: 30,
                 spreadRadius: 0,
               ),
@@ -163,7 +163,7 @@ class _GlassCard extends StatelessWidget {
                   decoration: BoxDecoration(
                     gradient: RadialGradient(
                       colors: [
-                        primary.withOpacity(0.1),
+                        primary.withValues(alpha: 0.1),
                         Colors.transparent,
                       ],
                       radius: 0.8,
@@ -174,13 +174,13 @@ class _GlassCard extends StatelessWidget {
               ),
 
               // Content
-              Center(
+              const Center(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const _BreathingText(),
-                    const SizedBox(height: 32),
-                    const _QuantumLoader(),
+                    _BreathingText(),
+                    SizedBox(height: 32),
+                    _QuantumLoader(),
                   ],
                 ),
               ),
@@ -230,7 +230,7 @@ class _BreathingTextState extends State<_BreathingText>
           style: TextStyle(
             fontFamily: 'Inter', // Ensure you have this or generic sans
             fontFamilyFallback: const ['Roboto', 'sans-serif'],
-            color: primary.withOpacity(0.8 + (_controller.value * 0.2)),
+            color: primary.withValues(alpha: 0.8 + (_controller.value * 0.2)),
             fontSize: 14,
             letterSpacing:
                 4.0 + (_controller.value * 2.0), // Breathing tracking
@@ -302,9 +302,9 @@ class _LoaderPainter extends CustomPainter {
     final paint = Paint()
       ..shader = LinearGradient(
         colors: [
-          color.withOpacity(0.0),
+          color.withValues(alpha: 0.0),
           color,
-          color.withOpacity(0.0),
+          color.withValues(alpha: 0.0),
         ],
         stops: const [0.0, 0.5, 1.0],
       ).createShader(Rect.fromLTWH(0, 0, size.width, size.height));
@@ -366,7 +366,7 @@ class _ParticleFieldState extends State<_ParticleField> {
     return CustomPaint(
       painter: _ParticlePainter(
         particles: _particles,
-        color: Theme.of(context).colorScheme.primary.withOpacity(0.3),
+        color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.3),
         animValue: widget.animationValue,
       ),
     );
@@ -395,7 +395,7 @@ class _ParticlePainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final paint = Paint()..color = color;
     final linePaint = Paint()
-      ..color = color.withOpacity(0.15)
+      ..color = color.withValues(alpha: 0.15)
       ..strokeWidth = 0.5;
 
     // Simulate slight movement based on time/animation to make them "float"

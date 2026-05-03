@@ -183,9 +183,9 @@ class AboutMobileView extends StatelessWidget {
                           ),
 
                           // Process Tile
-                          BentoTile(
+                          const BentoTile(
                             title: 'Process',
-                            child: const ProcessSection(),
+                            child: ProcessSection(),
                           ),
                         ],
                       ),

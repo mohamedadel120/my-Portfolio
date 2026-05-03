@@ -41,7 +41,7 @@ class _AboutCardState extends State<AboutCard> {
                 child: AnimatedContainer(
                   duration: 300.ms,
                   transform: _isHovered
-                      ? (Matrix4.identity()..translate(0, -10, 0))
+                      ? (Matrix4.identity()..multiply(Matrix4.translationValues(0, -10, 0)))
                       : Matrix4.identity(),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(24),

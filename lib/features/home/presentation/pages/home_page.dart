@@ -269,14 +269,10 @@ class _InteractiveNavBarState extends State<_InteractiveNavBar> {
                   onTap: () => widget.isMobile
                       ? null
                       : widget.onScrollToSection(widget.heroKey),
-                  child: Text(
-                    'MOHAMED ADEL',
-                    style: GoogleFonts.orbitron(
-                      fontSize: widget.isMobile ? 16 : 18,
-                      fontWeight: FontWeight.bold,
-                      color: primary,
-                      letterSpacing: 2,
-                    ),
+                  child: Image.asset(
+                    'assets/images/logo.png',
+                    height: widget.isMobile ? 32 : 75,
+                    fit: BoxFit.contain,
                   ),
                 ),
 

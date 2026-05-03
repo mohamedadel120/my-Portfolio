@@ -39,8 +39,11 @@ class _NavBarItemState extends State<NavBarItem> {
               // The main text
               AnimatedContainer(
                 duration: const Duration(milliseconds: 200),
-                transform: Matrix4.identity()
-                  ..scale(_isHovered || widget.isSelected ? 1.1 : 1.0),
+                transform: Matrix4.diagonal3Values(
+                  _isHovered || widget.isSelected ? 1.1 : 1.0,
+                  _isHovered || widget.isSelected ? 1.1 : 1.0,
+                  1.0,
+                ),
                 child: Text(
                   widget.title,
                   style: GoogleFonts.firaCode(
@@ -53,7 +56,7 @@ class _NavBarItemState extends State<NavBarItem> {
                         : Theme.of(context)
                             .colorScheme
                             .onSurface
-                            .withOpacity(0.7),
+                            .withValues(alpha: 0.7),
                   ),
                 ),
               ),
@@ -107,7 +110,7 @@ class _NavBarItemState extends State<NavBarItem> {
                           color: Theme.of(context)
                               .colorScheme
                               .primary
-                              .withOpacity(0.2),
+                              .withValues(alpha: 0.2),
                           blurRadius: 15,
                           spreadRadius: 5,
                         ),
