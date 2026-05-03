@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../../features/testimonials/presentation/cubit/testimonials_cubit.dart';
+import '../../features/testimonials/presentation/cubit/testimonials_state.dart';
+import '../common/custom_shimmer.dart';
+import '../../injection_container.dart';
 import '../common/section_title.dart';
 import '../common/tech_grid_background.dart';
 import '../common/scroll_speed_widget.dart';
@@ -11,6 +16,22 @@ class TestimonialsSection extends StatelessWidget {
   final ValueListenable<double> scrollOffsetListenable;
 
   const TestimonialsSection({super.key, required this.scrollOffsetListenable});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => sl<TestimonialsCubit>()..loadTestimonials(),
+      child: _TestimonialsContent(
+        scrollOffsetListenable: scrollOffsetListenable,
+      ),
+    );
+  }
+}
+
+class _TestimonialsContent extends StatelessWidget {
+  final ValueListenable<double> scrollOffsetListenable;
+
+  const _TestimonialsContent({required this.scrollOffsetListenable});
 
   @override
   Widget build(BuildContext context) {
@@ -80,65 +101,73 @@ class TestimonialsSection extends StatelessWidget {
                   ),
                   SizedBox(height: isXS ? 24 : (isMobile ? 32 : 48)),
                   // Testimonials grid
-                  GSAPStaggerAnimation(
-                    groupId: 'testimonials-grid',
-                    scrollOffset: scrollOffset,
-                    sectionStartOffset:
-                        sectionStartOffset + (viewportHeight * 0.1),
-                    viewportHeight: viewportHeight,
-                    staggerDelay: 0.12,
-                    staggerFrom: 'start',
-                    animationConfig: const {
-                      'opacity': {'from': 0, 'to': 1},
-                      'y': {'from': 60, 'to': 0},
-                      'scale': {'from': 0.9, 'to': 1.0},
-                    },
-                    children: [
-                      Builder(
-                        builder: (context) {
-                          final spacing =
-                              isXS ? 16.0 : (isMobile ? 20.0 : 28.0);
-                          // Calculate available width from screenWidth and padding
-                          final availableWidth =
-                              screenWidth - (horizontalPadding * 2);
+                  BlocBuilder<TestimonialsCubit, TestimonialsState>(
+                    builder: (context, state) {
+                      if (state is TestimonialsLoading) {
+                        return SectionShimmerGrid(
+                          itemCount: 4,
+                          height: isXS ? 220 : (isMobile ? 240 : 280),
+                          crossAxisCount: isXS ? 1 : (isMobile ? 1 : (isTablet ? 2 : 2)),
+                          spacing: isXS ? 16.0 : (isMobile ? 20.0 : 28.0),
+                        );
+                      } else if (state is TestimonialsError) {
+                        return Center(child: Text('Error: ${state.message}'));
+                      } else if (state is TestimonialsLoaded) {
+                        final testimonials = state.testimonials;
+                        return GSAPStaggerAnimation(
+                          groupId: 'testimonials-grid',
+                          scrollOffset: scrollOffset,
+                          sectionStartOffset:
+                              sectionStartOffset + (viewportHeight * 0.1),
+                          viewportHeight: viewportHeight,
+                          staggerDelay: 0.12,
+                          staggerFrom: 'start',
+                          animationConfig: const {
+                            'opacity': {'from': 0, 'to': 1},
+                            'y': {'from': 60, 'to': 0},
+                            'scale': {'from': 0.9, 'to': 1.0},
+                          },
+                          children: [
+                            Builder(
+                              builder: (context) {
+                                final spacing =
+                                    isXS ? 16.0 : (isMobile ? 20.0 : 28.0);
+                                // Calculate available width from screenWidth and padding
+                                final availableWidth =
+                                    screenWidth - (horizontalPadding * 2);
 
-                          final hardcodedTestimonials = [
-                            (
-                              opinion:
-                                  "Working with Mohamed was a game-changer. His code is clean, scalable, and he delivered features faster than anticipated.",
-                              role: "Senior Tech Lead",
-                              company: "TechCorp",
+                                return Wrap(
+                                  spacing: spacing,
+                                  runSpacing: spacing,
+                                  alignment: WrapAlignment.center,
+                                  children:
+                                      testimonials.asMap().entries.map((
+                                    entry,
+                                  ) {
+                                    final index = entry.key;
+                                    final testimonial = entry.value;
+                                    final cardWidth = isMobile || isTablet
+                                        ? availableWidth
+                                        : 600.0; // Fixed width for single testimonial
+
+                                    return SizedBox(
+                                      width: cardWidth,
+                                      child: _TestimonialCard(
+                                        testimonial: testimonial,
+                                        index: index,
+                                        isMobile: isMobile,
+                                        isTablet: isTablet,
+                                      ),
+                                    );
+                                  }).toList(),
+                                );
+                              },
                             ),
-                          ];
-
-                          return Wrap(
-                            spacing: spacing,
-                            runSpacing: spacing,
-                            alignment: WrapAlignment.center,
-                            children:
-                                hardcodedTestimonials.asMap().entries.map((
-                              entry,
-                            ) {
-                              final index = entry.key;
-                              final testimonial = entry.value;
-                              final cardWidth = isMobile || isTablet
-                                  ? availableWidth
-                                  : 600.0; // Fixed width for single testimonial
-
-                              return SizedBox(
-                                width: cardWidth,
-                                child: _TestimonialCard(
-                                  testimonial: testimonial,
-                                  index: index,
-                                  isMobile: isMobile,
-                                  isTablet: isTablet,
-                                ),
-                              );
-                            }).toList(),
-                          );
-                        },
-                      ),
-                    ],
+                          ],
+                        );
+                      }
+                      return const SizedBox.shrink();
+                    },
                   ),
                 ],
               ),
@@ -219,9 +248,9 @@ class _TestimonialCardState extends State<_TestimonialCard> {
             ),
           ],
         ),
-        transform: Matrix4.identity()
-          ..scale(_isHovered ? 1.02 : 1.0)
-          ..translate(0.0, _isHovered ? -6.0 : 0.0),
+        transform: Matrix4.translationValues(0.0, _isHovered ? -6.0 : 0.0, 0.0)
+          * Matrix4.diagonal3Values(
+              _isHovered ? 1.02 : 1.0, _isHovered ? 1.02 : 1.0, 1.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,

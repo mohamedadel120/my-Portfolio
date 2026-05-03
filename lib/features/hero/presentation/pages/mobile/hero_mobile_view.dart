@@ -1,4 +1,3 @@
-import 'dart:ui';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -67,7 +66,7 @@ class _HeroMobileViewState extends State<HeroMobileView>
           builder: (context, scrollOffset, _) {
             return RefreshIndicator(
               onRefresh: () async {
-                context.read<HeroCubit>().loadHeroData();
+                await context.read<HeroCubit>().loadHeroData();
                 await Future.delayed(const Duration(seconds: 1));
               },
               child: SingleChildScrollView(
@@ -130,15 +129,13 @@ class _HeroMobileViewState extends State<HeroMobileView>
                                 // Role
                                 Row(
                                   children: [
-                                    Text(
-                                      heroData.title.toUpperCase(),
-                                      style: GoogleFonts.spaceMono(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.bold,
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .primary,
-                                        letterSpacing: 2,
+                                    RichText(
+                                      text: TextSpan(
+                                        children: _buildTitleSpans(
+                                          heroData.title.toUpperCase(),
+                                          context,
+                                          12,
+                                        ),
                                       ),
                                     ),
                                     const SizedBox(width: 12),
@@ -293,5 +290,41 @@ class _HeroMobileViewState extends State<HeroMobileView>
         ),
       ),
     );
+  }
+
+  List<TextSpan> _buildTitleSpans(String text, BuildContext context, double fontSize) {
+    // We want to style "DEVELOPER" specifically as requested.
+    final parts = text.split('DEVELOPER');
+    final List<TextSpan> spans = [];
+
+    for (int i = 0; i < parts.length; i++) {
+      if (parts[i].isNotEmpty) {
+        spans.add(
+          TextSpan(
+            text: parts[i],
+            style: GoogleFonts.ibmPlexMono(
+              fontSize: fontSize,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+              letterSpacing: 2,
+            ),
+          ),
+        );
+      }
+      if (i < parts.length - 1) {
+        spans.add(
+          TextSpan(
+            text: 'DEVELOPER',
+            style: GoogleFonts.jetBrainsMono(
+              fontSize: fontSize,
+              fontWeight: FontWeight.w500, // Medium
+              color: Theme.of(context).colorScheme.primary, // Cyan
+              letterSpacing: 2,
+            ),
+          ),
+        );
+      }
+    }
+    return spans;
   }
 }

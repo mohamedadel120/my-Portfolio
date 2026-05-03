@@ -306,12 +306,13 @@ class ContactMobileView extends StatelessWidget {
                                       IconData icon;
                                       if (link.name == 'Email') {
                                         icon = Icons.email;
-                                      } else if (link.name == 'GitHub')
+                                      } else if (link.name == 'GitHub') {
                                         icon = Icons.code;
-                                      else if (link.name == 'LinkedIn')
+                                      } else if (link.name == 'LinkedIn') {
                                         icon = Icons.link;
-                                      else
+                                      } else {
                                         icon = Icons.link;
+                                      }
 
                                       return Padding(
                                         padding:

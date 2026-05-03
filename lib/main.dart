@@ -1,4 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'features/projects/presentation/cubit/projects_cubit.dart';
+import 'features/experience/presentation/cubit/experience_cubit.dart';
+import 'features/expertise/presentation/cubit/expertise_cubit.dart';
+import 'features/hero/presentation/cubit/hero_cubit.dart';
+import 'features/about/presentation/cubit/about_cubit.dart';
+import 'features/contact/presentation/cubit/contact_cubit.dart';
+import 'features/testimonials/presentation/cubit/testimonials_cubit.dart';
+import 'features/why_choose_me/presentation/cubit/why_choose_me_cubit.dart';
 import 'package:flutter/foundation.dart';
 import 'dart:ui';
 import 'core/navigation/app_router.dart';
@@ -7,9 +16,14 @@ import 'core/theme/theme_controller.dart';
 import 'core/theme/app_theme.dart';
 
 import 'injection_container.dart' as di;
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   await di.init();
 
   // Error handling for Flutter web
@@ -30,6 +44,19 @@ void main() async {
     return true;
   };
 
+  // Fetch all global data before running the app
+  // This keeps the index.html loader on screen until data is fully loaded
+  await Future.wait([
+    di.sl<ProjectsCubit>().loadProjects(),
+    di.sl<ExperienceCubit>().loadExperiences(),
+    di.sl<ExpertiseCubit>().loadExpertise(),
+    di.sl<HeroCubit>().loadHeroData(),
+    di.sl<AboutCubit>().loadAboutData(),
+    di.sl<ContactCubit>().loadContactData(),
+    di.sl<TestimonialsCubit>().loadTestimonials(),
+    di.sl<WhyChooseMeCubit>().loadReasons(),
+  ]);
+
   runApp(const MyApp());
 }
 
@@ -44,19 +71,31 @@ class MyApp extends StatelessWidget {
     return ListenableBuilder(
       listenable: themeController,
       builder: (context, _) {
-        return MaterialApp(
-          title: 'Mohamed Adel - Flutter Developer',
-          debugShowCheckedModeBanner: false,
-          scrollBehavior: CustomScrollBehavior(),
-          theme: AppTheme.lightTheme,
-          darkTheme: AppTheme.darkTheme,
-          themeMode: themeController.themeMode,
-          builder: (context, child) {
-            return AdaptiveCursor(child: child ?? const SizedBox.shrink());
-          },
-          // Use Routing instead of Home
-          initialRoute: '/',
-          onGenerateRoute: AppRouter.onGenerateRoute,
+        return MultiBlocProvider(
+          providers: [
+            BlocProvider(create: (_) => di.sl<ProjectsCubit>()),
+            BlocProvider(create: (_) => di.sl<ExperienceCubit>()),
+            BlocProvider(create: (_) => di.sl<ExpertiseCubit>()),
+            BlocProvider(create: (_) => di.sl<HeroCubit>()),
+            BlocProvider(create: (_) => di.sl<AboutCubit>()),
+            BlocProvider(create: (_) => di.sl<ContactCubit>()),
+            BlocProvider(create: (_) => di.sl<TestimonialsCubit>()),
+            BlocProvider(create: (_) => di.sl<WhyChooseMeCubit>()),
+          ],
+          child: MaterialApp(
+            title: 'Mohamed Adel - Flutter Developer',
+            debugShowCheckedModeBanner: false,
+            scrollBehavior: CustomScrollBehavior(),
+            theme: AppTheme.lightTheme,
+            darkTheme: AppTheme.darkTheme,
+            themeMode: themeController.themeMode,
+            builder: (context, child) {
+              return AdaptiveCursor(child: child ?? const SizedBox.shrink());
+            },
+            // Use Routing instead of Home
+            initialRoute: '/',
+            onGenerateRoute: AppRouter.onGenerateRoute,
+          ),
         );
       },
     );

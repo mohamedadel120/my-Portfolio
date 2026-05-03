@@ -102,14 +102,13 @@ class _HeroDesktopViewState extends State<HeroDesktopView> {
                         // 1. Editorial "Hello" / Role
                         Row(
                           children: [
-                            Text(
-                              heroData.title
-                                  .toUpperCase(), // e.g. "FLUTTER DEVELOPER"
-                              style: GoogleFonts.spaceMono(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                color: Theme.of(context).colorScheme.primary,
-                                letterSpacing: 2,
+                            RichText(
+                              text: TextSpan(
+                                children: _buildTitleSpans(
+                                  heroData.title.toUpperCase(),
+                                  context,
+                                  16,
+                                ),
                               ),
                             ),
                             const SizedBox(width: 16),
@@ -213,7 +212,7 @@ class _HeroDesktopViewState extends State<HeroDesktopView> {
       onTap: onTap ?? () {},
       cursorType: CursorType.click,
       child: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           color: Colors.transparent, // Explicitly transparent
         ),
         padding: const EdgeInsets.only(bottom: 8),
@@ -239,5 +238,41 @@ class _HeroDesktopViewState extends State<HeroDesktopView> {
         ),
       ),
     );
+  }
+
+  List<TextSpan> _buildTitleSpans(String text, BuildContext context, double fontSize) {
+    // We want to style "DEVELOPER" specifically as requested.
+    final parts = text.split('DEVELOPER');
+    final List<TextSpan> spans = [];
+
+    for (int i = 0; i < parts.length; i++) {
+      if (parts[i].isNotEmpty) {
+        spans.add(
+          TextSpan(
+            text: parts[i],
+            style: GoogleFonts.ibmPlexMono(
+              fontSize: fontSize,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+              letterSpacing: 2,
+            ),
+          ),
+        );
+      }
+      if (i < parts.length - 1) {
+        spans.add(
+          TextSpan(
+            text: 'DEVELOPER',
+            style: GoogleFonts.jetBrainsMono(
+              fontSize: fontSize,
+              fontWeight: FontWeight.w500, // Medium
+              color: Theme.of(context).colorScheme.primary, // Cyan
+              letterSpacing: 2,
+            ),
+          ),
+        );
+      }
+    }
+    return spans;
   }
 }

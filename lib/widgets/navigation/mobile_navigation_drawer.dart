@@ -20,7 +20,7 @@ class MobileNavigationDrawer extends StatelessWidget {
               filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
               child: Container(
                 color:
-                    Theme.of(context).scaffoldBackgroundColor.withOpacity(0.9),
+                    Theme.of(context).scaffoldBackgroundColor.withValues(alpha: 0.9),
               ),
             ),
           ),
@@ -91,7 +91,7 @@ class MobileNavigationDrawer extends StatelessWidget {
                 style: GoogleFonts.firaCode(
                   fontSize: 10,
                   color:
-                      Theme.of(context).colorScheme.onSurface.withOpacity(0.3),
+                      Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.3),
                   letterSpacing: 2,
                 ),
               ),

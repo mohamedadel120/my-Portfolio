@@ -1,9 +1,9 @@
 import '../../domain/repositories/project_repository.dart';
 import '../../domain/entities/project_entity.dart';
-import '../datasources/project_local_data_source.dart';
+import '../datasources/project_remote_data_source.dart';
 
 class ProjectRepositoryImpl implements ProjectRepository {
-  final ProjectLocalDataSource dataSource;
+  final ProjectRemoteDataSource dataSource;
 
   ProjectRepositoryImpl(this.dataSource);
 

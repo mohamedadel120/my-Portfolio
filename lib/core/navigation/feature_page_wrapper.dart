@@ -65,7 +65,7 @@ class _FeaturePageWrapperState extends State<FeaturePageWrapper> {
           icon: Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: Theme.of(context).scaffoldBackgroundColor.withOpacity(0.5),
+              color: Theme.of(context).scaffoldBackgroundColor.withValues(alpha: 0.5),
               shape: BoxShape.circle,
             ),
             child: const Icon(Icons.arrow_back_ios_new_rounded, size: 20),

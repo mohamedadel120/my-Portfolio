@@ -14,6 +14,7 @@ import '../../widgets/sticky_project_showcase.dart';
 import '../../cubit/projects_cubit.dart';
 import '../../cubit/projects_state.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../../../../../widgets/common/custom_shimmer.dart';
 
 class ProjectsMobileView extends StatelessWidget {
   final ValueListenable<double> scrollOffsetListenable;
@@ -25,7 +26,10 @@ class ProjectsMobileView extends StatelessWidget {
     return BlocBuilder<ProjectsCubit, ProjectsState>(
       builder: (context, state) {
         if (state is ProjectsLoading) {
-          return const Center(child: CircularProgressIndicator());
+          return const Padding(
+            padding: EdgeInsets.only(top: 60),
+            child: SectionShimmerGrid(itemCount: 4, height: 200, crossAxisCount: 1, spacing: 16),
+          );
         }
         if (state is ProjectsError) {
           return Center(child: Text(state.message));

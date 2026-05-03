@@ -221,8 +221,8 @@ class _ProfessionalExperienceCardState
         ],
       ),
       transform: Matrix4.identity()
-        ..scale(_isHovered ? 1.01 : 1.0)
-        ..translate(0.0, _isHovered ? -6.0 : 0.0),
+        ..multiply(Matrix4.diagonal3Values(_isHovered ? 1.01 : 1.0, _isHovered ? 1.01 : 1.0, 1.0))
+        ..multiply(Matrix4.translationValues(0.0, _isHovered ? -6.0 : 0.0, 0.0)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

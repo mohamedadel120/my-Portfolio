@@ -139,7 +139,7 @@ class _ExpertiseCardState extends State<ExpertiseCard> {
                               height: 300,
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
-                                color: primaryColor.withOpacity(0.1),
+                                color: primaryColor.withValues(alpha: 0.1),
                               ),
                             ),
                           ),
@@ -153,10 +153,10 @@ class _ExpertiseCardState extends State<ExpertiseCard> {
                                     Container(
                                       padding: const EdgeInsets.all(16),
                                       decoration: BoxDecoration(
-                                        color: primaryColor.withOpacity(0.1),
+                                        color: primaryColor.withValues(alpha: 0.1),
                                         borderRadius: BorderRadius.circular(16),
                                         border: Border.all(
-                                          color: primaryColor.withOpacity(0.2),
+                                          color: primaryColor.withValues(alpha: 0.2),
                                         ),
                                       ),
                                       child: Icon(

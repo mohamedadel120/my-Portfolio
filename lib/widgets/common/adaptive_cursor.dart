@@ -205,9 +205,9 @@ class _AdaptiveCursorState extends State<AdaptiveCursor> {
         return Colors
             .transparent; // Handled in _buildCursor with container decoration
       case CursorType.pointer:
-        return primary.withOpacity(0.15); // Subtle fill
+        return primary.withValues(alpha: 0.15); // Subtle fill
       case CursorType.text:
-        return primary.withOpacity(0.1);
+        return primary.withValues(alpha: 0.1);
       case CursorType.defaultCursor:
         return primary;
     }
@@ -237,7 +237,7 @@ class _AdaptiveCursorState extends State<AdaptiveCursor> {
       case CursorType.pointer:
         return [
           BoxShadow(
-            color: primary.withOpacity(0.4),
+            color: primary.withValues(alpha: 0.4),
             blurRadius: 15,
             spreadRadius: 2,
           ),

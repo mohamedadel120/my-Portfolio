@@ -1,14 +1,14 @@
 import '../../domain/entities/hero_entity.dart';
 import '../../domain/repositories/hero_repository.dart';
-import '../datasources/hero_local_data_source.dart';
+import '../datasources/hero_remote_data_source.dart';
 
 class HeroRepositoryImpl implements HeroRepository {
-  final HeroLocalDataSource localDataSource;
+  final HeroRemoteDataSource remoteDataSource;
 
-  HeroRepositoryImpl(this.localDataSource);
+  HeroRepositoryImpl(this.remoteDataSource);
 
   @override
   Future<HeroData> getHeroData() async {
-    return await localDataSource.getHeroData();
+    return await remoteDataSource.getHeroData();
   }
 }

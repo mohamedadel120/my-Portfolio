@@ -10,8 +10,11 @@ class AppRouter {
   static Route<dynamic>? onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
       case '/':
-        // Single Page Layout - All sections in one scrollable view
         return MaterialPageRoute(builder: (_) => const HomePage());
+
+      case '/home':
+        // Single Page Layout - All sections in one scrollable view
+        return CodingTransition(page: const HomePage());
 
       case '/about':
         return CodingTransition(page: const AboutPage());

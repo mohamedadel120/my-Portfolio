@@ -1,19 +1,19 @@
 import '../../domain/entities/expertise_entity.dart';
 import '../../domain/repositories/expertise_repository.dart';
-import '../datasources/expertise_local_data_source.dart';
+import '../datasources/expertise_remote_data_source.dart';
 
 class ExpertiseRepositoryImpl implements ExpertiseRepository {
-  final ExpertiseLocalDataSource localDataSource;
+  final ExpertiseRemoteDataSource remoteDataSource;
 
-  ExpertiseRepositoryImpl(this.localDataSource);
+  ExpertiseRepositoryImpl(this.remoteDataSource);
 
   @override
   Future<List<Expertise>> getExpertiseAreas() async {
-    return await localDataSource.getExpertiseAreas();
+    return await remoteDataSource.getExpertiseAreas();
   }
 
   @override
   Future<List<String>> getTechStack() async {
-    return await localDataSource.getTechStack();
+    return await remoteDataSource.getTechStack();
   }
 }

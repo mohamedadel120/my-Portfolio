@@ -16,7 +16,7 @@ class ScrollIndicator extends StatelessWidget {
   Widget build(BuildContext context) {
     if (opacity <= 0) return const SizedBox.shrink();
 
-    Widget trackContent = SizedBox(
+    final Widget trackContent = SizedBox(
       width: 32,
       child: LayoutBuilder(
         builder: (context, constraints) {
