@@ -31,14 +31,9 @@ class _ScrollTriggeredAnimationState extends State<ScrollTriggeredAnimation> {
     final triggerPoint = widget.sectionStartOffset - viewportHeight * 0.7;
     final isInView = widget.scrollOffset >= triggerPoint;
 
+    // Update directly - no need for setState since value is used immediately
     if (isInView && !_hasAnimated) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (mounted) {
-          setState(() {
-            _hasAnimated = true;
-          });
-        }
-      });
+      _hasAnimated = true;
     }
 
     return widget.child

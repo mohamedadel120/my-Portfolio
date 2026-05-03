@@ -2,7 +2,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:seo_renderer/seo_renderer.dart';
 import '../../../../../widgets/common/section_title.dart';
 import '../../../../../widgets/common/section_divider.dart';
 import '../../../../../widgets/common/tech_grid_background.dart';
@@ -15,6 +14,7 @@ import '../../widgets/sticky_project_showcase.dart';
 import '../../cubit/projects_cubit.dart';
 import '../../cubit/projects_state.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../../../../../widgets/common/custom_shimmer.dart';
 
 class ProjectsMobileView extends StatelessWidget {
   final ValueListenable<double> scrollOffsetListenable;
@@ -26,7 +26,10 @@ class ProjectsMobileView extends StatelessWidget {
     return BlocBuilder<ProjectsCubit, ProjectsState>(
       builder: (context, state) {
         if (state is ProjectsLoading) {
-          return const Center(child: CircularProgressIndicator());
+          return const Padding(
+            padding: EdgeInsets.only(top: 60),
+            child: SectionShimmerGrid(itemCount: 4, height: 200, crossAxisCount: 1, spacing: 16),
+          );
         }
         if (state is ProjectsError) {
           return Center(child: Text(state.message));
@@ -78,11 +81,8 @@ class ProjectsMobileView extends StatelessWidget {
                           'y': {'from': -30, 'to': 0},
                           'scale': {'from': 0.9, 'to': 1.0},
                         },
-                        child: const TextRenderer(
-                          text: 'My Projects',
-                          child: SectionTitle(
-                              title: 'My Projects', isVisible: true),
-                        ),
+                        child: const SectionTitle(
+                            title: 'My Projects', isVisible: true),
                       ),
                       const SizedBox(height: 24),
                       GSAPEnhancedAnimation(

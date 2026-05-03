@@ -66,8 +66,8 @@ class _ContactButtonState extends State<ContactButton> {
                   ],
           ),
           transform: Matrix4.identity()
-            ..scale(_isHovered ? 1.15 : 1.0)
-            ..translate(0.0, _isHovered ? -3.0 : 0.0), // Lift effect on hover
+            ..multiply(Matrix4.diagonal3Values(_isHovered ? 1.15 : 1.0, _isHovered ? 1.15 : 1.0, 1.0))
+            ..multiply(Matrix4.translationValues(0.0, _isHovered ? -3.0 : 0.0, 0.0)), // Lift effect on hover
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [

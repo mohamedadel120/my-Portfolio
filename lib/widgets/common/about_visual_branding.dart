@@ -1,4 +1,6 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'dart:math' as math;
 import '../../core/constants/app_colors.dart';
 
@@ -69,47 +71,50 @@ class _AboutVisualBrandingState extends State<AboutVisualBranding>
             ),
             // Central branding element
             Container(
-              width: isMobile ? 120 : 180,
-              height: isMobile ? 120 : 180,
+              width: isMobile ? 140 : 200,
+              height: isMobile ? 140 : 200,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 gradient: RadialGradient(
                   colors: [
-                    AppColors.primary.withValues(alpha: 0.2),
+                    AppColors.primary.withValues(alpha: 0.3),
                     Colors.transparent,
                   ],
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: AppColors.primary.withValues(alpha: 0.1),
-                    blurRadius: isMobile ? 30 : 50,
-                    spreadRadius: isMobile ? 5 : 10,
+                    color: AppColors.primary.withValues(alpha: 0.2),
+                    blurRadius: isMobile ? 40 : 60,
+                    spreadRadius: isMobile ? 10 : 20,
                   ),
                 ],
               ),
               child: Center(
                 child: Icon(
                   Icons.developer_mode_rounded,
-                  size: isMobile ? 50 : 80,
+                  size: isMobile ? 60 : 100,
                   color: AppColors.primary,
                 ),
               ),
             ),
-            // Floating code-like tags (Reduced on mobile)
+            // Floating code-like tags (More tags, varied speeds)
             _buildFloatingTag(
-              'Flutter',
-              isMobile ? 80 : 130,
-              0.5,
-              _controller.value,
-            ),
+                'Flutter', isMobile ? 90 : 150, 0.5, _controller.value,
+                speed: 1.0),
             _buildFloatingTag(
-              'Dart',
-              isMobile ? 100 : 150,
-              2.5,
-              _controller.value,
-            ),
-            if (!isMobile)
-              _buildFloatingTag('Clean', 140, 4.5, _controller.value),
+                'Dart', isMobile ? 110 : 180, 2.5, _controller.value,
+                speed: -1.2),
+            _buildFloatingTag(
+                'Firebase', isMobile ? 130 : 210, 4.5, _controller.value,
+                speed: 0.8),
+            if (!isMobile) ...[
+              _buildFloatingTag('Clean Arch', 240, 1.5, _controller.value,
+                  speed: -0.6),
+              _buildFloatingTag('GraphQL', 270, 3.5, _controller.value,
+                  speed: 1.4),
+              _buildFloatingTag('CI/CD', 300, 5.5, _controller.value,
+                  speed: -0.9),
+            ],
           ],
         );
       },
@@ -120,25 +125,34 @@ class _AboutVisualBrandingState extends State<AboutVisualBranding>
     String text,
     double radius,
     double offsetAngle,
-    double animValue,
-  ) {
-    final angle = offsetAngle + (animValue * 2 * math.pi);
+    double animValue, {
+    double speed = 1.0,
+  }) {
+    final angle = offsetAngle + (animValue * 2 * math.pi * speed);
     return Transform.translate(
       offset: Offset(radius * math.cos(angle), radius * math.sin(angle)),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-        decoration: BoxDecoration(
-          color: AppColors.surface.withValues(alpha: 0.8),
-          borderRadius: BorderRadius.circular(5),
-          border: Border.all(color: AppColors.primary.withValues(alpha: 0.3)),
-        ),
-        child: Text(
-          '<$text>',
-          style: const TextStyle(
-            color: AppColors.primary,
-            fontSize: 10,
-            fontFamily: 'monospace',
-            fontWeight: FontWeight.bold,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(4),
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+            decoration: BoxDecoration(
+              color: AppColors.surface.withValues(alpha: 0.2),
+              borderRadius: BorderRadius.circular(4),
+              border: Border.all(
+                color: AppColors.primary.withValues(alpha: 0.3),
+                width: 0.5,
+              ),
+            ),
+            child: Text(
+              '<$text>',
+              style: GoogleFonts.spaceMono(
+                color: AppColors.primary,
+                fontSize: 10,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ),
         ),
       ),

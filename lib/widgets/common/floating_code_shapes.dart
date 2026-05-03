@@ -24,15 +24,12 @@ class FloatingCodeShapes extends StatelessWidget {
     }
 
     return IgnorePointer(
-      child: LayoutBuilder(
-        builder: (context, constraints) {
-          final width = constraints.maxWidth.isFinite
-              ? constraints.maxWidth
-              : screenSize.width;
-          final height = constraints.maxHeight.isFinite
-              ? constraints.maxHeight
-              : screenSize.height;
-
+      // Use screenSize directly instead of LayoutBuilder to prevent layout re-entrancy
+      // when used inside ValueListenableBuilder scroll listeners
+      child: Builder(
+        builder: (context) {
+          final width = screenSize.width;
+          final height = screenSize.height;
           final shapeCount = isXS ? 6 : 12;
 
           return SizedBox(

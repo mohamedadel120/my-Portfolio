@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../../models/why_choose_me_reason.dart';
+import '../../features/why_choose_me/presentation/cubit/why_choose_me_cubit.dart';
+import '../../features/why_choose_me/presentation/cubit/why_choose_me_state.dart';
+import '../common/custom_shimmer.dart';
+import '../../injection_container.dart';
 import '../common/section_title.dart';
 import '../common/tech_grid_background.dart';
 import '../common/scroll_speed_widget.dart';
@@ -12,6 +16,22 @@ class WhyChooseMeSection extends StatelessWidget {
   final ValueListenable<double> scrollOffsetListenable;
 
   const WhyChooseMeSection({super.key, required this.scrollOffsetListenable});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => sl<WhyChooseMeCubit>()..loadReasons(),
+      child: _WhyChooseMeContent(
+        scrollOffsetListenable: scrollOffsetListenable,
+      ),
+    );
+  }
+}
+
+class _WhyChooseMeContent extends StatelessWidget {
+  final ValueListenable<double> scrollOffsetListenable;
+
+  const _WhyChooseMeContent({required this.scrollOffsetListenable});
 
   @override
   Widget build(BuildContext context) {
@@ -27,52 +47,6 @@ class WhyChooseMeSection extends StatelessWidget {
 
     final horizontalPadding = DeviceUtils.getHorizontalPadding(screenWidth);
     final verticalPadding = DeviceUtils.getVerticalPadding(screenWidth);
-
-    // Local reasons list with theme colors
-    final reasons = [
-      WhyChooseMeReason(
-        title: 'Clean & Maintainable Code',
-        description:
-            'I write clean, well-documented code following best practices and design patterns. Your codebase will be maintainable, scalable, and easy for your team to understand and extend.',
-        icon: Icons.code_rounded,
-        color: Theme.of(context).colorScheme.primary,
-      ),
-      WhyChooseMeReason(
-        title: 'Performance Optimization',
-        description:
-            'I optimize apps for speed and efficiency. Reduced load times by 20-30% in multiple projects, ensuring smooth user experiences even with complex features.',
-        icon: Icons.speed_rounded,
-        color: Theme.of(context).colorScheme.secondary,
-      ),
-      WhyChooseMeReason(
-        title: 'Cross-Platform Expertise',
-        description:
-            'Build once, deploy everywhere. I specialize in Flutter development, delivering native-quality apps for both iOS and Android from a single codebase.',
-        icon: Icons.phone_android_rounded,
-        color: Theme.of(context).colorScheme.primary,
-      ),
-      WhyChooseMeReason(
-        title: 'Proven Track Record',
-        description:
-            '10,000+ downloads, 4.8-star ratings, and successful projects across various industries. I deliver results that matter to your business.',
-        icon: Icons.star_rounded,
-        color: Theme.of(context).colorScheme.secondary,
-      ),
-      WhyChooseMeReason(
-        title: 'Modern Architecture',
-        description:
-            'I implement clean architecture, MVVM, and proper state management (Bloc/Riverpod) to ensure your app is scalable, testable, and future-proof.',
-        icon: Icons.architecture_rounded,
-        color: Theme.of(context).colorScheme.primary,
-      ),
-      WhyChooseMeReason(
-        title: 'Team Collaboration',
-        description:
-            'I work seamlessly with teams, communicate clearly, and manage code effectively. Your team will enjoy working with me, and the code will be easy to maintain.',
-        icon: Icons.people_rounded,
-        color: Theme.of(context).colorScheme.secondary,
-      ),
-    ];
 
     return ValueListenableBuilder<double>(
       valueListenable: scrollOffsetListenable,
@@ -126,55 +100,77 @@ class WhyChooseMeSection extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: isXS ? 24 : (isMobile ? 32 : 48)),
-                  // Reasons grid
-                  GSAPStaggerAnimation(
-                    groupId: 'why-choose-me-reasons',
-                    scrollOffset: scrollOffset,
-                    sectionStartOffset:
-                        sectionStartOffset + (viewportHeight * 0.1),
-                    viewportHeight: viewportHeight,
-                    staggerDelay: 0.1,
-                    staggerFrom: 'start',
-                    animationConfig: const {
-                      'opacity': {'from': 0, 'to': 1},
-                      'y': {'from': 60, 'to': 0},
-                      'scale': {'from': 0.9, 'to': 1.0},
+                  BlocBuilder<WhyChooseMeCubit, WhyChooseMeState>(
+                    builder: (context, state) {
+                      if (state is WhyChooseMeLoading) {
+                        return SectionShimmerGrid(
+                          itemCount: 6,
+                          height: isXS ? 160 : (isMobile ? 180 : 220),
+                          crossAxisCount: isXS ? 1 : (isMobile ? 1 : (isTablet ? 2 : 3)),
+                          spacing: isXS ? 12.0 : (isMobile ? 16.0 : 24.0),
+                        );
+                      } else if (state is WhyChooseMeError) {
+                        return Center(child: Text('Error: ${state.message}'));
+                      } else if (state is WhyChooseMeLoaded) {
+                        final reasons = state.reasons;
+                        return GSAPStaggerAnimation(
+                          groupId: 'why-choose-me-reasons',
+                          scrollOffset: scrollOffset,
+                          sectionStartOffset:
+                              sectionStartOffset + (viewportHeight * 0.1),
+                          viewportHeight: viewportHeight,
+                          staggerDelay: 0.1,
+                          staggerFrom: 'start',
+                          animationConfig: const {
+                            'opacity': {'from': 0, 'to': 1},
+                            'y': {'from': 60, 'to': 0},
+                            'scale': {'from': 0.9, 'to': 1.0},
+                          },
+                          children: [
+                            Builder(
+                              builder: (context) {
+                                final crossAxisCount = isXS
+                                    ? 1
+                                    : (isMobile ? 1 : (isTablet ? 2 : 3));
+                                final spacing =
+                                    isXS ? 12.0 : (isMobile ? 16.0 : 24.0);
+                                // Calculate available width from screenWidth and padding
+                                final availableWidth =
+                                    screenWidth - (horizontalPadding * 2);
+
+                                return Wrap(
+                                  spacing: spacing,
+                                  runSpacing: spacing,
+                                  alignment: WrapAlignment.start,
+                                  children:
+                                      reasons.asMap().entries.map((entry) {
+                                    final index = entry.key;
+                                    final reason = entry.value;
+                                    final cardWidth = isMobile
+                                        ? availableWidth
+                                        : (availableWidth -
+                                                (spacing *
+                                                    (crossAxisCount - 1))) /
+                                            crossAxisCount;
+
+                                    return SizedBox(
+                                      width: cardWidth,
+                                      child: _WhyChooseMeCard(
+                                        reason: reason,
+                                        index: index,
+                                        isMobile: isMobile,
+                                        isTablet: isTablet,
+                                      ),
+                                    );
+                                  }).toList(),
+                                );
+                              },
+                            ),
+                          ],
+                        );
+                      }
+                      return const SizedBox.shrink();
                     },
-                    children: [
-                      LayoutBuilder(
-                        builder: (context, constraints) {
-                          final crossAxisCount =
-                              isXS ? 1 : (isMobile ? 1 : (isTablet ? 2 : 3));
-                          final spacing =
-                              isXS ? 12.0 : (isMobile ? 16.0 : 24.0);
-
-                          return Wrap(
-                            spacing: spacing,
-                            runSpacing: spacing,
-                            alignment: WrapAlignment.start,
-                            children: reasons.asMap().entries.map((entry) {
-                              final index = entry.key;
-                              final reason = entry.value;
-                              final cardWidth = isMobile
-                                  ? constraints.maxWidth
-                                  : (constraints.maxWidth -
-                                          (spacing * (crossAxisCount - 1))) /
-                                      crossAxisCount;
-
-                              return SizedBox(
-                                width: cardWidth,
-                                child: _WhyChooseMeCard(
-                                  reason: reason,
-                                  index: index,
-                                  isMobile: isMobile,
-                                  isTablet: isTablet,
-                                ),
-                              );
-                            }).toList(),
-                          );
-                        },
-                      ),
-                    ],
                   ),
                 ],
               ),
@@ -249,9 +245,9 @@ class _WhyChooseMeCardState extends State<_WhyChooseMeCard> {
             ),
           ],
         ),
-        transform: Matrix4.identity()
-          ..scale(_isHovered ? 1.02 : 1.0)
-          ..translate(0.0, _isHovered ? -6.0 : 0.0),
+        transform: Matrix4.translationValues(0.0, _isHovered ? -6.0 : 0.0, 0.0)
+          * Matrix4.diagonal3Values(
+              _isHovered ? 1.02 : 1.0, _isHovered ? 1.02 : 1.0, 1.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,

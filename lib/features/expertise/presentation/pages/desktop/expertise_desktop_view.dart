@@ -43,7 +43,6 @@ class ExpertiseDesktopView extends StatelessWidget {
           builder: (context, scrollOffset, _) {
             // We assume 4 items for the grid layout as per original design
             // If more items are added, this layout might need adjustment or ListView
-            final hasFourItems = expertiseAreas.length >= 4;
 
             return Container(
               padding: EdgeInsets.symmetric(
@@ -75,93 +74,24 @@ class ExpertiseDesktopView extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 72),
-                      // Expertise cards grid
-                      if (hasFourItems) ...[
-                        Column(
-                          children: [
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Expanded(
-                                  child: ExpertiseCard(
-                                    expertise: expertiseAreas[0],
-                                    scrollOffset: scrollOffset,
-                                    sectionStartOffset: sectionStartOffset,
-                                    viewportHeight: viewportHeight,
-                                    index: 0,
-                                    isMobile: false,
-                                    isTablet: isTablet,
-                                  ),
-                                ),
-                                SizedBox(width: isTablet ? 24 : 32),
-                                Expanded(
-                                  child: ExpertiseCard(
-                                    expertise: expertiseAreas[1],
-                                    scrollOffset: scrollOffset,
-                                    sectionStartOffset: sectionStartOffset,
-                                    viewportHeight: viewportHeight,
-                                    index: 1,
-                                    isMobile: false,
-                                    isTablet: isTablet,
-                                  ),
-                                ),
-                              ],
+                      // Expertise List (Porty Style: Vertical Stack)
+                      Column(
+                        children: expertiseAreas.asMap().entries.map((entry) {
+                          return Padding(
+                            padding: const EdgeInsets.only(
+                                bottom: 0), // Borders handle spacing
+                            child: ExpertiseCard(
+                              expertise: entry.value,
+                              scrollOffset: scrollOffset,
+                              sectionStartOffset: sectionStartOffset,
+                              viewportHeight: viewportHeight,
+                              index: entry.key,
+                              isMobile: false,
+                              isTablet: isTablet,
                             ),
-                            SizedBox(height: isTablet ? 24 : 32),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Expanded(
-                                  child: ExpertiseCard(
-                                    expertise: expertiseAreas[2],
-                                    scrollOffset: scrollOffset,
-                                    sectionStartOffset: sectionStartOffset,
-                                    viewportHeight: viewportHeight,
-                                    index: 2,
-                                    isMobile: false,
-                                    isTablet: isTablet,
-                                  ),
-                                ),
-                                SizedBox(width: isTablet ? 24 : 32),
-                                Expanded(
-                                  child: ExpertiseCard(
-                                    expertise: expertiseAreas[3],
-                                    scrollOffset: scrollOffset,
-                                    sectionStartOffset: sectionStartOffset,
-                                    viewportHeight: viewportHeight,
-                                    index: 3,
-                                    isMobile: false,
-                                    isTablet: isTablet,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        )
-                      ] else ...[
-                        // Fallback simple list if not exactly 4 or logic change
-                        Wrap(
-                          spacing: isTablet ? 24 : 32,
-                          runSpacing: isTablet ? 24 : 32,
-                          children: expertiseAreas.asMap().entries.map((entry) {
-                            return SizedBox(
-                              width: (screenWidth -
-                                      (horizontalPadding * 2) -
-                                      (isTablet ? 24 : 32)) /
-                                  2,
-                              child: ExpertiseCard(
-                                expertise: entry.value,
-                                scrollOffset: scrollOffset,
-                                sectionStartOffset: sectionStartOffset,
-                                viewportHeight: viewportHeight,
-                                index: entry.key,
-                                isMobile: false,
-                                isTablet: isTablet,
-                              ),
-                            );
-                          }).toList(),
-                        )
-                      ]
+                          );
+                        }).toList(),
+                      ),
                     ],
                   ),
                 ],

@@ -68,8 +68,8 @@ class _ContactInfoItemState extends State<ContactInfoItem> {
                   ],
           ),
           transform: Matrix4.identity()
-            ..scale(_isHovered ? 1.05 : 1.0)
-            ..translate(0.0, _isHovered ? -2.0 : 0.0), // Lift effect on hover
+            ..multiply(Matrix4.diagonal3Values(_isHovered ? 1.05 : 1.0, _isHovered ? 1.05 : 1.0, 1.0))
+            ..multiply(Matrix4.translationValues(0.0, _isHovered ? -2.0 : 0.0, 0.0)), // Lift effect on hover
           child: Row(
             children: [
               AnimatedContainer(

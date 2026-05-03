@@ -15,16 +15,16 @@ class ResponsiveBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        if (constraints.maxWidth < ResponsiveBreakpoints.mobile) {
-          return mobile;
-        } else if (constraints.maxWidth < ResponsiveBreakpoints.tablet) {
-          return tablet ?? mobile;
-        } else {
-          return desktop;
-        }
-      },
-    );
+    // Use MediaQuery instead of LayoutBuilder to prevent layout re-entrancy
+    // when ResponsiveBuilder is used inside ValueListenableBuilder scroll listeners
+    final screenWidth = MediaQuery.of(context).size.width;
+
+    if (screenWidth < ResponsiveBreakpoints.mobile) {
+      return mobile;
+    } else if (screenWidth < ResponsiveBreakpoints.tablet) {
+      return tablet ?? mobile;
+    } else {
+      return desktop;
+    }
   }
 }

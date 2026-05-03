@@ -170,7 +170,7 @@ class _FilterChipState extends State<_FilterChip> {
                   ]
                 : null,
           ),
-          transform: Matrix4.identity()..scale(_isHovered ? 1.05 : 1.0),
+          transform: Matrix4.identity()..multiply(Matrix4.diagonal3Values(_isHovered ? 1.05 : 1.0, _isHovered ? 1.05 : 1.0, 1.0)),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [

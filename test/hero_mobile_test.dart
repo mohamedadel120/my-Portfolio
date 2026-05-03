@@ -76,11 +76,11 @@ void main() {
     await tester.pump(const Duration(seconds: 1));
 
     // Assert
-    expect(find.text('HELLO'), findsOneWidget);
+    expect(find.text('TEST TITLE'), findsOneWidget);
     expect(find.text('TEST NAME'), findsOneWidget);
 
     // Verify content visibility
-    expect(find.text('VIEW WORK'), findsOneWidget);
+    expect(find.text('ABOUT'), findsOneWidget);
     expect(find.text('DOWNLOAD CV'), findsOneWidget);
 
     // Clean up

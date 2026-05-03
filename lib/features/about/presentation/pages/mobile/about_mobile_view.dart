@@ -2,17 +2,16 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:seo_renderer/seo_renderer.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../../../../../utils/device_utils.dart';
 import '../../../../../widgets/common/section_title.dart';
-import '../../../../../widgets/common/about_card.dart';
 import '../../../../../widgets/common/tech_grid_background.dart';
 import '../../../../../widgets/common/skill_progress_bar.dart';
-import '../../../../../widgets/common/scroll_triggered_animation.dart';
-import '../../../../../widgets/common/gsap_stagger_animation.dart';
-import '../../../../../widgets/common/scroll_speed_widget.dart';
 import '../../../../../widgets/common/impact_stat.dart';
+import '../../../../../widgets/common/about_visual_branding.dart';
+import '../../widgets/process_section.dart';
+import '../../widgets/bento_tile.dart';
+import '../../../../../core/constants/app_colors.dart';
 import '../../cubit/about_cubit.dart';
 import '../../cubit/about_state.dart';
 
@@ -46,7 +45,6 @@ class AboutMobileView extends StatelessWidget {
         final horizontalPadding = DeviceUtils.getHorizontalPadding(screenWidth);
         final verticalPadding = DeviceUtils.getVerticalPadding(screenWidth);
         final isXS = DeviceUtils.isExtraSmall(screenWidth);
-        final isMobile = DeviceUtils.isMobile(screenWidth);
 
         return ValueListenableBuilder<double>(
           valueListenable: scrollOffsetListenable,
@@ -56,222 +54,140 @@ class AboutMobileView extends StatelessWidget {
                 horizontal: horizontalPadding,
                 vertical: verticalPadding,
               ),
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    Theme.of(context).colorScheme.surface,
-                    Theme.of(context).scaffoldBackgroundColor,
-                  ],
-                ),
-              ),
               child: Stack(
                 children: [
-                  // Background Tech Grid
-                  ScrollSpeedWidget(
-                    scrollOffset: scrollOffset,
-                    sectionStartOffset: sectionStartOffset,
-                    speed: -0.1,
-                    child: TechGridBackground(
-                      scrollOffset: scrollOffset,
-                      opacity: isLowSpec ? 0.02 : 0.05,
+                  // Aurora Background Effects
+                  if (!isLowSpec) ...[
+                    Positioned(
+                      top: 0,
+                      right: -50,
+                      child: Container(
+                        width: 200,
+                        height: 200,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: AppColors.primary.withValues(alpha: 0.05),
+                        ),
+                      ).animate(onPlay: (c) => c.repeat()).scale(
+                            duration: 10.seconds,
+                            begin: const Offset(1, 1),
+                            end: const Offset(1.5, 1.5),
+                            curve: Curves.easeInOut,
+                          ),
                     ),
+                  ],
+
+                  // Background Tech Grid
+                  TechGridBackground(
+                    scrollOffset: scrollOffset,
+                    opacity: isLowSpec ? 0.02 : 0.05,
                   ),
 
                   Column(
                     children: [
-                      ScrollTriggeredAnimation(
-                        scrollOffset: scrollOffset,
-                        sectionStartOffset: sectionStartOffset,
-                        child: const TextRenderer(
-                          text: 'About Me',
-                          child:
-                              SectionTitle(title: 'About Me', isVisible: true),
-                        ),
-                      ),
-                      const SizedBox(height: 60),
+                      const SectionTitle(title: 'About Me', isVisible: true),
+                      const SizedBox(height: 32),
 
-                      // Intro + Stats + Cards
-                      GSAPEnhancedAnimation(
-                        elementId: 'about-intro-mobile',
-                        scrollOffset: scrollOffset,
-                        sectionStartOffset: sectionStartOffset,
-                        viewportHeight: viewportHeight,
-                        animationConfig: const {
-                          'opacity': {'from': 0, 'to': 1},
-                          'y': {'from': 30, 'to': 0},
-                        },
-                        child: Column(
-                          children: [
-                            Text(
-                              aboutData.professionalSummary,
-                              style: GoogleFonts.poppins(
-                                fontSize: isXS ? 14 : 16,
-                                color: Theme.of(
-                                  context,
-                                ).colorScheme.onSurface.withValues(alpha: 0.7),
-                                height: 1.8,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                            const SizedBox(height: 24),
-                            ElevatedButton.icon(
-                              onPressed: onDownloadCV ?? () {},
-                              icon: const Icon(Icons.download_rounded),
-                              label: const Text('Download Resume'),
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor:
-                                    Theme.of(context).colorScheme.primary,
-                                foregroundColor:
-                                    Theme.of(context).colorScheme.onPrimary,
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: isXS ? 16 : 20,
-                                  vertical: isXS ? 10 : 12,
-                                ),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: 40),
-
-                      // Stats
-                      Wrap(
-                        alignment: WrapAlignment.center,
-                        spacing: isXS ? 20 : 40,
-                        runSpacing: 20,
+                      // Mobile Bento Grid (Vertical Stack)
+                      Column(
                         children: [
-                          ImpactStat(
-                            icon: Icons.download_rounded,
-                            value: aboutData.downloadsCount,
-                            label: 'DOWNLOADS',
+                          // Identity Tile
+                          BentoTile(
+                            title: 'Identity',
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'CRAFTING DIGITAL\nEXPERIENCES',
+                                  textAlign: TextAlign.center,
+                                  style: GoogleFonts.orbitron(
+                                    fontSize: isXS ? 20 : 24,
+                                    fontWeight: FontWeight.w900,
+                                    color:
+                                        Theme.of(context).colorScheme.onSurface,
+                                    height: 1.2,
+                                    letterSpacing: 1,
+                                  ),
+                                ),
+                                const SizedBox(height: 16),
+                                Text(
+                                  aboutData.professionalSummary,
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 13,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onSurface
+                                        .withValues(alpha: 0.7),
+                                    height: 1.6,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ],
+                            ),
                           ),
-                          ImpactStat(
-                            icon: Icons.star_rounded,
-                            value: aboutData.ratings,
-                            label: 'RATINGS',
+
+                          // Impact Tile
+                          BentoTile(
+                            title: 'Impact',
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                ImpactStat(
+                                  icon: Icons.download_rounded,
+                                  value: aboutData.downloadsCount,
+                                  label: 'DOWNLOADS',
+                                ),
+                                ImpactStat(
+                                  icon: Icons.star_rounded,
+                                  value: aboutData.ratings,
+                                  label: 'RATINGS',
+                                ),
+                              ],
+                            ),
                           ),
-                          ImpactStat(
-                            icon: Icons.workspace_premium_rounded,
-                            value: aboutData.yearsExperience,
-                            label: 'YEARS EXP',
+
+                          // Ecosystem Tile (Branding)
+                          BentoTile(
+                            height: 350,
+                            title: 'Ecosystem',
+                            child: Center(
+                              child: Transform.scale(
+                                scale: 0.75,
+                                child: AboutVisualBranding(
+                                    scrollOffset: scrollOffset),
+                              ),
+                            ),
+                          ),
+
+                          // Proficiency Tile
+                          BentoTile(
+                            title: 'Proficiency',
+                            child: Column(
+                              children: aboutData.skills.take(3).map((skill) {
+                                return Padding(
+                                  padding: const EdgeInsets.only(bottom: 16),
+                                  child: SkillProgressBar(
+                                    skill: skill.name,
+                                    progress: skill.progress,
+                                    scrollOffset: scrollOffset,
+                                    sectionStartOffset:
+                                        sectionStartOffset + 200,
+                                    viewportHeight: viewportHeight,
+                                    color: skill.isPrimary
+                                        ? AppColors.primary
+                                        : AppColors.secondary,
+                                  ),
+                                );
+                              }).toList(),
+                            ),
+                          ),
+
+                          // Process Tile
+                          const BentoTile(
+                            title: 'Process',
+                            child: ProcessSection(),
                           ),
                         ],
-                      ),
-
-                      const SizedBox(height: 60),
-
-                      GSAPStaggerAnimation(
-                        groupId: 'about-cards-mobile',
-                        scrollOffset: scrollOffset,
-                        sectionStartOffset: sectionStartOffset + 200,
-                        viewportHeight: viewportHeight,
-                        staggerDelay: 0.15,
-                        children: aboutData.features.map((feature) {
-                          IconData icon;
-                          switch (feature.iconCode) {
-                            case 'code_rounded':
-                              icon = Icons.code_rounded;
-                              break;
-                            case 'rocket_launch_rounded':
-                              icon = Icons.rocket_launch_rounded;
-                              break;
-                            case 'architecture_rounded':
-                              icon = Icons.architecture_rounded;
-                              break;
-                            case 'devices_rounded':
-                              icon = Icons.devices_rounded;
-                              break;
-                            default:
-                              icon = Icons.code_rounded;
-                          }
-
-                          return AboutCard(
-                            icon: icon,
-                            title: feature.title,
-                            description: feature.description,
-                            delay: Duration.zero,
-                            isVisible: true,
-                          );
-                        }).toList(),
-                      ),
-
-                      const SizedBox(height: 80),
-
-                      // Skills Section
-                      GSAPEnhancedAnimation(
-                        elementId: 'about-skills',
-                        scrollOffset: scrollOffset,
-                        sectionStartOffset: sectionStartOffset + 400,
-                        viewportHeight: viewportHeight,
-                        animationConfig: const {
-                          'opacity': {'from': 0, 'to': 1},
-                          'y': {'from': 40, 'to': 0},
-                        },
-                        child: Container(
-                          padding: EdgeInsets.all(isMobile ? 24 : 40),
-                          decoration: BoxDecoration(
-                            color: Theme.of(context)
-                                .colorScheme
-                                .surface
-                                .withValues(alpha: isLowSpec ? 0.8 : 0.5),
-                            borderRadius: BorderRadius.circular(isXS ? 24 : 32),
-                            border: Border.all(
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .primary
-                                  .withValues(alpha: 0.1),
-                              width: 1,
-                            ),
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Technical Skills',
-                                style: GoogleFonts.poppins(
-                                  fontSize: isXS ? 24 : 28,
-                                  fontWeight: FontWeight.bold,
-                                  color:
-                                      Theme.of(context).colorScheme.onSurface,
-                                ),
-                              ),
-                              const SizedBox(height: 32),
-                              Column(
-                                children: aboutData.skills
-                                    .asMap()
-                                    .entries
-                                    .map((entry) {
-                                  final index = entry.key;
-                                  final skill = entry.value;
-                                  return Padding(
-                                    padding: const EdgeInsets.only(bottom: 24),
-                                    child: SkillProgressBar(
-                                      skill: skill.name,
-                                      progress: skill.progress,
-                                      color: skill.isPrimary
-                                          ? Theme.of(context)
-                                              .colorScheme
-                                              .primary
-                                          : Theme.of(context)
-                                              .colorScheme
-                                              .secondary,
-                                      scrollOffset: scrollOffset,
-                                      sectionStartOffset:
-                                          sectionStartOffset + 500,
-                                      viewportHeight: viewportHeight,
-                                      delay: (200 * (index + 1)).ms,
-                                    ),
-                                  );
-                                }).toList(),
-                              ),
-                            ],
-                          ),
-                        ),
                       ),
                     ],
                   ),
