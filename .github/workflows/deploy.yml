@@ -25,7 +25,7 @@ jobs:
         run: flutter pub get
 
       - name: Build Web 🏗️
-        run: flutter build web --release --base-href="/my-Portfolio/"
+        run: flutter build web --release --no-tree-shake-icons --base-href="/my-Portfolio/"
 
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4
