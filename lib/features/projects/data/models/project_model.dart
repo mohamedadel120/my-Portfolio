@@ -37,7 +37,7 @@ class ProjectModel extends Project {
       'title': title,
       'description': description,
       'tech': tech,
-      'color': color.toARGB32(),
+      'color': color.value,
       'downloads': downloads,
       'imageUrl': imageUrl,
       'logoUrl': logoUrl,

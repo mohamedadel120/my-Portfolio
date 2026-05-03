@@ -23,7 +23,7 @@ class WhyChooseMeReasonModel extends WhyChooseMeReason {
       'title': title,
       'description': description,
       'icon': icon.codePoint,
-      'color': color.toARGB32(),
+      'color': color.value,
     };
   }
 }
