@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
+import '../../../../../utils/device_utils.dart';
 import '../../../../../widgets/common/decryption_text.dart';
 import '../../../../../widgets/common/section_divider.dart';
 import '../../../../../widgets/common/tech_grid_background.dart';
@@ -45,9 +46,12 @@ class ProjectsDesktopView extends StatelessWidget {
             final isTablet = screenWidth <
                 1024; // Simple check, though this layout is for Desktop
 
+            final horizontalPadding = DeviceUtils.getHorizontalPadding(screenWidth);
+            final verticalPadding = DeviceUtils.getVerticalPadding(screenWidth);
+
             return Container(
-              padding: const EdgeInsets.symmetric(
-                  horizontal: 100, vertical: 100), // Desktop padding
+              padding: EdgeInsets.symmetric(
+                  horizontal: horizontalPadding, vertical: verticalPadding), // Responsive padding
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,

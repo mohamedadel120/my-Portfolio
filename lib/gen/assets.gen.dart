@@ -163,9 +163,9 @@ class $AssetsImagesAdruseGen {
   AssetGenImage get image5 =>
       const AssetGenImage('assets/images/adruse/image5.png');
 
-  /// File path: assets/images/adruse/logo.png
+  /// File path: assets/images/adruse/logo1.png
   AssetGenImage get logo =>
-      const AssetGenImage('assets/images/adruse/logo.png');
+      const AssetGenImage('assets/images/adruse/logo1.png');
 
   /// List of all assets
   List<AssetGenImage> get values => [

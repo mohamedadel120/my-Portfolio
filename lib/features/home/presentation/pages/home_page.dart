@@ -270,7 +270,7 @@ class _InteractiveNavBarState extends State<_InteractiveNavBar> {
                       ? null
                       : widget.onScrollToSection(widget.heroKey),
                   child: Image.asset(
-                    'assets/images/logo.png',
+                    'assets/images/logo1.png',
                     height: widget.isMobile ? 32 : 75,
                     fit: BoxFit.contain,
                   ),

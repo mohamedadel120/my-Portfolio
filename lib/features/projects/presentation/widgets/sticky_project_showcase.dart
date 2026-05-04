@@ -37,25 +37,28 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
   bool _isManuallyPaused = false;
   bool _hasCalculatedPosition = false;
 
+  double? _lastScreenWidth;
+  double? _lastScreenHeight;
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    // Only calculate position once to avoid multiple setState calls
-    if (!_hasCalculatedPosition) {
-      _hasCalculatedPosition = true;
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (mounted && _absoluteTop == null) {
-          final box = context.findRenderObject() as RenderBox?;
-          if (box != null && box.hasSize) {
-            final scrollValue = widget.scrollOffsetListenable.value;
-            final screenPos = box.localToGlobal(Offset.zero);
-            // Update without setState - the ValueListenableBuilder
-            // will rebuild on scroll anyway
-            _absoluteTop = screenPos.dy + scrollValue;
-          }
-        }
-      });
-    }
+    _scheduleMeasurePosition();
+  }
+
+  void _scheduleMeasurePosition() {
+    // Initial measure on mount
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      final box = context.findRenderObject() as RenderBox?;
+      if (box != null && box.hasSize) {
+        final scrollValue = widget.scrollOffsetListenable.value;
+        final screenPos = box.localToGlobal(Offset.zero);
+        setState(() {
+          _absoluteTop = screenPos.dy + scrollValue;
+        });
+      }
+    });
   }
 
   @override
@@ -100,17 +103,26 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
       return const SizedBox.shrink(); // Or generic empty state
     }
 
-    return ValueListenableBuilder<double>(
-      valueListenable: widget.scrollOffsetListenable,
-      builder: (context, scrollOffset, child) {
-        final viewportHeight = MediaQuery.of(context).size.height;
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final containerWidth = constraints.maxWidth;
 
-        // --- DETERMINISTIC STICKY LOGIC ---
-        final discoveredTop = _absoluteTop ?? 4000.0;
-        final double showcaseTopInViewport = discoveredTop - scrollOffset;
+        return ValueListenableBuilder<double>(
+          valueListenable: widget.scrollOffsetListenable,
+          builder: (context, scrollOffset, child) {
+            final viewportHeight = MediaQuery.of(context).size.height;
 
-        // 2. How much the user has scrolled INTO this specific showcase
-        final double relativeScroll = -showcaseTopInViewport;
+            // --- DETERMINISTIC STICKY LOGIC ---
+            // Continuously update absoluteTop without setState to avoid lag and layout shift bugs
+            final box = context.findRenderObject() as RenderBox?;
+            if (box != null && box.hasSize) {
+              _absoluteTop = box.localToGlobal(Offset.zero).dy + scrollOffset;
+            }
+            final discoveredTop = _absoluteTop ?? 4000.0;
+            final double showcaseTopInViewport = discoveredTop - scrollOffset;
+
+            // 2. How much the user has scrolled INTO this specific showcase
+            final double relativeScroll = -showcaseTopInViewport;
 
         int newProjectIndex = 0;
         double currentSum = 0;
@@ -186,16 +198,16 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
           phoneWidth = calcWidth > 280 ? 280 : calcWidth;
           phoneHeight = phoneWidth * phoneAspectRatio;
         } else if (isTablet) {
-          phoneWidth = 280.0;
+          phoneWidth = 260.0;
           phoneHeight = phoneWidth * phoneAspectRatio;
         } else {
-          phoneWidth = 340.0;
+          phoneWidth = 300.0;
           phoneHeight = phoneWidth * phoneAspectRatio;
         }
 
         // [FIX] Ensure aspect ratio is preserved if height is constrained
         final double maxMobilePhoneHeight =
-            isMobile ? viewportHeight * 0.55 : viewportHeight * 0.85;
+            isMobile ? viewportHeight * 0.55 : viewportHeight * 0.70;
 
         if (phoneHeight > maxMobilePhoneHeight) {
           // If height exceeds limit, cap height and reduce width to match ratio
@@ -205,7 +217,7 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
 
         final safePhoneHeight = phoneHeight;
 
-        final sideWidth = (screenWidth - phoneWidth) / 2;
+        final sideWidth = (containerWidth - phoneWidth) / 2;
 
         double targetCenter =
             isMobile ? 60 : (viewportHeight - safePhoneHeight) / 2;
@@ -253,21 +265,18 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
                             decoration: BoxDecoration(
                               gradient: isLowSpec
                                   ? null
-                                  : LinearGradient(
-                                      begin: Alignment.topLeft,
-                                      end: Alignment.bottomRight,
+                                  : RadialGradient(
+                                      center: Alignment.center,
+                                      radius: 0.8,
                                       colors: [
-                                        Theme.of(context)
-                                            .scaffoldBackgroundColor,
                                         Color.lerp(
-                                          Theme.of(
-                                            context,
-                                          ).scaffoldBackgroundColor,
-                                          widget.projects[_activeProjectIndex]
-                                              .color,
-                                          0.05,
+                                          Theme.of(context).scaffoldBackgroundColor,
+                                          widget.projects[_activeProjectIndex].color,
+                                          0.15,
                                         )!,
+                                        Theme.of(context).scaffoldBackgroundColor.withValues(alpha: 0.0),
                                       ],
+                                      stops: const [0.2, 1.0],
                                     ),
                               color: isLowSpec
                                   ? Theme.of(context).scaffoldBackgroundColor
@@ -284,7 +293,7 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
               // --- CENTER: Sticky Phone ---
               Positioned(
                 top: 0,
-                left: (screenWidth - phoneWidth) / 2,
+                left: (containerWidth - phoneWidth) / 2,
                 child: Transform.translate(
                   offset: Offset(0, clampedTop),
                   child: RepaintBoundary(
@@ -317,9 +326,9 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
                   top: 0,
                   left: 0,
                   width: sideWidth,
-                  height: 700,
+                  height: safePhoneHeight,
                   child: Transform.translate(
-                    offset: Offset(0, clampedTop + 150),
+                    offset: Offset(0, clampedTop),
                     child: RepaintBoundary(child: _buildLeftInfo(sideWidth)),
                   ),
                 ),
@@ -330,9 +339,9 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
                   top: 0,
                   right: 0,
                   width: sideWidth,
-                  height: 750,
+                  height: safePhoneHeight,
                   child: Transform.translate(
-                    offset: Offset(0, clampedTop + 200),
+                    offset: Offset(0, clampedTop),
                     child: RepaintBoundary(
                       child: _buildRightTech(sideWidth),
                     ),
@@ -342,6 +351,8 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
           ),
         );
       },
+    );
+    },
     );
   }
 
@@ -453,7 +464,7 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
   Widget _buildLeftInfo(double width) {
     final project = widget.projects[_activeProjectIndex];
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: width * 0.1),
+      padding: EdgeInsets.only(left: width * 0.05, right: width * 0.15 + 30),
       alignment: Alignment.centerLeft,
       child: AnimatedSwitcher(
         duration: const Duration(milliseconds: 400),
@@ -462,12 +473,16 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              project.title,
-              style: GoogleFonts.anton(
-                fontSize: 56,
-                color: Theme.of(context).colorScheme.onSurface,
-                height: 1.0,
+            FittedBox(
+              fit: BoxFit.scaleDown,
+              alignment: Alignment.centerLeft,
+              child: Text(
+                project.title,
+                style: GoogleFonts.anton(
+                  fontSize: width > 300 ? 56 : 36,
+                  color: Theme.of(context).colorScheme.onSurface,
+                  height: 1.0,
+                ),
               ),
             ).animate().fadeIn().slideX(begin: -0.2),
             const SizedBox(height: 24),
@@ -553,7 +568,7 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
     final currentTech = project.tech[currentIndex];
 
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: width * 0.15),
+      padding: EdgeInsets.only(left: width * 0.15 + 30, right: width * 0.05),
       alignment: Alignment.centerLeft,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
