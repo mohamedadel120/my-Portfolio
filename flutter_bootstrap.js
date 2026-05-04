@@ -10,7 +10,17 @@ _flutter.buildConfig = {"engineRevision":"cb4b5fff73850b2e42bd4de7cb9a4310a78ac4
 
 
 _flutter.loader.load({
-  serviceWorkerSettings: {
-    serviceWorkerVersion: "3319162589"
+  onEntrypointLoaded: async function(engineInitializer) {
+    const appRunner = await engineInitializer.initializeEngine();
+    
+    // Hide the loader container smoothly
+    const loader = document.querySelector('.loader-container');
+    if (loader) {
+      loader.style.transition = 'opacity 0.5s ease-out';
+      loader.style.opacity = '0';
+      setTimeout(() => loader.remove(), 500);
+    }
+    
+    await appRunner.runApp();
   }
 });
