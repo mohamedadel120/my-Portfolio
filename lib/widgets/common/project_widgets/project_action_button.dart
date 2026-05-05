@@ -77,7 +77,7 @@ class ProjectActionButton extends StatelessWidget {
                 children: [
                   Text(
                     'Discover',
-                    style: GoogleFonts.poppins(
+                    style: GoogleFonts.jetBrainsMono(
                       fontSize: isMobile ? 13 : 14,
                       color: Colors.white,
                       fontWeight: FontWeight.w600,

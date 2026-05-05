@@ -35,7 +35,7 @@ class ProjectInfo extends StatelessWidget {
             Expanded(
               child: Text(
                 project.title,
-                style: GoogleFonts.poppins(
+                style: GoogleFonts.jetBrainsMono(
                   fontSize: isMobile ? 18 : (isTablet ? 20 : 22),
                   fontWeight: FontWeight.bold,
                   color: AppColors.textPrimary,
@@ -50,7 +50,7 @@ class ProjectInfo extends StatelessWidget {
         SizedBox(height: isMobile ? 8 : (isTablet ? 10 : 12)),
         Text(
           project.description,
-          style: GoogleFonts.poppins(
+          style: GoogleFonts.jetBrainsMono(
             fontSize: isMobile ? 12 : (isTablet ? 13 : 14),
             color: AppColors.textSecondary.withValues(alpha: 0.9),
             height: isMobile ? 1.5 : 1.6,
@@ -104,7 +104,7 @@ class _TechTag extends StatelessWidget {
       ),
       child: Text(
         label,
-        style: GoogleFonts.poppins(
+        style: GoogleFonts.jetBrainsMono(
           fontSize: 10,
           color: color,
           fontWeight: FontWeight.w600,

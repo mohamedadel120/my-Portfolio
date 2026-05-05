@@ -100,7 +100,7 @@ class AboutMobileView extends StatelessWidget {
                                 Text(
                                   'CRAFTING DIGITAL\nEXPERIENCES',
                                   textAlign: TextAlign.center,
-                                  style: GoogleFonts.orbitron(
+                                  style: GoogleFonts.ibmPlexMono(
                                     fontSize: isXS ? 20 : 24,
                                     fontWeight: FontWeight.w900,
                                     color:
@@ -112,7 +112,7 @@ class AboutMobileView extends StatelessWidget {
                                 const SizedBox(height: 16),
                                 Text(
                                   aboutData.professionalSummary,
-                                  style: GoogleFonts.poppins(
+                                  style: GoogleFonts.jetBrainsMono(
                                     fontSize: 13,
                                     color: Theme.of(context)
                                         .colorScheme
@@ -163,7 +163,7 @@ class AboutMobileView extends StatelessWidget {
                           BentoTile(
                             title: 'Proficiency',
                             child: Column(
-                              children: aboutData.skills.take(3).map((skill) {
+                              children: aboutData.skills.map((skill) {
                                 return Padding(
                                   padding: const EdgeInsets.only(bottom: 16),
                                   child: SkillProgressBar(

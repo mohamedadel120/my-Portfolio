@@ -134,7 +134,7 @@ class ContactDesktopView extends StatelessWidget {
                           ),
                           child: Text(
                             contactData.subtitle,
-                            style: GoogleFonts.poppins(
+                            style: GoogleFonts.jetBrainsMono(
                               fontSize: isTablet ? 18 : 20,
                               color: Theme.of(context)
                                   .colorScheme
@@ -292,7 +292,7 @@ class ContactDesktopView extends StatelessWidget {
                                         ),
                                         child: Text(
                                           'Connect With Me',
-                                          style: GoogleFonts.poppins(
+                                          style: GoogleFonts.jetBrainsMono(
                                             fontSize: 18,
                                             fontWeight: FontWeight.bold,
                                             color: Theme.of(context)
@@ -396,7 +396,7 @@ class ContactDesktopView extends StatelessWidget {
                           ),
                           child: Text(
                             '© 2024 ${contactData.title.contains('Touch') ? 'Mohamed Adel' : ''} - Flutter Developer Portfolio. Built with ❤️ using Flutter',
-                            style: GoogleFonts.poppins(
+                            style: GoogleFonts.jetBrainsMono(
                               fontSize: 14,
                               color: Theme.of(context)
                                   .colorScheme

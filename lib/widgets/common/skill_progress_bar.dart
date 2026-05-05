@@ -97,7 +97,7 @@ class _SkillProgressBarState extends State<SkillProgressBar>
                 Flexible(
                   child: Text(
                     widget.skill.toUpperCase(),
-                    style: GoogleFonts.orbitron(
+                    style: GoogleFonts.ibmPlexMono(
                       fontSize: isMobile ? 12 : 14,
                       fontWeight: FontWeight.bold,
                       color: AppColors.textPrimary,
@@ -105,15 +105,6 @@ class _SkillProgressBarState extends State<SkillProgressBar>
                     ),
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1,
-                  ),
-                ),
-                const SizedBox(width: 8),
-                Text(
-                  '$percentage%',
-                  style: GoogleFonts.spaceMono(
-                    fontSize: isMobile ? 12 : 13,
-                    color: widget.color,
-                    fontWeight: FontWeight.bold,
                   ),
                 ),
               ],

@@ -58,7 +58,7 @@ class _TypingTextState extends State<TypingText> {
         textAlign: widget.textAlign,
         style:
             widget.style ??
-            GoogleFonts.poppins(
+            GoogleFonts.jetBrainsMono(
               fontSize: 24,
               color: AppColors.primary,
               fontWeight: FontWeight.w300,

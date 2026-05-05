@@ -116,7 +116,7 @@ class _ContactInfoItemState extends State<ContactInfoItem> {
                   children: [
                     Text(
                       widget.label,
-                      style: GoogleFonts.poppins(
+                      style: GoogleFonts.jetBrainsMono(
                         fontSize: 14,
                         color: AppColors.textTertiary,
                         fontWeight: FontWeight.w500,
@@ -125,7 +125,7 @@ class _ContactInfoItemState extends State<ContactInfoItem> {
                     const SizedBox(height: 4),
                     Text(
                       widget.value,
-                      style: GoogleFonts.poppins(
+                      style: GoogleFonts.jetBrainsMono(
                         fontSize: 16,
                         color: AppColors.textPrimary,
                         fontWeight: FontWeight.w600,

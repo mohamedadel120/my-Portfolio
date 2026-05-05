@@ -18,7 +18,7 @@ class NavButton extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         child: Text(
           label,
-          style: GoogleFonts.poppins(
+          style: GoogleFonts.jetBrainsMono(
             color: Colors.white70,
             fontSize: 16,
             fontWeight: FontWeight.w500,

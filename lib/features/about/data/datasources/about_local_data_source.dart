@@ -40,7 +40,7 @@ class AboutLocalDataSourceImpl implements AboutLocalDataSource {
           iconCode: 'devices_rounded',
         ),
       ],
-      skills: [
+      skills: const [
         TechnicalSkill(
           name: 'Flutter & Dart',
           progress: 0.95,
@@ -54,6 +54,46 @@ class AboutLocalDataSourceImpl implements AboutLocalDataSource {
         TechnicalSkill(
           name: 'Firebase & REST APIs',
           progress: 0.88,
+          isPrimary: false,
+        ),
+        TechnicalSkill(
+          name: 'UI/UX Animations',
+          progress: 0.85,
+          isPrimary: false,
+        ),
+        TechnicalSkill(
+          name: 'CI/CD & DevOps',
+          progress: 0.80,
+          isPrimary: false,
+        ),
+        TechnicalSkill(
+          name: 'State Management (Bloc, Cubit)',
+          progress: 0.92,
+          isPrimary: true,
+        ),
+        TechnicalSkill(
+          name: 'Supabase',
+          progress: 0.85,
+          isPrimary: false,
+        ),
+        TechnicalSkill(
+          name: 'Responsive UI Design',
+          progress: 0.90,
+          isPrimary: true,
+        ),
+        TechnicalSkill(
+          name: 'UI/UX Animations',
+          progress: 0.85,
+          isPrimary: false,
+        ),
+        TechnicalSkill(
+          name: 'CI/CD & DevOps',
+          progress: 0.80,
+          isPrimary: false,
+        ),
+        TechnicalSkill(
+          name: 'API Integration (GraphQL)',
+          progress: 0.82,
           isPrimary: false,
         ),
       ],

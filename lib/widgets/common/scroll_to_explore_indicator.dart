@@ -42,7 +42,7 @@ class ScrollToExploreIndicator extends StatelessWidget {
           children: [
             Text(
               'Scroll to explore',
-              style: GoogleFonts.poppins(
+              style: GoogleFonts.jetBrainsMono(
                 fontSize: isMobile ? 12 : 14,
                 color: AppColors.textSecondary,
                 fontWeight: FontWeight.w500,

@@ -90,10 +90,10 @@ class _AboutVisualBrandingState extends State<AboutVisualBranding>
                 ],
               ),
               child: Center(
-                child: Icon(
-                  Icons.developer_mode_rounded,
-                  size: isMobile ? 60 : 100,
-                  color: AppColors.primary,
+                child: Image.asset(
+                  'assets/images/logo1.png',
+                  width: isMobile ? 60 : 150,
+                  height: isMobile ? 60 : 150,
                 ),
               ),
             ),

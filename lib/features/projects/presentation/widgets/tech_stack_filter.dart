@@ -35,7 +35,7 @@ class TechStackFilter extends StatelessWidget {
             const SizedBox(width: 8),
             Text(
               'Filter by Tech Stack',
-              style: GoogleFonts.poppins(
+              style: GoogleFonts.jetBrainsMono(
                 fontSize: isMobile ? 16 : (isTablet ? 18 : 20),
                 fontWeight: FontWeight.w600,
                 color: Theme.of(context).colorScheme.onSurface,
@@ -55,7 +55,7 @@ class TechStackFilter extends StatelessWidget {
                 ),
                 label: Text(
                   'Clear',
-                  style: GoogleFonts.poppins(
+                  style: GoogleFonts.jetBrainsMono(
                     fontSize: isMobile ? 12 : 14,
                     color: Theme.of(
                       context,
@@ -183,7 +183,7 @@ class _FilterChipState extends State<_FilterChip> {
               if (widget.isSelected) const SizedBox(width: 6),
               Text(
                 widget.label,
-                style: GoogleFonts.poppins(
+                style: GoogleFonts.jetBrainsMono(
                   fontSize: widget.isMobile ? 12 : 14,
                   fontWeight:
                       widget.isSelected ? FontWeight.w600 : FontWeight.w500,

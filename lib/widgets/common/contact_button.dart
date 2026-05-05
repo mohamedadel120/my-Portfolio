@@ -83,7 +83,7 @@ class _ContactButtonState extends State<ContactButton> {
               const SizedBox(width: 12),
               AnimatedDefaultTextStyle(
                 duration: const Duration(milliseconds: 200),
-                style: GoogleFonts.poppins(
+                style: GoogleFonts.jetBrainsMono(
                   fontSize: _isHovered ? 19 : 18,
                   fontWeight: FontWeight.bold,
                   color: widget.color,

@@ -278,7 +278,7 @@ class _WhyChooseMeCardState extends State<_WhyChooseMeCard> {
             // Title
             Text(
               widget.reason.title,
-              style: GoogleFonts.poppins(
+              style: GoogleFonts.jetBrainsMono(
                 fontSize: isXS
                     ? 16
                     : (widget.isMobile ? 18 : (widget.isTablet ? 20 : 22)),
@@ -291,7 +291,7 @@ class _WhyChooseMeCardState extends State<_WhyChooseMeCard> {
             // Description
             Text(
               widget.reason.description,
-              style: GoogleFonts.poppins(
+              style: GoogleFonts.jetBrainsMono(
                 fontSize: isXS
                     ? 12
                     : (widget.isMobile ? 13 : (widget.isTablet ? 14 : 15)),

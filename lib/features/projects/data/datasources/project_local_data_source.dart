@@ -48,7 +48,7 @@ class ProjectLocalDataSourceImpl implements ProjectLocalDataSource {
       tech: const [
         'Flutter',
         'Firebase',
-        'Riverpod',
+        'Bloc',
         'Clean Architecture',
         'Payment Gateway',
       ],

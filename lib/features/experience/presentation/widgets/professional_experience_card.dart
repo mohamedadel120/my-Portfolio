@@ -237,7 +237,7 @@ class _ProfessionalExperienceCardState
                     // Company name
                     Text(
                       widget.experience.company,
-                      style: GoogleFonts.poppins(
+                      style: GoogleFonts.jetBrainsMono(
                         fontSize: isXS
                             ? 18
                             : (widget.isMobile
@@ -252,7 +252,7 @@ class _ProfessionalExperienceCardState
                     // Role
                     Text(
                       widget.experience.role,
-                      style: GoogleFonts.poppins(
+                      style: GoogleFonts.jetBrainsMono(
                         fontSize: isXS
                             ? 14
                             : (widget.isMobile
@@ -293,7 +293,7 @@ class _ProfessionalExperienceCardState
                 ),
                 child: Text(
                   widget.experience.period,
-                  style: GoogleFonts.poppins(
+                  style: GoogleFonts.jetBrainsMono(
                     fontSize: isXS ? 10 : (widget.isMobile ? 11 : 13),
                     color: Theme.of(context).colorScheme.secondary,
                     fontWeight: FontWeight.w600,
@@ -342,7 +342,7 @@ class _ProfessionalExperienceCardState
                   Expanded(
                     child: Text(
                       achievement,
-                      style: GoogleFonts.poppins(
+                      style: GoogleFonts.jetBrainsMono(
                         fontSize: isXS ? 13 : (widget.isMobile ? 14 : 16),
                         color: Theme.of(
                           context,

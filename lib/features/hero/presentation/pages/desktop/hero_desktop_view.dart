@@ -160,7 +160,7 @@ class _HeroDesktopViewState extends State<HeroDesktopView> {
                               child: Text(
                                 heroData
                                     .subtitle, // "Specializing in high-performance..."
-                                style: GoogleFonts.poppins(
+                                style: GoogleFonts.jetBrainsMono(
                                   fontSize: 18,
                                   color: Colors.white70,
                                   height: 1.6,
@@ -240,7 +240,8 @@ class _HeroDesktopViewState extends State<HeroDesktopView> {
     );
   }
 
-  List<TextSpan> _buildTitleSpans(String text, BuildContext context, double fontSize) {
+  List<TextSpan> _buildTitleSpans(
+      String text, BuildContext context, double fontSize) {
     // We want to style "DEVELOPER" specifically as requested.
     final parts = text.split('DEVELOPER');
     final List<TextSpan> spans = [];

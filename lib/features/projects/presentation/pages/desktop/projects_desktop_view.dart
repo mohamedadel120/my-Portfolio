@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
 import '../../../../../utils/device_utils.dart';
-import '../../../../../widgets/common/decryption_text.dart';
+import '../../../../../widgets/common/section_title.dart';
 import '../../../../../widgets/common/section_divider.dart';
 import '../../../../../widgets/common/tech_grid_background.dart';
 import '../../../../../widgets/common/floating_code_shapes.dart';
@@ -125,15 +125,9 @@ class ProjectsDesktopView extends StatelessWidget {
                           'y': {'from': -30, 'to': 0},
                           'scale': {'from': 0.9, 'to': 1.0},
                         },
-                        child: DecryptionText(
-                          text: 'MY PROJECTS',
-                          startAnimating: true,
-                          style: TextStyle(
-                            fontSize: 48,
-                            fontWeight: FontWeight.bold,
-                            color: Theme.of(context).colorScheme.primary,
-                            letterSpacing: 2.0,
-                          ),
+                        child: const SectionTitle(
+                          title: 'My Projects',
+                          isVisible: true,
                         ),
                       ),
                       const SizedBox(height: 32),
@@ -214,7 +208,7 @@ class ProjectsDesktopView extends StatelessWidget {
                             children: [
                               Text(
                                 'The journey starts with a closer look.',
-                                style: GoogleFonts.poppins(
+                                style: GoogleFonts.jetBrainsMono(
                                   fontSize: 28,
                                   color:
                                       Theme.of(context).colorScheme.onSurface,
@@ -241,7 +235,7 @@ class ProjectsDesktopView extends StatelessWidget {
                               const SizedBox(height: 20),
                               Text(
                                 'Discover a better way to build, where development feels effortless, apps perform seamlessly, and users come alive in smooth experiences. With clean architecture, powerful state management, and intuitive design, your project is unforgettable.',
-                                style: GoogleFonts.poppins(
+                                style: GoogleFonts.jetBrainsMono(
                                   fontSize: 17,
                                   color: Theme.of(context)
                                       .colorScheme

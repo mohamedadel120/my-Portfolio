@@ -65,7 +65,7 @@ class _ContactFormState extends State<ContactForm> {
             ),
             child: Text(
               message,
-              style: GoogleFonts.poppins(color: Colors.white),
+              style: GoogleFonts.jetBrainsMono(color: Colors.white),
               softWrap: true,
             ),
           ),
@@ -216,7 +216,7 @@ class _ContactFormState extends State<ContactForm> {
               children: [
                 Text(
                       'Send Me a Message',
-                      style: GoogleFonts.poppins(
+                      style: GoogleFonts.jetBrainsMono(
                         fontSize: isMobile ? 24 : (isTablet ? 28 : 32),
                         fontWeight: FontWeight.bold,
                         color: AppColors.textPrimary,
@@ -233,7 +233,7 @@ class _ContactFormState extends State<ContactForm> {
                 const SizedBox(height: 8),
                 Text(
                       'I\'d love to hear from you. Send me a message and I\'ll respond as soon as possible.',
-                      style: GoogleFonts.poppins(
+                      style: GoogleFonts.jetBrainsMono(
                         fontSize: isMobile ? 14 : 16,
                         color: AppColors.textSecondary,
                       ),
@@ -291,7 +291,7 @@ class _ContactFormState extends State<ContactForm> {
                               )
                             : Text(
                                 'Send Message',
-                                style: GoogleFonts.poppins(
+                                style: GoogleFonts.jetBrainsMono(
                                   fontSize: isMobile ? 16 : 18,
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -326,10 +326,10 @@ class _ContactFormState extends State<ContactForm> {
           controller: controller,
           keyboardType: keyboardType,
           maxLines: maxLines,
-          style: GoogleFonts.poppins(color: AppColors.textPrimary),
+          style: GoogleFonts.jetBrainsMono(color: AppColors.textPrimary),
             decoration: InputDecoration(
             labelText: label,
-            labelStyle: GoogleFonts.poppins(color: AppColors.textSecondary),
+            labelStyle: GoogleFonts.jetBrainsMono(color: AppColors.textSecondary),
             prefixIcon: Container(
               margin: const EdgeInsets.all(8),
               padding: const EdgeInsets.all(8),

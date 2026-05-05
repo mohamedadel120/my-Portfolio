@@ -173,7 +173,7 @@ class _ExpertiseCardState extends State<ExpertiseCard> {
                                         children: [
                                           Text(
                                             widget.expertise.title,
-                                            style: GoogleFonts.orbitron(
+                                            style: GoogleFonts.ibmPlexMono(
                                               fontSize: 32,
                                               fontWeight: FontWeight.bold,
                                               color: Colors.white,
@@ -204,7 +204,7 @@ class _ExpertiseCardState extends State<ExpertiseCard> {
                                 const SizedBox(height: 32),
                                 Text(
                                   widget.expertise.description,
-                                  style: GoogleFonts.poppins(
+                                  style: GoogleFonts.jetBrainsMono(
                                     fontSize: 18,
                                     height: 1.6,
                                     color: Colors.white.withValues(alpha: 0.8),
@@ -272,7 +272,7 @@ class _ExpertiseCardState extends State<ExpertiseCard> {
           flex: 3,
           child: Text(
             widget.expertise.title,
-            style: GoogleFonts.poppins(
+            style: GoogleFonts.jetBrainsMono(
               fontSize: 32,
               fontWeight: FontWeight.w600,
               color: Theme.of(context).colorScheme.onSurface,
@@ -288,7 +288,7 @@ class _ExpertiseCardState extends State<ExpertiseCard> {
             padding: const EdgeInsets.symmetric(horizontal: 24),
             child: Text(
               widget.expertise.description,
-              style: GoogleFonts.poppins(
+              style: GoogleFonts.jetBrainsMono(
                 fontSize: 16,
                 color: Colors.white70,
                 height: 1.6,
@@ -331,7 +331,7 @@ class _ExpertiseCardState extends State<ExpertiseCard> {
         const SizedBox(height: 16),
         Text(
           widget.expertise.title,
-          style: GoogleFonts.poppins(
+          style: GoogleFonts.jetBrainsMono(
             fontSize: 24,
             fontWeight: FontWeight.w600,
             color: Theme.of(context).colorScheme.onSurface,
@@ -341,7 +341,7 @@ class _ExpertiseCardState extends State<ExpertiseCard> {
         const SizedBox(height: 16),
         Text(
           widget.expertise.description,
-          style: GoogleFonts.poppins(
+          style: GoogleFonts.jetBrainsMono(
             fontSize: 15,
             color: Colors.white70,
             height: 1.6,

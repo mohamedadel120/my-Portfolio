@@ -27,7 +27,7 @@ class TechChip extends StatelessWidget {
       ),
       child: Text(
         tech,
-        style: GoogleFonts.poppins(
+        style: GoogleFonts.jetBrainsMono(
           color: AppColors.primary,
           fontSize: 14,
           fontWeight: FontWeight.w500,

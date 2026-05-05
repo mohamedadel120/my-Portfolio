@@ -151,7 +151,7 @@ class ProjectsMobileView extends StatelessWidget {
                             children: [
                               Text(
                                 'The journey starts with a closer look.',
-                                style: GoogleFonts.poppins(
+                                style: GoogleFonts.jetBrainsMono(
                                   fontSize: 20,
                                   color:
                                       Theme.of(context).colorScheme.onSurface,
@@ -178,7 +178,7 @@ class ProjectsMobileView extends StatelessWidget {
                               const SizedBox(height: 16),
                               Text(
                                 'Discover a better way to build, where development feels effortless, apps perform seamlessly, and users come alive in smooth experiences.',
-                                style: GoogleFonts.poppins(
+                                style: GoogleFonts.jetBrainsMono(
                                   fontSize: 14,
                                   color: Theme.of(context)
                                       .colorScheme

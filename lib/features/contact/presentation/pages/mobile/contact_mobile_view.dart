@@ -144,7 +144,7 @@ class ContactMobileView extends StatelessWidget {
                           ),
                           child: Text(
                             contactData.subtitle,
-                            style: GoogleFonts.poppins(
+                            style: GoogleFonts.jetBrainsMono(
                               fontSize: isXS ? 14 : 16,
                               color: Theme.of(context)
                                   .colorScheme
@@ -291,7 +291,7 @@ class ContactMobileView extends StatelessWidget {
                                       ),
                                       child: Text(
                                         'Connect With Me',
-                                        style: GoogleFonts.poppins(
+                                        style: GoogleFonts.jetBrainsMono(
                                           fontSize: isXS ? 16 : 18,
                                           fontWeight: FontWeight.bold,
                                           color: Theme.of(context)
@@ -394,7 +394,7 @@ class ContactMobileView extends StatelessWidget {
                           child: Text(
                             '© 2024 ${contactData.title.contains('Touch') ? 'Mohamed Adel' : ''} - Flutter Developer Portfolio. Built with ❤️ using Flutter',
                             // Using hardcoded name or data name. Original has AppData.
-                            style: GoogleFonts.poppins(
+                            style: GoogleFonts.jetBrainsMono(
                               fontSize: isXS ? 10 : 12,
                               color: Theme.of(context)
                                   .colorScheme

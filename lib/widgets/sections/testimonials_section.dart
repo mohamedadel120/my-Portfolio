@@ -292,7 +292,7 @@ class _TestimonialCardState extends State<_TestimonialCard> {
             // Opinion text
             Text(
               widget.testimonial.opinion,
-              style: GoogleFonts.poppins(
+              style: GoogleFonts.jetBrainsMono(
                 fontSize: isXS
                     ? 13
                     : (widget.isMobile ? 14 : (widget.isTablet ? 15 : 16)),
@@ -333,7 +333,7 @@ class _TestimonialCardState extends State<_TestimonialCard> {
                       const SizedBox(height: 4),
                       Text(
                         '${widget.testimonial.role} • ${widget.testimonial.company}',
-                        style: GoogleFonts.poppins(
+                        style: GoogleFonts.jetBrainsMono(
                           fontSize: isXS
                               ? 11
                               : (widget.isMobile

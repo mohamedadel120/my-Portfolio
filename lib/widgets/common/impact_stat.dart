@@ -57,7 +57,7 @@ class ImpactStat extends StatelessWidget {
           const SizedBox(height: 16),
           Text(
             value,
-            style: GoogleFonts.orbitron(
+            style: GoogleFonts.ibmPlexMono(
               fontSize: 32,
               fontWeight: FontWeight.bold,
               color: AppColors.textPrimary,

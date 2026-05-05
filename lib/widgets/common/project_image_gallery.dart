@@ -83,7 +83,7 @@ class _ProjectImageGalleryState extends State<ProjectImageGallery> {
                       children: [
                         Text(
                           widget.projectTitle,
-                          style: GoogleFonts.poppins(
+                          style: GoogleFonts.jetBrainsMono(
                             fontSize: isMobile ? 18 : 20,
                             fontWeight: FontWeight.bold,
                             color: AppColors.textPrimary,
@@ -92,7 +92,7 @@ class _ProjectImageGalleryState extends State<ProjectImageGallery> {
                         const SizedBox(height: 4),
                         Text(
                           '${_currentIndex + 1} / ${widget.images.length}',
-                          style: GoogleFonts.poppins(
+                          style: GoogleFonts.jetBrainsMono(
                             fontSize: isMobile ? 12 : 14,
                             color: widget.projectColor,
                             fontWeight: FontWeight.w600,
@@ -174,7 +174,7 @@ class _ProjectImageGalleryState extends State<ProjectImageGallery> {
                                         const SizedBox(height: 16),
                                         Text(
                                           'Image not found',
-                                          style: GoogleFonts.poppins(
+                                          style: GoogleFonts.jetBrainsMono(
                                             color: widget.projectColor,
                                             fontSize: 16,
                                             fontWeight: FontWeight.w600,
@@ -183,7 +183,7 @@ class _ProjectImageGalleryState extends State<ProjectImageGallery> {
                                         const SizedBox(height: 8),
                                         Text(
                                           widget.images[index],
-                                          style: GoogleFonts.poppins(
+                                          style: GoogleFonts.jetBrainsMono(
                                             color: AppColors.textSecondary,
                                             fontSize: 12,
                                           ),

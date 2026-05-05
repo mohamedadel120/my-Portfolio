@@ -76,7 +76,7 @@ class ScrollIndicator extends StatelessWidget {
             quarterTurns: 1,
             child: Text(
               'SCROLL',
-              style: GoogleFonts.spaceMono(
+              style: GoogleFonts.jetBrainsMono(
                 fontSize: 14,
                 fontWeight: FontWeight.bold,
                 color: Theme.of(context)

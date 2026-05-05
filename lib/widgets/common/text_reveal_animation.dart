@@ -22,7 +22,7 @@ class TextRevealAnimation extends StatelessWidget {
     return Text(
       text,
       style: style ??
-          GoogleFonts.poppins(
+          GoogleFonts.jetBrainsMono(
             fontSize: 24,
             color: AppColors.textPrimary,
           ),

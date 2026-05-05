@@ -139,7 +139,7 @@ class _AdaptiveCursorState extends State<AdaptiveCursor> {
               type: MaterialType.transparency,
               child: Text(
                 "CLICK",
-                style: GoogleFonts.orbitron(
+                style: GoogleFonts.ibmPlexMono(
                   fontSize: 12,
                   fontWeight: FontWeight.bold,
                   color: primary,

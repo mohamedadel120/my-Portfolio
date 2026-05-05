@@ -146,7 +146,7 @@ class AboutDesktopView extends StatelessWidget {
                                       children: [
                                         Text(
                                           'Crafting Exceptional\nDigital Experiences',
-                                          style: GoogleFonts.orbitron(
+                                          style: GoogleFonts.ibmPlexMono(
                                             fontSize: 54,
                                             fontWeight: FontWeight.w900,
                                             color: Theme.of(context)
@@ -159,7 +159,7 @@ class AboutDesktopView extends StatelessWidget {
                                         const SizedBox(height: 24),
                                         Text(
                                           aboutData.professionalSummary,
-                                          style: GoogleFonts.poppins(
+                                          style: GoogleFonts.jetBrainsMono(
                                             fontSize: 16,
                                             color: Theme.of(context)
                                                 .colorScheme
@@ -197,7 +197,7 @@ class AboutDesktopView extends StatelessWidget {
                                   flex: 1,
                                   child: BentoTile(
                                     title: 'Impact',
-                                    child: Column(
+                                    child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceEvenly,
                                       children: [
@@ -246,7 +246,8 @@ class AboutDesktopView extends StatelessWidget {
                                                 const SizedBox(height: 12),
                                                 Text(
                                                   feature.title,
-                                                  style: GoogleFonts.orbitron(
+                                                  style:
+                                                      GoogleFonts.ibmPlexMono(
                                                     fontSize: 14,
                                                     fontWeight: FontWeight.bold,
                                                     color: Colors.white,
@@ -255,7 +256,7 @@ class AboutDesktopView extends StatelessWidget {
                                                 const SizedBox(height: 8),
                                                 Text(
                                                   feature.description,
-                                                  style: GoogleFonts.poppins(
+                                                  style: GoogleFonts.jetBrainsMono(
                                                     fontSize: 12,
                                                     color: Colors.white
                                                         .withValues(alpha: 0.5),
@@ -289,9 +290,7 @@ class AboutDesktopView extends StatelessWidget {
                                       child: ListView(
                                         physics:
                                             const NeverScrollableScrollPhysics(),
-                                        children: aboutData.skills
-                                            .take(4)
-                                            .map((skill) {
+                                        children: aboutData.skills.map((skill) {
                                           return Padding(
                                             padding: const EdgeInsets.only(
                                                 bottom: 20),

@@ -162,7 +162,7 @@ class _CharacterWidgetState extends State<_CharacterWidget>
                       children: [
                         Text(
                           widget.message,
-                          style: GoogleFonts.poppins(
+                          style: GoogleFonts.jetBrainsMono(
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
                             color: AppColors.textPrimary,

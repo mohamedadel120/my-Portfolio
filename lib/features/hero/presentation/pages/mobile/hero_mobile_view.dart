@@ -177,7 +177,7 @@ class _HeroMobileViewState extends State<HeroMobileView>
                                 // Short Bio
                                 Text(
                                   heroData.subtitle,
-                                  style: GoogleFonts.poppins(
+                                  style: GoogleFonts.jetBrainsMono(
                                     fontSize: 14,
                                     color: Colors.white70,
                                     height: 1.6,
@@ -292,7 +292,8 @@ class _HeroMobileViewState extends State<HeroMobileView>
     );
   }
 
-  List<TextSpan> _buildTitleSpans(String text, BuildContext context, double fontSize) {
+  List<TextSpan> _buildTitleSpans(
+      String text, BuildContext context, double fontSize) {
     // We want to style "DEVELOPER" specifically as requested.
     final parts = text.split('DEVELOPER');
     final List<TextSpan> spans = [];

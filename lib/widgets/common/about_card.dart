@@ -105,7 +105,7 @@ class _AboutCardState extends State<AboutCard> {
                             const SizedBox(height: 20),
                             Text(
                               widget.title,
-                              style: GoogleFonts.poppins(
+                              style: GoogleFonts.jetBrainsMono(
                                 fontSize: isMobile ? 18 : (isTablet ? 20 : 22),
                                 fontWeight: FontWeight.bold,
                                 color: AppColors.textPrimary,
@@ -114,7 +114,7 @@ class _AboutCardState extends State<AboutCard> {
                             const SizedBox(height: 12),
                             Text(
                               widget.description,
-                              style: GoogleFonts.poppins(
+                              style: GoogleFonts.jetBrainsMono(
                                 fontSize: isMobile ? 13 : 14,
                                 color: AppColors.textSecondary,
                                 height: 1.6,

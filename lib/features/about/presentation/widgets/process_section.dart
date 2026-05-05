@@ -62,7 +62,7 @@ class ProcessSection extends StatelessWidget {
           const SizedBox(height: 16),
           Text(
             'How I bring ideas to life.',
-            style: GoogleFonts.poppins(
+            style: GoogleFonts.jetBrainsMono(
               fontSize: isMobile ? 32 : 48,
               fontWeight: FontWeight.bold,
               color: AppColors.textPrimary,
@@ -110,7 +110,7 @@ class ProcessSection extends StatelessWidget {
             left: -10,
             child: Text(
               step['number']!,
-              style: GoogleFonts.orbitron(
+              style: GoogleFonts.ibmPlexMono(
                 fontSize: 80,
                 fontWeight: FontWeight.w900,
                 color: AppColors.textPrimary.withValues(alpha: 0.03),
@@ -131,7 +131,7 @@ class ProcessSection extends StatelessWidget {
               const SizedBox(height: 16),
               Text(
                 step['title']!,
-                style: GoogleFonts.orbitron(
+                style: GoogleFonts.ibmPlexMono(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                   color: AppColors.textPrimary,
@@ -141,7 +141,7 @@ class ProcessSection extends StatelessWidget {
               const SizedBox(height: 12),
               Text(
                 step['desc']!,
-                style: GoogleFonts.poppins(
+                style: GoogleFonts.jetBrainsMono(
                   fontSize: 14,
                   color: AppColors.textSecondary.withValues(alpha: 0.8),
                   height: 1.6,

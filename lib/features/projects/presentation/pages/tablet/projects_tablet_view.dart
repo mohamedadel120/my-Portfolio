@@ -186,7 +186,7 @@ class ProjectsTabletView extends StatelessWidget {
                             children: [
                               Text(
                                 'The journey starts with a closer look.',
-                                style: GoogleFonts.poppins(
+                                style: GoogleFonts.jetBrainsMono(
                                   fontSize: 24,
                                   color:
                                       Theme.of(context).colorScheme.onSurface,
@@ -213,7 +213,7 @@ class ProjectsTabletView extends StatelessWidget {
                               const SizedBox(height: 20),
                               Text(
                                 'Discover a better way to build, where development feels effortless, apps perform seamlessly, and users come alive in smooth experiences. With clean architecture, powerful state management, and intuitive design, your project is unforgettable.',
-                                style: GoogleFonts.poppins(
+                                style: GoogleFonts.jetBrainsMono(
                                   fontSize: 15,
                                   color: Theme.of(context)
                                       .colorScheme

@@ -21,14 +21,22 @@ class AboutRemoteDataSourceImpl implements AboutRemoteDataSource {
       }
       final data = doc.data()!;
       debugPrint('Fetched About Data from FIREBASE successfully!');
-      
+      final remoteFeatures = data['features'] as List<dynamic>?;
+      final remoteSkills = data['skills'] as List<dynamic>?;
+
       return AboutData(
-        title: 'About Me',
+        title: data['title'] ?? 'About Me',
         professionalSummary: data['professionalSummary'] ?? '',
-        downloadsCount: '10k+',
-        ratings: '4.8',
-        yearsExperience: '3+',
-        features: const [
+        downloadsCount: data['downloadsCount'] ?? '10k+',
+        ratings: data['ratings'] ?? '4.8',
+        yearsExperience: data['yearsExperience'] ?? '3+',
+        features: remoteFeatures != null 
+          ? remoteFeatures.map((e) => AboutFeature(
+              title: e['title'] ?? '',
+              description: e['description'] ?? '',
+              iconCode: e['iconCode'] ?? '',
+            )).toList()
+          : const [
           AboutFeature(
             title: 'Clean Code',
             description:
@@ -54,7 +62,13 @@ class AboutRemoteDataSourceImpl implements AboutRemoteDataSource {
             iconCode: 'devices_rounded',
           ),
         ],
-        skills: const [
+        skills: remoteSkills != null
+          ? remoteSkills.map((e) => TechnicalSkill(
+              name: e['name'] ?? '',
+              progress: (e['progress'] ?? 0.0).toDouble(),
+              isPrimary: e['isPrimary'] ?? false,
+            )).toList()
+          : const [
           TechnicalSkill(
             name: 'Flutter & Dart',
             progress: 0.95,
@@ -68,6 +82,46 @@ class AboutRemoteDataSourceImpl implements AboutRemoteDataSource {
           TechnicalSkill(
             name: 'Firebase & REST APIs',
             progress: 0.88,
+            isPrimary: false,
+          ),
+          TechnicalSkill(
+            name: 'UI/UX Animations',
+            progress: 0.85,
+            isPrimary: false,
+          ),
+          TechnicalSkill(
+            name: 'CI/CD & DevOps',
+            progress: 0.80,
+            isPrimary: false,
+          ),
+          TechnicalSkill(
+            name: 'State Management (Bloc, Cubit)',
+            progress: 0.92,
+            isPrimary: true,
+          ),
+          TechnicalSkill(
+            name: 'Supabase',
+            progress: 0.85,
+            isPrimary: false,
+          ),
+          TechnicalSkill(
+            name: 'Responsive UI Design',
+            progress: 0.90,
+            isPrimary: true,
+          ),
+          TechnicalSkill(
+            name: 'UI/UX Animations',
+            progress: 0.85,
+            isPrimary: false,
+          ),
+          TechnicalSkill(
+            name: 'CI/CD & DevOps',
+            progress: 0.80,
+            isPrimary: false,
+          ),
+          TechnicalSkill(
+            name: 'API Integration (GraphQL)',
+            progress: 0.82,
             isPrimary: false,
           ),
         ],

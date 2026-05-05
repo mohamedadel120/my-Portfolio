@@ -54,7 +54,7 @@ class _AnimatedCounterState extends State<AnimatedCounter>
         return Text(
           '${_animation.value}${widget.suffix}',
           style: widget.style ??
-              GoogleFonts.poppins(
+              GoogleFonts.jetBrainsMono(
                 fontSize: 48,
                 fontWeight: FontWeight.bold,
                 color: AppColors.primary,

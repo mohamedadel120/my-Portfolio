@@ -122,7 +122,7 @@ class ProjectHeader extends StatelessWidget {
                   const SizedBox(width: 4),
                   Text(
                     project.downloads,
-                    style: GoogleFonts.poppins(
+                    style: GoogleFonts.jetBrainsMono(
                       fontSize: 11,
                       color: project.color,
                       fontWeight: FontWeight.w700,
@@ -179,7 +179,7 @@ class _StoreLink extends StatelessWidget {
                     const SizedBox(width: 4),
                     Text(
                       label,
-                      style: GoogleFonts.poppins(
+                      style: GoogleFonts.jetBrainsMono(
                         fontSize: 10,
                         color: color,
                         fontWeight: FontWeight.w600,

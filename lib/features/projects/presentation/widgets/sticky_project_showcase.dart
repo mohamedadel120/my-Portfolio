@@ -478,8 +478,9 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
               alignment: Alignment.centerLeft,
               child: Text(
                 project.title,
-                style: GoogleFonts.anton(
+                style: GoogleFonts.ibmPlexMono(
                   fontSize: width > 300 ? 56 : 36,
+                  fontWeight: FontWeight.bold,
                   color: Theme.of(context).colorScheme.onSurface,
                   height: 1.0,
                 ),
@@ -488,7 +489,7 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
             const SizedBox(height: 24),
             Text(
               project.description,
-              style: GoogleFonts.poppins(
+              style: GoogleFonts.jetBrainsMono(
                 fontSize: 16,
                 color: Theme.of(
                   context,
@@ -537,7 +538,7 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
                         children: [
                           Text(
                             "Coming Soon",
-                            style: GoogleFonts.poppins(
+                            style: GoogleFonts.jetBrainsMono(
                               color: Theme.of(context).colorScheme.onSurface,
                             ),
                           ),
@@ -576,7 +577,7 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
         children: [
           Text(
             "Technologies",
-            style: GoogleFonts.spaceMono(
+            style: GoogleFonts.jetBrainsMono(
               fontSize: 14,
               color: Theme.of(
                 context,
@@ -663,7 +664,7 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
             }
             return Text(
               char,
-              style: GoogleFonts.outfit(
+              style: GoogleFonts.jetBrainsMono(
                 fontSize: fontSize,
                 fontWeight: FontWeight.bold,
                 color: Theme.of(context).colorScheme.onSurface,
@@ -754,10 +755,11 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
                       Text(
                         project.title.toUpperCase(),
                         key: ValueKey('title-${project.title}'),
-                        style: GoogleFonts.anton(
+                        style: GoogleFonts.ibmPlexMono(
                           fontSize: isXS
                               ? 28
                               : 38, // Further reduced for better balance
+                          fontWeight: FontWeight.bold,
                           color: Colors.white,
                           height: 1.0,
                           letterSpacing: 1.2,
@@ -782,7 +784,7 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
                         key: ValueKey('desc-${project.title}'),
                         maxLines: 6, // Allow even more lines
                         overflow: TextOverflow.ellipsis,
-                        style: GoogleFonts.outfit(
+                        style: GoogleFonts.jetBrainsMono(
                           fontSize: isXS
                               ? 13
                               : 15, // Slightly smaller for premium feel
@@ -823,7 +825,7 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
                               ),
                               child: Text(
                                 "Coming Soon",
-                                style: GoogleFonts.poppins(
+                                style: GoogleFonts.jetBrainsMono(
                                     color: Colors.white70, fontSize: 12),
                               ),
                             ),

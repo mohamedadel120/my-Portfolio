@@ -139,7 +139,7 @@ class _StatItem extends StatelessWidget {
         SizedBox(height: isMobile ? 8 : 12),
         Text(
           value,
-          style: GoogleFonts.poppins(
+          style: GoogleFonts.jetBrainsMono(
             fontSize: isMobile ? 20 : (isTablet ? 24 : 28),
             fontWeight: FontWeight.bold,
             color: Theme.of(context).colorScheme.onSurface,
@@ -149,7 +149,7 @@ class _StatItem extends StatelessWidget {
         const SizedBox(height: 4),
         Text(
           label,
-          style: GoogleFonts.poppins(
+          style: GoogleFonts.jetBrainsMono(
             fontSize: isMobile ? 11 : (isTablet ? 12 : 13),
             color: Theme.of(
               context,
