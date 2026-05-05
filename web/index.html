@@ -104,8 +104,11 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     
+    <!-- Preload Splash Logo for faster perceived performance -->
+    <link rel="preload" href="splash_logo.png" as="image">
+    
     <!-- Link all Google Fonts used in the application -->
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;700&family=JetBrains+Mono:wght@400;700&family=Orbitron:wght@400;700;900&family=Poppins:wght@400;500;700&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;700&family=JetBrains+Mono:wght@400;700&family=Orbitron:wght@400;700;900&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
 
     <style>
       body {
@@ -116,7 +119,7 @@
         align-items: center;
         height: 100vh;
         overflow: hidden;
-        font-family: "Poppins", sans-serif;
+        font-family: "JetBrains Mono", monospace;
       }
 
       .loader-container {
@@ -127,8 +130,8 @@
       }
 
       .logo-image {
-        width: 600px; /* Increased size based on user request */
-        max-width: 90vw;
+        width: 250px; /* Optimized size for splash screen */
+        max-width: 60vw;
         height: auto;
         animation: pulseLogo 3s infinite ease-in-out;
       }
