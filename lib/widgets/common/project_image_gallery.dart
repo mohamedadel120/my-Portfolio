@@ -130,6 +130,44 @@ class _ProjectImageGalleryState extends State<ProjectImageGallery> {
                       });
                     },
                     itemBuilder: (context, index) {
+                      Widget errorBuilderWidget(BuildContext context, Object error, StackTrace? stackTrace) {
+                        debugPrint('❌ Gallery image error: $error');
+                        debugPrint('❌ Gallery image path: ${widget.images[index]}');
+                        return Container(
+                          color: AppColors.background,
+                          child: Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.image_not_supported_rounded,
+                                  size: 80,
+                                  color: widget.projectColor,
+                                ),
+                                const SizedBox(height: 16),
+                                Text(
+                                  'Image not found',
+                                  style: GoogleFonts.jetBrainsMono(
+                                    color: widget.projectColor,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                                const SizedBox(height: 8),
+                                Text(
+                                  widget.images[index],
+                                  style: GoogleFonts.jetBrainsMono(
+                                    color: AppColors.textSecondary,
+                                    fontSize: 12,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      }
+
                       return Container(
                         margin: EdgeInsets.all(isMobile ? 10 : 20),
                         decoration: BoxDecoration(
@@ -149,52 +187,18 @@ class _ProjectImageGalleryState extends State<ProjectImageGallery> {
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(15),
                           child: Hero(
-                            tag:
-                                'project_gallery_image_${widget.projectTitle}_$index',
-                            child: Image.asset(
-                              widget.images[index],
-                              fit: BoxFit.contain,
-                              errorBuilder: (context, error, stackTrace) {
-                                debugPrint('❌ Gallery image error: $error');
-                                debugPrint(
-                                  '❌ Gallery image path: ${widget.images[index]}',
-                                );
-                                return Container(
-                                  color: AppColors.background,
-                                  child: Center(
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Icon(
-                                          Icons.image_not_supported_rounded,
-                                          size: 80,
-                                          color: widget.projectColor,
-                                        ),
-                                        const SizedBox(height: 16),
-                                        Text(
-                                          'Image not found',
-                                          style: GoogleFonts.jetBrainsMono(
-                                            color: widget.projectColor,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        ),
-                                        const SizedBox(height: 8),
-                                        Text(
-                                          widget.images[index],
-                                          style: GoogleFonts.jetBrainsMono(
-                                            color: AppColors.textSecondary,
-                                            fontSize: 12,
-                                          ),
-                                          textAlign: TextAlign.center,
-                                        ),
-                                      ],
-                                    ),
+                            tag: 'project_gallery_image_${widget.projectTitle}_$index',
+                            child: widget.images[index].startsWith('http')
+                                ? Image.network(
+                                    widget.images[index],
+                                    fit: BoxFit.contain,
+                                    errorBuilder: errorBuilderWidget,
+                                  )
+                                : Image.asset(
+                                    widget.images[index],
+                                    fit: BoxFit.contain,
+                                    errorBuilder: errorBuilderWidget,
                                   ),
-                                );
-                              },
-                            ),
                           ),
                         ),
                       );

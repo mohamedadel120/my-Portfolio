@@ -124,235 +124,257 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
             // 2. How much the user has scrolled INTO this specific showcase
             final double relativeScroll = -showcaseTopInViewport;
 
-        int newProjectIndex = 0;
-        double currentSum = 0;
-        double offsetWithinProject = 0;
+            int newProjectIndex = 0;
+            double currentSum = 0;
+            double offsetWithinProject = 0;
 
-        for (int i = 0; i < widget.projects.length; i++) {
-          final double h = _getProjectHeight(i);
-          if (relativeScroll < (currentSum + h)) {
-            newProjectIndex = i;
-            offsetWithinProject = relativeScroll - currentSum;
-            break;
-          }
-          currentSum += h;
-          if (i == widget.projects.length - 1) {
-            newProjectIndex = i;
-            offsetWithinProject = h;
-          }
-        }
+            for (int i = 0; i < widget.projects.length; i++) {
+              final double h = _getProjectHeight(i);
+              if (relativeScroll < (currentSum + h)) {
+                newProjectIndex = i;
+                offsetWithinProject = relativeScroll - currentSum;
+                break;
+              }
+              currentSum += h;
+              if (i == widget.projects.length - 1) {
+                newProjectIndex = i;
+                offsetWithinProject = h;
+              }
+            }
 
-        // Logic: Calculate State
-        final project = widget.projects[newProjectIndex];
-        final int imageCount = project.galleryImages?.length ?? 0;
+            // Logic: Calculate State
+            final project = widget.projects[newProjectIndex];
+            final int imageCount = project.galleryImages?.length ?? 0;
 
-        // Image Index
-        int newImageIndex = 0;
-        if (imageCount > 0) {
-          if (offsetWithinProject > (_introHeight / 2)) {
-            final double imageScroll = offsetWithinProject - (_introHeight / 2);
-            final double totalImageScroll = imageCount * _scrollPerImage;
-            final double progress = (imageScroll / totalImageScroll).clamp(
-              0.0,
-              1.0,
-            );
-            newImageIndex = (progress * imageCount).floor().clamp(
-                  0,
-                  imageCount - 1,
+            // Image Index
+            int newImageIndex = 0;
+            if (imageCount > 0) {
+              if (offsetWithinProject > (_introHeight / 2)) {
+                final double imageScroll =
+                    offsetWithinProject - (_introHeight / 2);
+                final double totalImageScroll = imageCount * _scrollPerImage;
+                final double progress = (imageScroll / totalImageScroll).clamp(
+                  0.0,
+                  1.0,
                 );
-          }
-        }
+                newImageIndex = (progress * imageCount).floor().clamp(
+                      0,
+                      imageCount - 1,
+                    );
+              }
+            }
 
-        // Tech Stack Progress
-        final double projectProgress =
-            (offsetWithinProject / _getProjectHeight(newProjectIndex))
-                .clamp(0.0, 1.0);
-        final int techCount = project.tech.length;
-        final int newTechLimit = (projectProgress * techCount).ceil().clamp(
-              1,
-              techCount,
+            // Tech Stack Progress
+            final double projectProgress =
+                (offsetWithinProject / _getProjectHeight(newProjectIndex))
+                    .clamp(0.0, 1.0);
+            final int techCount = project.tech.length;
+            final int newTechLimit = (projectProgress * techCount).ceil().clamp(
+                  1,
+                  techCount,
+                );
+
+            // Update state directly without triggering a rebuild via setState
+            // ValueListenableBuilder already rebuilds when scrollOffset changes
+            // This avoids the layout-during-layout issue
+            if (newProjectIndex != _activeProjectIndex) {
+              _isManuallyPaused = false;
+            }
+            _activeProjectIndex = newProjectIndex;
+            _activeImageIndex = newImageIndex;
+            _activeTechLimit = newTechLimit;
+
+            // 3. Layout Constants - Responsive Sizing
+            const double phoneAspectRatio = 19.5 / 9;
+
+            double phoneWidth;
+            double phoneHeight;
+
+            if (isXS) {
+              final calcWidth = screenWidth * 0.7;
+              phoneWidth = calcWidth > 240 ? 240 : calcWidth;
+              phoneHeight = phoneWidth * phoneAspectRatio;
+            } else if (isMobile) {
+              final calcWidth = screenWidth * 0.65;
+              phoneWidth = calcWidth > 280 ? 280 : calcWidth;
+              phoneHeight = phoneWidth * phoneAspectRatio;
+            } else if (isTablet) {
+              phoneWidth = 260.0;
+              phoneHeight = phoneWidth * phoneAspectRatio;
+            } else {
+              phoneWidth = 300.0;
+              phoneHeight = phoneWidth * phoneAspectRatio;
+            }
+
+            // [FIX] Ensure aspect ratio is preserved if height is constrained
+            final double maxMobilePhoneHeight =
+                isMobile ? viewportHeight * 0.55 : viewportHeight * 0.70;
+
+            if (phoneHeight > maxMobilePhoneHeight) {
+              // If height exceeds limit, cap height and reduce width to match ratio
+              phoneHeight = maxMobilePhoneHeight;
+              phoneWidth = phoneHeight / phoneAspectRatio;
+            }
+
+            final safePhoneHeight = phoneHeight;
+
+            final sideWidth = (containerWidth - phoneWidth) / 2;
+
+            double targetCenter =
+                isMobile ? 60 : (viewportHeight - safePhoneHeight) / 2;
+            if (targetCenter < 20) targetCenter = 20;
+
+            final double calculatedTop = targetCenter - showcaseTopInViewport;
+
+            final double topBound = 0.0;
+            final double bottomBound = _totalHeight - safePhoneHeight;
+            final double clampedTop = calculatedTop.clamp(
+              topBound,
+              bottomBound,
             );
 
-        // Update state directly without triggering a rebuild via setState
-        // ValueListenableBuilder already rebuilds when scrollOffset changes
-        // This avoids the layout-during-layout issue
-        if (newProjectIndex != _activeProjectIndex) {
-          _isManuallyPaused = false;
-        }
-        _activeProjectIndex = newProjectIndex;
-        _activeImageIndex = newImageIndex;
-        _activeTechLimit = newTechLimit;
+            final phoneTopY = showcaseTopInViewport + clampedTop;
+            final phoneBottomY = phoneTopY + phoneHeight;
+            final bool isPhoneInView =
+                phoneTopY < viewportHeight && phoneBottomY > 0;
+            final bool shouldPlayVideo = isPhoneInView && !_isManuallyPaused;
 
-        // 3. Layout Constants - Responsive Sizing
-        const double phoneAspectRatio = 19.5 / 9;
+            final double bgClampedTop = (-showcaseTopInViewport).clamp(
+              0.0,
+              _totalHeight - viewportHeight,
+            );
 
-        double phoneWidth;
-        double phoneHeight;
-
-        if (isXS) {
-          final calcWidth = screenWidth * 0.7;
-          phoneWidth = calcWidth > 240 ? 240 : calcWidth;
-          phoneHeight = phoneWidth * phoneAspectRatio;
-        } else if (isMobile) {
-          final calcWidth = screenWidth * 0.65;
-          phoneWidth = calcWidth > 280 ? 280 : calcWidth;
-          phoneHeight = phoneWidth * phoneAspectRatio;
-        } else if (isTablet) {
-          phoneWidth = 260.0;
-          phoneHeight = phoneWidth * phoneAspectRatio;
-        } else {
-          phoneWidth = 300.0;
-          phoneHeight = phoneWidth * phoneAspectRatio;
-        }
-
-        // [FIX] Ensure aspect ratio is preserved if height is constrained
-        final double maxMobilePhoneHeight =
-            isMobile ? viewportHeight * 0.55 : viewportHeight * 0.70;
-
-        if (phoneHeight > maxMobilePhoneHeight) {
-          // If height exceeds limit, cap height and reduce width to match ratio
-          phoneHeight = maxMobilePhoneHeight;
-          phoneWidth = phoneHeight / phoneAspectRatio;
-        }
-
-        final safePhoneHeight = phoneHeight;
-
-        final sideWidth = (containerWidth - phoneWidth) / 2;
-
-        double targetCenter =
-            isMobile ? 60 : (viewportHeight - safePhoneHeight) / 2;
-        if (targetCenter < 20) targetCenter = 20;
-
-        final double calculatedTop = targetCenter - showcaseTopInViewport;
-
-        final double topBound = 0.0;
-        final double bottomBound = _totalHeight - safePhoneHeight;
-        final double clampedTop = calculatedTop.clamp(
-          topBound,
-          bottomBound,
-        );
-
-        final phoneTopY = showcaseTopInViewport + clampedTop;
-        final phoneBottomY = phoneTopY + phoneHeight;
-        final bool isPhoneInView =
-            phoneTopY < viewportHeight && phoneBottomY > 0;
-        final bool shouldPlayVideo = isPhoneInView && !_isManuallyPaused;
-
-        final double bgClampedTop = (-showcaseTopInViewport).clamp(
-          0.0,
-          _totalHeight - viewportHeight,
-        );
-
-        return SizedBox(
-          height: _totalHeight,
-          child: Stack(
-            children: [
-              // --- STICKY BACKGROUND ---
-              Positioned(
-                top: 0,
-                left: 0,
-                right: 0,
-                height: viewportHeight,
-                child: Transform.translate(
-                  offset: Offset(0, bgClampedTop),
-                  child: RepaintBoundary(
-                    child: Container(
-                      color: Theme.of(context).scaffoldBackgroundColor,
-                      child: Stack(
-                        children: [
-                          AnimatedContainer(
-                            duration: const Duration(milliseconds: 1000),
-                            decoration: BoxDecoration(
-                              gradient: isLowSpec
-                                  ? null
-                                  : RadialGradient(
-                                      center: Alignment.center,
-                                      radius: 0.8,
-                                      colors: [
-                                        Color.lerp(
-                                          Theme.of(context).scaffoldBackgroundColor,
-                                          widget.projects[_activeProjectIndex].color,
-                                          0.15,
-                                        )!,
-                                        Theme.of(context).scaffoldBackgroundColor.withValues(alpha: 0.0),
-                                      ],
-                                      stops: const [0.2, 1.0],
-                                    ),
-                              color: isLowSpec
-                                  ? Theme.of(context).scaffoldBackgroundColor
-                                  : null,
-                            ),
+            return SizedBox(
+              height: _totalHeight,
+              child: Stack(
+                children: [
+                  // --- STICKY BACKGROUND ---
+                  Positioned(
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    height: viewportHeight,
+                    child: Transform.translate(
+                      offset: Offset(0, bgClampedTop),
+                      child: RepaintBoundary(
+                        child: Container(
+                          color: Theme.of(context).scaffoldBackgroundColor,
+                          child: Stack(
+                            children: [
+                              AnimatedContainer(
+                                duration: const Duration(milliseconds: 1000),
+                                decoration: BoxDecoration(
+                                  gradient: isLowSpec
+                                      ? null
+                                      : RadialGradient(
+                                          center: Alignment.center,
+                                          radius: 0.8,
+                                          colors: [
+                                            Color.lerp(
+                                              Theme.of(context)
+                                                  .scaffoldBackgroundColor,
+                                              widget
+                                                  .projects[_activeProjectIndex]
+                                                  .color,
+                                              0.15,
+                                            )!,
+                                            Theme.of(context)
+                                                .scaffoldBackgroundColor
+                                                .withValues(alpha: 0.0),
+                                          ],
+                                          stops: const [0.2, 1.0],
+                                        ),
+                                  color: isLowSpec
+                                      ? Theme.of(context)
+                                          .scaffoldBackgroundColor
+                                      : null,
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
+                        ),
                       ),
                     ),
                   ),
-                ),
+
+                  // --- CENTER: Sticky Phone ---
+                  Positioned(
+                    top: 0,
+                    left: (containerWidth - phoneWidth) / 2,
+                    child: Transform.translate(
+                      offset: Offset(0, clampedTop),
+                      child: RepaintBoundary(
+                        child: _buildStickyPhone(
+                          phoneWidth,
+                          safePhoneHeight,
+                          shouldPlayVideo,
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  // --- INFO: Left (Desktop) or Bottom Overlay (Mobile) ---
+                  if (isMobile)
+                    Positioned(
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      height: viewportHeight,
+                      child: Transform.translate(
+                        offset: Offset(0, bgClampedTop),
+                        child: Align(
+                          alignment: Alignment.bottomCenter,
+                          child: _buildMobileInfoOverlay(),
+                        ),
+                      ),
+                    )
+                  else
+                    Positioned(
+                      top: 0,
+                      left: 0,
+                      width: sideWidth,
+                      height: safePhoneHeight,
+                      child: Transform.translate(
+                        offset: Offset(0, clampedTop),
+                        child:
+                            RepaintBoundary(child: _buildLeftInfo(sideWidth)),
+                      ),
+                    ),
+
+                  // --- RIGHT: Tech Stack (Hidden on Mobile) ---
+                  if (!isMobile)
+                    Positioned(
+                      top: 0,
+                      right: 0,
+                      width: sideWidth,
+                      height: safePhoneHeight,
+                      child: Transform.translate(
+                        offset: Offset(0, clampedTop),
+                        child: RepaintBoundary(
+                          child: _buildRightTech(sideWidth),
+                        ),
+                      ),
+                    ),
+
+                  // --- RIGHT SIDE NAV (Dashes) ---
+                  Positioned(
+                    top: 0,
+                    right: isMobile ? 16 : 100, // Closer to edge on mobile
+                    height: viewportHeight,
+                    child: Transform.translate(
+                      offset: Offset(0, bgClampedTop),
+                      child: Align(
+                        alignment: Alignment.centerRight,
+                        child: _buildProjectNavDots(isMobile),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-
-              // --- CENTER: Sticky Phone ---
-              Positioned(
-                top: 0,
-                left: (containerWidth - phoneWidth) / 2,
-                child: Transform.translate(
-                  offset: Offset(0, clampedTop),
-                  child: RepaintBoundary(
-                    child: _buildStickyPhone(
-                      phoneWidth,
-                      safePhoneHeight,
-                      shouldPlayVideo,
-                    ),
-                  ),
-                ),
-              ),
-
-              // --- INFO: Left (Desktop) or Bottom Overlay (Mobile) ---
-              if (isMobile)
-                Positioned(
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  height: viewportHeight,
-                  child: Transform.translate(
-                    offset: Offset(0, bgClampedTop),
-                    child: Align(
-                      alignment: Alignment.bottomCenter,
-                      child: _buildMobileInfoOverlay(),
-                    ),
-                  ),
-                )
-              else
-                Positioned(
-                  top: 0,
-                  left: 0,
-                  width: sideWidth,
-                  height: safePhoneHeight,
-                  child: Transform.translate(
-                    offset: Offset(0, clampedTop),
-                    child: RepaintBoundary(child: _buildLeftInfo(sideWidth)),
-                  ),
-                ),
-
-              // --- RIGHT: Tech Stack (Hidden on Mobile) ---
-              if (!isMobile)
-                Positioned(
-                  top: 0,
-                  right: 0,
-                  width: sideWidth,
-                  height: safePhoneHeight,
-                  child: Transform.translate(
-                    offset: Offset(0, clampedTop),
-                    child: RepaintBoundary(
-                      child: _buildRightTech(sideWidth),
-                    ),
-                  ),
-                ),
-            ],
-          ),
+            );
+          },
         );
       },
-    );
-    },
     );
   }
 
@@ -442,7 +464,9 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
     return Stack(
       fit: StackFit.expand,
       children: [
-        Image.asset(imagePath, fit: BoxFit.cover),
+        imagePath.startsWith('http')
+            ? Image.network(imagePath, fit: BoxFit.cover)
+            : Image.asset(imagePath, fit: BoxFit.cover),
         Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
@@ -844,6 +868,109 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
       ),
     );
   }
+
+  // --- UI COMPONENTS: Project Nav Dots ---
+  Widget _buildProjectNavDots(bool isMobile) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: List.generate(widget.projects.length, (index) {
+        final isActive = index == _activeProjectIndex;
+        final project = widget.projects[index];
+        return MouseRegion(
+          cursor: SystemMouseCursors.click,
+          child: GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: () {
+              if (_absoluteTop != null) {
+                double targetOffset = _absoluteTop!;
+                for (int i = 0; i < index; i++) {
+                  targetOffset += _getProjectHeight(i);
+                }
+
+                final scrollController =
+                    PrimaryScrollController.maybeOf(context);
+                if (scrollController != null && scrollController.hasClients) {
+                  scrollController.animateTo(
+                    targetOffset + 10, // add a small buffer
+                    duration: const Duration(milliseconds: 800),
+                    curve: Curves.easeInOutCubic,
+                  );
+                }
+              }
+            },
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeOutCubic,
+              margin: EdgeInsets.symmetric(vertical: isMobile ? 0 : 8), // Remove vertical margin to use padding instead for bigger touch target
+              padding: EdgeInsets.only(
+                right: isMobile ? 12 : 12, // Keep some padding on the right for edge buffer
+                left: isMobile ? 32 : 0,   // Big invisible padding on the left for easy tapping!
+                top: isMobile ? 12 : 0,    // Vertical tap target
+                bottom: isMobile ? 12 : 0,
+              ),
+              decoration: BoxDecoration(
+                border: isMobile
+                    ? null
+                    : Border(
+                        right: BorderSide(
+                          color: isActive
+                              ? Theme.of(context).colorScheme.primary
+                              : Colors.transparent,
+                          width: 2,
+                        ),
+                      ),
+              ),
+              child: isMobile
+                  ? AnimatedContainer(
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.easeOutCubic,
+                      width: isActive ? 6 : 4,
+                      height: isActive ? 24 : 12,
+                      decoration: BoxDecoration(
+                        color: isActive
+                            ? Theme.of(context).colorScheme.primary
+                            : Theme.of(context)
+                                .colorScheme
+                                .onSurface
+                                .withValues(alpha: 0.3),
+                        borderRadius: BorderRadius.circular(4),
+                        boxShadow: isActive
+                            ? [
+                                BoxShadow(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .primary
+                                      .withValues(alpha: 0.4),
+                                  blurRadius: 8,
+                                  spreadRadius: 1,
+                                )
+                              ]
+                            : null,
+                      ),
+                    )
+                  : AnimatedDefaultTextStyle(
+                      duration: const Duration(milliseconds: 300),
+                      style: GoogleFonts.spaceMono(
+                        fontSize: 11,
+                        fontWeight:
+                            isActive ? FontWeight.bold : FontWeight.w400,
+                        letterSpacing: 1.2,
+                        color: isActive
+                            ? Theme.of(context).colorScheme.primary
+                            : Theme.of(context)
+                                .colorScheme
+                                .onSurface
+                                .withValues(alpha: 0.4),
+                      ),
+                      child: Text(project.title.toUpperCase()),
+                    ),
+            ),
+          ),
+        );
+      }),
+    );
+  }
 }
 
 class _GlassIconButton extends StatefulWidget {
@@ -910,7 +1037,9 @@ class _StoreIconButtonState extends State<_StoreIconButton> {
         duration: const Duration(milliseconds: 200),
         curve: Curves.easeOut,
         padding: const EdgeInsets.all(12),
-        transform: Matrix4.identity()..multiply(Matrix4.diagonal3Values(_isHovered ? 1.1 : 1.0, _isHovered ? 1.1 : 1.0, 1.0)),
+        transform: Matrix4.identity()
+          ..multiply(Matrix4.diagonal3Values(
+              _isHovered ? 1.1 : 1.0, _isHovered ? 1.1 : 1.0, 1.0)),
         decoration: BoxDecoration(
           color: _isHovered
               ? Theme.of(context).colorScheme.onSurface

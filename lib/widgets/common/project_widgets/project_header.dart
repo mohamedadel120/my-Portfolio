@@ -77,17 +77,29 @@ class ProjectHeader extends StatelessWidget {
               child: project.logoUrl != null
                   ? Hero(
                       tag: 'project_logo_${project.title}',
-                      child: Image.asset(
-                        project.logoUrl!,
-                        width: logoSize,
-                        height: logoSize,
-                        fit: BoxFit.contain,
-                        errorBuilder: (context, error, stackTrace) =>
-                            _DefaultLogoIcon(
-                              color: project.color,
-                              size: fontSize,
+                      child: project.logoUrl!.startsWith('http')
+                          ? Image.network(
+                              project.logoUrl!,
+                              width: logoSize,
+                              height: logoSize,
+                              fit: BoxFit.contain,
+                              errorBuilder: (context, error, stackTrace) =>
+                                  _DefaultLogoIcon(
+                                color: project.color,
+                                size: fontSize,
+                              ),
+                            )
+                          : Image.asset(
+                              project.logoUrl!,
+                              width: logoSize,
+                              height: logoSize,
+                              fit: BoxFit.contain,
+                              errorBuilder: (context, error, stackTrace) =>
+                                  _DefaultLogoIcon(
+                                color: project.color,
+                                size: fontSize,
+                              ),
                             ),
-                      ),
                     )
                   : Hero(
                       tag: 'project_logo_text_${project.title}',

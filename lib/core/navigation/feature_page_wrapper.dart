@@ -75,10 +75,13 @@ class _FeaturePageWrapperState extends State<FeaturePageWrapper> {
       ),
       body: Stack(
         children: [
-          SingleChildScrollView(
+          PrimaryScrollController(
             controller: _controller,
-            physics: const ClampingScrollPhysics(),
-            child: widget.builder(context, _scrollNotifier),
+            child: SingleChildScrollView(
+              controller: _controller,
+              physics: const ClampingScrollPhysics(),
+              child: widget.builder(context, _scrollNotifier),
+            ),
           ),
 
           // Scroll Indicator (aligned to the right)

@@ -86,9 +86,11 @@ class _HomePageState extends State<HomePage> {
                   onContactMe: () => Navigator.pushNamed(context, '/contact'),
                   onDownloadCV: _onDownloadCV,
                 )
-              : SingleChildScrollView(
+              : PrimaryScrollController(
                   controller: _scrollController,
-                  child: Column(
+                  child: SingleChildScrollView(
+                    controller: _scrollController,
+                    child: Column(
                     children: [
                       KeyedSubtree(
                         key: _heroKey,
@@ -132,6 +134,7 @@ class _HomePageState extends State<HomePage> {
                     ],
                   ),
                 ),
+              ),
 
           // Floating Top Navigation Bar
           Positioned(

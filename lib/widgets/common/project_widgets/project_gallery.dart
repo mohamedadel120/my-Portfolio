@@ -252,24 +252,35 @@ class _ProjectGalleryState extends State<ProjectGallery>
                               child: Hero(
                                 tag:
                                     'project_gallery_image_${widget.project.title}_$index',
-                                child: Image.asset(
-                                  widget.project.galleryImages![index],
-                                  fit: BoxFit.cover,
-                                  errorBuilder: (
-                                    context,
-                                    error,
-                                    stackTrace,
-                                  ) =>
-                                      Container(
-                                    color: AppColors.background,
-                                    child: Icon(
-                                      Icons.broken_image_rounded,
-                                      size: 30,
-                                      color: widget.project.color
-                                          .withValues(alpha: 0.5),
-                                    ),
-                                  ),
-                                ),
+                                child: widget.project.galleryImages![index].startsWith('http')
+                                    ? Image.network(
+                                        widget.project.galleryImages![index],
+                                        fit: BoxFit.cover,
+                                        errorBuilder: (context, error, stackTrace) =>
+                                            Container(
+                                          color: AppColors.background,
+                                          child: Icon(
+                                            Icons.broken_image_rounded,
+                                            size: 30,
+                                            color: widget.project.color
+                                                .withValues(alpha: 0.5),
+                                          ),
+                                        ),
+                                      )
+                                    : Image.asset(
+                                        widget.project.galleryImages![index],
+                                        fit: BoxFit.cover,
+                                        errorBuilder: (context, error, stackTrace) =>
+                                            Container(
+                                          color: AppColors.background,
+                                          child: Icon(
+                                            Icons.broken_image_rounded,
+                                            size: 30,
+                                            color: widget.project.color
+                                                .withValues(alpha: 0.5),
+                                          ),
+                                        ),
+                                      ),
                               ),
                             ),
                           );
@@ -334,14 +345,23 @@ class _ProjectGalleryState extends State<ProjectGallery>
                   ),
                 ),
                 child: Center(
-                  child: Image.asset(
-                    widget.project.logoUrl!,
-                    fit: BoxFit.contain,
-                    width: double.infinity,
-                    height: double.infinity,
-                    errorBuilder: (context, error, stackTrace) =>
-                        _ErrorPlaceholder(color: widget.project.color),
-                  ),
+                  child: widget.project.logoUrl!.startsWith('http')
+                      ? Image.network(
+                          widget.project.logoUrl!,
+                          fit: BoxFit.contain,
+                          width: double.infinity,
+                          height: double.infinity,
+                          errorBuilder: (context, error, stackTrace) =>
+                              _ErrorPlaceholder(color: widget.project.color),
+                        )
+                      : Image.asset(
+                          widget.project.logoUrl!,
+                          fit: BoxFit.contain,
+                          width: double.infinity,
+                          height: double.infinity,
+                          errorBuilder: (context, error, stackTrace) =>
+                              _ErrorPlaceholder(color: widget.project.color),
+                        ),
                 ),
               )
             else if (widget.project.imageUrl != null)
