@@ -12,6 +12,8 @@ import '../../../../widgets/common/magnetic_button.dart';
 import '../../../../widgets/common/phone_frame.dart';
 import '../../domain/entities/project_entity.dart';
 import '../../../../widgets/common/project_video_player.dart';
+import '../../../../injection_container.dart' as di;
+import '../../../../core/services/analytics_service.dart';
 
 class StickyProjectShowcase extends StatefulWidget {
   final ValueListenable<double> scrollOffsetListenable;
@@ -528,16 +530,20 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
               children: [
                 if (project.androidStoreUrl != null)
                   MagneticButton(
-                    onTap: () =>
-                        UrlLauncherUtils.launchURL(project.androidStoreUrl!),
+                    onTap: () {
+                      di.sl<AnalyticsService>().logProjectClick(project.title);
+                      UrlLauncherUtils.launchURL(project.androidStoreUrl!);
+                    },
                     child: const _StoreIconButton(
                       icon: FontAwesomeIcons.googlePlay,
                     ),
                   ),
                 if (project.iosStoreUrl != null)
                   MagneticButton(
-                    onTap: () =>
-                        UrlLauncherUtils.launchURL(project.iosStoreUrl!),
+                    onTap: () {
+                      di.sl<AnalyticsService>().logProjectClick(project.title);
+                      UrlLauncherUtils.launchURL(project.iosStoreUrl!);
+                    },
                     child: const _StoreIconButton(icon: FontAwesomeIcons.apple),
                   ),
                 if (project.androidStoreUrl == null &&
@@ -829,14 +835,18 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
                           if (project.androidStoreUrl != null)
                             _GlassIconButton(
                               icon: FontAwesomeIcons.googlePlay,
-                              onTap: () => UrlLauncherUtils.launchURL(
-                                  project.androidStoreUrl!),
+                              onTap: () {
+                                di.sl<AnalyticsService>().logProjectClick(project.title);
+                                UrlLauncherUtils.launchURL(project.androidStoreUrl!);
+                              },
                             ),
                           if (project.iosStoreUrl != null)
                             _GlassIconButton(
                               icon: FontAwesomeIcons.apple,
-                              onTap: () => UrlLauncherUtils.launchURL(
-                                  project.iosStoreUrl!),
+                              onTap: () {
+                                di.sl<AnalyticsService>().logProjectClick(project.title);
+                                UrlLauncherUtils.launchURL(project.iosStoreUrl!);
+                              },
                             ),
                           if (project.androidStoreUrl == null &&
                               project.iosStoreUrl == null)

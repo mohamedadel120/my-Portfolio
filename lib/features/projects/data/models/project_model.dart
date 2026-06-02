@@ -17,11 +17,25 @@ class ProjectModel extends Project {
   });
 
   factory ProjectModel.fromJson(Map<String, dynamic> json) {
+    final rawColor = json['color'];
+    Color colorValue = const Color(0xFF000000);
+    if (rawColor is int) {
+      colorValue = Color(rawColor);
+    } else if (rawColor is String) {
+      if (rawColor.startsWith('0x') || rawColor.startsWith('0X')) {
+        final parsed = int.tryParse(rawColor.substring(2), radix: 16);
+        if (parsed != null) colorValue = Color(parsed);
+      } else {
+        final parsed = int.tryParse(rawColor);
+        if (parsed != null) colorValue = Color(parsed);
+      }
+    }
+
     return ProjectModel(
       title: json['title'] ?? '',
       description: json['description'] ?? '',
       tech: List<String>.from(json['tech'] ?? []),
-      color: Color(json['color'] ?? 0xFF000000),
+      color: colorValue,
       downloads: json['downloads'] ?? '',
       imageUrl: json['imageUrl'],
       logoUrl: json['logoUrl'],

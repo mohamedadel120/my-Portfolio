@@ -18,6 +18,7 @@ import 'core/theme/app_theme.dart';
 import 'injection_container.dart' as di;
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'core/services/analytics_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -56,6 +57,8 @@ void main() async {
     di.sl<TestimonialsCubit>().loadTestimonials(),
     di.sl<WhyChooseMeCubit>().loadReasons(),
   ]);
+
+  di.sl<AnalyticsService>().logVisit();
 
   runApp(const MyApp());
 }

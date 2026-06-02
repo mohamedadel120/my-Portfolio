@@ -33,12 +33,16 @@ import 'features/why_choose_me/domain/repositories/why_choose_me_repository.dart
 import 'features/why_choose_me/presentation/cubit/why_choose_me_cubit.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'core/services/analytics_service.dart';
 
 final sl = GetIt.instance; // sl = service locator
 
 Future<void> init() async {
   // External
   sl.registerLazySingleton(() => FirebaseFirestore.instance);
+
+  // Core Services
+  sl.registerLazySingleton(() => AnalyticsService());
 
   // Features - Projects
   // Bloc

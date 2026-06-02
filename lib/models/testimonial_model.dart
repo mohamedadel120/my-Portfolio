@@ -11,13 +11,21 @@ class TestimonialModel extends Testimonial {
   });
 
   factory TestimonialModel.fromJson(Map<String, dynamic> json) {
+    final rawRating = json['rating'];
+    double ratingValue = 5.0;
+    if (rawRating is num) {
+      ratingValue = rawRating.toDouble();
+    } else if (rawRating is String) {
+      ratingValue = double.tryParse(rawRating) ?? 5.0;
+    }
+
     return TestimonialModel(
       name: json['name'] ?? '',
       role: json['role'] ?? '',
       company: json['company'] ?? '',
       opinion: json['opinion'] ?? '',
       imageUrl: json['imageUrl'],
-      rating: (json['rating'] ?? 5.0).toDouble(),
+      rating: ratingValue,
     );
   }
 
