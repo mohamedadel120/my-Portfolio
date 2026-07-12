@@ -100,15 +100,15 @@
         "description": "Experienced Flutter Developer specializing in building high-quality mobile applications for iOS and Android."
       }
     </script>
-    <!-- Preconnect for Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <!-- Preconnect for Google Fonts: the google_fonts Dart package fetches font
+         bytes directly from fonts.gstatic.com for Flutter's canvas text renderer,
+         so this warms that connection. A CSS <link> to fonts.googleapis.com is
+         NOT needed here (Flutter web paints text via Skia, not the DOM/CSS text
+         pipeline) and previously caused every font to be downloaded twice. -->
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    
+
     <!-- Preload Splash Logo for faster perceived performance -->
     <link rel="preload" href="splash_logo.png" as="image">
-    
-    <!-- Link all Google Fonts used in the application -->
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;700&family=JetBrains+Mono:wght@400;700&family=Orbitron:wght@400;700;900&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
 
     <style>
       body {
