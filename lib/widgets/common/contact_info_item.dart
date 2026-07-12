@@ -43,7 +43,8 @@ class _ContactInfoItemState extends State<ContactInfoItem> {
             color: AppColors.background,
             borderRadius: BorderRadius.circular(12),
             border: Border.all(
-              color: AppColors.primary.withValues(alpha: _isHovered ? 0.4 : 0.1),
+              color:
+                  AppColors.primary.withValues(alpha: _isHovered ? 0.4 : 0.1),
               width: _isHovered ? 2 : 1,
             ),
             boxShadow: _isHovered
@@ -68,8 +69,10 @@ class _ContactInfoItemState extends State<ContactInfoItem> {
                   ],
           ),
           transform: Matrix4.identity()
-            ..multiply(Matrix4.diagonal3Values(_isHovered ? 1.05 : 1.0, _isHovered ? 1.05 : 1.0, 1.0))
-            ..multiply(Matrix4.translationValues(0.0, _isHovered ? -2.0 : 0.0, 0.0)), // Lift effect on hover
+            ..multiply(Matrix4.diagonal3Values(
+                _isHovered ? 1.05 : 1.0, _isHovered ? 1.05 : 1.0, 1.0))
+            ..multiply(Matrix4.translationValues(
+                0.0, _isHovered ? -2.0 : 0.0, 0.0)), // Lift effect on hover
           child: Row(
             children: [
               AnimatedContainer(
@@ -87,7 +90,9 @@ class _ContactInfoItemState extends State<ContactInfoItem> {
                           ],
                         )
                       : null,
-                  color: _isHovered ? null : AppColors.primary.withValues(alpha: 0.1),
+                  color: _isHovered
+                      ? null
+                      : AppColors.primary.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(12),
                   boxShadow: _isHovered
                       ? [
@@ -144,4 +149,3 @@ class _ContactInfoItemState extends State<ContactInfoItem> {
         .slideX(begin: -0.3, end: 0, delay: widget.delay, duration: 500.ms);
   }
 }
-

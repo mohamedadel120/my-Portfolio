@@ -237,6 +237,11 @@ class _ProjectGalleryState extends State<ProjectGallery>
                         physics: const NeverScrollableScrollPhysics(),
                         itemCount: itemCount,
                         itemBuilder: (context, index) {
+                          final dpr = MediaQuery.of(context).devicePixelRatio;
+                          final decodeWidth =
+                              (thumbnailItemWidth * dpr).round();
+                          final decodeHeight =
+                              (thumbnailItemHeight * dpr).round();
                           return Container(
                             width: thumbnailItemWidth,
                             margin: EdgeInsets.only(
@@ -256,6 +261,8 @@ class _ProjectGalleryState extends State<ProjectGallery>
                                     ? Image.network(
                                         widget.project.galleryImages![index],
                                         fit: BoxFit.cover,
+                                        cacheWidth: decodeWidth,
+                                        cacheHeight: decodeHeight,
                                         errorBuilder: (context, error, stackTrace) =>
                                             Container(
                                           color: AppColors.background,
@@ -270,6 +277,8 @@ class _ProjectGalleryState extends State<ProjectGallery>
                                     : Image.asset(
                                         widget.project.galleryImages![index],
                                         fit: BoxFit.cover,
+                                        cacheWidth: decodeWidth,
+                                        cacheHeight: decodeHeight,
                                         errorBuilder: (context, error, stackTrace) =>
                                             Container(
                                           color: AppColors.background,

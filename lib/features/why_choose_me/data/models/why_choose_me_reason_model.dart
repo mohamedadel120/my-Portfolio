@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../models/why_choose_me_reason.dart';
+import '../../../../utils/icon_mapper.dart';
 
 class WhyChooseMeReasonModel extends WhyChooseMeReason {
   const WhyChooseMeReasonModel({
@@ -39,7 +40,7 @@ class WhyChooseMeReasonModel extends WhyChooseMeReason {
     return WhyChooseMeReasonModel(
       title: json['title'] ?? '',
       description: json['description'] ?? '',
-      icon: IconData(iconCode, fontFamily: 'MaterialIcons'),
+      icon: iconFromCodePoint(iconCode),
       color: colorValue,
     );
   }
