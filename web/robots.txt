@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://mohamedadel120.github.io/my-Portfolio/sitemap.xml
+Sitemap: https://muhammed-adel.web.app/sitemap.xml
