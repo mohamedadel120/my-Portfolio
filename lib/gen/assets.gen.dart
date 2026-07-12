@@ -20,6 +20,10 @@ class $AssetsImagesGen {
   /// File path: assets/images/4.png
   AssetGenImage get a4 => const AssetGenImage('assets/images/4.png');
 
+  /// File path: assets/images/Gemini_Generated_Image_w1p5b6w1p5b6w1p5.jpg
+  AssetGenImage get geminiGeneratedImageW1p5b6w1p5b6w1p5 => const AssetGenImage(
+      'assets/images/Gemini_Generated_Image_w1p5b6w1p5b6w1p5.jpg');
+
   /// Directory path: assets/images/adruse
   $AssetsImagesAdruseGen get adruse => const $AssetsImagesAdruseGen();
 
@@ -29,14 +33,28 @@ class $AssetsImagesGen {
   /// Directory path: assets/images/gomla
   $AssetsImagesGomlaGen get gomla => const $AssetsImagesGomlaGen();
 
+  /// Directory path: assets/images/hi_gold
+  $AssetsImagesHiGoldGen get hiGold => const $AssetsImagesHiGoldGen();
+
+  /// File path: assets/images/logo.png
+  AssetGenImage get logo => const AssetGenImage('assets/images/logo.png');
+
+  /// File path: assets/images/logo1.png
+  AssetGenImage get logo1 => const AssetGenImage('assets/images/logo1.png');
+
   /// Directory path: assets/images/paletta
   $AssetsImagesPalettaGen get paletta => const $AssetsImagesPalettaGen();
+
+  /// File path: assets/images/self_image.jpeg
+  AssetGenImage get selfImage =>
+      const AssetGenImage('assets/images/self_image.jpeg');
 
   /// Directory path: assets/images/stock
   $AssetsImagesStockGen get stock => const $AssetsImagesStockGen();
 
   /// List of all assets
-  List<AssetGenImage> get values => [a3, a4];
+  List<AssetGenImage> get values =>
+      [a3, a4, geminiGeneratedImageW1p5b6w1p5b6w1p5, logo, logo1, selfImage];
 }
 
 class $AssetsVideosGen {
@@ -48,124 +66,127 @@ class $AssetsVideosGen {
   /// File path: assets/videos/drugza_demo.mp4
   String get drugzaDemo => 'assets/videos/drugza_demo.mp4';
 
+  /// File path: assets/videos/x_d_a_d_c_f_e_a_c_camp_.mp4
+  String get xDADCFEACCamp => 'assets/videos/x_d_a_d_c_f_e_a_c_camp_.mp4';
+
   /// List of all assets
-  List<String> get values => [readme, drugzaDemo];
+  List<String> get values => [readme, drugzaDemo, xDADCFEACCamp];
 }
 
 class $AssetsImagesAdruseGen {
   const $AssetsImagesAdruseGen();
 
-  /// File path: assets/images/adruse/Calendar -1.png
+  /// File path: assets/images/adruse/Calendar -1.webp
   AssetGenImage get calendar1 =>
-      const AssetGenImage('assets/images/adruse/Calendar -1.png');
+      const AssetGenImage('assets/images/adruse/Calendar -1.webp');
 
-  /// File path: assets/images/adruse/Calendar -5.png
+  /// File path: assets/images/adruse/Calendar -5.webp
   AssetGenImage get calendar5 =>
-      const AssetGenImage('assets/images/adruse/Calendar -5.png');
+      const AssetGenImage('assets/images/adruse/Calendar -5.webp');
 
-  /// File path: assets/images/adruse/Downloads -1.png
+  /// File path: assets/images/adruse/Downloads -1.webp
   AssetGenImage get downloads1 =>
-      const AssetGenImage('assets/images/adruse/Downloads -1.png');
+      const AssetGenImage('assets/images/adruse/Downloads -1.webp');
 
-  /// File path: assets/images/adruse/Downloads -6.png
+  /// File path: assets/images/adruse/Downloads -6.webp
   AssetGenImage get downloads6 =>
-      const AssetGenImage('assets/images/adruse/Downloads -6.png');
+      const AssetGenImage('assets/images/adruse/Downloads -6.webp');
 
-  /// File path: assets/images/adruse/Home.png
+  /// File path: assets/images/adruse/Home.webp
   AssetGenImage get home =>
-      const AssetGenImage('assets/images/adruse/Home.png');
+      const AssetGenImage('assets/images/adruse/Home.webp');
 
-  /// File path: assets/images/adruse/Login-1.png
+  /// File path: assets/images/adruse/Login-1.webp
   AssetGenImage get login1 =>
-      const AssetGenImage('assets/images/adruse/Login-1.png');
+      const AssetGenImage('assets/images/adruse/Login-1.webp');
 
-  /// File path: assets/images/adruse/Login-2.png
+  /// File path: assets/images/adruse/Login-2.webp
   AssetGenImage get login2 =>
-      const AssetGenImage('assets/images/adruse/Login-2.png');
+      const AssetGenImage('assets/images/adruse/Login-2.webp');
 
-  /// File path: assets/images/adruse/Login-3.png
+  /// File path: assets/images/adruse/Login-3.webp
   AssetGenImage get login3 =>
-      const AssetGenImage('assets/images/adruse/Login-3.png');
+      const AssetGenImage('assets/images/adruse/Login-3.webp');
 
-  /// File path: assets/images/adruse/Login.png
+  /// File path: assets/images/adruse/Login.webp
   AssetGenImage get login =>
-      const AssetGenImage('assets/images/adruse/Login.png');
+      const AssetGenImage('assets/images/adruse/Login.webp');
 
-  /// File path: assets/images/adruse/Primary - 3 - Subjects 1.png
+  /// File path: assets/images/adruse/Primary - 3 - Subjects 1.webp
   AssetGenImage get primary3Subjects1 =>
-      const AssetGenImage('assets/images/adruse/Primary - 3 - Subjects 1.png');
+      const AssetGenImage('assets/images/adruse/Primary - 3 - Subjects 1.webp');
 
-  /// File path: assets/images/adruse/Primary - 4 - Subject Cource Page 5.png
+  /// File path: assets/images/adruse/Primary - 4 - Subject Cource Page 5.webp
   AssetGenImage get primary4SubjectCourcePage5 => const AssetGenImage(
-      'assets/images/adruse/Primary - 4 - Subject Cource Page 5.png');
+      'assets/images/adruse/Primary - 4 - Subject Cource Page 5.webp');
 
-  /// File path: assets/images/adruse/Primary -1-1.png
+  /// File path: assets/images/adruse/Primary -1-1.webp
   AssetGenImage get primary11 =>
-      const AssetGenImage('assets/images/adruse/Primary -1-1.png');
+      const AssetGenImage('assets/images/adruse/Primary -1-1.webp');
 
-  /// File path: assets/images/adruse/Primary -1-2.png
+  /// File path: assets/images/adruse/Primary -1-2.webp
   AssetGenImage get primary12 =>
-      const AssetGenImage('assets/images/adruse/Primary -1-2.png');
+      const AssetGenImage('assets/images/adruse/Primary -1-2.webp');
 
-  /// File path: assets/images/adruse/Primary -1-3.png
+  /// File path: assets/images/adruse/Primary -1-3.webp
   AssetGenImage get primary13 =>
-      const AssetGenImage('assets/images/adruse/Primary -1-3.png');
+      const AssetGenImage('assets/images/adruse/Primary -1-3.webp');
 
-  /// File path: assets/images/adruse/Primary -1-4.png
+  /// File path: assets/images/adruse/Primary -1-4.webp
   AssetGenImage get primary14 =>
-      const AssetGenImage('assets/images/adruse/Primary -1-4.png');
+      const AssetGenImage('assets/images/adruse/Primary -1-4.webp');
 
-  /// File path: assets/images/adruse/Primary -1-5.png
+  /// File path: assets/images/adruse/Primary -1-5.webp
   AssetGenImage get primary15 =>
-      const AssetGenImage('assets/images/adruse/Primary -1-5.png');
+      const AssetGenImage('assets/images/adruse/Primary -1-5.webp');
 
-  /// File path: assets/images/adruse/Primary -1.png
+  /// File path: assets/images/adruse/Primary -1.webp
   AssetGenImage get primary1 =>
-      const AssetGenImage('assets/images/adruse/Primary -1.png');
+      const AssetGenImage('assets/images/adruse/Primary -1.webp');
 
-  /// File path: assets/images/adruse/Primary- 4 - Subject Cource Page 1.png
+  /// File path: assets/images/adruse/Primary- 4 - Subject Cource Page 1.webp
   AssetGenImage get primary4SubjectCourcePage1 => const AssetGenImage(
-      'assets/images/adruse/Primary- 4 - Subject Cource Page 1.png');
+      'assets/images/adruse/Primary- 4 - Subject Cource Page 1.webp');
 
-  /// File path: assets/images/adruse/Profile.png
+  /// File path: assets/images/adruse/Profile.webp
   AssetGenImage get profile =>
-      const AssetGenImage('assets/images/adruse/Profile.png');
+      const AssetGenImage('assets/images/adruse/Profile.webp');
 
-  /// File path: assets/images/adruse/Side Menu.png
+  /// File path: assets/images/adruse/Side Menu.webp
   AssetGenImage get sideMenu =>
-      const AssetGenImage('assets/images/adruse/Side Menu.png');
+      const AssetGenImage('assets/images/adruse/Side Menu.webp');
 
-  /// File path: assets/images/adruse/Subscribe-1.png
+  /// File path: assets/images/adruse/Subscribe-1.webp
   AssetGenImage get subscribe1 =>
-      const AssetGenImage('assets/images/adruse/Subscribe-1.png');
+      const AssetGenImage('assets/images/adruse/Subscribe-1.webp');
 
-  /// File path: assets/images/adruse/Subscribe.png
+  /// File path: assets/images/adruse/Subscribe.webp
   AssetGenImage get subscribe =>
-      const AssetGenImage('assets/images/adruse/Subscribe.png');
+      const AssetGenImage('assets/images/adruse/Subscribe.webp');
 
-  /// File path: assets/images/adruse/image1.png
+  /// File path: assets/images/adruse/image1.webp
   AssetGenImage get image1 =>
-      const AssetGenImage('assets/images/adruse/image1.png');
+      const AssetGenImage('assets/images/adruse/image1.webp');
 
-  /// File path: assets/images/adruse/image2.png
+  /// File path: assets/images/adruse/image2.webp
   AssetGenImage get image2 =>
-      const AssetGenImage('assets/images/adruse/image2.png');
+      const AssetGenImage('assets/images/adruse/image2.webp');
 
-  /// File path: assets/images/adruse/image3.png
+  /// File path: assets/images/adruse/image3.webp
   AssetGenImage get image3 =>
-      const AssetGenImage('assets/images/adruse/image3.png');
+      const AssetGenImage('assets/images/adruse/image3.webp');
 
-  /// File path: assets/images/adruse/image4.png
+  /// File path: assets/images/adruse/image4.webp
   AssetGenImage get image4 =>
-      const AssetGenImage('assets/images/adruse/image4.png');
+      const AssetGenImage('assets/images/adruse/image4.webp');
 
-  /// File path: assets/images/adruse/image5.png
+  /// File path: assets/images/adruse/image5.webp
   AssetGenImage get image5 =>
-      const AssetGenImage('assets/images/adruse/image5.png');
+      const AssetGenImage('assets/images/adruse/image5.webp');
 
-  /// File path: assets/images/adruse/logo1.png
+  /// File path: assets/images/adruse/logo.webp
   AssetGenImage get logo =>
-      const AssetGenImage('assets/images/adruse/logo1.png');
+      const AssetGenImage('assets/images/adruse/logo.webp');
 
   /// List of all assets
   List<AssetGenImage> get values => [
@@ -267,12 +288,55 @@ class $AssetsImagesGomlaGen {
   List<AssetGenImage> get values => [image1, image2, image3, image4, logo];
 }
 
+class $AssetsImagesHiGoldGen {
+  const $AssetsImagesHiGoldGen();
+
+  /// File path: assets/images/hi_gold/image1.webp
+  AssetGenImage get image1 =>
+      const AssetGenImage('assets/images/hi_gold/image1.webp');
+
+  /// File path: assets/images/hi_gold/image2.webp
+  AssetGenImage get image2 =>
+      const AssetGenImage('assets/images/hi_gold/image2.webp');
+
+  /// File path: assets/images/hi_gold/image3.webp
+  AssetGenImage get image3 =>
+      const AssetGenImage('assets/images/hi_gold/image3.webp');
+
+  /// File path: assets/images/hi_gold/image4.webp
+  AssetGenImage get image4 =>
+      const AssetGenImage('assets/images/hi_gold/image4.webp');
+
+  /// File path: assets/images/hi_gold/image5.webp
+  AssetGenImage get image5 =>
+      const AssetGenImage('assets/images/hi_gold/image5.webp');
+
+  /// File path: assets/images/hi_gold/image6.webp
+  AssetGenImage get image6 =>
+      const AssetGenImage('assets/images/hi_gold/image6.webp');
+
+  /// File path: assets/images/hi_gold/image7.webp
+  AssetGenImage get image7 =>
+      const AssetGenImage('assets/images/hi_gold/image7.webp');
+
+  /// File path: assets/images/hi_gold/image8.webp
+  AssetGenImage get image8 =>
+      const AssetGenImage('assets/images/hi_gold/image8.webp');
+
+  /// List of all assets
+  List<AssetGenImage> get values =>
+      [image1, image2, image3, image4, image5, image6, image7, image8];
+}
+
 class $AssetsImagesPalettaGen {
   const $AssetsImagesPalettaGen();
 
   /// File path: assets/images/paletta/image1.webp
   AssetGenImage get image1 =>
       const AssetGenImage('assets/images/paletta/image1.webp');
+
+  /// File path: assets/images/paletta/image1.webp.tmp
+  String get image1Webp => 'assets/images/paletta/image1.webp.tmp';
 
   /// File path: assets/images/paletta/image2.webp
   AssetGenImage get image2 =>
@@ -303,8 +367,17 @@ class $AssetsImagesPalettaGen {
       const AssetGenImage('assets/images/paletta/logo.webp');
 
   /// List of all assets
-  List<AssetGenImage> get values =>
-      [image1, image2, image3, image4, image5, image6, image7, logo];
+  List<dynamic> get values => [
+        image1,
+        image1Webp,
+        image2,
+        image3,
+        image4,
+        image5,
+        image6,
+        image7,
+        logo
+      ];
 }
 
 class $AssetsImagesStockGen {

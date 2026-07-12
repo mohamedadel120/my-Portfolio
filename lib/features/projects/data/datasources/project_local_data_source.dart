@@ -30,13 +30,13 @@ class ProjectLocalDataSourceImpl implements ProjectLocalDataSource {
       color: Color(0xFFFFD700), // Gold color
       downloads: 'Coming Soon',
       logoUrl:
-          'assets/images/hi_gold/image1.png', // Using copied image as logo for now
+          'assets/images/hi_gold/image1.webp', // Using copied image as logo for now
       galleryImages: [
-        'assets/images/hi_gold/image1.png',
-        'assets/images/hi_gold/image2.png',
-        'assets/images/hi_gold/image3.png',
-        'assets/images/hi_gold/image4.png',
-        'assets/images/hi_gold/image5.png',
+        'assets/images/hi_gold/image1.webp',
+        'assets/images/hi_gold/image2.webp',
+        'assets/images/hi_gold/image3.webp',
+        'assets/images/hi_gold/image4.webp',
+        'assets/images/hi_gold/image5.webp',
       ],
       androidStoreUrl: null,
       iosStoreUrl: null,

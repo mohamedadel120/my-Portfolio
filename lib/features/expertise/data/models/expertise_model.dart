@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../domain/entities/expertise_entity.dart';
+import '../../../../utils/icon_mapper.dart';
 
 class ExpertiseModel extends Expertise {
   const ExpertiseModel({
@@ -39,7 +40,7 @@ class ExpertiseModel extends Expertise {
     return ExpertiseModel(
       title: json['title'] ?? '',
       description: json['description'] ?? '',
-      icon: IconData(iconCode, fontFamily: 'MaterialIcons'),
+      icon: iconFromCodePoint(iconCode),
       color: colorValue,
     );
   }
