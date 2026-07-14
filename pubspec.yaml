@@ -48,7 +48,6 @@ dependencies:
   firebase_core: ^4.7.0
   cloud_firestore: ^6.3.0
   shared_preferences: ^2.5.5
-  visibility_detector: ^0.4.0+2
 
 dev_dependencies:
   flutter_test:

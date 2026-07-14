@@ -10,7 +10,6 @@ import '../../../experience/presentation/pages/experience_section.dart';
 import '../../../projects/presentation/pages/projects_section.dart';
 import '../../../contact/presentation/pages/contact_section.dart';
 import '../../../../widgets/common/scroll_indicator.dart';
-import '../../../../widgets/common/lazy_load_section.dart';
 import '../../../../widgets/navigation/nav_bar_item.dart';
 
 /// Responsive Home Page:
@@ -104,42 +103,32 @@ class _HomePageState extends State<HomePage> {
                       ),
                       KeyedSubtree(
                         key: _aboutKey,
-                        child: LazyLoadSection(
-                          builder: (context) => AboutSection(
-                            scrollOffsetListenable: _scrollNotifier,
-                          ),
+                        child: AboutSection(
+                          scrollOffsetListenable: _scrollNotifier,
                         ),
                       ),
                       KeyedSubtree(
                         key: _expertiseKey,
-                        child: LazyLoadSection(
-                          builder: (context) => ExpertiseSection(
-                            scrollOffsetListenable: _scrollNotifier,
-                          ),
+                        child: ExpertiseSection(
+                          scrollOffsetListenable: _scrollNotifier,
                         ),
                       ),
                       KeyedSubtree(
                         key: _experienceKey,
-                        child: LazyLoadSection(
-                          builder: (context) => ExperienceSection(
-                            scrollOffsetListenable: _scrollNotifier,
-                          ),
+                        child: ExperienceSection(
+                          scrollOffsetListenable: _scrollNotifier,
                         ),
                       ),
                       KeyedSubtree(
                         key: _projectsKey,
-                        child: LazyLoadSection(
-                          builder: (context) => ProjectsSection(
-                            scrollOffsetListenable: _scrollNotifier,
-                          ),
+                        child: ProjectsSection(
+                          scrollOffsetListenable: _scrollNotifier,
                         ),
                       ),
                       KeyedSubtree(
                         key: _contactKey,
-                        child: LazyLoadSection(
-                          builder: (context) => ContactSection(
-                            scrollOffsetListenable: _scrollNotifier,
-                          ),
+                        child: ContactSection(
+                          scrollOffsetListenable: _scrollNotifier,
                         ),
                       ),
                     ],
