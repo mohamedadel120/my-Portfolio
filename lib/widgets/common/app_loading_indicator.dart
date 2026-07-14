@@ -14,23 +14,33 @@ class AppLoadingIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final indicatorColor = color ?? AppColors.primary;
-    return Center(
-      child: Container(
+    // Align with height/widthFactor: 1 shrink-wraps to the child's exact
+    // size regardless of ambient constraints, unlike Center (which fills
+    // whatever space it's given). This widget gets used inside a Column in
+    // a SingleChildScrollView, which hands it a large/loose height, and
+    // Center was stretching the bar to fill it instead of staying small.
+    return Align(
+      alignment: Alignment.center,
+      heightFactor: 1,
+      widthFactor: 1,
+      child: SizedBox(
         width: height * 0.4,
         height: height,
-        decoration: BoxDecoration(
-          color: indicatorColor,
-          borderRadius: BorderRadius.circular(2),
-          boxShadow: [
-            BoxShadow(
-              color: indicatorColor.withValues(alpha: 0.6),
-              blurRadius: 12,
-            ),
-          ],
-        ),
-      )
-          .animate(onPlay: (controller) => controller.repeat(reverse: true))
-          .fadeOut(duration: 600.ms, curve: Curves.easeInOut, begin: 1),
+        child: Container(
+          decoration: BoxDecoration(
+            color: indicatorColor,
+            borderRadius: BorderRadius.circular(2),
+            boxShadow: [
+              BoxShadow(
+                color: indicatorColor.withValues(alpha: 0.6),
+                blurRadius: 12,
+              ),
+            ],
+          ),
+        )
+            .animate(onPlay: (controller) => controller.repeat(reverse: true))
+            .fadeOut(duration: 600.ms, curve: Curves.easeInOut, begin: 1),
+      ),
     );
   }
 }
