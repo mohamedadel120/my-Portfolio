@@ -761,6 +761,7 @@ class CompiledApp {
       _1993: o => o instanceof Array,
       _1998: a => a.pop(),
       _1999: (a, i) => a.splice(i, 1),
+      _2000: (a, s) => a.join(s),
       _2001: (a, s, e) => a.slice(s, e),
       _2003: (a, b) => a == b ? 0 : (a > b ? 1 : -1),
       _2004: a => a.length,
