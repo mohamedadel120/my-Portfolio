@@ -41,3 +41,13 @@ app.*.map.json
 
 # Firebase CLI local cache
 /.firebase/
+
+# Gradle local build caches (regenerated on every build)
+/android/.gradle/
+
+# IDE module files and stray build/analysis logs
+*.iml
+/*.log
+/analysis_output.txt
+/test_output.txt
+/build_log*.txt

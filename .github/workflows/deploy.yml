@@ -1,4 +1,9 @@
-name: Deploy to GitHub Pages
+name: Redirect GitHub Pages to Firebase Hosting
+
+# The live site moved to https://muhammed-adel.web.app (Firebase Hosting can
+# set the COOP/COEP headers Flutter's threaded WASM renderer needs; GitHub
+# Pages cannot). This workflow keeps the old GitHub Pages URL alive as a
+# permanent redirect so previously shared links still land somewhere useful.
 
 on:
   push:
@@ -9,26 +14,36 @@ permissions:
   contents: write
 
 jobs:
-  build-and-deploy:
+  deploy-redirect:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@v4
 
-      - name: Setup Flutter 🛠️
-        uses: subosito/flutter-action@v2
-        with:
-          channel: "stable"
-          flutter-version: "3.41.2"
-
-      - name: Install dependencies 📦
-        run: flutter pub get
-
-      - name: Build Web 🏗️
-        run: flutter build web --release --wasm --base-href="/my-Portfolio/"
+      - name: Build redirect page 🔀
+        run: |
+          mkdir -p redirect
+          cat > redirect/index.html <<'EOF'
+          <!doctype html>
+          <html lang="en">
+            <head>
+              <meta charset="utf-8">
+              <title>Mohamed Adel — Flutter Developer</title>
+              <meta http-equiv="refresh" content="0; url=https://muhammed-adel.web.app/">
+              <link rel="canonical" href="https://muhammed-adel.web.app/">
+              <script>window.location.replace("https://muhammed-adel.web.app/");</script>
+              <style>body{background:#000;color:#00D9FF;font-family:monospace;display:flex;align-items:center;justify-content:center;height:100vh;margin:0}</style>
+            </head>
+            <body>
+              <p>This site has moved to <a style="color:#00D9FF" href="https://muhammed-adel.web.app/">muhammed-adel.web.app</a>…</p>
+            </body>
+          </html>
+          EOF
+          cp redirect/index.html redirect/404.html
+          touch redirect/.nojekyll
 
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          folder: build/web
+          folder: redirect
           branch: gh-pages
