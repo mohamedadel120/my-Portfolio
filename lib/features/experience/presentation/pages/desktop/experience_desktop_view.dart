@@ -1,3 +1,4 @@
+import 'package:my_web_site/widgets/common/app_loading_indicator.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -23,7 +24,7 @@ class ExperienceDesktopView extends StatelessWidget {
     return BlocBuilder<ExperienceCubit, ExperienceState>(
       builder: (context, state) {
         if (state is ExperienceLoading) {
-          return const Center(child: CircularProgressIndicator());
+          return const AppLoadingIndicator();
         }
         if (state is ExperienceError) {
           return Center(child: Text(state.message));

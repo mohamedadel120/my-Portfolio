@@ -1,3 +1,4 @@
+import 'package:my_web_site/widgets/common/app_loading_indicator.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -27,7 +28,7 @@ class ProjectsTabletView extends StatelessWidget {
     return BlocBuilder<ProjectsCubit, ProjectsState>(
       builder: (context, state) {
         if (state is ProjectsLoading) {
-          return const Center(child: CircularProgressIndicator());
+          return const AppLoadingIndicator();
         }
         if (state is ProjectsError) {
           return Center(child: Text(state.message));

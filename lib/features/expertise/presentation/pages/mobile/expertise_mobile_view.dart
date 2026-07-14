@@ -1,3 +1,4 @@
+import 'package:my_web_site/widgets/common/app_loading_indicator.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,7 +22,7 @@ class ExpertiseMobileView extends StatelessWidget {
     return BlocBuilder<ExpertiseCubit, ExpertiseState>(
       builder: (context, state) {
         if (state is ExpertiseLoading) {
-          return const Center(child: CircularProgressIndicator());
+          return const AppLoadingIndicator();
         }
         if (state is ExpertiseError) {
           return Center(child: Text(state.message));

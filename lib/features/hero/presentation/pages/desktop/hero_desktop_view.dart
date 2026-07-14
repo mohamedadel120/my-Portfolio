@@ -1,3 +1,4 @@
+import 'package:my_web_site/widgets/common/app_loading_indicator.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -33,7 +34,7 @@ class _HeroDesktopViewState extends State<HeroDesktopView> {
     return BlocBuilder<HeroCubit, HeroState>(
       builder: (context, state) {
         if (state is HeroLoading) {
-          return const Center(child: CircularProgressIndicator());
+          return const AppLoadingIndicator();
         }
 
         if (state is HeroError) {
