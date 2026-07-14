@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 import '../../core/constants/app_colors.dart';
 import '../../utils/device_utils.dart';
+import 'app_loading_indicator.dart';
 
 class ProjectVideoPlayer extends StatefulWidget {
   final String videoUrl;
@@ -139,11 +140,9 @@ class _ProjectVideoPlayerState extends State<ProjectVideoPlayer> {
     }
 
     if (!_initialized) {
-      return Container(
+      return const ColoredBox(
         color: Colors.black,
-        child: const Center(
-          child: CircularProgressIndicator(color: AppColors.primary),
-        ),
+        child: AppLoadingIndicator(),
       );
     }
 

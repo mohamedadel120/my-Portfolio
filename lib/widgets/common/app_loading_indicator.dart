@@ -6,9 +6,10 @@ import '../../core/constants/app_colors.dart';
 /// HTML splash screen (web/index.html), used as the loading state for
 /// sections while their data streams in from Firestore.
 class AppLoadingIndicator extends StatelessWidget {
-  const AppLoadingIndicator({super.key, this.height = 28});
+  const AppLoadingIndicator({super.key, this.height = 28, this.color});
 
   final double height;
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +17,7 @@ class AppLoadingIndicator extends StatelessWidget {
       child: Container(
         width: height * 0.4,
         height: height,
-        color: AppColors.primary,
+        color: color ?? AppColors.primary,
       )
           .animate(onPlay: (controller) => controller.repeat())
           .fadeIn(duration: 1.ms)

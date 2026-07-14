@@ -5,6 +5,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:http/http.dart' as http;
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_data.dart';
+import 'app_loading_indicator.dart';
 
 class ContactForm extends StatefulWidget {
   final bool isVisible;
@@ -282,11 +283,9 @@ class _ContactFormState extends State<ContactForm> {
                             ? const SizedBox(
                                 height: 20,
                                 width: 20,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2,
-                                  valueColor: AlwaysStoppedAnimation<Color>(
-                                    AppColors.background,
-                                  ),
+                                child: AppLoadingIndicator(
+                                  height: 20,
+                                  color: AppColors.background,
                                 ),
                               )
                             : Text(
