@@ -107,6 +107,16 @@
          pipeline) and previously caused every font to be downloaded twice. -->
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
+    <!-- The Flutter engine (skwasm/canvaskit) is fetched from www.gstatic.com;
+         warming the connection saves DNS+TLS time on the critical path. -->
+    <link rel="preconnect" href="https://www.gstatic.com" crossorigin>
+
+    <!-- Start downloading the app's WASM module and its JS glue immediately,
+         in parallel with the bootstrap script's feature detection, instead of
+         waiting for it to request them. -->
+    <link rel="modulepreload" href="main.dart.mjs">
+    <link rel="preload" href="main.dart.wasm" as="fetch" crossorigin>
+
     <!-- Preload Splash Logo for faster perceived performance -->
     <link rel="preload" href="splash_logo.webp" as="image">
 
@@ -203,6 +213,10 @@
       setTimeout(typeWriter, 1000);
     </script>
 
-    <script src="flutter_bootstrap.js" async></script>
+    <!-- Inlined by the Flutter build (template token) — saves a render-blocking
+         network round trip versus <script src="flutter_bootstrap.js">. -->
+    <script>
+      {{flutter_bootstrap_js}}
+    </script>
   </body>
 </html>

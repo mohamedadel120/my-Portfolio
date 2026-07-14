@@ -58,10 +58,12 @@ void main() async {
   unawaited(di.sl<HeroCubit>().loadHeroData());
   unawaited(di.sl<AboutCubit>().loadAboutData());
   unawaited(di.sl<ContactCubit>().loadContactData());
-  unawaited(di.sl<TestimonialsCubit>().loadTestimonials());
-  unawaited(di.sl<WhyChooseMeCubit>().loadReasons());
+  // TestimonialsCubit/WhyChooseMeCubit are registered in DI but their
+  // sections aren't rendered anywhere (no route or home section uses them),
+  // so don't spend startup time fetching their Firestore collections.
+  // Re-add loadTestimonials()/loadReasons() here when those sections ship.
 
-  di.sl<AnalyticsService>().logVisit();
+  unawaited(di.sl<AnalyticsService>().logVisit());
 
   runApp(const MyApp());
 }
