@@ -19,6 +19,12 @@
           { "key": "Cross-Origin-Opener-Policy", "value": "same-origin" },
           { "key": "Cross-Origin-Embedder-Policy", "value": "credentialless" }
         ]
+      },
+      {
+        "source": "**/*.@(png|webp|jpg|jpeg|svg|ico|ttf|otf|mp4)",
+        "headers": [
+          { "key": "Cache-Control", "value": "public, max-age=2592000, immutable" }
+        ]
       }
     ]
   },

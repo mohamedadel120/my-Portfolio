@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'features/projects/presentation/cubit/projects_cubit.dart';
@@ -45,18 +47,19 @@ void main() async {
     return true;
   };
 
-  // Fetch all global data before running the app
-  // This keeps the index.html loader on screen until data is fully loaded
-  await Future.wait([
-    di.sl<ProjectsCubit>().loadProjects(),
-    di.sl<ExperienceCubit>().loadExperiences(),
-    di.sl<ExpertiseCubit>().loadExpertise(),
-    di.sl<HeroCubit>().loadHeroData(),
-    di.sl<AboutCubit>().loadAboutData(),
-    di.sl<ContactCubit>().loadContactData(),
-    di.sl<TestimonialsCubit>().loadTestimonials(),
-    di.sl<WhyChooseMeCubit>().loadReasons(),
-  ]);
+  // Kick off data loads without blocking first paint. Every cubit already
+  // has Initial/Loading/Loaded/Error states and every consuming widget
+  // already renders a loading spinner for them, so there's no need to make
+  // the whole app (and every Lighthouse timing metric) wait on 8 parallel
+  // Firestore round-trips before the first frame paints.
+  unawaited(di.sl<ProjectsCubit>().loadProjects());
+  unawaited(di.sl<ExperienceCubit>().loadExperiences());
+  unawaited(di.sl<ExpertiseCubit>().loadExpertise());
+  unawaited(di.sl<HeroCubit>().loadHeroData());
+  unawaited(di.sl<AboutCubit>().loadAboutData());
+  unawaited(di.sl<ContactCubit>().loadContactData());
+  unawaited(di.sl<TestimonialsCubit>().loadTestimonials());
+  unawaited(di.sl<WhyChooseMeCubit>().loadReasons());
 
   di.sl<AnalyticsService>().logVisit();
 
