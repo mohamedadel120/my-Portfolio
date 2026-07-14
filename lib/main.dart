@@ -23,6 +23,13 @@ import 'firebase_options.dart';
 import 'core/services/analytics_service.dart';
 
 void main() async {
+  // debugPrint is used liberally in the data sources for development; without
+  // this override every fetch logs to the browser console in production too,
+  // which is noisy and unprofessional for anyone who opens DevTools.
+  if (kReleaseMode) {
+    debugPrint = (String? message, {int? wrapWidth}) {};
+  }
+
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
