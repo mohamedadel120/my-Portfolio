@@ -69,7 +69,7 @@ void main() async {
   // sections aren't rendered anywhere (no route or home section uses them),
   // so don't spend startup time fetching their Firestore collections.
   // Re-add loadTestimonials()/loadReasons() here when those sections ship.
-
+ 
   unawaited(di.sl<AnalyticsService>().logVisit());
 
   runApp(const MyApp());
