@@ -27,25 +27,7 @@ class HeroMobileView extends StatefulWidget {
   State<HeroMobileView> createState() => _HeroMobileViewState();
 }
 
-class _HeroMobileViewState extends State<HeroMobileView>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _auroraController;
-
-  @override
-  void initState() {
-    super.initState();
-    _auroraController = AnimationController(
-      vsync: this,
-      duration: const Duration(seconds: 10),
-    )..repeat(reverse: true);
-  }
-
-  @override
-  void dispose() {
-    _auroraController.dispose();
-    super.dispose();
-  }
-
+class _HeroMobileViewState extends State<HeroMobileView> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<HeroCubit, HeroState>(
@@ -83,39 +65,52 @@ class _HeroMobileViewState extends State<HeroMobileView>
                       ),
                       child: Stack(
                         children: [
-                          // Minimal Aurora Hint
+                          // Minimal Aurora Hint. Only kept ticking while the
+                          // hero itself is roughly on-screen -- once the
+                          // user scrolls past it, the reverse-repeat
+                          // animation would otherwise run forever.
                           if (!isLowSpec && heroData.showAurora)
                             Positioned(
                               top: -50,
                               right: -50,
-                              child: Container(
-                                width: 300,
-                                height: 300,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .primary
-                                      .withValues(alpha: 0.05),
-                                  boxShadow: [
-                                    BoxShadow(
+                              child: Builder(
+                                builder: (context) {
+                                  final aurora = Container(
+                                    width: 300,
+                                    height: 300,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
                                       color: Theme.of(context)
                                           .colorScheme
                                           .primary
-                                          .withValues(alpha: 0.1),
-                                      blurRadius: 80,
-                                      spreadRadius: 20,
-                                    )
-                                  ],
-                                ),
-                              )
-                                  .animate(
-                                      onPlay: (c) => c.repeat(reverse: true))
-                                  .scale(
-                                    begin: const Offset(1, 1),
-                                    end: const Offset(1.2, 1.2),
-                                    duration: 4000.ms,
-                                  ),
+                                          .withValues(alpha: 0.05),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .primary
+                                              .withValues(alpha: 0.1),
+                                          blurRadius: 80,
+                                          spreadRadius: 20,
+                                        )
+                                      ],
+                                    ),
+                                  );
+                                  final isNearViewport =
+                                      scrollOffset < viewportHeight * 1.2;
+                                  return isNearViewport
+                                      ? aurora
+                                          .animate(
+                                              onPlay: (c) =>
+                                                  c.repeat(reverse: true))
+                                          .scale(
+                                            begin: const Offset(1, 1),
+                                            end: const Offset(1.2, 1.2),
+                                            duration: 4000.ms,
+                                          )
+                                      : aurora;
+                                },
+                              ),
                             ),
 
                           // Main content - Bottom Aligned

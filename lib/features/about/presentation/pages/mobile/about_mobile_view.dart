@@ -57,24 +57,33 @@ class AboutMobileView extends StatelessWidget {
               ),
               child: Stack(
                 children: [
-                  // Aurora Background Effects
+                  // Aurora Background Effect. Only kept ticking while the
+                  // About section is roughly on-screen.
                   if (!isLowSpec) ...[
                     Positioned(
                       top: 0,
                       right: -50,
-                      child: Container(
-                        width: 200,
-                        height: 200,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: AppColors.primary.withValues(alpha: 0.05),
-                        ),
-                      ).animate(onPlay: (c) => c.repeat()).scale(
-                            duration: 10.seconds,
-                            begin: const Offset(1, 1),
-                            end: const Offset(1.5, 1.5),
-                            curve: Curves.easeInOut,
+                      child: Builder(builder: (context) {
+                        final blob = Container(
+                          width: 200,
+                          height: 200,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: AppColors.primary.withValues(alpha: 0.05),
                           ),
+                        );
+                        final isNearViewport =
+                            (scrollOffset - sectionStartOffset).abs() <
+                                viewportHeight * 2;
+                        return isNearViewport
+                            ? blob.animate(onPlay: (c) => c.repeat()).scale(
+                                  duration: 10.seconds,
+                                  begin: const Offset(1, 1),
+                                  end: const Offset(1.5, 1.5),
+                                  curve: Curves.easeInOut,
+                                )
+                            : blob;
+                      }),
                     ),
                   ],
 

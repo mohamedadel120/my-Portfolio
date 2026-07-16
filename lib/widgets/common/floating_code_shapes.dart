@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../../utils/device_utils.dart';
 import 'code_shape.dart' show CodeShapeType, CodeShapePainter;
+import 'visibility_pause.dart';
 
 class FloatingCodeShapes extends StatelessWidget {
   final double scrollOffset;
@@ -26,8 +27,9 @@ class FloatingCodeShapes extends StatelessWidget {
     return IgnorePointer(
       // Use screenSize directly instead of LayoutBuilder to prevent layout re-entrancy
       // when used inside ValueListenableBuilder scroll listeners
-      child: Builder(
-        builder: (context) {
+      child: VisibilityPause(
+        visibilityKey: 'floating-code-shapes',
+        builder: (context, isVisible) {
           final width = screenSize.width;
           final height = screenSize.height;
           final shapeCount = isXS ? 6 : 12;
@@ -38,7 +40,10 @@ class FloatingCodeShapes extends StatelessWidget {
             child: Stack(
               clipBehavior: Clip.none,
               children: [
-                // Floating code shapes with parallax effect
+                // Floating code shapes with parallax effect. The looping
+                // fade/move animation only runs while this section is
+                // visible -- otherwise 12 independent tickers would keep
+                // repainting forever while scrolled off-screen.
                 ...List.generate(shapeCount, (index) {
                   final random = math.Random(index);
                   final type =
@@ -49,7 +54,7 @@ class FloatingCodeShapes extends StatelessWidget {
                       (isXS ? 20 : 30) + random.nextDouble() * (isXS ? 30 : 50);
                   final parallaxSpeed = 0.1 + random.nextDouble() * 0.2;
 
-                  return Positioned(
+                  final positioned = Positioned(
                     left: x + (scrollOffset * parallaxSpeed * 0.1),
                     top: y + (scrollOffset * parallaxSpeed),
                     child: RepaintBoundary(
@@ -68,7 +73,11 @@ class FloatingCodeShapes extends StatelessWidget {
                         ),
                       ),
                     ),
-                  )
+                  );
+
+                  if (!isVisible) return positioned;
+
+                  return positioned
                       .animate(onPlay: (controller) => controller.repeat())
                       .fadeIn(delay: (index * 100).ms, duration: 2000.ms)
                       .then()

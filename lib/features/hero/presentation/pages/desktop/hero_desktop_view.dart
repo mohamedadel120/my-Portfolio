@@ -59,36 +59,51 @@ class _HeroDesktopViewState extends State<HeroDesktopView> {
               color: Theme.of(context).scaffoldBackgroundColor, // Pure Black
               child: Stack(
                 children: [
-                  // Minimal Aurora Hint (Optional/Subtle)
+                  // Minimal Aurora Hint (Optional/Subtle). Only kept ticking
+                  // while the hero itself is roughly on-screen -- once the
+                  // user scrolls past it the reverse-repeat animation would
+                  // otherwise run forever in the background.
                   if (!isLowSpec && heroData.showAurora)
                     Positioned(
                       top: -100,
                       right: -100,
-                      child: Container(
-                        width: 600,
-                        height: 600,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Theme.of(context)
-                              .colorScheme
-                              .primary
-                              .withValues(alpha: 0.1),
-                          boxShadow: [
-                            BoxShadow(
+                      child: Builder(
+                        builder: (context) {
+                          final aurora = Container(
+                            width: 600,
+                            height: 600,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
                               color: Theme.of(context)
                                   .colorScheme
                                   .primary
                                   .withValues(alpha: 0.1),
-                              blurRadius: 100,
-                              spreadRadius: 20,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .primary
+                                      .withValues(alpha: 0.1),
+                                  blurRadius: 100,
+                                  spreadRadius: 20,
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                      ).animate(onPlay: (c) => c.repeat(reverse: true)).scale(
-                            begin: const Offset(1, 1),
-                            end: const Offset(1.2, 1.2),
-                            duration: 5000.ms,
-                          ),
+                          );
+                          final isNearViewport =
+                              scrollOffset < viewportHeight * 1.2;
+                          return isNearViewport
+                              ? aurora
+                                  .animate(
+                                      onPlay: (c) => c.repeat(reverse: true))
+                                  .scale(
+                                    begin: const Offset(1, 1),
+                                    end: const Offset(1.2, 1.2),
+                                    duration: 5000.ms,
+                                  )
+                              : aurora;
+                        },
+                      ),
                     ),
 
                   // Main Content - Bottom Left aligned like "Robertson"

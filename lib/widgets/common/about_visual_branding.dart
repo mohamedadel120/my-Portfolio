@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:visibility_detector/visibility_detector.dart';
 import 'dart:math' as math;
 import '../../core/constants/app_colors.dart';
 
@@ -36,88 +37,100 @@ class _AboutVisualBrandingState extends State<AboutVisualBranding>
     final screenWidth = MediaQuery.of(context).size.width;
     final isMobile = screenWidth < 768;
 
-    return AnimatedBuilder(
-      animation: _controller,
-      builder: (context, child) {
-        return Stack(
-          alignment: Alignment.center,
-          children: [
-            // Outer glowing ring
-            Transform.rotate(
-              angle: _controller.value * 2 * math.pi,
-              child: Container(
-                width: isMobile ? 220 : 350, // Reduced on mobile
-                height: isMobile ? 220 : 350,
+    return VisibilityDetector(
+      key: const ValueKey('about-visual-branding'),
+      onVisibilityChanged: (info) {
+        final visible = info.visibleFraction > 0;
+        if (visible == _controller.isAnimating) return;
+        if (visible) {
+          _controller.repeat();
+        } else {
+          _controller.stop();
+        }
+      },
+      child: AnimatedBuilder(
+        animation: _controller,
+        builder: (context, child) {
+          return Stack(
+            alignment: Alignment.center,
+            children: [
+              // Outer glowing ring
+              Transform.rotate(
+                angle: _controller.value * 2 * math.pi,
+                child: Container(
+                  width: isMobile ? 220 : 350, // Reduced on mobile
+                  height: isMobile ? 220 : 350,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: AppColors.primary.withValues(alpha: 0.1),
+                      width: 2,
+                    ),
+                  ),
+                ),
+              ),
+              // Middle ring with dashes
+              Transform.rotate(
+                angle: -_controller.value * 4 * math.pi,
+                child: RepaintBoundary(
+                  child: CustomPaint(
+                    size: Size(isMobile ? 180 : 280, isMobile ? 180 : 280),
+                    painter: _DashedCirclePainter(
+                      color: AppColors.secondary.withValues(alpha: 0.2),
+                    ),
+                  ),
+                ),
+              ),
+              // Central branding element
+              Container(
+                width: isMobile ? 140 : 200,
+                height: isMobile ? 140 : 200,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  border: Border.all(
-                    color: AppColors.primary.withValues(alpha: 0.1),
-                    width: 2,
+                  gradient: RadialGradient(
+                    colors: [
+                      AppColors.primary.withValues(alpha: 0.3),
+                      Colors.transparent,
+                    ],
                   ),
-                ),
-              ),
-            ),
-            // Middle ring with dashes
-            Transform.rotate(
-              angle: -_controller.value * 4 * math.pi,
-              child: RepaintBoundary(
-                child: CustomPaint(
-                  size: Size(isMobile ? 180 : 280, isMobile ? 180 : 280),
-                  painter: _DashedCirclePainter(
-                    color: AppColors.secondary.withValues(alpha: 0.2),
-                  ),
-                ),
-              ),
-            ),
-            // Central branding element
-            Container(
-              width: isMobile ? 140 : 200,
-              height: isMobile ? 140 : 200,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                gradient: RadialGradient(
-                  colors: [
-                    AppColors.primary.withValues(alpha: 0.3),
-                    Colors.transparent,
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColors.primary.withValues(alpha: 0.2),
+                      blurRadius: isMobile ? 40 : 60,
+                      spreadRadius: isMobile ? 10 : 20,
+                    ),
                   ],
                 ),
-                boxShadow: [
-                  BoxShadow(
-                    color: AppColors.primary.withValues(alpha: 0.2),
-                    blurRadius: isMobile ? 40 : 60,
-                    spreadRadius: isMobile ? 10 : 20,
+                child: Center(
+                  child: Image.asset(
+                    'assets/images/logo1.png',
+                    width: isMobile ? 60 : 150,
+                    height: isMobile ? 60 : 150,
                   ),
-                ],
-              ),
-              child: Center(
-                child: Image.asset(
-                  'assets/images/logo1.png',
-                  width: isMobile ? 60 : 150,
-                  height: isMobile ? 60 : 150,
                 ),
               ),
-            ),
-            // Floating code-like tags (More tags, varied speeds)
-            _buildFloatingTag(
-                'Flutter', isMobile ? 90 : 150, 0.5, _controller.value,
-                speed: 1.0),
-            _buildFloatingTag(
-                'Dart', isMobile ? 110 : 180, 2.5, _controller.value,
-                speed: -1.2),
-            _buildFloatingTag(
-                'Firebase', isMobile ? 130 : 210, 4.5, _controller.value,
-                speed: 0.8),
-            if (!isMobile) ...[
-              _buildFloatingTag('Clean Arch', 240, 1.5, _controller.value,
-                  speed: -0.6),
-              _buildFloatingTag('GraphQL', 270, 3.5, _controller.value,
-                  speed: 1.4),
-              _buildFloatingTag('CI/CD', 300, 5.5, _controller.value,
-                  speed: -0.9),
+              // Floating code-like tags (More tags, varied speeds)
+              _buildFloatingTag(
+                  'Flutter', isMobile ? 90 : 150, 0.5, _controller.value,
+                  speed: 1.0),
+              _buildFloatingTag(
+                  'Dart', isMobile ? 110 : 180, 2.5, _controller.value,
+                  speed: -1.2),
+              _buildFloatingTag(
+                  'Firebase', isMobile ? 130 : 210, 4.5, _controller.value,
+                  speed: 0.8),
+              if (!isMobile) ...[
+                _buildFloatingTag('Clean Arch', 240, 1.5, _controller.value,
+                    speed: -0.6),
+                _buildFloatingTag('GraphQL', 270, 3.5, _controller.value,
+                    speed: 1.4),
+                _buildFloatingTag('CI/CD', 300, 5.5, _controller.value,
+                    speed: -0.9),
+              ],
             ],
-          ],
-        );
-      },
+          );
+        },
+      ),
     );
   }
 

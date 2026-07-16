@@ -68,42 +68,64 @@ class AboutDesktopView extends StatelessWidget {
               ),
               child: Stack(
                 children: [
-                  // Aurora Background Effects
+                  // Aurora Background Effects. Only kept ticking while the
+                  // About section is roughly on-screen -- otherwise these
+                  // two infinite loops would run for the whole session even
+                  // while the user is scrolled far away.
                   if (!isLowSpec) ...[
-                    Positioned(
-                      top: -100,
-                      right: -100,
-                      child: Container(
+                    Builder(builder: (context) {
+                      final isNearViewport =
+                          (scrollOffset - sectionStartOffset).abs() <
+                              viewportHeight * 2;
+                      final blobOne = Container(
                         width: 400,
                         height: 400,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: AppColors.primary.withValues(alpha: 0.05),
                         ),
-                      ).animate(onPlay: (c) => c.repeat()).scale(
-                            duration: 10.seconds,
-                            begin: const Offset(1, 1),
-                            end: const Offset(1.5, 1.5),
-                            curve: Curves.easeInOut,
-                          ),
-                    ),
-                    Positioned(
-                      bottom: 200,
-                      left: -50,
-                      child: Container(
+                      );
+                      final blobTwo = Container(
                         width: 300,
                         height: 300,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: AppColors.secondary.withValues(alpha: 0.03),
                         ),
-                      ).animate(onPlay: (c) => c.repeat()).scale(
-                            duration: 8.seconds,
-                            begin: const Offset(1.2, 1.2),
-                            end: const Offset(0.8, 0.8),
-                            curve: Curves.easeInOut,
+                      );
+                      return Stack(
+                        children: [
+                          Positioned(
+                            top: -100,
+                            right: -100,
+                            child: isNearViewport
+                                ? blobOne
+                                    .animate(onPlay: (c) => c.repeat())
+                                    .scale(
+                                      duration: 10.seconds,
+                                      begin: const Offset(1, 1),
+                                      end: const Offset(1.5, 1.5),
+                                      curve: Curves.easeInOut,
+                                    )
+                                : blobOne,
                           ),
-                    ),
+                          Positioned(
+                            bottom: 200,
+                            left: -50,
+                            child: isNearViewport
+                                ? blobTwo
+                                    .animate(onPlay: (c) => c.repeat())
+                                    .scale(
+                                      duration: 8.seconds,
+                                      begin: const Offset(1.2, 1.2),
+                                      end: const Offset(0.8, 0.8),
+                                      curve: Curves.easeInOut,
+                                    )
+                                : blobTwo,
+                          ),
+                        ],
+                      );
+                    }),
                   ],
 
                   // Background Tech Grid
@@ -257,7 +279,8 @@ class AboutDesktopView extends StatelessWidget {
                                                 const SizedBox(height: 8),
                                                 Text(
                                                   feature.description,
-                                                  style: GoogleFonts.jetBrainsMono(
+                                                  style:
+                                                      GoogleFonts.jetBrainsMono(
                                                     fontSize: 12,
                                                     color: Colors.white
                                                         .withValues(alpha: 0.5),
