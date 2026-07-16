@@ -14,16 +14,6 @@ import 'package:flutter/widgets.dart';
 class $AssetsImagesGen {
   const $AssetsImagesGen();
 
-  /// File path: assets/images/3.png
-  AssetGenImage get a3 => const AssetGenImage('assets/images/3.png');
-
-  /// File path: assets/images/4.png
-  AssetGenImage get a4 => const AssetGenImage('assets/images/4.png');
-
-  /// File path: assets/images/Gemini_Generated_Image_w1p5b6w1p5b6w1p5.jpg
-  AssetGenImage get geminiGeneratedImageW1p5b6w1p5b6w1p5 => const AssetGenImage(
-      'assets/images/Gemini_Generated_Image_w1p5b6w1p5b6w1p5.jpg');
-
   /// Directory path: assets/images/adruse
   $AssetsImagesAdruseGen get adruse => const $AssetsImagesAdruseGen();
 
@@ -36,25 +26,17 @@ class $AssetsImagesGen {
   /// Directory path: assets/images/hi_gold
   $AssetsImagesHiGoldGen get hiGold => const $AssetsImagesHiGoldGen();
 
-  /// File path: assets/images/logo.png
-  AssetGenImage get logo => const AssetGenImage('assets/images/logo.png');
-
   /// File path: assets/images/logo1.png
   AssetGenImage get logo1 => const AssetGenImage('assets/images/logo1.png');
 
   /// Directory path: assets/images/paletta
   $AssetsImagesPalettaGen get paletta => const $AssetsImagesPalettaGen();
 
-  /// File path: assets/images/self_image.jpeg
-  AssetGenImage get selfImage =>
-      const AssetGenImage('assets/images/self_image.jpeg');
-
   /// Directory path: assets/images/stock
   $AssetsImagesStockGen get stock => const $AssetsImagesStockGen();
 
   /// List of all assets
-  List<AssetGenImage> get values =>
-      [a3, a4, geminiGeneratedImageW1p5b6w1p5b6w1p5, logo, logo1, selfImage];
+  List<AssetGenImage> get values => [logo1];
 }
 
 class $AssetsVideosGen {
@@ -66,11 +48,8 @@ class $AssetsVideosGen {
   /// File path: assets/videos/drugza_demo.mp4
   String get drugzaDemo => 'assets/videos/drugza_demo.mp4';
 
-  /// File path: assets/videos/x_d_a_d_c_f_e_a_c_camp_.mp4
-  String get xDADCFEACCamp => 'assets/videos/x_d_a_d_c_f_e_a_c_camp_.mp4';
-
   /// List of all assets
-  List<String> get values => [readme, drugzaDemo, xDADCFEACCamp];
+  List<String> get values => [readme, drugzaDemo];
 }
 
 class $AssetsImagesAdruseGen {
@@ -335,9 +314,6 @@ class $AssetsImagesPalettaGen {
   AssetGenImage get image1 =>
       const AssetGenImage('assets/images/paletta/image1.webp');
 
-  /// File path: assets/images/paletta/image1.webp.tmp
-  String get image1Webp => 'assets/images/paletta/image1.webp.tmp';
-
   /// File path: assets/images/paletta/image2.webp
   AssetGenImage get image2 =>
       const AssetGenImage('assets/images/paletta/image2.webp');
@@ -367,17 +343,8 @@ class $AssetsImagesPalettaGen {
       const AssetGenImage('assets/images/paletta/logo.webp');
 
   /// List of all assets
-  List<dynamic> get values => [
-        image1,
-        image1Webp,
-        image2,
-        image3,
-        image4,
-        image5,
-        image6,
-        image7,
-        logo
-      ];
+  List<AssetGenImage> get values =>
+      [image1, image2, image3, image4, image5, image6, image7, logo];
 }
 
 class $AssetsImagesStockGen {
