@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../../../../core/constants/app_data.dart';
 import '../../../../utils/url_launcher_utils.dart';
 import '../../../../utils/device_utils.dart';
+import '../../../hero/presentation/cubit/hero_cubit.dart';
+import '../../../hero/presentation/cubit/hero_state.dart';
 import '../../../hero/presentation/pages/hero_section.dart';
 import '../../../about/presentation/pages/about_section.dart';
 import '../../../expertise/presentation/pages/expertise_section.dart';
@@ -65,7 +67,10 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _onDownloadCV() {
-    UrlLauncherUtils.launchURL(AppData.cvUrl);
+    final state = context.read<HeroCubit>().state;
+    if (state is HeroLoaded && state.heroData.cvUrl.isNotEmpty) {
+      UrlLauncherUtils.launchURL(state.heroData.cvUrl);
+    }
   }
 
   @override

@@ -14,6 +14,7 @@ class HeroLocalDataSourceImpl implements HeroLocalDataSource {
       subtitle: AppData.subtitle,
       helloGreeting: "HELLO I'M",
       showAurora: true,
+      cvUrl: AppData.cvUrl,
     );
   }
 }

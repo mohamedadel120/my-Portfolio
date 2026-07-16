@@ -28,6 +28,7 @@ class HeroRemoteDataSourceImpl implements HeroRemoteDataSource {
         subtitle: data['subtitle'] ?? '',
         helloGreeting: "HELLO I'M", // Kept local for now
         showAurora: true,
+        cvUrl: data['cvUrl'] ?? '',
       );
     } catch (e) {
       debugPrint('Failed to load hero data from Firebase: $e');
