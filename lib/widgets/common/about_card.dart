@@ -1,4 +1,3 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -43,86 +42,84 @@ class _AboutCardState extends State<AboutCard> {
                   transform: _isHovered
                       ? (Matrix4.identity()..multiply(Matrix4.translationValues(0, -10, 0)))
                       : Matrix4.identity(),
+                  // Was a BackdropFilter blur, but that filter fails to
+                  // render under the Skwasm/WASM web renderer
+                  // (flutter/flutter#158128), leaving this card invisible
+                  // instead of frosted-glass.
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(24),
-                    child: BackdropFilter(
-                      filter: ImageFilter.blur(
-                        sigmaX: isMobile ? 5 : 10, // Reduced on mobile
-                        sigmaY: isMobile ? 5 : 10,
+                    child: Container(
+                      padding: EdgeInsets.all(
+                        isMobile ? 20 : (isTablet ? 24 : 32),
                       ),
-                      child: Container(
-                        padding: EdgeInsets.all(
-                          isMobile ? 20 : (isTablet ? 24 : 32),
-                        ),
-                        decoration: BoxDecoration(
+                      decoration: BoxDecoration(
+                        color: _isHovered
+                            ? AppColors.primary.withValues(alpha: 0.1)
+                            : AppColors.surface.withValues(alpha: 0.7),
+                        borderRadius: BorderRadius.circular(24),
+                        border: Border.all(
                           color: _isHovered
-                              ? AppColors.primary.withValues(alpha: 0.1)
-                              : AppColors.surface.withValues(alpha: 0.7),
-                          borderRadius: BorderRadius.circular(24),
-                          border: Border.all(
+                              ? AppColors.primary.withValues(alpha: 0.5)
+                              : AppColors.primary.withValues(alpha: 0.1),
+                          width: 1.5,
+                        ),
+                        boxShadow: [
+                          BoxShadow(
                             color: _isHovered
-                                ? AppColors.primary.withValues(alpha: 0.5)
-                                : AppColors.primary.withValues(alpha: 0.1),
-                            width: 1.5,
+                                ? AppColors.primary.withValues(alpha: 0.2)
+                                : Colors.transparent,
+                            blurRadius: 30,
+                            spreadRadius: -5,
                           ),
-                          boxShadow: [
-                            BoxShadow(
-                              color: _isHovered
-                                  ? AppColors.primary.withValues(alpha: 0.2)
-                                  : Colors.transparent,
-                              blurRadius: 30,
-                              spreadRadius: -5,
-                            ),
-                          ],
-                        ),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            AnimatedContainer(
-                                  duration: 300.ms,
-                                  padding: const EdgeInsets.all(16),
-                                  decoration: BoxDecoration(
-                                    color: _isHovered
-                                        ? AppColors.primary
-                                        : AppColors.primary.withValues(alpha: 0.1),
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: Icon(
-                                    widget.icon,
-                                    color: _isHovered
-                                        ? Colors.white
-                                        : AppColors.primary,
-                                    size: 28,
-                                  ),
-                                )
-                                .animate(autoPlay: widget.isVisible)
-                                .scale(delay: widget.delay, duration: 600.ms)
-                                .then()
-                                .shimmer(
-                                  duration: 1500.ms,
-                                  color: AppColors.primary.withValues(alpha: 0.3),
+                        ],
+                      ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          AnimatedContainer(
+                                duration: 300.ms,
+                                padding: const EdgeInsets.all(16),
+                                decoration: BoxDecoration(
+                                  color: _isHovered
+                                      ? AppColors.primary
+                                      : AppColors.primary.withValues(alpha: 0.1),
+                                  shape: BoxShape.circle,
                                 ),
-                            const SizedBox(height: 20),
-                            Text(
-                              widget.title,
-                              style: GoogleFonts.jetBrainsMono(
-                                fontSize: isMobile ? 18 : (isTablet ? 20 : 22),
-                                fontWeight: FontWeight.bold,
-                                color: AppColors.textPrimary,
+                                child: Icon(
+                                  widget.icon,
+                                  color: _isHovered
+                                      ? Colors.white
+                                      : AppColors.primary,
+                                  size: 28,
+                                ),
+                              )
+                              .animate(autoPlay: widget.isVisible)
+                              .scale(delay: widget.delay, duration: 600.ms)
+                              .then()
+                              .shimmer(
+                                duration: 1500.ms,
+                                color: AppColors.primary.withValues(alpha: 0.3),
                               ),
+                          const SizedBox(height: 20),
+                          Text(
+                            widget.title,
+                            style: GoogleFonts.jetBrainsMono(
+                              fontSize: isMobile ? 18 : (isTablet ? 20 : 22),
+                              fontWeight: FontWeight.bold,
+                              color: AppColors.textPrimary,
                             ),
-                            const SizedBox(height: 12),
-                            Text(
-                              widget.description,
-                              style: GoogleFonts.jetBrainsMono(
-                                fontSize: isMobile ? 13 : 14,
-                                color: AppColors.textSecondary,
-                                height: 1.6,
-                              ),
-                              textAlign: TextAlign.center,
+                          ),
+                          const SizedBox(height: 12),
+                          Text(
+                            widget.description,
+                            style: GoogleFonts.jetBrainsMono(
+                              fontSize: isMobile ? 13 : 14,
+                              color: AppColors.textSecondary,
+                              height: 1.6,
                             ),
-                          ],
-                        ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
                       ),
                     ),
                   ),

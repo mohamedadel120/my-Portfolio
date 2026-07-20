@@ -1,4 +1,3 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -36,21 +35,20 @@ class ImpactStat extends StatelessWidget {
                 ),
               ],
             ),
+            // Was a BackdropFilter blur, but that filter fails to render
+            // under the Skwasm/WASM web renderer (flutter/flutter#158128).
             child: ClipRRect(
               borderRadius: BorderRadius.circular(30),
-              child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: AppColors.primary.withValues(alpha: 0.1),
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                      color: AppColors.primary.withValues(alpha: 0.2),
-                      width: 1,
-                    ),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: AppColors.primary.withValues(alpha: 0.1),
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: AppColors.primary.withValues(alpha: 0.2),
+                    width: 1,
                   ),
-                  child: Icon(icon, color: AppColors.primary, size: 24),
                 ),
+                child: Icon(icon, color: AppColors.primary, size: 24),
               ),
             ),
           ).animate().scale(duration: 600.ms, curve: Curves.easeOutBack),

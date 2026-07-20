@@ -133,59 +133,60 @@ class _GlassCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final primary = Theme.of(context).colorScheme.primary;
 
+    // Was a BackdropFilter blur, but that filter fails to render under the
+    // Skwasm/WASM web renderer (flutter/flutter#158128), leaving this card
+    // invisible instead of frosted-glass. A more opaque solid fill stands
+    // in for the glass look.
     return ClipRRect(
       borderRadius: BorderRadius.circular(24),
-      child: BackdropFilter(
-        filter: ui.ImageFilter.blur(sigmaX: 12, sigmaY: 12),
-        child: Container(
-          width: 380,
-          height: 220,
-          decoration: BoxDecoration(
-            color: Theme.of(context).scaffoldBackgroundColor.withValues(alpha: 0.4),
-            borderRadius: BorderRadius.circular(24),
-            border: Border.all(
-              color: primary.withValues(alpha: 0.3),
-              width: 1,
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: primary.withValues(alpha: 0.05),
-                blurRadius: 30,
-                spreadRadius: 0,
-              ),
-            ],
+      child: Container(
+        width: 380,
+        height: 220,
+        decoration: BoxDecoration(
+          color: Theme.of(context).scaffoldBackgroundColor.withValues(alpha: 0.92),
+          borderRadius: BorderRadius.circular(24),
+          border: Border.all(
+            color: primary.withValues(alpha: 0.3),
+            width: 1,
           ),
-          child: Stack(
-            children: [
-              // Inner Glow
-              Positioned.fill(
-                child: DecoratedBox(
-                  decoration: BoxDecoration(
-                    gradient: RadialGradient(
-                      colors: [
-                        primary.withValues(alpha: 0.1),
-                        Colors.transparent,
-                      ],
-                      radius: 0.8,
-                      center: Alignment.topCenter,
-                    ),
+          boxShadow: [
+            BoxShadow(
+              color: primary.withValues(alpha: 0.05),
+              blurRadius: 30,
+              spreadRadius: 0,
+            ),
+          ],
+        ),
+        child: Stack(
+          children: [
+            // Inner Glow
+            Positioned.fill(
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  gradient: RadialGradient(
+                    colors: [
+                      primary.withValues(alpha: 0.1),
+                      Colors.transparent,
+                    ],
+                    radius: 0.8,
+                    center: Alignment.topCenter,
                   ),
                 ),
               ),
+            ),
 
-              // Content
-              const Center(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    _BreathingText(),
-                    SizedBox(height: 32),
-                    _QuantumLoader(),
-                  ],
-                ),
+            // Content
+            const Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  _BreathingText(),
+                  SizedBox(height: 32),
+                  _QuantumLoader(),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

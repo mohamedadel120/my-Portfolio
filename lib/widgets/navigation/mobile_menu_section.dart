@@ -1,4 +1,3 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -35,9 +34,10 @@ class MobileMenuSection extends StatelessWidget {
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(30),
-              child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
-                child: Padding(
+              // Was a BackdropFilter blur, but that filter fails to render
+              // under the Skwasm/WASM web renderer (flutter/flutter#158128),
+              // leaving this menu invisible instead of frosted-glass.
+              child: Padding(
                   padding:
                       const EdgeInsets.symmetric(vertical: 40, horizontal: 20),
                   child: Column(
@@ -120,7 +120,6 @@ class MobileMenuSection extends StatelessWidget {
                     ],
                   ),
                 ),
-              ),
             ),
           ),
         ).animate().scale(duration: 500.ms, curve: Curves.easeOutBack),

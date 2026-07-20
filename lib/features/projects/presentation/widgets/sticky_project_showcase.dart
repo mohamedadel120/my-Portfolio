@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -738,11 +736,12 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
       child: ClipRRect(
         // Optional: Rounded corners at the top for a "card" feel
         borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
-        child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-          child: Container(
-            width: double.infinity,
-            padding: const EdgeInsets.only(top: 20),
+        // Was a BackdropFilter blur, but that filter fails to render under
+        // the Skwasm/WASM web renderer (flutter/flutter#158128). The
+        // gradient below is already opaque enough without it.
+        child: Container(
+          width: double.infinity,
+          padding: const EdgeInsets.only(top: 20),
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.bottomCenter,
@@ -875,7 +874,6 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
             ),
           ),
         ),
-      ),
     );
   }
 

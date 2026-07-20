@@ -1,4 +1,3 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import '../../core/constants/app_colors.dart';
 
@@ -32,12 +31,12 @@ class GlassmorphicCard extends StatelessWidget {
           ),
         ],
       ),
+      // Was a BackdropFilter blur, but that filter fails to render under
+      // the Skwasm/WASM web renderer (flutter/flutter#158128), leaving
+      // content invisible instead of frosted-glass.
       child: ClipRRect(
         borderRadius: BorderRadius.circular(20),
-        child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: blur, sigmaY: blur),
-          child: child,
-        ),
+        child: child,
       ),
     );
   }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:ui' as ui;
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../../../../widgets/common/gsap_stagger_animation.dart';
@@ -125,11 +124,14 @@ class _ExpertiseCardState extends State<ExpertiseCard> {
                       ),
                     ],
                   ),
+                  // Was a BackdropFilter blur, but that filter fails to
+                  // render under the Skwasm/WASM web renderer
+                  // (flutter/flutter#158128), leaving this modal invisible
+                  // instead of frosted-glass. The 0.8-alpha black backdrop
+                  // above is opaque enough to read fine without it.
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(32),
-                    child: BackdropFilter(
-                      filter: ui.ImageFilter.blur(sigmaX: 20, sigmaY: 20),
-                      child: Stack(
+                    child: Stack(
                         children: [
                           Positioned(
                             top: -100,
@@ -244,7 +246,6 @@ class _ExpertiseCardState extends State<ExpertiseCard> {
                 ),
               ),
             ),
-          ),
         );
       },
     );

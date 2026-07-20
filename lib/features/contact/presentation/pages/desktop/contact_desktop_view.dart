@@ -24,7 +24,14 @@ class ContactDesktopView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ContactCubit, ContactState>(
+    // RepaintBoundary isolates this section's compositing layer from its
+    // siblings: BlocBuilder swaps a fixed-height loading indicator for the
+    // much taller real content the instant Firestore data arrives. Without
+    // a boundary, that resize can leave the section stuck showing a stale
+    // frame forever (a MouseTracker/relayout race — asserts loudly in
+    // debug, fails silently in release).
+    return RepaintBoundary(
+      child: BlocBuilder<ContactCubit, ContactState>(
       builder: (context, state) {
         if (state is ContactLoading) {
           return const AppLoadingIndicator();
@@ -416,6 +423,7 @@ class ContactDesktopView extends StatelessWidget {
           },
         );
       },
+      ),
     );
   }
 }

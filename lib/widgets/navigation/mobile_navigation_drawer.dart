@@ -1,4 +1,3 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -14,14 +13,14 @@ class MobileNavigationDrawer extends StatelessWidget {
       width: MediaQuery.of(context).size.width, // Full Screen
       child: Stack(
         children: [
-          // 1. Heavy Blur Background
+          // 1. Background scrim. Was a BackdropFilter blur, but that filter
+          // fails to render under the Skwasm/WASM web renderer (see
+          // flutter/flutter#158128), leaving this fully opaque/black instead
+          // of blurred -- a plain tinted scrim avoids the bug entirely.
           Positioned.fill(
-            child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
-              child: Container(
-                color:
-                    Theme.of(context).scaffoldBackgroundColor.withValues(alpha: 0.9),
-              ),
+            child: Container(
+              color:
+                  Theme.of(context).scaffoldBackgroundColor.withValues(alpha: 0.97),
             ),
           ),
 

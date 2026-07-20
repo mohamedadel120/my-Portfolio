@@ -1,4 +1,3 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:visibility_detector/visibility_detector.dart';
@@ -144,27 +143,27 @@ class _AboutVisualBrandingState extends State<AboutVisualBranding>
     final angle = offsetAngle + (animValue * 2 * math.pi * speed);
     return Transform.translate(
       offset: Offset(radius * math.cos(angle), radius * math.sin(angle)),
+      // Was a BackdropFilter blur, but that filter fails to render under
+      // the Skwasm/WASM web renderer (flutter/flutter#158128), leaving
+      // these tags invisible instead of frosted-glass.
       child: ClipRRect(
         borderRadius: BorderRadius.circular(4),
-        child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-            decoration: BoxDecoration(
-              color: AppColors.surface.withValues(alpha: 0.2),
-              borderRadius: BorderRadius.circular(4),
-              border: Border.all(
-                color: AppColors.primary.withValues(alpha: 0.3),
-                width: 0.5,
-              ),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+          decoration: BoxDecoration(
+            color: AppColors.surface.withValues(alpha: 0.85),
+            borderRadius: BorderRadius.circular(4),
+            border: Border.all(
+              color: AppColors.primary.withValues(alpha: 0.3),
+              width: 0.5,
             ),
-            child: Text(
-              '<$text>',
-              style: GoogleFonts.spaceMono(
-                color: AppColors.primary,
-                fontSize: 10,
-                fontWeight: FontWeight.bold,
-              ),
+          ),
+          child: Text(
+            '<$text>',
+            style: GoogleFonts.spaceMono(
+              color: AppColors.primary,
+              fontSize: 10,
+              fontWeight: FontWeight.bold,
             ),
           ),
         ),

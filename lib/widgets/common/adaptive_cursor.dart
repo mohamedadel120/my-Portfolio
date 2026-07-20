@@ -1,4 +1,3 @@
-import 'dart:ui'; // For ImageFilter
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../../utils/device_utils.dart';
@@ -115,36 +114,36 @@ class _AdaptiveCursorState extends State<AdaptiveCursor> {
     // 4. "CLICK" Text Implementation
     if (type == CursorType.click) {
       final primary = Theme.of(context).colorScheme.primary;
+      // Was a BackdropFilter blur, but that filter fails to render under
+      // the Skwasm/WASM web renderer (flutter/flutter#158128), leaving
+      // this cursor invisible instead of frosted-glass.
       return ClipOval(
-        child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-          child: Container(
-            width: 80,
-            height: 80,
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              // Subtle glass background: mostly transparent with a hint of primary light
-              color: primary.withValues(alpha: 0.05),
-              boxShadow: [
-                // Soft outer glow
-                BoxShadow(
-                  color: primary.withValues(alpha: 0.2),
-                  blurRadius: 30,
-                  spreadRadius: 0,
-                ),
-              ],
-            ),
-            child: Material(
-              type: MaterialType.transparency,
-              child: Text(
-                "CLICK",
-                style: GoogleFonts.ibmPlexMono(
-                  fontSize: 12,
-                  fontWeight: FontWeight.bold,
-                  color: primary,
-                  letterSpacing: 2,
-                ),
+        child: Container(
+          width: 80,
+          height: 80,
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            // Subtle glass background: mostly transparent with a hint of primary light
+            color: primary.withValues(alpha: 0.05),
+            boxShadow: [
+              // Soft outer glow
+              BoxShadow(
+                color: primary.withValues(alpha: 0.2),
+                blurRadius: 30,
+                spreadRadius: 0,
+              ),
+            ],
+          ),
+          child: Material(
+            type: MaterialType.transparency,
+            child: Text(
+              "CLICK",
+              style: GoogleFonts.ibmPlexMono(
+                fontSize: 12,
+                fontWeight: FontWeight.bold,
+                color: primary,
+                letterSpacing: 2,
               ),
             ),
           ),
@@ -171,11 +170,10 @@ class _AdaptiveCursorState extends State<AdaptiveCursor> {
 
     // Apply Glassmorphism and Pulse only for pointer
     if (isPointer) {
+      // Was a BackdropFilter blur, but that filter fails to render under
+      // the Skwasm/WASM web renderer (flutter/flutter#158128).
       cursor = ClipOval(
-        child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-          child: cursor,
-        ),
+        child: cursor,
       )
           .animate(onPlay: (c) => c.repeat(reverse: true))
           .scaleXY(end: 1.1, duration: 1000.ms, curve: Curves.easeInOut);
