@@ -80,7 +80,8 @@ class AboutDesktopView extends StatelessWidget {
                   // two infinite loops would run for the whole session even
                   // while the user is scrolled far away.
                   if (!isLowSpec) ...[
-                    Builder(builder: (context) {
+                    Positioned.fill(
+                      child: Builder(builder: (context) {
                       final isNearViewport =
                           (scrollOffset - sectionStartOffset).abs() <
                               viewportHeight * 2;
@@ -132,7 +133,8 @@ class AboutDesktopView extends StatelessWidget {
                           ),
                         ],
                       );
-                    }),
+                      }),
+                    ),
                   ],
 
                   // Background Tech Grid
