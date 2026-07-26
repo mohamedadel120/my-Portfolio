@@ -1,0 +1,24 @@
+# Mohamed Adel — Flutter Developer Portfolio
+
+> Portfolio site for Mohamed Adel, a Flutter developer building cross-platform
+> mobile apps for iOS and Android.
+
+This is a single-page Flutter Web application built with the Skwasm (WASM)
+renderer. Most page content is painted to a canvas rather than emitted as
+plain HTML text, and project/experience/expertise data is fetched from
+Firestore at runtime — so a plain HTTP fetch of this URL will not return the
+visible content. Render the page with JavaScript/WebAssembly enabled to see
+it.
+
+## Sections
+
+- [Home](https://muhammed-adel.web.app/): Hero introduction and entry point to all sections below.
+- [About](https://muhammed-adel.web.app/about): Background and technical expertise.
+- [Experience](https://muhammed-adel.web.app/experience): Professional work history.
+- [Projects](https://muhammed-adel.web.app/projects): Case studies of shipped mobile apps.
+- [Contact](https://muhammed-adel.web.app/contact): Contact form and direct contact links.
+
+## Links
+
+- [GitHub](https://github.com/mohamedadel120)
+- [LinkedIn](https://www.linkedin.com/in/mohamed-adel/)
