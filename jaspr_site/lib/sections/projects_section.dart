@@ -1,18 +1,15 @@
 import 'package:jaspr/dom.dart';
 import 'package:jaspr/server.dart';
 
+import '../components/project_showcase.dart';
 import '../constants/theme.dart';
 import '../data/projects_repository.dart';
 
-/// Ported from `ProjectsDesktopView`/`StickyProjectShowcase`. The original
-/// is a scroll-driven "phone mockup" carousel with a stats dashboard —
-/// there's no Jaspr/HTML equivalent of that scroll-linked interaction (see
-/// the migration plan's Phase 3 note), so this is a CSS-grid card layout
-/// instead: same data (stats, tech chips, store/demo links, gallery
-/// images), read as plain markup rather than driven by scroll position.
-/// Decorative-only elements from the original (floating code shapes,
-/// terminal window, background tech grid) are dropped rather than ported —
-/// pure decoration with no content, consistent with dropping the
+/// Ported from `ProjectsDesktopView` — stats dashboard plus the scroll-driven
+/// phone-mockup showcase (see components/project_showcase.dart for how that
+/// part works). Decorative-only elements from the original (floating code
+/// shapes, terminal window, background tech grid) are dropped rather than
+/// ported — pure decoration with no content, consistent with dropping the
 /// always-on background animations elsewhere in this migration.
 class ProjectsSection extends AsyncStatelessComponent {
   const ProjectsSection({super.key});
@@ -33,9 +30,7 @@ class ProjectsSection extends AsyncStatelessComponent {
         div(classes: 'stat-divider', []),
         _statItem('code', stats.techStacks.toString(), 'Tech Stacks'),
       ]),
-      div(classes: 'project-grid', [
-        for (final (i, project) in projects.indexed) _projectCard(project, i),
-      ]),
+      StickyProjectShowcase(projects: [for (final p in projects) _toMap(p)]),
     ]);
   }
 
@@ -47,38 +42,17 @@ class ProjectsSection extends AsyncStatelessComponent {
     ]);
   }
 
-  Component _projectCard(ProjectItem project, int index) {
-    final accent = Color.value(project.color & 0xFFFFFF);
-    // Prefer the purpose-built cover image over a raw gallery screenshot —
-    // galleryImages are in-app screenshots (detail views, admin controls,
-    // etc.), not meant to stand alone as a card thumbnail.
-    final thumbnail = project.logoUrl ?? project.imageUrl ?? project.galleryImages?.firstOrNull;
-
-    return div(
-      classes: 'project-card reveal',
-      styles: Styles(raw: {'--accent': accent.value, 'transition-delay': '${index * 80}ms'}),
-      [
-        if (thumbnail != null) img(src: thumbnail, alt: project.title, classes: 'project-thumb'),
-        div(classes: 'project-body', [
-          h3(classes: 'project-title', [.text(project.title)]),
-          p(classes: 'project-description', [.text(project.description)]),
-          div(classes: 'project-tech', [
-            for (final tech in project.tech) span(classes: 'tech-chip', [.text(tech)]),
-          ]),
-          div(classes: 'project-footer', [
-            span(classes: 'project-downloads', [.text(project.downloads)]),
-            div(classes: 'project-links', [
-              if (project.androidStoreUrl != null)
-                a(href: project.androidStoreUrl!, classes: 'project-link', [.text('Android')]),
-              if (project.iosStoreUrl != null) a(href: project.iosStoreUrl!, classes: 'project-link', [.text('iOS')]),
-            ]),
-          ]),
-          if (project.videoUrl != null)
-            video(src: project.videoUrl!, controls: true, classes: 'project-video', []),
-        ]),
-      ],
-    );
-  }
+  Map<String, dynamic> _toMap(ProjectItem p) => {
+    'title': p.title,
+    'description': p.description,
+    'tech': p.tech,
+    'color': p.color,
+    'downloads': p.downloads,
+    'galleryImages': p.galleryImages,
+    'androidStoreUrl': p.androidStoreUrl,
+    'iosStoreUrl': p.iosStoreUrl,
+    'videoUrl': p.videoUrl,
+  };
 
   @css
   static List<StyleRule> get styles => [
@@ -90,7 +64,7 @@ class ProjectsSection extends AsyncStatelessComponent {
         display: Display.flex,
         justifyContent: JustifyContent.spaceAround,
         alignItems: AlignItems.center,
-        margin: Margin.only(top: 3.75.rem),
+        margin: Margin.only(top: 3.75.rem, bottom: 3.75.rem),
         padding: Padding.all(1.75.rem),
         radius: BorderRadius.circular(1.5.rem),
         border: Border.all(color: AppColors.primary.withValues(alpha: 0.3), width: 1.5.px),
@@ -123,85 +97,6 @@ class ProjectsSection extends AsyncStatelessComponent {
         fontFamily: FontFamily.list([FontFamily('JetBrains Mono'), FontFamilies.monospace]),
         fontSize: 0.8.rem,
       ),
-    ]),
-    css('.project-grid', [
-      css('&').styles(
-        display: Display.grid,
-        gridTemplate: GridTemplate(
-          columns: GridTracks([
-            GridTrack.repeat(TrackRepeat.autoFit, [GridTrack(TrackSize.minmax(TrackSize(20.rem), TrackSize.fr(1)))]),
-          ]),
-        ),
-        gap: Gap.all(2.rem),
-        margin: Margin.only(top: 4.rem),
-      ),
-    ]),
-    css('.project-card', [
-      css('&').styles(
-        display: Display.flex,
-        flexDirection: FlexDirection.column,
-        overflow: Overflow.hidden,
-        backgroundColor: AppColors.surface,
-        radius: BorderRadius.circular(1.25.rem),
-        border: Border.all(color: Color.variable('--accent').withValues(alpha: 0.3), width: 1.5.px),
-        transition: Transition('transform', duration: 200.ms),
-      ),
-      css('&:hover').styles(transform: Transform.translate(y: (-4).px)),
-    ]),
-    css('.project-thumb', [
-      css('&').styles(width: 100.percent, height: 12.rem, raw: {'object-fit': 'cover'}),
-    ]),
-    css('.project-body', [
-      css('&').styles(display: Display.flex, flexDirection: FlexDirection.column, gap: Gap.all(0.9.rem), padding: Padding.all(1.5.rem)),
-    ]),
-    css('.project-title', [
-      css('&').styles(
-        color: Color.variable('--accent'),
-        fontFamily: FontFamily.list([FontFamily('JetBrains Mono'), FontFamilies.monospace]),
-        fontSize: 1.4.rem,
-        fontWeight: FontWeight.w700,
-      ),
-    ]),
-    css('.project-description', [
-      css('&').styles(
-        color: AppColors.textSecondary,
-        fontFamily: FontFamily.list([FontFamily('JetBrains Mono'), FontFamilies.monospace]),
-        fontSize: 0.9.rem,
-        lineHeight: Unit.expression('1.6'),
-      ),
-    ]),
-    css('.project-tech', [
-      css('&').styles(display: Display.flex, flexWrap: FlexWrap.wrap, gap: Gap.all(0.5.rem)),
-      css('.tech-chip').styles(
-        color: AppColors.textSecondary,
-        fontFamily: FontFamily.list([FontFamily('Space Mono'), FontFamilies.monospace]),
-        fontSize: 0.7.rem,
-        padding: Padding.symmetric(horizontal: 0.6.rem, vertical: 0.3.rem),
-        radius: BorderRadius.circular(0.5.rem),
-        backgroundColor: Colors.white.withValues(alpha: 0.06),
-      ),
-    ]),
-    css('.project-footer', [
-      css('&').styles(display: Display.flex, justifyContent: JustifyContent.spaceBetween, alignItems: AlignItems.center),
-      css('.project-downloads').styles(
-        color: AppColors.textTertiary,
-        fontFamily: FontFamily.list([FontFamily('JetBrains Mono'), FontFamilies.monospace]),
-        fontSize: 0.8.rem,
-      ),
-    ]),
-    css('.project-links', [
-      css('&').styles(display: Display.flex, gap: Gap.all(1.rem)),
-      css('a').styles(
-        color: Color.variable('--accent'),
-        textDecoration: TextDecoration.none,
-        fontFamily: FontFamily.list([FontFamily('JetBrains Mono'), FontFamilies.monospace]),
-        fontSize: 0.8.rem,
-        fontWeight: FontWeight.w600,
-      ),
-      css('a:hover').styles(textDecoration: TextDecoration(line: TextDecorationLine.underline)),
-    ]),
-    css('.project-video', [
-      css('&').styles(width: 100.percent, radius: BorderRadius.circular(0.75.rem)),
     ]),
   ];
 }

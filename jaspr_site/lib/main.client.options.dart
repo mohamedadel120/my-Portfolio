@@ -9,6 +9,8 @@ import 'package:jaspr/client.dart';
 import 'package:jaspr_site/components/contact_form.dart'
     deferred as _contact_form;
 import 'package:jaspr_site/components/header.dart' deferred as _header;
+import 'package:jaspr_site/components/project_showcase.dart'
+    deferred as _project_showcase;
 import 'package:jaspr_site/components/scroll_reveal.dart'
     deferred as _scroll_reveal;
 
@@ -39,6 +41,14 @@ ClientOptions get defaultClientOptions => ClientOptions(
     'header': ClientLoader(
       (p) => _header.Header(),
       loader: _header.loadLibrary,
+    ),
+    'project_showcase': ClientLoader(
+      (p) => _project_showcase.StickyProjectShowcase(
+        projects: (p['projects'] as List<Object?>)
+            .map((i) => (i as Map<String, Object?>))
+            .toList(),
+      ),
+      loader: _project_showcase.loadLibrary,
     ),
     'scroll_reveal': ClientLoader(
       (p) => _scroll_reveal.ScrollReveal(),

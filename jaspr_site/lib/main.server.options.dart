@@ -7,6 +7,8 @@
 import 'package:jaspr/server.dart';
 import 'package:jaspr_site/components/contact_form.dart' as _contact_form;
 import 'package:jaspr_site/components/header.dart' as _header;
+import 'package:jaspr_site/components/project_showcase.dart'
+    as _project_showcase;
 import 'package:jaspr_site/components/scroll_reveal.dart' as _scroll_reveal;
 import 'package:jaspr_site/constants/theme.dart' as _theme;
 import 'package:jaspr_site/sections/about_section.dart' as _about_section;
@@ -42,6 +44,11 @@ ServerOptions get defaultServerOptions => ServerOptions(
       params: __contact_formContactForm,
     ),
     _header.Header: ClientTarget<_header.Header>('header'),
+    _project_showcase.StickyProjectShowcase:
+        ClientTarget<_project_showcase.StickyProjectShowcase>(
+          'project_showcase',
+          params: __project_showcaseStickyProjectShowcase,
+        ),
     _scroll_reveal.ScrollReveal: ClientTarget<_scroll_reveal.ScrollReveal>(
       'scroll_reveal',
     ),
@@ -50,6 +57,7 @@ ServerOptions get defaultServerOptions => ServerOptions(
     ..._theme.styles,
     ..._contact_form.ContactForm.styles,
     ..._header.Header.styles,
+    ..._project_showcase.StickyProjectShowcase.styles,
     ..._about_section.AboutSection.styles,
     ..._contact_section.ContactSection.styles,
     ..._experience_section.ExperienceSection.styles,
@@ -62,3 +70,6 @@ ServerOptions get defaultServerOptions => ServerOptions(
 Map<String, Object?> __contact_formContactForm(_contact_form.ContactForm c) => {
   'recipientEmail': c.recipientEmail,
 };
+Map<String, Object?> __project_showcaseStickyProjectShowcase(
+  _project_showcase.StickyProjectShowcase c,
+) => {'projects': c.projects};
