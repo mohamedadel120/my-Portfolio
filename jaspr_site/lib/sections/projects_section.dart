@@ -49,7 +49,10 @@ class ProjectsSection extends AsyncStatelessComponent {
 
   Component _projectCard(ProjectItem project, int index) {
     final accent = Color.value(project.color & 0xFFFFFF);
-    final thumbnail = project.logoUrl ?? project.galleryImages?.firstOrNull ?? project.imageUrl;
+    // Prefer the purpose-built cover image over a raw gallery screenshot —
+    // galleryImages are in-app screenshots (detail views, admin controls,
+    // etc.), not meant to stand alone as a card thumbnail.
+    final thumbnail = project.logoUrl ?? project.imageUrl ?? project.galleryImages?.firstOrNull;
 
     return div(
       classes: 'project-card reveal',
