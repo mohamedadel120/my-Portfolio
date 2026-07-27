@@ -15,17 +15,21 @@ jobs:
       - name: Checkout 🛎️
         uses: actions/checkout@v4
 
-      - name: Setup Flutter 🛠️
-        uses: subosito/flutter-action@v2
+      - name: Setup Dart 🛠️
+        uses: dart-lang/setup-dart@v1
         with:
-          channel: "stable"
-          flutter-version: "3.41.2"
+          sdk: stable
+
+      - name: Activate Jaspr CLI 📦
+        run: dart pub global activate jaspr_cli
 
       - name: Install dependencies 📦
-        run: flutter pub get
+        working-directory: jaspr_site
+        run: dart pub get
 
-      - name: Build Web 🏗️
-        run: flutter build web --release --wasm --base-href="/"
+      - name: Build Jaspr site 🏗️
+        working-directory: jaspr_site
+        run: dart pub global run jaspr_cli:jaspr build --sitemap-domain=https://muhammed-adel.web.app
 
       - name: Deploy to Firebase Hosting 🚀
         uses: FirebaseExtended/action-hosting-deploy@v0

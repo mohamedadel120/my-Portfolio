@@ -6,6 +6,9 @@
 # Conventional directory for build output.
 /build/
 
+# Firebase CLI local cache
+.firebase/
+
 # Miscellaneous
 *.class
 *.log

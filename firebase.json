@@ -4,22 +4,9 @@
   },
   "hosting": {
     "site": "muhammed-adel",
-    "public": "build/web",
+    "public": "jaspr_site/build/jaspr",
     "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
-    "rewrites": [
-      {
-        "source": "**",
-        "destination": "/index.html"
-      }
-    ],
     "headers": [
-      {
-        "source": "**",
-        "headers": [
-          { "key": "Cross-Origin-Opener-Policy", "value": "same-origin" },
-          { "key": "Cross-Origin-Embedder-Policy", "value": "credentialless" }
-        ]
-      },
       {
         "source": "**/*.@(png|webp|jpg|jpeg|svg|ico|ttf|otf|mp4)",
         "headers": [
@@ -27,7 +14,7 @@
         ]
       },
       {
-        "source": "**/*.@(js|mjs|wasm)",
+        "source": "**/*.@(js|mjs)",
         "headers": [
           { "key": "Cache-Control", "value": "public, max-age=3600" }
         ]
