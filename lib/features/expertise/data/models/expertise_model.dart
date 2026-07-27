@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import '../../domain/entities/expertise_entity.dart';
 import '../../../../utils/icon_mapper.dart';
 
@@ -6,13 +5,13 @@ class ExpertiseModel extends Expertise {
   const ExpertiseModel({
     required super.title,
     required super.description,
-    required super.icon,
+    required super.iconKey,
     super.color,
   });
 
   factory ExpertiseModel.fromJson(Map<String, dynamic> json) {
     final rawIcon = json['icon'];
-    int iconCode = Icons.star.codePoint;
+    int iconCode = 0; // falls through to the 'star' default in iconKeyFromCodePoint
     if (rawIcon is int) {
       iconCode = rawIcon;
     } else if (rawIcon is String) {
@@ -24,23 +23,21 @@ class ExpertiseModel extends Expertise {
     }
 
     final rawColor = json['color'];
-    Color? colorValue;
+    int? colorValue;
     if (rawColor is int) {
-      colorValue = Color(rawColor);
+      colorValue = rawColor;
     } else if (rawColor is String) {
       if (rawColor.startsWith('0x') || rawColor.startsWith('0X')) {
-        final parsed = int.tryParse(rawColor.substring(2), radix: 16);
-        if (parsed != null) colorValue = Color(parsed);
+        colorValue = int.tryParse(rawColor.substring(2), radix: 16);
       } else {
-        final parsed = int.tryParse(rawColor);
-        if (parsed != null) colorValue = Color(parsed);
+        colorValue = int.tryParse(rawColor);
       }
     }
 
     return ExpertiseModel(
       title: json['title'] ?? '',
       description: json['description'] ?? '',
-      icon: iconFromCodePoint(iconCode),
+      iconKey: iconKeyFromCodePoint(iconCode),
       color: colorValue,
     );
   }
@@ -49,8 +46,8 @@ class ExpertiseModel extends Expertise {
     return {
       'title': title,
       'description': description,
-      'icon': icon.codePoint,
-      'color': color?.value,
+      'icon': iconKey,
+      'color': color,
     };
   }
 }

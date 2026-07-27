@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../features/projects/domain/entities/project_entity.dart';
+import 'project_color.dart';
 import '../project_image_gallery.dart';
 
 class ProjectActionButton extends StatelessWidget {
@@ -28,8 +29,8 @@ class ProjectActionButton extends StatelessWidget {
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [
-                project.color.withValues(alpha: 0.3),
-                project.color.withValues(alpha: 0.0),
+                project.uiColor.withValues(alpha: 0.3),
+                project.uiColor.withValues(alpha: 0.0),
               ],
             ),
           ),
@@ -44,7 +45,7 @@ class ProjectActionButton extends StatelessWidget {
                 builder: (context) => ProjectImageGallery(
                   images: project.galleryImages!,
                   projectTitle: project.title,
-                  projectColor: project.color,
+                  projectColor: project.uiColor,
                 ),
               );
             }
@@ -59,7 +60,7 @@ class ProjectActionButton extends StatelessWidget {
               ),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  colors: [project.color, project.color.withValues(alpha: 0.8)],
+                  colors: [project.uiColor, project.uiColor.withValues(alpha: 0.8)],
                 ),
                 borderRadius: BorderRadius.circular(12),
                 boxShadow: [

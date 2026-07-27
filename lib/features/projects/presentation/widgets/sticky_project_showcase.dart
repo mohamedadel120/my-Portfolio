@@ -9,6 +9,7 @@ import '../../../../utils/url_launcher_utils.dart';
 import '../../../../widgets/common/magnetic_button.dart';
 import '../../../../widgets/common/phone_frame.dart';
 import '../../domain/entities/project_entity.dart';
+import '../../../../widgets/common/project_widgets/project_color.dart';
 import '../../../../widgets/common/project_video_player.dart';
 import '../../../../injection_container.dart' as di;
 import '../../../../core/services/analytics_service.dart';
@@ -275,7 +276,7 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
                                                   .scaffoldBackgroundColor,
                                               widget
                                                   .projects[_activeProjectIndex]
-                                                  .color,
+                                                  .uiColor,
                                               0.15,
                                             )!,
                                             Theme.of(context)
@@ -434,7 +435,7 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
     } else {
       key = Key('${project.title}-logo');
       content = Container(
-        color: project.color,
+        color: project.uiColor,
         alignment: Alignment.center,
         child: Icon(
           Icons.layers_outlined,

@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../../../../widgets/common/gsap_stagger_animation.dart';
 import '../../../../widgets/common/adaptive_cursor.dart';
+import '../../../../utils/icon_mapper.dart';
 import '../../domain/entities/expertise_entity.dart';
 
 class ExpertiseCard extends StatefulWidget {
@@ -162,7 +163,7 @@ class _ExpertiseCardState extends State<ExpertiseCard> {
                                         ),
                                       ),
                                       child: Icon(
-                                        widget.expertise.icon,
+                                        iconDataFromKey(widget.expertise.iconKey),
                                         size: 48,
                                         color: primaryColor,
                                       ),

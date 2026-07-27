@@ -1,0 +1,21 @@
+{
+  "hosting": {
+    "site": "muhammed-adel",
+    "public": "build/jaspr",
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "headers": [
+      {
+        "source": "**/*.@(png|webp|jpg|jpeg|svg|ico|ttf|otf|mp4)",
+        "headers": [
+          { "key": "Cache-Control", "value": "public, max-age=2592000, immutable" }
+        ]
+      },
+      {
+        "source": "**/*.@(js|mjs)",
+        "headers": [
+          { "key": "Cache-Control", "value": "public, max-age=3600" }
+        ]
+      }
+    ]
+  }
+}

@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import '../../domain/entities/project_entity.dart';
 import '../../../../gen/assets.gen.dart';
 
@@ -27,7 +26,7 @@ class ProjectLocalDataSourceImpl implements ProjectLocalDataSource {
         'Clean Code',
         'CI/CD'
       ],
-      color: Color(0xFFFFD700), // Gold color
+      color: 0xFFFFD700, // Gold color
       downloads: 'Coming Soon',
       logoUrl:
           'assets/images/hi_gold/image1.webp', // Using copied image as logo for now
@@ -52,7 +51,7 @@ class ProjectLocalDataSourceImpl implements ProjectLocalDataSource {
         'Clean Architecture',
         'Payment Gateway',
       ],
-      color: const Color(0xFF00D9FF),
+      color: 0xFF00D9FF,
       downloads: '10,000+',
       logoUrl: Assets.images.gomla.logo.path,
       galleryImages: [
@@ -76,7 +75,7 @@ class ProjectLocalDataSourceImpl implements ProjectLocalDataSource {
         'Clean Architecture',
         'REST APIs'
       ],
-      color: const Color(0xFF7B2CBF),
+      color: 0xFF7B2CBF,
       downloads: '10,000+',
       logoUrl: Assets.images.stock.logo.path,
       galleryImages: [
@@ -105,7 +104,7 @@ class ProjectLocalDataSourceImpl implements ProjectLocalDataSource {
         'Clean Architecture',
         'REST APIs'
       ],
-      color: const Color(0xFF00D9FF),
+      color: 0xFF00D9FF,
       downloads: 'Active Development',
       logoUrl: Assets.images.paletta.logo.path,
       galleryImages: [
@@ -128,7 +127,7 @@ class ProjectLocalDataSourceImpl implements ProjectLocalDataSource {
       tech: const ['Flutter', 'Firebase', 'Bloc', 'SQLite', 'Hive'],
       androidStoreUrl:
           'https://play.google.com/store/apps/details?id=com.app.drugza',
-      color: const Color(0xFF00D9FF),
+      color: 0xFF00D9FF,
       videoUrl: Assets.videos.drugzaDemo,
       downloads: 'High Engagement',
     ),
@@ -137,7 +136,7 @@ class ProjectLocalDataSourceImpl implements ProjectLocalDataSource {
       description:
           'An advanced wholesale e-commerce platform designed for bulk trading operations. Integrated comprehensive shipment tracking and streamlined checkout processes to dramatically improve business efficiency. The solution delivered impressive results: a 60% boost in sales performance and 40% improvement in operational speed.',
       tech: ['Flutter', 'Firebase', 'Bloc', 'REST APIs', 'E-commerce'],
-      color: Color(0xFF7B2CBF),
+      color: 0xFF7B2CBF,
       downloads: '90% Enhancement',
     ),
     Project(
@@ -145,7 +144,7 @@ class ProjectLocalDataSourceImpl implements ProjectLocalDataSource {
       description:
           'A comprehensive Learning Management System (LMS) designed to revolutionize the educational experience. Features interactive learning modules, real-time progress tracking, and dedicated parent portal for monitoring student performance. The platform simplifies education management while providing complete control and transparency for all stakeholders.',
       tech: const ['Flutter', 'Firebase', 'Bloc', 'LMS', 'Parent Control'],
-      color: const Color(0xFF00D9FF),
+      color: 0xFF00D9FF,
       downloads: 'LMS Platform',
       logoUrl: Assets.images.adruse.login.path,
       galleryImages: [
@@ -178,7 +177,7 @@ class ProjectLocalDataSourceImpl implements ProjectLocalDataSource {
       ],
       androidStoreUrl:
           'https://play.google.com/store/apps/details?id=com.albatal.alba',
-      color: const Color(0xFF7B2CBF),
+      color: 0xFF7B2CBF,
       downloads: '5,000+',
       galleryImages: [
         Assets.images.albatal.image1.path,

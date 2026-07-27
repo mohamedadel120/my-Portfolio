@@ -1,15 +1,13 @@
-import 'package:flutter/material.dart';
-
 class WhyChooseMeReason {
   final String title;
   final String description;
-  final IconData icon;
-  final Color color;
+  final String iconKey;
+  final int color;
 
   const WhyChooseMeReason({
     required this.title,
     required this.description,
-    required this.icon,
+    required this.iconKey,
     required this.color,
   });
 }

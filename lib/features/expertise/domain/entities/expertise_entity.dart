@@ -1,19 +1,18 @@
-import 'package:flutter/material.dart';
 import 'package:equatable/equatable.dart';
 
 class Expertise extends Equatable {
   final String title;
   final String description;
-  final IconData icon;
-  final Color? color;
+  final String iconKey;
+  final int? color;
 
   const Expertise({
     required this.title,
     required this.description,
-    required this.icon,
+    required this.iconKey,
     this.color,
   });
 
   @override
-  List<Object?> get props => [title, description, icon, color];
+  List<Object?> get props => [title, description, iconKey, color];
 }

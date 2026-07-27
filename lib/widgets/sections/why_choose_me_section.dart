@@ -11,6 +11,7 @@ import '../common/tech_grid_background.dart';
 import '../common/scroll_speed_widget.dart';
 import '../common/gsap_stagger_animation.dart';
 import '../../utils/device_utils.dart';
+import '../../utils/icon_mapper.dart';
 
 class WhyChooseMeSection extends StatelessWidget {
   final ValueListenable<double> scrollOffsetListenable;
@@ -206,6 +207,7 @@ class _WhyChooseMeCardState extends State<_WhyChooseMeCard> {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final isXS = DeviceUtils.isExtraSmall(screenWidth);
+    final reasonColor = Color(widget.reason.color as int);
 
     return MouseRegion(
       onEnter: (_) => setState(() => _isHovered = true),
@@ -221,22 +223,22 @@ class _WhyChooseMeCardState extends State<_WhyChooseMeCard> {
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
-              widget.reason.color.withValues(alpha: 0.12),
-              widget.reason.color.withValues(alpha: 0.06),
+              reasonColor.withValues(alpha: 0.12),
+              reasonColor.withValues(alpha: 0.06),
               Theme.of(context).colorScheme.surface.withValues(alpha: 0.9),
             ],
             stops: const [0.0, 0.5, 1.0],
           ),
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color: widget.reason.color.withValues(
+            color: reasonColor.withValues(
               alpha: _isHovered ? 0.5 : 0.25,
             ),
             width: _isHovered ? 2 : 1.5,
           ),
           boxShadow: [
             BoxShadow(
-              color: widget.reason.color.withValues(
+              color: reasonColor.withValues(
                 alpha: _isHovered ? 0.3 : 0.12,
               ),
               blurRadius: _isHovered ? 30 : 20,
@@ -258,19 +260,19 @@ class _WhyChooseMeCardState extends State<_WhyChooseMeCard> {
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
-                    widget.reason.color.withValues(alpha: 0.3),
-                    widget.reason.color.withValues(alpha: 0.15),
+                    reasonColor.withValues(alpha: 0.3),
+                    reasonColor.withValues(alpha: 0.15),
                   ],
                 ),
                 borderRadius: BorderRadius.circular(14),
                 border: Border.all(
-                  color: widget.reason.color.withValues(alpha: 0.4),
+                  color: reasonColor.withValues(alpha: 0.4),
                   width: 1.5,
                 ),
               ),
               child: Icon(
-                widget.reason.icon,
-                color: widget.reason.color,
+                iconDataFromKey(widget.reason.iconKey),
+                color: reasonColor,
                 size: isXS ? 24 : (widget.isMobile ? 28 : 32),
               ),
             ),

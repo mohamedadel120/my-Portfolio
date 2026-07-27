@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../features/projects/domain/entities/project_entity.dart';
+import 'project_color.dart';
 
 class ProjectHeader extends StatelessWidget {
   final Project project;
@@ -64,13 +65,13 @@ class ProjectHeader extends StatelessWidget {
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
-                    project.color.withValues(alpha: 0.2),
-                    project.color.withValues(alpha: 0.1),
+                    project.uiColor.withValues(alpha: 0.2),
+                    project.uiColor.withValues(alpha: 0.1),
                   ],
                 ),
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(
-                  color: project.color.withValues(alpha: 0.3),
+                  color: project.uiColor.withValues(alpha: 0.3),
                   width: 1,
                 ),
               ),
@@ -85,7 +86,7 @@ class ProjectHeader extends StatelessWidget {
                               fit: BoxFit.contain,
                               errorBuilder: (context, error, stackTrace) =>
                                   _DefaultLogoIcon(
-                                color: project.color,
+                                color: project.uiColor,
                                 size: fontSize,
                               ),
                             )
@@ -96,7 +97,7 @@ class ProjectHeader extends StatelessWidget {
                               fit: BoxFit.contain,
                               errorBuilder: (context, error, stackTrace) =>
                                   _DefaultLogoIcon(
-                                color: project.color,
+                                color: project.uiColor,
                                 size: fontSize,
                               ),
                             ),
@@ -106,7 +107,7 @@ class ProjectHeader extends StatelessWidget {
                       child: Material(
                         color: Colors.transparent,
                         child: _DefaultLogoIcon(
-                          color: project.color,
+                          color: project.uiColor,
                           size: fontSize,
                         ),
                       ),
@@ -117,26 +118,26 @@ class ProjectHeader extends StatelessWidget {
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
-                    project.color.withValues(alpha: 0.2),
-                    project.color.withValues(alpha: 0.1),
+                    project.uiColor.withValues(alpha: 0.2),
+                    project.uiColor.withValues(alpha: 0.1),
                   ],
                 ),
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(
-                  color: project.color.withValues(alpha: 0.3),
+                  color: project.uiColor.withValues(alpha: 0.3),
                   width: 1,
                 ),
               ),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(Icons.download_rounded, size: 14, color: project.color),
+                  Icon(Icons.download_rounded, size: 14, color: project.uiColor),
                   const SizedBox(width: 4),
                   Text(
                     project.downloads,
                     style: GoogleFonts.jetBrainsMono(
                       fontSize: 11,
-                      color: project.color,
+                      color: project.uiColor,
                       fontWeight: FontWeight.w700,
                     ),
                   ),

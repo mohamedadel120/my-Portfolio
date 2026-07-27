@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../../../features/projects/domain/entities/project_entity.dart';
 import '../../../core/constants/app_colors.dart';
+import 'project_color.dart';
 import '../project_image_gallery.dart';
 
 class ProjectGallery extends StatefulWidget {
@@ -170,7 +171,7 @@ class _ProjectGalleryState extends State<ProjectGallery>
           builder: (context) => ProjectImageGallery(
             images: widget.project.galleryImages!,
             projectTitle: widget.project.title,
-            projectColor: widget.project.color,
+            projectColor: widget.project.uiColor,
           ),
         );
       },
@@ -187,7 +188,7 @@ class _ProjectGalleryState extends State<ProjectGallery>
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
             border: Border.all(
-              color: widget.project.color.withValues(
+              color: widget.project.uiColor.withValues(
                 alpha: widget.isHovered ? 0.4 : 0.25,
               ),
               width: widget.isHovered ? 1.5 : 1,
@@ -269,7 +270,7 @@ class _ProjectGalleryState extends State<ProjectGallery>
                                           child: Icon(
                                             Icons.broken_image_rounded,
                                             size: 30,
-                                            color: widget.project.color
+                                            color: widget.project.uiColor
                                                 .withValues(alpha: 0.5),
                                           ),
                                         ),
@@ -285,7 +286,7 @@ class _ProjectGalleryState extends State<ProjectGallery>
                                           child: Icon(
                                             Icons.broken_image_rounded,
                                             size: 30,
-                                            color: widget.project.color
+                                            color: widget.project.uiColor
                                                 .withValues(alpha: 0.5),
                                           ),
                                         ),
@@ -321,7 +322,7 @@ class _ProjectGalleryState extends State<ProjectGallery>
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: widget.project.color.withValues(
+          color: widget.project.uiColor.withValues(
             alpha: widget.isHovered ? 0.4 : 0.25,
           ),
           width: widget.isHovered ? 1.5 : 1,
@@ -349,7 +350,7 @@ class _ProjectGalleryState extends State<ProjectGallery>
                     end: Alignment.bottomRight,
                     colors: [
                       AppColors.background,
-                      widget.project.color.withValues(alpha: 0.05),
+                      widget.project.uiColor.withValues(alpha: 0.05),
                     ],
                   ),
                 ),
@@ -361,7 +362,7 @@ class _ProjectGalleryState extends State<ProjectGallery>
                           width: double.infinity,
                           height: double.infinity,
                           errorBuilder: (context, error, stackTrace) =>
-                              _ErrorPlaceholder(color: widget.project.color),
+                              _ErrorPlaceholder(color: widget.project.uiColor),
                         )
                       : Image.asset(
                           widget.project.logoUrl!,
@@ -369,7 +370,7 @@ class _ProjectGalleryState extends State<ProjectGallery>
                           width: double.infinity,
                           height: double.infinity,
                           errorBuilder: (context, error, stackTrace) =>
-                              _ErrorPlaceholder(color: widget.project.color),
+                              _ErrorPlaceholder(color: widget.project.uiColor),
                         ),
                 ),
               )
@@ -380,11 +381,11 @@ class _ProjectGalleryState extends State<ProjectGallery>
                   widget.project.imageUrl!,
                   fit: BoxFit.cover,
                   errorBuilder: (context, error, stackTrace) =>
-                      _ErrorPlaceholder(color: widget.project.color),
+                      _ErrorPlaceholder(color: widget.project.uiColor),
                   loadingBuilder: (context, child, loadingProgress) {
                     if (loadingProgress == null) return child;
                     return _LoadingPlaceholder(
-                      color: widget.project.color,
+                      color: widget.project.uiColor,
                       progress: loadingProgress,
                     );
                   },
@@ -398,7 +399,7 @@ class _ProjectGalleryState extends State<ProjectGallery>
                   end: Alignment.bottomCenter,
                   colors: [
                     Colors.transparent,
-                    widget.project.color.withValues(
+                    widget.project.uiColor.withValues(
                       alpha: widget.isHovered ? 0.15 : 0,
                     ),
                   ],

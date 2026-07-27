@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../features/projects/domain/entities/project_entity.dart';
+import 'project_widgets/project_color.dart';
 import 'project_widgets/project_header.dart';
 import 'project_widgets/project_gallery.dart';
 import 'project_widgets/project_info.dart';
@@ -126,7 +127,7 @@ class _ProjectCardState extends State<ProjectCard>
                   color: AppColors.surface,
                   borderRadius: BorderRadius.circular(24),
                   border: Border.all(
-                    color: widget.project.color.withValues(alpha: 
+                    color: widget.project.uiColor.withValues(alpha: 
                       _isHovered ? 0.6 : 0.2,
                     ),
                     width: _isHovered ? 2 : 1.5,
@@ -134,7 +135,7 @@ class _ProjectCardState extends State<ProjectCard>
                   boxShadow: [
                     // Dynamic shadow acting as light source
                     BoxShadow(
-                      color: widget.project.color.withValues(alpha: 
+                      color: widget.project.uiColor.withValues(alpha: 
                         _isHovered ? 0.2 : 0.05,
                       ),
                       blurRadius: _isHovered ? 30 : 20,

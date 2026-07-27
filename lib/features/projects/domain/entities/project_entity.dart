@@ -1,11 +1,10 @@
-import 'package:flutter/material.dart';
 import 'package:equatable/equatable.dart';
 
 class Project extends Equatable {
   final String title;
   final String description;
   final List<String> tech;
-  final Color color;
+  final int color;
   final String downloads;
   final String? imageUrl;
   final String? logoUrl;

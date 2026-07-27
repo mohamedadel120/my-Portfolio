@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../features/projects/domain/entities/project_entity.dart';
 import '../../../core/constants/app_colors.dart';
+import 'project_color.dart';
 
 class ProjectInfo extends StatelessWidget {
   final Project project;
@@ -27,7 +28,7 @@ class ProjectInfo extends StatelessWidget {
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
-                  colors: [project.color, project.color.withValues(alpha: 0.5)],
+                  colors: [project.uiColor, project.uiColor.withValues(alpha: 0.5)],
                 ),
                 borderRadius: BorderRadius.circular(2),
               ),
@@ -68,7 +69,7 @@ class ProjectInfo extends StatelessWidget {
               .map(
                 (tech) => _TechTag(
                   label: tech,
-                  color: project.color,
+                  color: project.uiColor,
                   isMobile: isMobile,
                 ),
               )
