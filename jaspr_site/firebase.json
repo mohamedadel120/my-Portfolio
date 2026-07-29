@@ -15,6 +15,36 @@
         "headers": [
           { "key": "Cache-Control", "value": "public, no-cache" }
         ]
+      },
+      {
+        "source": "**/*.html",
+        "headers": [
+          { "key": "Cache-Control", "value": "public, no-cache" }
+        ]
+      },
+      {
+        "source": "/",
+        "headers": [
+          { "key": "Cache-Control", "value": "public, no-cache" }
+        ]
+      },
+      {
+        "source": "/about",
+        "headers": [
+          { "key": "Cache-Control", "value": "public, no-cache" }
+        ]
+      },
+      {
+        "source": "/projects",
+        "headers": [
+          { "key": "Cache-Control", "value": "public, no-cache" }
+        ]
+      },
+      {
+        "source": "/contact",
+        "headers": [
+          { "key": "Cache-Control", "value": "public, no-cache" }
+        ]
       }
     ]
   }

@@ -73,12 +73,32 @@ class ProjectsSection extends AsyncStatelessComponent {
               '${AppColors.secondary.withValues(alpha: 0.1).value} 50%, ${AppColors.surface.withValues(alpha: 0.9).value})',
         },
       ),
+      // Plain flex with no wrap squeezed all 4 columns into one row
+      // regardless of width, so on narrow viewports the numbers/labels ran
+      // into each other instead of shrinking gracefully.
+      css.media(MediaQuery.screen(maxWidth: Breakpoints.mobile.px), [
+        css('&').styles(
+          flexWrap: FlexWrap.wrap,
+          justifyContent: JustifyContent.center,
+          gap: Gap.all(1.75.rem),
+        ),
+      ]),
     ]),
     css('.stat-divider', [
       css('&').styles(width: 1.px, height: 3.rem, backgroundColor: AppColors.primary.withValues(alpha: 0.3)),
+      // Vertical dividers between columns don't make sense once the layout
+      // wraps into a grid instead of a single row.
+      css.media(MediaQuery.screen(maxWidth: Breakpoints.mobile.px), [
+        css('&').styles(display: Display.none),
+      ]),
     ]),
     css('.stat-item', [
       css('&').styles(display: Display.flex, flexDirection: FlexDirection.column, alignItems: AlignItems.center, gap: Gap.all(0.4.rem)),
+      css.media(MediaQuery.screen(maxWidth: Breakpoints.mobile.px), [
+        // Two clean columns instead of whatever widths 4 unconstrained
+        // flex items happen to wrap into.
+        css('&').styles(raw: {'flex': '0 0 calc(50% - 0.875rem)'}),
+      ]),
       css('.stat-icon').styles(
         color: AppColors.primary,
         fontSize: 1.75.rem,

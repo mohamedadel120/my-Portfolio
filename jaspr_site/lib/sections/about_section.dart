@@ -65,7 +65,7 @@ class AboutSection extends AsyncStatelessComponent {
           [
           h3(classes: 'bento-title', [.text('Proficiency')]),
           div(classes: 'skill-list', [
-            for (final skill in about.skills)
+            for (final (i, skill) in about.skills.indexed)
               div(classes: 'skill', [
                 div(classes: 'skill-header', [
                   span([.text(skill.name)]),
@@ -74,7 +74,14 @@ class AboutSection extends AsyncStatelessComponent {
                 div(classes: 'skill-track', [
                   div(
                     classes: skill.isPrimary ? 'skill-fill primary' : 'skill-fill secondary',
-                    styles: Styles(width: (skill.progress * 100).percent),
+                    // The actual width is only reached once the bento tile's
+                    // .reveal.revealed class lands (see .skill-fill CSS) --
+                    // staggered per bar so they cascade in rather than all
+                    // filling in lockstep.
+                    styles: Styles(raw: {
+                      '--target-width': '${(skill.progress * 100).round()}%',
+                      'transition-delay': '${i * 100}ms',
+                    }),
                     [],
                   ),
                 ]),
@@ -111,6 +118,12 @@ class AboutSection extends AsyncStatelessComponent {
         border: Border.all(color: AppColors.textPrimary.withValues(alpha: 0.08), width: 1.px),
         radius: BorderRadius.circular(1.25.rem),
         padding: Padding.all(2.rem),
+        raw: {'transition': 'transform 250ms ease, border-color 250ms ease, box-shadow 250ms ease'},
+      ),
+      css('&:hover').styles(
+        transform: Transform.translate(y: (-4).px),
+        border: Border.all(color: AppColors.primary.withValues(alpha: 0.3), width: 1.px),
+        raw: {'box-shadow': '0 15px 35px -12px ${AppColors.primary.withValues(alpha: 0.25).value}'},
       ),
       css('.bento-title').styles(
         color: AppColors.primary,
@@ -168,6 +181,11 @@ class AboutSection extends AsyncStatelessComponent {
         backgroundColor: Colors.white.withValues(alpha: 0.03),
         radius: BorderRadius.circular(1.rem),
         padding: Padding.all(1.rem),
+        raw: {'transition': 'transform 200ms ease, background-color 200ms ease'},
+      ),
+      css('.feature-card:hover').styles(
+        backgroundColor: Colors.white.withValues(alpha: 0.07),
+        transform: Transform.translate(y: (-3).px),
       ),
       css('.feature-icon').styles(color: AppColors.primary, fontSize: 1.25.rem),
       css('.feature-title').styles(
@@ -200,9 +218,20 @@ class AboutSection extends AsyncStatelessComponent {
         radius: BorderRadius.circular(3.px),
         overflow: Overflow.hidden,
       ),
-      css('.skill-fill').styles(height: 100.percent, radius: BorderRadius.circular(3.px)),
+      // Starts at 0 and only grows to its real value once the bento tile's
+      // .reveal.revealed class lands (IntersectionObserver-driven, see
+      // components/scroll_reveal.dart) -- same on-scroll-into-view trigger
+      // used for every other reveal animation on the site, in place of the
+      // original Flutter version's scroll-linked AnimationController.
+      css('.skill-fill').styles(
+        height: 100.percent,
+        width: Unit.zero,
+        radius: BorderRadius.circular(3.px),
+        raw: {'transition': 'width 1000ms ease'},
+      ),
       css('.skill-fill.primary').styles(backgroundColor: AppColors.primary),
       css('.skill-fill.secondary').styles(backgroundColor: AppColors.secondary),
     ]),
+    css('.reveal.revealed .skill-fill').styles(width: Unit.expression('var(--target-width)')),
   ];
 }

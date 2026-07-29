@@ -21,7 +21,9 @@ import '../constants/theme.dart';
 /// changes later.
 @client
 class Header extends StatefulComponent {
-  const Header({super.key});
+  final String cvUrl;
+
+  const Header({super.key, required this.cvUrl});
 
   @override
   State<Header> createState() => _HeaderState();
@@ -51,6 +53,13 @@ class Header extends StatefulComponent {
           margin: Margin.symmetric(horizontal: Unit.auto),
         ),
       ]),
+      css('.nav-logo', [
+        css('&').styles(raw: {'transition': 'filter 250ms ease, transform 250ms ease'}),
+        css('&:hover').styles(
+          transform: Transform.scale(1.08),
+          raw: {'filter': 'drop-shadow(0 0 10px ${AppColors.primary.withValues(alpha: 0.6).value})'},
+        ),
+      ]),
       css('.nav-logo img', [
         css('&').styles(height: 2.5.rem),
       ]),
@@ -63,13 +72,14 @@ class Header extends StatefulComponent {
         css('a', [
           css('&').styles(
             position: Position.relative(),
+            display: Display.inlineBlock,
             color: AppColors.textSecondary,
             textDecoration: TextDecoration.none,
             fontFamily: FontFamily.list([FontFamily('Fira Code'), FontFamilies.monospace]),
             fontSize: 0.9.rem,
-            transition: Transition('color', duration: 200.ms),
+            raw: {'transition': 'color 200ms, transform 200ms ease'},
           ),
-          css('&:hover').styles(color: AppColors.primary),
+          css('&:hover').styles(color: AppColors.primary, transform: Transform.scale(1.15)),
           css('&:hover .bracket').styles(opacity: 1),
           css('.bracket', [
             css('&').styles(
@@ -79,6 +89,13 @@ class Header extends StatefulComponent {
               transition: Transition('opacity', duration: 200.ms),
             ),
           ]),
+        ]),
+        // Marks whichever link matches the section currently scrolled into
+        // view -- same idea as the .nav-dot.active state in the Projects
+        // showcase, just driven by section position instead of an index.
+        css('a.active', [
+          css('&').styles(color: AppColors.primary),
+          css('.bracket').styles(opacity: 1),
         ]),
       ]),
       css('.cv-button', [
@@ -91,6 +108,12 @@ class Header extends StatefulComponent {
           radius: BorderRadius.circular(4.px),
           textDecoration: TextDecoration.none,
           letterSpacing: 1.px,
+          display: Display.inlineBlock,
+          raw: {'transition': 'transform 200ms ease, box-shadow 200ms ease'},
+        ),
+        css('&:hover').styles(
+          transform: Transform.scale(1.08),
+          raw: {'box-shadow': '0 0 20px 2px ${AppColors.primary.withValues(alpha: 0.5).value}'},
         ),
       ]),
       css('.menu-toggle', [
@@ -160,20 +183,25 @@ class Header extends StatefulComponent {
 class _HeaderState extends State<Header> {
   bool _scrolled = false;
   bool _menuOpen = false;
+  String? _activeSection;
 
   static const _links = [
-    (label: 'HOME', href: '/#hero'),
-    (label: 'ABOUT', href: '/#about'),
-    (label: 'EXPERTISE', href: '/#expertise'),
-    (label: 'EXPERIENCE', href: '/#experience'),
-    (label: 'PROJECTS', href: '/#projects'),
-    (label: 'CONTACT', href: '/#contact'),
+    (label: 'HOME', href: '/#hero', id: 'hero'),
+    (label: 'ABOUT', href: '/#about', id: 'about'),
+    (label: 'EXPERTISE', href: '/#expertise', id: 'expertise'),
+    (label: 'EXPERIENCE', href: '/#experience', id: 'experience'),
+    (label: 'PROJECTS', href: '/#projects', id: 'projects'),
+    (label: 'CONTACT', href: '/#contact', id: 'contact'),
   ];
 
   @override
   void initState() {
     super.initState();
     listenForScroll((scrolled) => setState(() => _scrolled = scrolled));
+    listenForActiveSection(
+      [for (final link in _links) link.id],
+      (id) => setState(() => _activeSection = id),
+    );
   }
 
   @override
@@ -185,13 +213,18 @@ class _HeaderState extends State<Header> {
         ]),
         nav(classes: 'nav-links desktop-only', [
           for (final link in _links)
-            a(href: link.href, [
+            a(href: link.href, classes: link.id == _activeSection ? 'active' : null, [
               span(classes: 'bracket', [.text('<')]),
               .text(link.label),
               span(classes: 'bracket', [.text('/>')]),
             ]),
         ]),
-        a(href: '#', classes: 'cv-button desktop-only', [.text('DOWNLOAD CV')]),
+        a(
+          href: component.cvUrl,
+          classes: 'cv-button desktop-only',
+          attributes: const {'target': '_blank', 'rel': 'noopener noreferrer'},
+          [.text('DOWNLOAD CV')],
+        ),
         button(
           classes: 'menu-toggle mobile-only',
           attributes: {'aria-label': 'Toggle menu'},

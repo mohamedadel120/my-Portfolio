@@ -1,9 +1,11 @@
 import 'package:jaspr/dom.dart';
-import 'package:jaspr/jaspr.dart';
+import 'package:jaspr/server.dart';
 import 'package:jaspr_router/jaspr_router.dart';
 
+import 'components/custom_cursor.dart';
 import 'components/header.dart';
 import 'components/scroll_reveal.dart';
+import 'data/profile_repository.dart';
 import 'pages/home.dart';
 import 'pages/about.dart';
 import 'pages/projects.dart';
@@ -15,14 +17,22 @@ import 'pages/contact.dart';
 /// routes so each pre-renders as its own static HTML file — better for
 /// direct links/SEO than the Flutter SPA, which serves the same shell for
 /// every route. Page content for each is filled in during later phases.
-class App extends StatelessComponent {
+class App extends AsyncStatelessComponent {
   const App({super.key});
 
   @override
-  Component build(BuildContext context) {
+  Future<Component> build(BuildContext context) async {
+    // Fetched here (not inside Header itself) because Header is a @client
+    // island mounted once at the root, outside the router -- same
+    // profile_info/main document HeroSection already reads for name/title,
+    // just also pulling cvUrl this time so the nav's "DOWNLOAD CV" button
+    // has a real link instead of the placeholder href="#" it shipped with.
+    final hero = await fetchHeroData();
+
     return div(classes: 'app-shell', [
-      const Header(),
+      Header(cvUrl: hero.cvUrl),
       const ScrollReveal(),
+      const CustomCursor(),
       Router(
         routes: [
           Route(

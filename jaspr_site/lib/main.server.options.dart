@@ -6,6 +6,7 @@
 
 import 'package:jaspr/server.dart';
 import 'package:jaspr_site/components/contact_form.dart' as _contact_form;
+import 'package:jaspr_site/components/custom_cursor.dart' as _custom_cursor;
 import 'package:jaspr_site/components/header.dart' as _header;
 import 'package:jaspr_site/components/project_showcase.dart'
     as _project_showcase;
@@ -43,7 +44,13 @@ ServerOptions get defaultServerOptions => ServerOptions(
       'contact_form',
       params: __contact_formContactForm,
     ),
-    _header.Header: ClientTarget<_header.Header>('header'),
+    _custom_cursor.CustomCursor: ClientTarget<_custom_cursor.CustomCursor>(
+      'custom_cursor',
+    ),
+    _header.Header: ClientTarget<_header.Header>(
+      'header',
+      params: __headerHeader,
+    ),
     _project_showcase.StickyProjectShowcase:
         ClientTarget<_project_showcase.StickyProjectShowcase>(
           'project_showcase',
@@ -56,6 +63,7 @@ ServerOptions get defaultServerOptions => ServerOptions(
   styles: () => [
     ..._theme.styles,
     ..._contact_form.ContactForm.styles,
+    ..._custom_cursor.CustomCursor.styles,
     ..._header.Header.styles,
     ..._project_showcase.StickyProjectShowcase.styles,
     ..._about_section.AboutSection.styles,
@@ -70,6 +78,7 @@ ServerOptions get defaultServerOptions => ServerOptions(
 Map<String, Object?> __contact_formContactForm(_contact_form.ContactForm c) => {
   'recipientEmail': c.recipientEmail,
 };
+Map<String, Object?> __headerHeader(_header.Header c) => {'cvUrl': c.cvUrl};
 Map<String, Object?> __project_showcaseStickyProjectShowcase(
   _project_showcase.StickyProjectShowcase c,
 ) => {'projects': c.projects};

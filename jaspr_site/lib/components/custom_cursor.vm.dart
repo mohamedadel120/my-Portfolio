@@ -1,0 +1,1 @@
+void initCustomCursor(String cursorId) {}

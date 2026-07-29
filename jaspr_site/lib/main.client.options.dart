@@ -8,6 +8,8 @@ import 'package:jaspr/client.dart';
 
 import 'package:jaspr_site/components/contact_form.dart'
     deferred as _contact_form;
+import 'package:jaspr_site/components/custom_cursor.dart'
+    deferred as _custom_cursor;
 import 'package:jaspr_site/components/header.dart' deferred as _header;
 import 'package:jaspr_site/components/project_showcase.dart'
     deferred as _project_showcase;
@@ -38,8 +40,12 @@ ClientOptions get defaultClientOptions => ClientOptions(
       ),
       loader: _contact_form.loadLibrary,
     ),
+    'custom_cursor': ClientLoader(
+      (p) => _custom_cursor.CustomCursor(),
+      loader: _custom_cursor.loadLibrary,
+    ),
     'header': ClientLoader(
-      (p) => _header.Header(),
+      (p) => _header.Header(cvUrl: p['cvUrl'] as String),
       loader: _header.loadLibrary,
     ),
     'project_showcase': ClientLoader(
