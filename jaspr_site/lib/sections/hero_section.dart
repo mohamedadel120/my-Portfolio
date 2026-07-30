@@ -82,11 +82,10 @@ class HeroSection extends AsyncStatelessComponent {
       '50%': Styles(transform: Transform.scale(1.2)),
     }),
     css('.hero-content', [
-      // Was capped at 1400px regardless of viewport width -- on a wide
-      // desktop screen that left a large stretch of empty space to the
-      // right of the name with nothing but a small, mostly off-screen
-      // aurora blob in it.
-      css('&').styles(position: Position.relative(), zIndex: ZIndex(1), maxWidth: 1800.px, width: 100.percent),
+      // Was capped at 1800px -- on a large/ultrawide desktop monitor
+      // (2560px+) that still left a big stretch of empty space to the
+      // right of the footer links before reaching the true window edge.
+      css('&').styles(position: Position.relative(), zIndex: ZIndex(1), maxWidth: 2400.px, width: 100.percent),
     ]),
     css('.hero-eyebrow', [
       css('&').styles(

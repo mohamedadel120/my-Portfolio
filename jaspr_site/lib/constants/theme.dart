@@ -59,6 +59,15 @@ List<StyleRule> get styles => [
     '&display=swap',
   ),
   css('html').styles(raw: {'scroll-behavior': 'smooth'}),
+  // No box-sizing reset existed anywhere in the site -- every element
+  // defaulted to content-box, so `width`/`height`/`min-height` never
+  // actually included padding/border. That silently made `.hero`'s
+  // `min-height: 100vh` plus its vertical padding render taller than the
+  // viewport (skewing "centered" content upward), and made `.phone-frame`'s
+  // specified 280x580 actually render as 300x600. border-box is the
+  // standard fix and safe globally: it doesn't change how anything
+  // *without* both a size and padding/border renders.
+  css('*, *::before, *::after').styles(raw: {'box-sizing': 'border-box'}),
   css('html, body').styles(
     backgroundColor: AppColors.background,
     color: AppColors.textPrimary,
@@ -88,13 +97,14 @@ List<StyleRule> get styles => [
       letterSpacing: (-1).px,
       lineHeight: Unit.expression('1.1'),
       color: AppColors.textPrimary,
+      textAlign: TextAlign.center,
     ),
     css('&::after').styles(
       content: '',
       display: .block,
       width: 6.25.rem,
       height: 4.px,
-      margin: Margin.only(top: 1.5.rem),
+      margin: Margin.only(top: 1.5.rem, left: Unit.auto, right: Unit.auto),
       radius: BorderRadius.circular(2.px),
       raw: {'background': 'linear-gradient(90deg, ${AppColors.primary.value}, ${AppColors.secondary.value})'},
     ),

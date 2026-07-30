@@ -22,21 +22,29 @@ class CustomCursor extends StatefulComponent {
       css('&').styles(
         display: Display.none,
         position: Position.fixed(top: Unit.zero, left: Unit.zero),
-        width: 12.px,
-        height: 12.px,
+        width: 14.px,
+        height: 14.px,
         radius: BorderRadius.circular(50.percent),
         backgroundColor: AppColors.primary,
         zIndex: ZIndex(9999),
         raw: {
           'pointer-events': 'none',
+          'box-shadow': '0 0 8px 1px ${AppColors.primary.withValues(alpha: 0.5).value}',
           'transition': 'width 200ms ease-out, height 200ms ease-out, '
-              'background-color 200ms ease-out, border 200ms ease-out, box-shadow 200ms ease-out',
+              'background-color 200ms ease-out, border 200ms ease-out, box-shadow 200ms ease-out, '
+              'transform 80ms linear',
         },
       ),
     ]),
     css('body.custom-cursor-active', [
       css('&').styles(raw: {'cursor': 'none'}),
       css('.custom-cursor').styles(display: Display.block),
+      // The body-level `cursor: none` only wins where nothing else sets its
+      // own `cursor` -- browsers apply `cursor: pointer` directly to links,
+      // buttons, etc., which otherwise beats the inherited value and brings
+      // the system arrow straight back on every hover. Force it off there
+      // too so the custom cursor is the only one ever shown.
+      css('*').styles(raw: {'cursor': 'none !important'}),
     ]),
     css('.custom-cursor.pointer', [
       css('&').styles(
@@ -44,7 +52,7 @@ class CustomCursor extends StatefulComponent {
         height: 50.px,
         backgroundColor: AppColors.primary.withValues(alpha: 0.15),
         border: Border.all(color: AppColors.primary, width: 2.px),
-        raw: {'box-shadow': '0 0 15px 2px ${AppColors.primary.withValues(alpha: 0.4).value}'},
+        raw: {'box-shadow': '0 0 20px 3px ${AppColors.primary.withValues(alpha: 0.45).value}'},
       ),
     ]),
   ];

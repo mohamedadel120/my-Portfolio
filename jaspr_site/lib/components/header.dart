@@ -7,11 +7,12 @@ import '../constants/theme.dart';
 /// Ported from the Flutter app's `_InteractiveNavBar` (in
 /// features/home/presentation/pages/home_page.dart) and `NavBarItem`
 /// (widgets/navigation/nav_bar_item.dart) — logo, section links, CV button,
-/// and a background that solidifies on scroll. The hover "< >" bracket
-/// reveal and link-color change are pure CSS here instead of
-/// AnimatedOpacity/flutter_animate. Links point at `/#section-id` so they
-/// work the same whether you're already on `/` or navigating from
-/// `/about`, `/projects`, `/contact`.
+/// and a background that solidifies on scroll. The nav links render as a
+/// "tubelight" pill capsule (backdrop-blurred rounded group, active item
+/// gets a filled pill + a glowing bar above it), done in pure CSS instead
+/// of the framer-motion `layoutId` spring the reference React version
+/// uses. Links point at `/#section-id` so they work the same whether
+/// you're already on `/` or navigating from `/about`, `/projects`, `/contact`.
 ///
 /// Note: the Flutter app also wires up a `ThemeController.toggleTheme()`,
 /// but no widget anywhere in the app ever calls it — there's no visible
@@ -34,7 +35,7 @@ class Header extends StatefulComponent {
       css('&').styles(
         position: Position.fixed(top: Unit.zero, left: Unit.zero, right: Unit.zero),
         zIndex: ZIndex(100),
-        padding: Padding.symmetric(horizontal: 2.5.rem, vertical: 1.rem),
+        padding: Padding.symmetric(horizontal: 2.5.rem, vertical: 1.5.rem),
         backgroundColor: AppColors.background.withValues(alpha: 0),
         transition: Transition('background-color', duration: 300.ms),
       ),
@@ -61,13 +62,25 @@ class Header extends StatefulComponent {
         ),
       ]),
       css('.nav-logo img', [
-        css('&').styles(height: 2.5.rem),
+        css('&').styles(height: 3.25.rem),
       ]),
+      // "Tubelight" pill nav: a floating rounded capsule around the links,
+      // each item pill-shaped, with a glowing bar ("lamp") fading in above
+      // whichever one is active -- same links/hrefs/active-section logic as
+      // before, just a capsule instead of plain inline text with brackets.
       css('.nav-links', [
         css('&').styles(
           display: Display.flex,
           alignItems: AlignItems.center,
-          gap: Gap.all(2.rem),
+          gap: Gap.all(0.3.rem),
+          backgroundColor: AppColors.textPrimary.withValues(alpha: 0.05),
+          border: Border.all(color: AppColors.textPrimary.withValues(alpha: 0.1), width: 1.px),
+          radius: BorderRadius.circular(999.px),
+          padding: Padding.all(0.45.rem),
+          raw: {
+            'backdrop-filter': 'blur(12px)',
+            'box-shadow': '0 4px 20px rgba(0, 0, 0, 0.3)',
+          },
         ),
         css('a', [
           css('&').styles(
@@ -76,26 +89,46 @@ class Header extends StatefulComponent {
             color: AppColors.textSecondary,
             textDecoration: TextDecoration.none,
             fontFamily: FontFamily.list([FontFamily('Fira Code'), FontFamilies.monospace]),
-            fontSize: 0.9.rem,
-            raw: {'transition': 'color 200ms, transform 200ms ease'},
+            fontSize: 1.rem,
+            fontWeight: FontWeight.w600,
+            padding: Padding.symmetric(horizontal: 1.6.rem, vertical: 0.85.rem),
+            radius: BorderRadius.circular(999.px),
+            raw: {'transition': 'color 200ms, background-color 200ms'},
           ),
-          css('&:hover').styles(color: AppColors.primary, transform: Transform.scale(1.15)),
-          css('&:hover .bracket').styles(opacity: 1),
-          css('.bracket', [
-            css('&').styles(
-              color: AppColors.secondary,
-              opacity: 0,
-              padding: Padding.symmetric(horizontal: 0.25.rem),
-              transition: Transition('opacity', duration: 200.ms),
-            ),
-          ]),
+          css('&:hover').styles(color: AppColors.primary),
+          css('&::before').styles(
+            content: '',
+            position: Position.absolute(top: (-0.5).rem, left: 50.percent),
+            width: 2.rem,
+            height: 0.2.rem,
+            backgroundColor: AppColors.primary,
+            radius: BorderRadius.only(topLeft: Radius.circular(999.px), topRight: Radius.circular(999.px)),
+            opacity: 0,
+            raw: {
+              'transform': 'translateX(-50%)',
+              'box-shadow': '0 0 16px 2px ${AppColors.primary.withValues(alpha: 0.6).value}',
+              'transition': 'opacity 250ms ease',
+            },
+          ),
         ]),
         // Marks whichever link matches the section currently scrolled into
         // view -- same idea as the .nav-dot.active state in the Projects
         // showcase, just driven by section position instead of an index.
         css('a.active', [
-          css('&').styles(color: AppColors.primary),
-          css('.bracket').styles(opacity: 1),
+          css('&').styles(color: AppColors.primary, backgroundColor: AppColors.primary.withValues(alpha: 0.08)),
+          css('&::before').styles(opacity: 1),
+          // The old inline "< LABEL />" bracket motif, now scoped to just
+          // the active pill instead of every link's hover state.
+          css('.nav-label::before').styles(
+            content: '<',
+            color: AppColors.secondary,
+            margin: Margin.only(right: 0.3.rem),
+          ),
+          css('.nav-label::after').styles(
+            content: '/>',
+            color: AppColors.secondary,
+            margin: Margin.only(left: 0.3.rem),
+          ),
         ]),
       ]),
       css('.cv-button', [
@@ -103,8 +136,8 @@ class Header extends StatefulComponent {
           backgroundColor: AppColors.primary,
           color: Colors.black,
           fontWeight: FontWeight.w700,
-          fontSize: 0.75.rem,
-          padding: Padding.symmetric(horizontal: 1.25.rem, vertical: 0.75.rem),
+          fontSize: 0.85.rem,
+          padding: Padding.symmetric(horizontal: 1.6.rem, vertical: 1.rem),
           radius: BorderRadius.circular(4.px),
           textDecoration: TextDecoration.none,
           letterSpacing: 1.px,
@@ -214,9 +247,7 @@ class _HeaderState extends State<Header> {
         nav(classes: 'nav-links desktop-only', [
           for (final link in _links)
             a(href: link.href, classes: link.id == _activeSection ? 'active' : null, [
-              span(classes: 'bracket', [.text('<')]),
-              .text(link.label),
-              span(classes: 'bracket', [.text('/>')]),
+              span(classes: 'nav-label', [.text(link.label)]),
             ]),
         ]),
         a(

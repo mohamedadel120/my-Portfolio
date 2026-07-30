@@ -34,10 +34,12 @@ class AboutSection extends AsyncStatelessComponent {
             h3(classes: 'bento-title', [.text('Impact')]),
             div(classes: 'impact-stats', [
               div(classes: 'impact-stat', [
+                span(classes: 'material-symbols-rounded impact-icon', [.text('download')]),
                 span(classes: 'impact-value', [.text(about.downloadsCount)]),
                 span(classes: 'impact-label', [.text('DOWNLOADS')]),
               ]),
               div(classes: 'impact-stat', [
+                span(classes: 'material-symbols-rounded impact-icon', [.text('star')]),
                 span(classes: 'impact-value', [.text(about.ratings)]),
                 span(classes: 'impact-label', [.text('RATINGS')]),
               ]),
@@ -112,6 +114,41 @@ class AboutSection extends AsyncStatelessComponent {
         ),
       ]),
     ]),
+    // Left column (Impact, short content) stacks above Skills (tall skill
+    // list); Experience spans both of those rows on the right so its one
+    // card fills the same total height instead of leaving row 3's right
+    // cell empty -- the auto-placed grid used to size Impact's row to
+    // match Experience's height (turning two short stats into a mostly
+    // empty box) while leaving nothing at all next to the tall Skills list.
+    css('.impact', [
+      css('&').styles(
+        gridPlacement: GridPlacement(rowStart: LinePlacement(2), columnStart: LinePlacement(1)),
+        alignSelf: AlignSelf.start,
+      ),
+      css.media(MediaQuery.screen(maxWidth: Breakpoints.tablet.px), [
+        css('&').styles(gridPlacement: GridPlacement.auto, alignSelf: AlignSelf.auto),
+      ]),
+    ]),
+    css('.features', [
+      css('&').styles(
+        gridPlacement: GridPlacement(
+          rowStart: LinePlacement(2),
+          rowEnd: LinePlacement.span(2),
+          columnStart: LinePlacement(2),
+        ),
+        display: Display.flex,
+        flexDirection: FlexDirection.column,
+      ),
+      css.media(MediaQuery.screen(maxWidth: Breakpoints.tablet.px), [
+        css('&').styles(gridPlacement: GridPlacement.auto),
+      ]),
+    ]),
+    css('.skills', [
+      css('&').styles(gridPlacement: GridPlacement(rowStart: LinePlacement(3), columnStart: LinePlacement(1))),
+      css.media(MediaQuery.screen(maxWidth: Breakpoints.tablet.px), [
+        css('&').styles(gridPlacement: GridPlacement.auto),
+      ]),
+    ]),
     css('.bento', [
       css('&').styles(
         backgroundColor: AppColors.surface.withValues(alpha: 0.6),
@@ -158,6 +195,7 @@ class AboutSection extends AsyncStatelessComponent {
     css('.impact-stats', [
       css('&').styles(display: Display.flex, justifyContent: JustifyContent.spaceAround),
       css('.impact-stat').styles(display: Display.flex, flexDirection: FlexDirection.column, alignItems: AlignItems.center, gap: Gap.all(0.5.rem)),
+      css('.impact-icon').styles(color: AppColors.primary, fontSize: 1.75.rem),
       css('.impact-value').styles(
         fontFamily: FontFamily.list([FontFamily('IBM Plex Mono'), FontFamilies.monospace]),
         fontSize: 2.rem,
@@ -176,6 +214,10 @@ class AboutSection extends AsyncStatelessComponent {
         display: Display.grid,
         gridTemplate: GridTemplate(columns: GridTracks([GridTrack(TrackSize.fr(1)), GridTrack(TrackSize.fr(1))])),
         gap: Gap.all(1.rem),
+        // .features is now a column flexbox so this can grow to fill the
+        // taller, row-spanning card and center its 2x2 cards within it
+        // instead of leaving them stranded at the top.
+        raw: {'flex': '1', 'align-content': 'center'},
       ),
       css('.feature-card').styles(
         backgroundColor: Colors.white.withValues(alpha: 0.03),
