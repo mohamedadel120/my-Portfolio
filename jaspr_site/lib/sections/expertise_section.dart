@@ -46,15 +46,43 @@ class ExpertiseSection extends AsyncStatelessComponent {
     ]),
     css('.expertise-row', [
       css('&').styles(
+        position: Position.relative(),
         display: Display.flex,
         alignItems: AlignItems.center,
         gap: Gap.all(2.rem),
-        padding: Padding.symmetric(vertical: 2.5.rem),
+        padding: Padding.symmetric(vertical: 2.5.rem, horizontal: 1.rem),
         border: Border.only(bottom: BorderSide.solid(color: Colors.white.withValues(alpha: 0.1))),
-        transition: Transition('background-color', duration: 250.ms),
+        raw: {'transition': 'background-color 250ms, transform 250ms ease, padding-left 250ms ease'},
       ),
-      css('&:hover').styles(backgroundColor: Colors.white.withValues(alpha: 0.02)),
-      css('&:hover .expertise-icon').styles(color: AppColors.primary),
+      css('&:hover').styles(
+        backgroundColor: Colors.white.withValues(alpha: 0.03),
+        transform: Transform.translate(x: 0.5.rem),
+      ),
+      css('&:hover .expertise-icon').styles(
+        color: AppColors.primary,
+        raw: {
+          'transform': 'scale(1.2) rotate(-8deg)',
+          'filter': 'drop-shadow(0 0 10px ${AppColors.primary.withValues(alpha: 0.6).value})',
+        },
+      ),
+      css('&:hover .expertise-index').styles(color: AppColors.secondary),
+      css('&:hover .expertise-title').styles(color: AppColors.primary),
+      // A left accent bar that grows in from the middle on hover, echoing
+      // the section-title underline's gradient elsewhere on the page.
+      css('&::before').styles(
+        content: '',
+        position: Position.absolute(left: Unit.zero, top: 50.percent),
+        width: 3.px,
+        height: 100.percent,
+        radius: BorderRadius.circular(2.px),
+        opacity: 0,
+        raw: {
+          'transform': 'translateY(-50%) scaleY(0)',
+          'background': 'linear-gradient(${AppColors.primary.value}, ${AppColors.secondary.value})',
+          'transition': 'transform 250ms ease, opacity 250ms ease',
+        },
+      ),
+      css('&:hover::before').styles(opacity: 1, raw: {'transform': 'translateY(-50%) scaleY(1)'}),
     ]),
     css('.expertise-index', [
       css('&').styles(
@@ -63,13 +91,15 @@ class ExpertiseSection extends AsyncStatelessComponent {
         fontSize: 1.25.rem,
         fontWeight: FontWeight.w700,
         width: 3.rem,
+        raw: {'transition': 'color 250ms ease'},
       ),
     ]),
     css('.expertise-icon', [
       css('&').styles(
+        display: Display.inlineBlock,
         color: AppColors.textSecondary,
         fontSize: 2.rem,
-        transition: Transition('color', duration: 250.ms),
+        raw: {'transition': 'color 250ms ease, transform 250ms ease, filter 250ms ease'},
       ),
     ]),
     css('.expertise-title', [
@@ -79,6 +109,7 @@ class ExpertiseSection extends AsyncStatelessComponent {
         fontWeight: FontWeight.w600,
         fontSize: 1.5.rem,
         margin: Margin.only(bottom: 0.5.rem),
+        raw: {'transition': 'color 250ms ease'},
       ),
     ]),
     css('.expertise-description', [
