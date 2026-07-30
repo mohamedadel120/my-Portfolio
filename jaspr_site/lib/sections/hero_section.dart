@@ -52,7 +52,11 @@ class HeroSection extends AsyncStatelessComponent {
       css('&').styles(
         position: Position.relative(),
         display: Display.flex,
-        alignItems: AlignItems.end,
+        // Was bottom-anchored (align-items: end) in a full-viewport-height
+        // section, leaving a large stretch of empty space above the content
+        // on any screen taller than the content itself. Centering moves the
+        // content up into that space instead of leaving it all above.
+        alignItems: AlignItems.center,
         minHeight: 100.vh,
         padding: Padding.symmetric(horizontal: 3.75.rem, vertical: 6.25.rem),
         overflow: Overflow.hidden,

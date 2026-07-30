@@ -21,9 +21,11 @@ jobs:
           sdk: stable
 
       - name: Activate Jaspr CLI 📦
-        # Pinned to the same version used during local development
-        # (jaspr_site/pubspec.yaml's `jaspr: ^0.23.1`) for reproducibility.
-        run: dart pub global activate jaspr_cli 0.23.1
+        # Pinned to the same version used during local development for
+        # reproducibility. 0.23.1 fails outright here ("Failed to start
+        # build daemon, port file is missing" / "use the latest version of
+        # build_runner") -- reproduced locally, 0.23.2 builds cleanly.
+        run: dart pub global activate jaspr_cli 0.23.2
 
       - name: Install dependencies 📦
         working-directory: jaspr_site

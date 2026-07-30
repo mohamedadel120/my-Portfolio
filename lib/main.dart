@@ -86,7 +86,7 @@ class MyApp extends StatelessWidget {
     return ListenableBuilder(
       listenable: themeController,
       builder: (context, _) {
-        return MultiBlocProvider(    
+        return MultiBlocProvider(
           providers: [
             BlocProvider(create: (_) => di.sl<ProjectsCubit>()),
             BlocProvider(create: (_) => di.sl<ExperienceCubit>()),
