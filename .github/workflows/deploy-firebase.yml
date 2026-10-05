@@ -1,12 +1,24 @@
 name: Deploy to Firebase Hosting
 
+# The Jaspr site fetches its content from Firestore at build time, so a
+# Firestore edit only goes live after a rebuild. Besides pushes to main, the
+# site is rebuilt daily on a schedule and can be rebuilt on demand from the
+# Actions tab ("Run workflow").
 on:
   push:
     branches:
       - main
+  schedule:
+    - cron: "0 3 * * *" # daily at 03:00 UTC
+  workflow_dispatch:
 
 permissions:
   contents: read
+
+# Never run two deploys at once; a newer run waits for the current one.
+concurrency:
+  group: deploy-firebase
+  cancel-in-progress: false
 
 jobs:
   build-and-deploy:
