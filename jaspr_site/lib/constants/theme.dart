@@ -8,6 +8,9 @@ import 'package:jaspr/dom.dart';
 class AppColors {
   static const primary = Color('#00D9FF'); // Cyan
   static const secondary = Color('#7B2CBF'); // Purple
+  // Lighter purple for text: #7B2CBF on the dark surfaces is only ~2.5:1
+  // contrast, below the 4.5:1 WCAG AA minimum for body text.
+  static const secondaryText = Color('#B57BFF');
   static const background = Color('#000000');
   static const surface = Color('#121212');
   static const surfaceLight = Color('#1E1E1E');
@@ -55,10 +58,25 @@ List<StyleRule> get styles => [
     '&family=Oswald:wght@400;700'
     '&family=Orbitron:wght@500;700'
     '&family=Anton'
-    '&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,400,0..1,0'
     '&display=swap',
   ),
+  // Icons are a separate request so `icon_names` can subset the font: the
+  // full Material Symbols variable font is ~1.4MB, these glyphs ~10KB.
+  // Any new icon ligature used on the site (including new cases in
+  // utils/icon_mapper.dart) must be added here, in alphabetical order, or it
+  // renders as plain text.
+  css.import(
+    'https://fonts.googleapis.com/css2'
+    '?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,400,0..1,0'
+    '&icon_names=apps,architecture,bolt,call,cloud,code,design_services,download,email,format_quote,'
+    'link,location_on,mail,people,phone_android,speed,stacks,star'
+    '&display=block',
+  ),
   css('html').styles(raw: {'scroll-behavior': 'smooth'}),
+  // Backstop against any decorative layer (e.g. the hero aurora) widening
+  // the page on phones. `clip` (unlike `hidden`) doesn't create a scroll
+  // container, so position: sticky inside the page keeps working.
+  css('html, body').styles(raw: {'overflow-x': 'clip'}),
   // No box-sizing reset existed anywhere in the site -- every element
   // defaulted to content-box, so `width`/`height`/`min-height` never
   // actually included padding/border. That silently made `.hero`'s

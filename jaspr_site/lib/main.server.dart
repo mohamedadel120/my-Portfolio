@@ -26,21 +26,16 @@ void main() {
   // with the provided parameters and components. Page-wide CSS lives in
   // constants/theme.dart's top-level @css `styles` getter instead of here,
   // so it's colocated with the design tokens it references.
-  const description =
-      'Mohamed Adel - Flutter Developer Portfolio. A modern, animated portfolio website showcasing mobile app development expertise, projects, and experience.';
   const siteUrl = 'https://muhammed-adel.web.app/';
   const ogImage = 'https://muhammed-adel.web.app/og_image.png';
 
   runApp(Document(
+    lang: 'en',
     title: 'Mohamed Adel - Flutter Developer Portfolio',
     meta: {
-      'description': description,
       'author': 'Mohamed Adel',
       'keywords': 'Flutter Developer, Mobile App Developer, Portfolio, Mohamed Adel, Dart, iOS, Android, Cross-platform Development',
       'twitter:card': 'summary_large_image',
-      'twitter:url': siteUrl,
-      'twitter:title': 'Mohamed Adel - Flutter Developer Portfolio',
-      'twitter:description': description,
       'twitter:image': ogImage,
     },
     head: [
@@ -50,9 +45,8 @@ void main() {
       // tags need `property=` per spec, so those go here via the raw
       // `attributes:` map instead of through `meta:` above.
       meta(attributes: {'property': 'og:type', 'content': 'website'}),
-      meta(attributes: {'property': 'og:url', 'content': siteUrl}),
-      meta(attributes: {'property': 'og:title', 'content': 'Mohamed Adel - Flutter Developer Portfolio'}),
-      meta(attributes: {'property': 'og:description', 'content': description}),
+      // og:url/title/description, the meta description and the canonical
+      // link are per page -- see components/page_meta.dart.
       meta(attributes: {'property': 'og:image', 'content': ogImage}),
       script(
         attributes: {'type': 'application/ld+json'},
@@ -68,7 +62,7 @@ void main() {
     "https://www.linkedin.com/in/mohamed-adel-9454a1183/"
   ],
   "jobTitle": "Flutter Developer",
-  "worksFor": { "@type": "Organization", "name": "Freelance" },
+  "worksFor": { "@type": "Organization", "name": "The First-Agency" },
   "description": "Experienced Flutter Developer specializing in building high-quality mobile applications for iOS and Android."
 }
 ''',

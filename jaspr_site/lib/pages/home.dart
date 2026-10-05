@@ -1,5 +1,6 @@
 import 'package:jaspr/jaspr.dart';
 
+import '../components/page_meta.dart';
 import '../sections/about_section.dart';
 import '../sections/contact_section.dart';
 import '../sections/expertise_section.dart';
@@ -15,6 +16,12 @@ class Home extends StatelessComponent {
   @override
   Component build(BuildContext context) {
     return Component.fragment(const [
+      PageMeta(
+        path: '/',
+        title: 'Mohamed Adel - Flutter Developer Portfolio',
+        description:
+            'Mohamed Adel, Flutter developer in Cairo with 3+ years shipping iOS and Android apps. Stock: 10,000+ downloads, 4.8 stars. Download the CV or get in touch.',
+      ),
       HeroSection(),
       AboutSection(),
       ExpertiseSection(),

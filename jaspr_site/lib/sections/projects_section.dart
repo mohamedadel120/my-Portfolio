@@ -12,7 +12,11 @@ import '../data/projects_repository.dart';
 /// ported — pure decoration with no content, consistent with dropping the
 /// always-on background animations elsewhere in this migration.
 class ProjectsSection extends AsyncStatelessComponent {
-  const ProjectsSection({super.key});
+  /// True when this section is the whole page (its own route), so its
+  /// title becomes the page's `<h1>` instead of an `<h2>`.
+  final bool standalone;
+
+  const ProjectsSection({super.key, this.standalone = false});
 
   @override
   Future<Component> build(BuildContext context) async {
@@ -20,7 +24,10 @@ class ProjectsSection extends AsyncStatelessComponent {
     final stats = computeProjectStats(projects);
 
     return section(id: 'projects', classes: 'projects', [
-      h2(classes: 'section-title', [.text('Projects')]),
+      if (standalone)
+        h1(classes: 'section-title', [.text('Projects')])
+      else
+        h2(classes: 'section-title', [.text('Projects')]),
       div(classes: 'stats-dashboard reveal', [
         _statItem('apps', stats.totalProjects.toString(), 'Projects'),
         div(classes: 'stat-divider', []),
@@ -58,6 +65,9 @@ class ProjectsSection extends AsyncStatelessComponent {
   static List<StyleRule> get styles => [
     css('.projects', [
       css('&').styles(padding: Padding.symmetric(horizontal: 3.75.rem, vertical: 6.25.rem)),
+      css.media(MediaQuery.screen(maxWidth: Breakpoints.mobile.px), [
+        css('&').styles(padding: Padding.symmetric(horizontal: 1.25.rem, vertical: 4.rem)),
+      ]),
     ]),
     css('.stats-dashboard', [
       css('&').styles(
