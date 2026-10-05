@@ -1,5 +1,5 @@
 /// Maps a Material Icons codepoint (as stored in Firestore for the
-/// `expertise` collection, same schema the Flutter app reads) to a Material
+/// `expertise`/`why_choose_me` collections, same schema the Flutter app reads) to a Material
 /// Symbols web-font ligature name, so it can be rendered as
 /// `<span class="material-symbols-rounded">architecture</span>` — see
 /// architecture decision #4 in the migration plan. Mirrors
@@ -26,4 +26,20 @@ String iconKeyFromCodePoint(int codePoint) {
     default:
       return 'star';
   }
+}
+
+/// Parses the raw Firestore `icon` field (an int, or a decimal/`0x` hex
+/// string) and maps it via [iconKeyFromCodePoint].
+String iconKeyFromFirestore(Object? rawIcon) {
+  int iconCode = 0;
+  if (rawIcon is int) {
+    iconCode = rawIcon;
+  } else if (rawIcon is String) {
+    if (rawIcon.startsWith('0x') || rawIcon.startsWith('0X')) {
+      iconCode = int.tryParse(rawIcon.substring(2), radix: 16) ?? 0;
+    } else {
+      iconCode = int.tryParse(rawIcon) ?? 0;
+    }
+  }
+  return iconKeyFromCodePoint(iconCode);
 }
