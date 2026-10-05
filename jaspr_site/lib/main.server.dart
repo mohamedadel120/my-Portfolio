@@ -41,6 +41,7 @@ void main() {
     head: [
       link(rel: 'icon', type: 'image/png', href: 'favicon.png'),
       link(rel: 'manifest', href: 'manifest.json'),
+      link(rel: 'stylesheet', href: 'polish.css'),
       // Document's `meta` map always renders a `name=` attribute; Open Graph
       // tags need `property=` per spec, so those go here via the raw
       // `attributes:` map instead of through `meta:` above.

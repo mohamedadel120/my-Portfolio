@@ -107,6 +107,27 @@ List<StyleRule> get styles => [
     'font-variation-settings': "'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24",
   }),
   css('section').styles(raw: {'scroll-margin-top': '80px'}),
+  // Crisper text on dark surfaces, no grey flash on mobile taps, and
+  // headings that wrap into even lines instead of leaving a lone word.
+  css('body').styles(raw: {
+    '-webkit-font-smoothing': 'antialiased',
+    '-moz-osx-font-smoothing': 'grayscale',
+    'text-rendering': 'optimizeLegibility',
+    '-webkit-tap-highlight-color': 'transparent',
+  }),
+  css('h1, h2, h3, .section-title').styles(raw: {'text-wrap': 'balance'}),
+  css('p').styles(raw: {'text-wrap': 'pretty'}),
+  css('::selection').styles(
+    color: AppColors.background,
+    backgroundColor: AppColors.primary,
+  ),
+  // Visible keyboard focus everywhere (the custom cursor never replaces it).
+  // Mouse clicks don't trigger :focus-visible, so no ring on pointer use.
+  css('a:focus-visible, button:focus-visible, [tabindex]:focus-visible, summary:focus-visible').styles(raw: {
+    'outline': '2px solid ${AppColors.primary.value}',
+    'outline-offset': '3px',
+    'border-radius': '4px',
+  }),
   css('.section-title', [
     css('&').styles(
       fontFamily: .list([AppFonts.heading, FontFamilies.monospace]),
