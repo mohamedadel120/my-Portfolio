@@ -1,3 +1,4 @@
+import 'package:my_web_site/core/utils/motion.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../../utils/device_utils.dart';
@@ -175,7 +176,7 @@ class _AdaptiveCursorState extends State<AdaptiveCursor> {
       cursor = ClipOval(
         child: cursor,
       )
-          .animate(onPlay: (c) => c.repeat(reverse: true))
+          .animate(onPlay: (c) => loopAnimation(context, c, reverse: true))
           .scaleXY(end: 1.1, duration: 1000.ms, curve: Curves.easeInOut);
     }
 

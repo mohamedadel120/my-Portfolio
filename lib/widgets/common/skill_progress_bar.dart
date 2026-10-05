@@ -85,7 +85,6 @@ class _SkillProgressBarState extends State<SkillProgressBar>
       animation: _progressAnimation,
       builder: (context, child) {
         final currentProgress = _progressAnimation.value;
-        final percentage = (currentProgress * 100).toInt();
 
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,

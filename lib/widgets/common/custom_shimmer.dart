@@ -1,3 +1,4 @@
+import 'package:my_web_site/core/utils/motion.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
@@ -26,7 +27,7 @@ class CustomShimmer extends StatelessWidget {
         borderRadius: BorderRadius.circular(borderRadius),
       ),
     )
-        .animate(onPlay: (controller) => controller.repeat())
+        .animate(onPlay: (controller) => loopAnimation(context, controller))
         .shimmer(
           duration: const Duration(milliseconds: 1500),
           color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.1),

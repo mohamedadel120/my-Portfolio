@@ -1,3 +1,4 @@
+import 'package:my_web_site/core/utils/motion.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../../core/constants/app_colors.dart';
@@ -39,7 +40,7 @@ class AppLoadingIndicator extends StatelessWidget {
             ],
           ),
         )
-            .animate(onPlay: (controller) => controller.repeat(reverse: true))
+            .animate(onPlay: (controller) => loopAnimation(context, controller, reverse: true))
             .fadeOut(duration: 600.ms, curve: Curves.easeInOut, begin: 1),
       ),
     );

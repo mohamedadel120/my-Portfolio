@@ -1,3 +1,4 @@
+import 'package:my_web_site/core/utils/motion.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -36,10 +37,6 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
 
   // Video Control
   bool _isManuallyPaused = false;
-  bool _hasCalculatedPosition = false;
-
-  double? _lastScreenWidth;
-  double? _lastScreenHeight;
 
   @override
   void didChangeDependencies() {
@@ -719,7 +716,7 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
             height: fontSize,
             color: Theme.of(context).colorScheme.primary,
           )
-              .animate(onPlay: (c) => c.repeat(reverse: true))
+              .animate(onPlay: (c) => loopAnimation(context, c, reverse: true))
               .fadeIn(duration: 300.ms)
               .fadeOut(delay: 300.ms),
         ],

@@ -1,3 +1,4 @@
+import 'package:my_web_site/core/utils/motion.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -121,7 +122,7 @@ class TerminalWindow extends StatelessWidget {
                 color: AppColors.primary,
                 margin: const EdgeInsets.only(top: 4),
               )
-                  .animate(onPlay: (controller) => controller.repeat())
+                  .animate(onPlay: (controller) => loopAnimation(context, controller))
                   .fadeOut(duration: 500.ms)
                   .then()
                   .fadeIn(duration: 500.ms),

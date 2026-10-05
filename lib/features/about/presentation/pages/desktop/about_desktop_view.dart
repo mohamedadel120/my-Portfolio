@@ -1,3 +1,4 @@
+import 'package:my_web_site/core/utils/motion.dart';
 import 'package:my_web_site/widgets/common/app_loading_indicator.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -108,7 +109,7 @@ class AboutDesktopView extends StatelessWidget {
                             right: -100,
                             child: isNearViewport
                                 ? blobOne
-                                    .animate(onPlay: (c) => c.repeat())
+                                    .animate(onPlay: (c) => loopAnimation(context, c))
                                     .scale(
                                       duration: 10.seconds,
                                       begin: const Offset(1, 1),
@@ -122,7 +123,7 @@ class AboutDesktopView extends StatelessWidget {
                             left: -50,
                             child: isNearViewport
                                 ? blobTwo
-                                    .animate(onPlay: (c) => c.repeat())
+                                    .animate(onPlay: (c) => loopAnimation(context, c))
                                     .scale(
                                       duration: 8.seconds,
                                       begin: const Offset(1.2, 1.2),
