@@ -20,6 +20,10 @@ import 'package:jaspr_site/sections/expertise_section.dart'
     as _expertise_section;
 import 'package:jaspr_site/sections/hero_section.dart' as _hero_section;
 import 'package:jaspr_site/sections/projects_section.dart' as _projects_section;
+import 'package:jaspr_site/sections/testimonials_section.dart'
+    as _testimonials_section;
+import 'package:jaspr_site/sections/why_choose_me_section.dart'
+    as _why_choose_me_section;
 
 /// Default [ServerOptions] for use with your Jaspr project.
 ///
@@ -72,6 +76,8 @@ ServerOptions get defaultServerOptions => ServerOptions(
     ..._expertise_section.ExpertiseSection.styles,
     ..._hero_section.HeroSection.styles,
     ..._projects_section.ProjectsSection.styles,
+    ..._testimonials_section.TestimonialsSection.styles,
+    ..._why_choose_me_section.WhyChooseMeSection.styles,
   ],
 );
 

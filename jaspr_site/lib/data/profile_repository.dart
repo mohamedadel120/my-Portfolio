@@ -138,21 +138,10 @@ Future<AboutData> fetchAboutData() async {
 Future<List<ExpertiseItem>> fetchExpertise() async {
   final docs = await _firestore.getCollection('expertise');
   return docs.map((json) {
-    final rawIcon = json['icon'];
-    int iconCode = 0;
-    if (rawIcon is int) {
-      iconCode = rawIcon;
-    } else if (rawIcon is String) {
-      if (rawIcon.startsWith('0x') || rawIcon.startsWith('0X')) {
-        iconCode = int.tryParse(rawIcon.substring(2), radix: 16) ?? 0;
-      } else {
-        iconCode = int.tryParse(rawIcon) ?? 0;
-      }
-    }
     return ExpertiseItem(
       title: json['title'] as String? ?? '',
       description: json['description'] as String? ?? '',
-      iconKey: iconKeyFromCodePoint(iconCode),
+      iconKey: iconKeyFromFirestore(json['icon']),
     );
   }).toList();
 }
