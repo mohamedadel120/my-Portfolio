@@ -1,3 +1,4 @@
+import 'experience_repository.dart';
 import 'firestore_rest.dart';
 
 const _firestore = FirestoreRest('my-website-bf9e6');
@@ -15,6 +16,11 @@ class ProjectItem {
   final String? iosStoreUrl;
   final String? videoUrl;
 
+  /// Store rating (0-5) supplied by the owner in Firestore (`rating`). Null
+  /// until real data exists; nothing may display or derive a rating from
+  /// anything else.
+  final double? rating;
+
   const ProjectItem({
     required this.title,
     required this.description,
@@ -27,82 +33,112 @@ class ProjectItem {
     this.androidStoreUrl,
     this.iosStoreUrl,
     this.videoUrl,
+    this.rating,
   });
+
+  bool get hasAndroid => _isUsable(androidStoreUrl);
+  bool get hasIos => _isUsable(iosStoreUrl);
+
+  /// Live on at least one store.
+  bool get isLive => hasAndroid || hasIos;
+
+  factory ProjectItem.fromJson(Map<String, dynamic> json) {
+    return ProjectItem(
+      title: _string(json['title']) ?? '',
+      description: _string(json['description']) ?? '',
+      tech: _stringList(json['tech']) ?? const [],
+      color: parseColor(json['color']),
+      downloads: _string(json['downloads']) ?? '',
+      imageUrl: _string(json['imageUrl']),
+      logoUrl: _string(json['logoUrl']),
+      galleryImages: _stringList(json['galleryImages']),
+      androidStoreUrl: _string(json['androidStoreUrl']),
+      iosStoreUrl: _string(json['iosStoreUrl']),
+      videoUrl: _string(json['videoUrl']),
+      rating: parseRating(json['rating']),
+    );
+  }
 }
 
-class ProjectStats {
-  final int totalProjects;
-  final int totalDownloads;
-  final double averageRating;
-  final int techStacks;
+bool _isUsable(String? url) => url != null && url.trim().isNotEmpty;
 
-  const ProjectStats({
-    required this.totalProjects,
-    required this.totalDownloads,
-    required this.averageRating,
-    required this.techStacks,
-  });
+String? _string(Object? value) => value is String ? value : null;
+
+List<String>? _stringList(Object? value) =>
+    value is List ? value.whereType<String>().toList() : null;
+
+/// Accepts the formats seen in Firestore: an int, `"0xFF00D9FF"`, or a plain
+/// decimal string. Anything else falls back to opaque black.
+int parseColor(Object? raw) {
+  const fallback = 0xFF000000;
+  if (raw is int) return raw;
+  if (raw is String) {
+    final text = raw.trim();
+    if (text.startsWith('0x') || text.startsWith('0X')) {
+      return int.tryParse(text.substring(2), radix: 16) ?? fallback;
+    }
+    return int.tryParse(text) ?? fallback;
+  }
+  return fallback;
 }
+
+/// A rating is only valid between 0 (exclusive) and 5 (inclusive). Anything
+/// else (missing, zero, out of range, wrong type) is treated as "no rating".
+double? parseRating(Object? raw) {
+  final value = switch (raw) {
+    num n => n.toDouble(),
+    String s => double.tryParse(s.trim()),
+    _ => null,
+  };
+  if (value == null || value.isNaN || value <= 0 || value > 5) return null;
+  return value;
+}
+
+List<ProjectItem> parseProjects(List<Map<String, dynamic>> docs) =>
+    docs.map(ProjectItem.fromJson).toList();
 
 Future<List<ProjectItem>> fetchProjects() async {
   final docs = await _firestore.getCollection('projects');
-  return docs.map((json) {
-    final rawColor = json['color'];
-    int color = 0xFF000000;
-    if (rawColor is int) {
-      color = rawColor;
-    } else if (rawColor is String) {
-      if (rawColor.startsWith('0x') || rawColor.startsWith('0X')) {
-        color = int.tryParse(rawColor.substring(2), radix: 16) ?? color;
-      } else {
-        color = int.tryParse(rawColor) ?? color;
-      }
-    }
-
-    return ProjectItem(
-      title: json['title'] as String? ?? '',
-      description: json['description'] as String? ?? '',
-      tech: (json['tech'] as List?)?.cast<String>() ?? const [],
-      color: color,
-      downloads: json['downloads'] as String? ?? '',
-      imageUrl: json['imageUrl'] as String?,
-      logoUrl: json['logoUrl'] as String?,
-      galleryImages: (json['galleryImages'] as List?)?.cast<String>(),
-      androidStoreUrl: json['androidStoreUrl'] as String?,
-      iosStoreUrl: json['iosStoreUrl'] as String?,
-      videoUrl: json['videoUrl'] as String?,
-    );
-  }).toList();
+  return parseProjects(docs);
 }
 
-/// Ported verbatim from `_getProjectStats`/`_getAllTechStacks` in
-/// projects_desktop_view.dart (and its mobile/tablet duplicates): strips
-/// non-digits out of the free-text `downloads` field and sums them, and
-/// "average rating" is a flat 4.8 counted for any project whose downloads
-/// string contains a `+` or `,` — not real per-project ratings. Odd, but
-/// that's the actual live logic, not something to "fix" here.
-ProjectStats computeProjectStats(List<ProjectItem> projects) {
-  var totalDownloads = 0;
-  var totalRating = 0.0;
-  var ratedProjects = 0;
-  final techStacks = <String>{};
+/// Facts the proof strip may show. Every field is derived from data the owner
+/// controls; a field that cannot be derived is null/empty and is not shown.
+class ProofSummary {
+  final int totalProjects;
+  final int liveApps;
+  final bool android;
+  final bool ios;
+  final int? buildingSinceYear;
+  final double? averageRating;
+  final int ratedApps;
 
-  for (final project in projects) {
-    final digitsOnly = project.downloads.replaceAll(RegExp(r'[^\d]'), '');
-    if (digitsOnly.isNotEmpty) {
-      totalDownloads += int.tryParse(digitsOnly) ?? 0;
-    }
-    if (project.downloads.contains('+') || project.downloads.contains(',')) {
-      totalRating += 4.8;
-      ratedProjects++;
-    }
-    techStacks.addAll(project.tech);
-  }
+  const ProofSummary({
+    required this.totalProjects,
+    required this.liveApps,
+    required this.android,
+    required this.ios,
+    required this.buildingSinceYear,
+    required this.averageRating,
+    required this.ratedApps,
+  });
 
-  return ProjectStats(
+  List<String> get platforms => [if (android) 'Android', if (ios) 'iOS'];
+}
+
+ProofSummary computeProofSummary(
+  List<ProjectItem> projects,
+  List<ExperienceItem> experiences,
+) {
+  final rated = [for (final p in projects) if (p.rating != null) p.rating!];
+  return ProofSummary(
     totalProjects: projects.length,
-    totalDownloads: totalDownloads,
-    averageRating: ratedProjects > 0 ? totalRating / ratedProjects : 0.0,
-    techStacks: techStacks.length,
+    liveApps: projects.where((p) => p.isLive).length,
+    android: projects.any((p) => p.hasAndroid),
+    ios: projects.any((p) => p.hasIos),
+    buildingSinceYear: earliestStartYear(experiences),
+    averageRating:
+        rated.isEmpty ? null : rated.reduce((a, b) => a + b) / rated.length,
+    ratedApps: rated.length,
   );
 }
