@@ -34,7 +34,11 @@ class ContactForm extends StatefulComponent {
         backgroundColor: AppColors.surface,
         radius: BorderRadius.circular(1.25.rem),
         border: Border.all(color: AppColors.primary.withValues(alpha: 0.3), width: 1.5.px),
+        minWidth: Unit.zero,
       ),
+      css.media(MediaQuery.screen(maxWidth: Breakpoints.mobile.px), [
+        css('&').styles(padding: Padding.all(1.5.rem)),
+      ]),
       css('h3').styles(color: AppColors.textPrimary, fontSize: 1.75.rem),
       css('.contact-form-hint').styles(
         color: AppColors.textSecondary,
@@ -157,25 +161,31 @@ class _ContactFormState extends State<ContactForm> {
         .text("I'd love to hear from you. Send me a message and I'll respond as soon as possible."),
       ]),
       div(classes: 'form-field', [
-        label([.text('Your Name')]),
+        label(htmlFor: 'contact-name', [.text('Your Name')]),
         input<String>(
+          id: 'contact-name',
           type: InputType.text,
+          attributes: const {'name': 'name', 'autocomplete': 'name'},
           value: _name,
           onInput: (value) => setState(() => _name = value),
         ),
       ]),
       div(classes: 'form-field', [
-        label([.text('Your Email')]),
+        label(htmlFor: 'contact-email', [.text('Your Email')]),
         input<String>(
+          id: 'contact-email',
           type: InputType.email,
+          attributes: const {'name': 'email', 'autocomplete': 'email'},
           value: _email,
           onInput: (value) => setState(() => _email = value),
         ),
       ]),
       div(classes: 'form-field', [
-        label([.text('Your Message')]),
+        label(htmlFor: 'contact-message', [.text('Your Message')]),
         textarea(
           [.text(_message)],
+          id: 'contact-message',
+          attributes: const {'name': 'message'},
           rows: 5,
           onInput: (value) => setState(() => _message = value),
         ),
@@ -187,8 +197,8 @@ class _ContactFormState extends State<ContactForm> {
         [.text(_state == _SubmitState.submitting ? 'Sending…' : 'Send Message')],
       ),
       if (_state == _SubmitState.success)
-        p(classes: 'form-status success', [.text("Message sent successfully! I'll get back to you soon.")]),
-      if (_state == _SubmitState.error) p(classes: 'form-status error', [.text(_errorMessage ?? 'Something went wrong.')]),
+        p(classes: 'form-status success', attributes: const {'role': 'status'}, [.text("Message sent successfully! I'll get back to you soon.")]),
+      if (_state == _SubmitState.error) p(classes: 'form-status error', attributes: const {'role': 'alert'}, [.text(_errorMessage ?? 'Something went wrong.')]),
     ]);
   }
 }

@@ -90,7 +90,7 @@ class TestimonialsSection extends AsyncStatelessComponent {
         raw: {'grid-template-columns': 'repeat(2, minmax(0, 1fr))'},
       ),
       css.media(MediaQuery.screen(maxWidth: Breakpoints.tablet.px), [
-        css('&').styles(raw: {'grid-template-columns': '1fr'}),
+        css('&').styles(raw: {'grid-template-columns': 'minmax(0, 1fr)'}),
       ]),
       css.media(MediaQuery.screen(maxWidth: Breakpoints.mobile.px), [
         css('&').styles(

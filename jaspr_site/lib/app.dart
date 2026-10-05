@@ -35,30 +35,33 @@ class App extends AsyncStatelessComponent {
       const ScrollReveal(),
       const VisitTracker(),
       const CustomCursor(),
-      Router(
-        routes: [
-          Route(
-            path: '/',
-            title: 'Mohamed Adel - Flutter Developer Portfolio',
-            builder: (context, state) => const Home(),
-          ),
-          Route(
-            path: '/about',
-            title: 'About - Mohamed Adel, Flutter Developer',
-            builder: (context, state) => const About(),
-          ),
-          Route(
-            path: '/projects',
-            title: 'Projects - Mohamed Adel, Flutter Developer',
-            builder: (context, state) => const Projects(),
-          ),
-          Route(
-            path: '/contact',
-            title: 'Contact - Mohamed Adel, Flutter Developer',
-            builder: (context, state) => const Contact(),
-          ),
-        ],
-      ),
+      // Page content lives in <main> so screen readers can jump past the nav.
+      main_([
+        Router(
+          routes: [
+            Route(
+              path: '/',
+              title: 'Mohamed Adel - Flutter Developer Portfolio',
+              builder: (context, state) => const Home(),
+            ),
+            Route(
+              path: '/about',
+              title: 'About - Mohamed Adel, Flutter Developer',
+              builder: (context, state) => const About(),
+            ),
+            Route(
+              path: '/projects',
+              title: 'Projects - Mohamed Adel, Flutter Developer',
+              builder: (context, state) => const Projects(),
+            ),
+            Route(
+              path: '/contact',
+              title: 'Contact - Mohamed Adel, Flutter Developer',
+              builder: (context, state) => const Contact(),
+            ),
+          ],
+        ),
+      ]),
     ]);
   }
 }

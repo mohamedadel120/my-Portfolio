@@ -39,6 +39,9 @@ class Header extends StatefulComponent {
         backgroundColor: AppColors.background.withValues(alpha: 0),
         transition: Transition('background-color', duration: 300.ms),
       ),
+      css.media(MediaQuery.screen(maxWidth: Breakpoints.mobile.px), [
+        css('&').styles(padding: Padding.symmetric(horizontal: 1.25.rem, vertical: 1.rem)),
+      ]),
       css('&.scrolled').styles(
         backgroundColor: AppColors.background.withValues(alpha: 0.85),
         border: Border.only(
@@ -121,12 +124,12 @@ class Header extends StatefulComponent {
           // the active pill instead of every link's hover state.
           css('.nav-label::before').styles(
             content: '<',
-            color: AppColors.secondary,
+            color: AppColors.secondaryText,
             margin: Margin.only(right: 0.3.rem),
           ),
           css('.nav-label::after').styles(
             content: '/>',
-            color: AppColors.secondary,
+            color: AppColors.secondaryText,
             margin: Margin.only(left: 0.3.rem),
           ),
         ]),
@@ -156,6 +159,11 @@ class Header extends StatefulComponent {
           color: AppColors.primary,
           fontSize: 1.5.rem,
           cursor: Cursor.pointer,
+          // 44px is the minimum comfortable touch target on phones.
+          minWidth: 44.px,
+          minHeight: 44.px,
+          alignItems: AlignItems.center,
+          justifyContent: JustifyContent.center,
         ),
       ]),
       css('.desktop-only', [
@@ -197,6 +205,14 @@ class Header extends StatefulComponent {
           ),
         ),
       ]),
+      // The CV is the first thing recruiters look for, so the mobile menu
+      // carries it too -- the header's own CV button is desktop-only.
+      css('a.mobile-cv-button').styles(
+        margin: Margin.only(top: 1.rem),
+        fontFamily: FontFamily.list([FontFamily('Fira Code'), FontFamilies.monospace]),
+        fontSize: 1.rem,
+        color: Colors.black,
+      ),
       css('.mobile-menu-footer', [
         css('&').styles(
           position: Position.absolute(bottom: 2.5.rem),
@@ -258,13 +274,17 @@ class _HeaderState extends State<Header> {
         ),
         button(
           classes: 'menu-toggle mobile-only',
-          attributes: {'aria-label': 'Toggle menu'},
+          attributes: {
+            'aria-label': _menuOpen ? 'Close menu' : 'Open menu',
+            'aria-expanded': '$_menuOpen',
+            'aria-controls': 'mobile-menu',
+          },
           events: {'click': (_) => setState(() => _menuOpen = !_menuOpen)},
           [.text(_menuOpen ? '✕' : '☰')],
         ),
       ]),
       if (_menuOpen)
-        div(classes: 'mobile-menu', [
+        nav(id: 'mobile-menu', classes: 'mobile-menu', attributes: {'aria-label': 'Main'}, [
           for (final (i, link) in _links.indexed)
             a(
               href: link.href,
@@ -272,6 +292,13 @@ class _HeaderState extends State<Header> {
               events: {'click': (_) => setState(() => _menuOpen = false)},
               [.text(link.label)],
             ),
+          a(
+            href: component.cvUrl,
+            classes: 'cv-button mobile-cv-button',
+            styles: Styles(raw: {'animation-delay': '${_links.length * 80}ms'}),
+            attributes: const {'target': '_blank', 'rel': 'noopener noreferrer'},
+            [.text('DOWNLOAD CV')],
+          ),
           p(classes: 'mobile-menu-footer', [.text('© 2026 MOHAMED ADEL')]),
         ]),
     ]);

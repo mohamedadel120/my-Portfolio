@@ -13,14 +13,21 @@ import '../data/profile_repository.dart';
 /// does the same (the field is fetched but never actually used to pick an
 /// icon), so this replicates existing behavior rather than "fixing" it.
 class AboutSection extends AsyncStatelessComponent {
-  const AboutSection({super.key});
+  /// True when this section is the whole page (its own route), so its
+  /// title becomes the page's `<h1>` instead of an `<h2>`.
+  final bool standalone;
+
+  const AboutSection({super.key, this.standalone = false});
 
   @override
   Future<Component> build(BuildContext context) async {
     final about = await fetchAboutData();
 
     return section(id: 'about', classes: 'about', [
-      h2(classes: 'section-title', [.text('About Me')]),
+      if (standalone)
+        h1(classes: 'section-title', [.text('About Me')])
+      else
+        h2(classes: 'section-title', [.text('About Me')]),
       div(classes: 'about-grid', [
         div(classes: 'bento identity reveal', [
           h3(classes: 'bento-title', [.text('Identity')]),
@@ -98,19 +105,22 @@ class AboutSection extends AsyncStatelessComponent {
   static List<StyleRule> get styles => [
     css('.about', [
       css('&').styles(padding: Padding.symmetric(horizontal: 3.75.rem, vertical: 6.25.rem)),
+      css.media(MediaQuery.screen(maxWidth: Breakpoints.mobile.px), [
+        css('&').styles(padding: Padding.symmetric(horizontal: 1.25.rem, vertical: 4.rem)),
+      ]),
     ]),
     css('.about-grid', [
       css('&').styles(
         display: Display.grid,
         gridTemplate: GridTemplate(
-          columns: GridTracks([GridTrack(TrackSize.fr(2)), GridTrack(TrackSize.fr(1))]),
+          columns: GridTracks([GridTrack(TrackSize.minmax(TrackSize(Unit.zero), TrackSize.fr(2))), GridTrack(TrackSize.minmax(TrackSize(Unit.zero), TrackSize.fr(1)))]),
         ),
         gap: Gap.all(1.5.rem),
         margin: Margin.only(top: 3.75.rem),
       ),
       css.media(MediaQuery.screen(maxWidth: Breakpoints.tablet.px), [
         css('&').styles(
-          gridTemplate: GridTemplate(columns: GridTracks([GridTrack(TrackSize.fr(1))])),
+          gridTemplate: GridTemplate(columns: GridTracks([GridTrack(TrackSize.minmax(TrackSize(Unit.zero), TrackSize.fr(1)))])),
         ),
       ]),
     ]),
@@ -157,6 +167,9 @@ class AboutSection extends AsyncStatelessComponent {
         padding: Padding.all(2.rem),
         raw: {'transition': 'transform 250ms ease, border-color 250ms ease, box-shadow 250ms ease'},
       ),
+      css.media(MediaQuery.screen(maxWidth: Breakpoints.mobile.px), [
+        css('&').styles(padding: Padding.all(1.25.rem)),
+      ]),
       css('&:hover').styles(
         transform: Transform.translate(y: (-4).px),
         border: Border.all(color: AppColors.primary.withValues(alpha: 0.3), width: 1.px),
@@ -212,13 +225,18 @@ class AboutSection extends AsyncStatelessComponent {
     css('.feature-grid', [
       css('&').styles(
         display: Display.grid,
-        gridTemplate: GridTemplate(columns: GridTracks([GridTrack(TrackSize.fr(1)), GridTrack(TrackSize.fr(1))])),
+        gridTemplate: GridTemplate(columns: GridTracks([GridTrack(TrackSize.minmax(TrackSize(Unit.zero), TrackSize.fr(1))), GridTrack(TrackSize.minmax(TrackSize(Unit.zero), TrackSize.fr(1)))])),
         gap: Gap.all(1.rem),
         // .features is now a column flexbox so this can grow to fill the
         // taller, row-spanning card and center its 2x2 cards within it
         // instead of leaving them stranded at the top.
         raw: {'flex': '1', 'align-content': 'center'},
       ),
+      // Two 120px-wide cards can't hold "Performance" plus its blurb on a
+      // phone, so they stack there.
+      css.media(MediaQuery.screen(maxWidth: 420.px), [
+        css('&').styles(raw: {'grid-template-columns': 'minmax(0, 1fr)'}),
+      ]),
       css('.feature-card').styles(
         backgroundColor: Colors.white.withValues(alpha: 0.03),
         radius: BorderRadius.circular(1.rem),

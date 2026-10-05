@@ -68,7 +68,7 @@ class WhyChooseMeSection extends AsyncStatelessComponent {
         css('&').styles(
           gap: Gap.all(1.rem),
           margin: Margin.only(top: 3.rem),
-          raw: {'grid-template-columns': '1fr'},
+          raw: {'grid-template-columns': 'minmax(0, 1fr)'},
         ),
       ]),
     ]),

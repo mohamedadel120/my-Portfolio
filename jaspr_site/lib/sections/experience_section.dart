@@ -48,12 +48,18 @@ class ExperienceSection extends AsyncStatelessComponent {
   static List<StyleRule> get styles => [
     css('.experience', [
       css('&').styles(padding: Padding.symmetric(horizontal: 3.75.rem, vertical: 6.25.rem)),
+      css.media(MediaQuery.screen(maxWidth: Breakpoints.mobile.px), [
+        css('&').styles(padding: Padding.symmetric(horizontal: 1.25.rem, vertical: 4.rem)),
+      ]),
     ]),
     css('.timeline', [
       css('&').styles(margin: Margin.only(top: 4.5.rem)),
     ]),
     css('.timeline-row', [
       css('&').styles(display: Display.flex, alignItems: AlignItems.stretch, gap: Gap.all(2.rem)),
+      css.media(MediaQuery.screen(maxWidth: Breakpoints.mobile.px), [
+        css('&').styles(gap: Gap.all(0.75.rem)),
+      ]),
     ]),
     css('.timeline-rail', [
       css('&').styles(display: Display.flex, flexDirection: FlexDirection.column, alignItems: AlignItems.center, width: 1.rem),
@@ -84,11 +90,20 @@ class ExperienceSection extends AsyncStatelessComponent {
         backgroundColor: AppColors.surface,
         radius: BorderRadius.circular(1.25.rem),
         border: Border.all(color: AppColors.primary.withValues(alpha: 0.15), width: 1.5.px),
+        minWidth: Unit.zero,
       ),
+      css.media(MediaQuery.screen(maxWidth: Breakpoints.mobile.px), [
+        css('&').styles(padding: Padding.all(1.25.rem)),
+      ]),
     ]),
     css('.timeline-row.last .timeline-card').styles(margin: Margin.only(bottom: Unit.zero)),
     css('.timeline-card-header', [
       css('&').styles(display: Display.flex, justifyContent: JustifyContent.spaceBetween, alignItems: AlignItems.start, gap: Gap.all(1.rem)),
+      // On a phone the date pill drops under the company/role instead of
+      // squeezing them.
+      css.media(MediaQuery.screen(maxWidth: Breakpoints.mobile.px), [
+        css('&').styles(flexDirection: FlexDirection.column, gap: Gap.all(0.75.rem)),
+      ]),
     ]),
     css('.timeline-company', [
       css('&').styles(
@@ -109,7 +124,7 @@ class ExperienceSection extends AsyncStatelessComponent {
     ]),
     css('.timeline-period', [
       css('&').styles(
-        color: AppColors.secondary,
+        color: AppColors.secondaryText,
         fontFamily: FontFamily.list([FontFamily('JetBrains Mono'), FontFamilies.monospace]),
         fontSize: 0.8.rem,
         fontWeight: FontWeight.w600,
