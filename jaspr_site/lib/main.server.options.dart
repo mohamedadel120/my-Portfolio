@@ -11,6 +11,7 @@ import 'package:jaspr_site/components/header.dart' as _header;
 import 'package:jaspr_site/components/project_showcase.dart'
     as _project_showcase;
 import 'package:jaspr_site/components/scroll_reveal.dart' as _scroll_reveal;
+import 'package:jaspr_site/components/visit_tracker.dart' as _visit_tracker;
 import 'package:jaspr_site/constants/theme.dart' as _theme;
 import 'package:jaspr_site/sections/about_section.dart' as _about_section;
 import 'package:jaspr_site/sections/contact_section.dart' as _contact_section;
@@ -58,6 +59,9 @@ ServerOptions get defaultServerOptions => ServerOptions(
         ),
     _scroll_reveal.ScrollReveal: ClientTarget<_scroll_reveal.ScrollReveal>(
       'scroll_reveal',
+    ),
+    _visit_tracker.VisitTracker: ClientTarget<_visit_tracker.VisitTracker>(
+      'visit_tracker',
     ),
   },
   styles: () => [
