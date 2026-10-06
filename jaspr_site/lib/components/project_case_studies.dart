@@ -3,7 +3,7 @@ import 'package:jaspr/jaspr.dart';
 
 import '../constants/theme.dart';
 import 'project_view.dart';
-import 'shot_strip.dart';
+import 'shot_gallery.dart';
 
 /// V2-A: one case study per project, rendered entirely on the server (plain
 /// HTML + CSS, no client JavaScript), so every title, description, link and
@@ -57,7 +57,7 @@ class ProjectCaseStudies extends StatelessComponent {
             attributes: const {'playsinline': '', 'preload': 'none', 'aria-label': 'Video preview'},
             [],
           ),
-        if (images.isNotEmpty) ShotStrip(id: 'cs-strip-$index', title: title, images: images, eagerFirst: index == 0),
+        if (images.isNotEmpty) ShotGallery(title: title, images: images, eagerFirst: index == 0),
         div(classes: 'cs-body', [
           div(classes: 'cs-story', [
             p(classes: 'cs-description', [.text(description)]),

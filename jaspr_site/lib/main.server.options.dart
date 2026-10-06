@@ -15,7 +15,7 @@ import 'package:jaspr_site/components/project_index_detail.dart'
 import 'package:jaspr_site/components/project_showcase.dart'
     as _project_showcase;
 import 'package:jaspr_site/components/scroll_reveal.dart' as _scroll_reveal;
-import 'package:jaspr_site/components/shot_strip.dart' as _shot_strip;
+import 'package:jaspr_site/components/shot_gallery.dart' as _shot_gallery;
 import 'package:jaspr_site/constants/theme.dart' as _theme;
 import 'package:jaspr_site/sections/about_section.dart' as _about_section;
 import 'package:jaspr_site/sections/contact_section.dart' as _contact_section;
@@ -69,9 +69,9 @@ ServerOptions get defaultServerOptions => ServerOptions(
     _scroll_reveal.ScrollReveal: ClientTarget<_scroll_reveal.ScrollReveal>(
       'scroll_reveal',
     ),
-    _shot_strip.ShotStrip: ClientTarget<_shot_strip.ShotStrip>(
-      'shot_strip',
-      params: __shot_stripShotStrip,
+    _shot_gallery.ShotGallery: ClientTarget<_shot_gallery.ShotGallery>(
+      'shot_gallery',
+      params: __shot_galleryShotGallery,
     ),
   },
   styles: () => [
@@ -82,7 +82,7 @@ ServerOptions get defaultServerOptions => ServerOptions(
     ..._project_case_studies.ProjectCaseStudies.styles,
     ..._project_index_detail.ProjectIndexDetail.styles,
     ..._project_showcase.StickyProjectShowcase.styles,
-    ..._shot_strip.ShotStrip.styles,
+    ..._shot_gallery.ShotGallery.styles,
     ..._about_section.AboutSection.styles,
     ..._contact_section.ContactSection.styles,
     ..._experience_section.ExperienceSection.styles,
@@ -102,8 +102,7 @@ Map<String, Object?> __project_index_detailProjectIndexDetail(
 Map<String, Object?> __project_showcaseStickyProjectShowcase(
   _project_showcase.StickyProjectShowcase c,
 ) => {'projects': c.projects, 'refined': c.refined};
-Map<String, Object?> __shot_stripShotStrip(_shot_strip.ShotStrip c) => {
-  'id': c.id,
+Map<String, Object?> __shot_galleryShotGallery(_shot_gallery.ShotGallery c) => {
   'title': c.title,
   'images': c.images,
   'eagerFirst': c.eagerFirst,

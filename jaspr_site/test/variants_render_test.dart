@@ -54,11 +54,28 @@ void main() {
       expect(html, contains('href="#contact"'));
     });
 
-    test('screenshots have alt text and only the first one is eager', () async {
+    test('screenshots have alt text; only the first two of the first project are eager', () async {
       final html = await render(ProjectsVariant.caseStudy, all);
       expect(html, contains('alt="App 1 screenshot 1 of 2"'));
-      expect(RegExp('loading="eager"').allMatches(html), hasLength(1));
+      expect(RegExp('loading="eager"').allMatches(html), hasLength(2));
       expect(html, isNot(contains('alt=""')));
+    });
+
+    test('gallery has controls, dots and a counter for several screenshots', () async {
+      final html = await render(ProjectsVariant.caseStudy, all);
+      expect(html, contains('aria-label="Next screenshot"'));
+      expect(html, contains('aria-label="Previous screenshot"'));
+      expect(html, contains('1 / 2'));
+      expect(RegExp('class="gal-dot"').allMatches(html), hasLength(6));
+      expect(html, contains('aria-roledescription="carousel"'));
+    });
+
+    test('a single screenshot shows no browsing controls', () async {
+      final one = project(7)..['galleryImages'] = ['https://img.test/only.webp'];
+      final html = await render(ProjectsVariant.caseStudy, [one]);
+      expect(html, contains('https://img.test/only.webp'));
+      expect(html, isNot(contains('Next screenshot')));
+      expect(html, isNot(contains('gal-dot')));
     });
 
     test('external links are safe', () async {
@@ -78,7 +95,7 @@ void main() {
       final html = await render(ProjectsVariant.caseStudy, [project(9, full: false)]);
       expect(html, contains('App 9'));
       expect(html, contains('Coming soon'));
-      expect(html, isNot(contains('strip-row')));
+      expect(html, isNot(contains('gal-track')));
     });
 
     test('empty list renders nothing harmful', () async {
