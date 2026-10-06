@@ -8,6 +8,10 @@ import 'package:jaspr/server.dart';
 import 'package:jaspr_site/components/contact_form.dart' as _contact_form;
 import 'package:jaspr_site/components/custom_cursor.dart' as _custom_cursor;
 import 'package:jaspr_site/components/header.dart' as _header;
+import 'package:jaspr_site/components/project_case_studies.dart'
+    as _project_case_studies;
+import 'package:jaspr_site/components/project_index_detail.dart'
+    as _project_index_detail;
 import 'package:jaspr_site/components/project_showcase.dart'
     as _project_showcase;
 import 'package:jaspr_site/components/scroll_reveal.dart' as _scroll_reveal;
@@ -51,6 +55,11 @@ ServerOptions get defaultServerOptions => ServerOptions(
       'header',
       params: __headerHeader,
     ),
+    _project_index_detail.ProjectIndexDetail:
+        ClientTarget<_project_index_detail.ProjectIndexDetail>(
+          'project_index_detail',
+          params: __project_index_detailProjectIndexDetail,
+        ),
     _project_showcase.StickyProjectShowcase:
         ClientTarget<_project_showcase.StickyProjectShowcase>(
           'project_showcase',
@@ -65,6 +74,8 @@ ServerOptions get defaultServerOptions => ServerOptions(
     ..._contact_form.ContactForm.styles,
     ..._custom_cursor.CustomCursor.styles,
     ..._header.Header.styles,
+    ..._project_case_studies.ProjectCaseStudies.styles,
+    ..._project_index_detail.ProjectIndexDetail.styles,
     ..._project_showcase.StickyProjectShowcase.styles,
     ..._about_section.AboutSection.styles,
     ..._contact_section.ContactSection.styles,
@@ -79,6 +90,9 @@ Map<String, Object?> __contact_formContactForm(_contact_form.ContactForm c) => {
   'recipientEmail': c.recipientEmail,
 };
 Map<String, Object?> __headerHeader(_header.Header c) => {'cvUrl': c.cvUrl};
+Map<String, Object?> __project_index_detailProjectIndexDetail(
+  _project_index_detail.ProjectIndexDetail c,
+) => {'projects': c.projects};
 Map<String, Object?> __project_showcaseStickyProjectShowcase(
   _project_showcase.StickyProjectShowcase c,
-) => {'projects': c.projects};
+) => {'projects': c.projects, 'refined': c.refined};

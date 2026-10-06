@@ -50,3 +50,5 @@ bool isMediaLoaded(String id) {
   }
   return false;
 }
+
+bool prefersReducedMotion() => web.window.matchMedia('(prefers-reduced-motion: reduce)').matches;

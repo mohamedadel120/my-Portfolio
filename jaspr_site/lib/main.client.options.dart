@@ -11,6 +11,8 @@ import 'package:jaspr_site/components/contact_form.dart'
 import 'package:jaspr_site/components/custom_cursor.dart'
     deferred as _custom_cursor;
 import 'package:jaspr_site/components/header.dart' deferred as _header;
+import 'package:jaspr_site/components/project_index_detail.dart'
+    deferred as _project_index_detail;
 import 'package:jaspr_site/components/project_showcase.dart'
     deferred as _project_showcase;
 import 'package:jaspr_site/components/scroll_reveal.dart'
@@ -48,11 +50,20 @@ ClientOptions get defaultClientOptions => ClientOptions(
       (p) => _header.Header(cvUrl: p['cvUrl'] as String),
       loader: _header.loadLibrary,
     ),
+    'project_index_detail': ClientLoader(
+      (p) => _project_index_detail.ProjectIndexDetail(
+        projects: (p['projects'] as List<Object?>)
+            .map((i) => (i as Map<String, Object?>))
+            .toList(),
+      ),
+      loader: _project_index_detail.loadLibrary,
+    ),
     'project_showcase': ClientLoader(
       (p) => _project_showcase.StickyProjectShowcase(
         projects: (p['projects'] as List<Object?>)
             .map((i) => (i as Map<String, Object?>))
             .toList(),
+        refined: p['refined'] as bool,
       ),
       loader: _project_showcase.loadLibrary,
     ),

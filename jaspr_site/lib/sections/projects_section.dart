@@ -1,7 +1,10 @@
 import 'package:jaspr/dom.dart';
 import 'package:jaspr/server.dart';
 
+import '../components/project_case_studies.dart';
+import '../components/project_index_detail.dart';
 import '../components/project_showcase.dart';
+import '../constants/projects_variant.dart';
 import '../constants/theme.dart';
 import '../data/experience_repository.dart';
 import '../data/projects_repository.dart';
@@ -15,7 +18,11 @@ import '../data/projects_repository.dart';
 /// controls, and a fact that cannot be derived is simply not rendered. In
 /// particular a rating only appears once real `rating` values exist.
 class ProjectsSection extends AsyncStatelessComponent {
-  const ProjectsSection({super.key});
+  /// Which presentation to render. Defaults to [projectsVariant]; tests and
+  /// previews can pass another one explicitly.
+  final ProjectsVariant variant;
+
+  const ProjectsSection({super.key, this.variant = projectsVariant});
 
   @override
   Future<Component> build(BuildContext context) async {
@@ -26,8 +33,18 @@ class ProjectsSection extends AsyncStatelessComponent {
     return section(id: 'projects', classes: 'projects', [
       h2(classes: 'section-title', [.text('Projects')]),
       ...proofStrip(summary),
-      StickyProjectShowcase(projects: [for (final p in projects) _toMap(p)]),
+      showcase(variant, [for (final p in projects) _toMap(p)]),
     ]);
+  }
+
+  /// The presentation for [variant]. Public so tests can render every one.
+  static Component showcase(ProjectsVariant variant, List<Map<String, dynamic>> projects) {
+    return switch (variant) {
+      ProjectsVariant.v1 => StickyProjectShowcase(projects: projects),
+      ProjectsVariant.caseStudy => ProjectCaseStudies(projects: projects),
+      ProjectsVariant.indexDetail => ProjectIndexDetail(projects: projects),
+      ProjectsVariant.refinedSticky => StickyProjectShowcase(projects: projects, refined: true),
+    };
   }
 
   Map<String, dynamic> _toMap(ProjectItem p) => {
@@ -40,6 +57,9 @@ class ProjectsSection extends AsyncStatelessComponent {
     'androidStoreUrl': p.androidStoreUrl,
     'iosStoreUrl': p.iosStoreUrl,
     'videoUrl': p.videoUrl,
+    'role': p.role,
+    'problem': p.problem,
+    'outcome': p.outcome,
   };
 
   @css

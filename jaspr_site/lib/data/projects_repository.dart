@@ -21,6 +21,12 @@ class ProjectItem {
   /// anything else.
   final double? rating;
 
+  /// Optional case-study copy written by the owner in Firestore. Never
+  /// generated: when a field is absent the UI simply omits it.
+  final String? role;
+  final String? problem;
+  final String? outcome;
+
   const ProjectItem({
     required this.title,
     required this.description,
@@ -34,6 +40,9 @@ class ProjectItem {
     this.iosStoreUrl,
     this.videoUrl,
     this.rating,
+    this.role,
+    this.problem,
+    this.outcome,
   });
 
   bool get hasAndroid => _isUsable(androidStoreUrl);
@@ -56,6 +65,9 @@ class ProjectItem {
       iosStoreUrl: _string(json['iosStoreUrl']),
       videoUrl: _string(json['videoUrl']),
       rating: parseRating(json['rating']),
+      role: _nonBlank(json['role']),
+      problem: _nonBlank(json['problem']),
+      outcome: _nonBlank(json['outcome']),
     );
   }
 }
@@ -63,6 +75,11 @@ class ProjectItem {
 bool _isUsable(String? url) => url != null && url.trim().isNotEmpty;
 
 String? _string(Object? value) => value is String ? value : null;
+
+String? _nonBlank(Object? value) {
+  final text = _string(value)?.trim();
+  return text == null || text.isEmpty ? null : text;
+}
 
 List<String>? _stringList(Object? value) =>
     value is List ? value.whereType<String>().toList() : null;

@@ -1,6 +1,7 @@
 import 'package:jaspr/dom.dart';
 import 'package:jaspr/jaspr.dart';
 
+import '../constants/motion_css.dart';
 import '../constants/theme.dart';
 import 'project_showcase.vm.dart' if (dart.library.js_interop) 'project_showcase.web.dart';
 
@@ -49,7 +50,12 @@ const _googlePlayPath =
 class StickyProjectShowcase extends StatefulComponent {
   final List<Map<String, dynamic>> projects;
 
-  const StickyProjectShowcase({super.key, required this.projects});
+  /// V2-C. Same showcase with a shorter scroll, reduced-motion support,
+  /// keyboard/ARIA fixes and a contact call to action. `false` keeps the
+  /// original behaviour exactly.
+  final bool refined;
+
+  const StickyProjectShowcase({super.key, required this.projects, this.refined = false});
 
   @override
   State<StickyProjectShowcase> createState() => _StickyProjectShowcaseState();
@@ -521,13 +527,48 @@ class StickyProjectShowcase extends StatefulComponent {
       css('.nav-dot.active').styles(color: AppColors.primary, fontWeight: FontWeight.w700),
       css('.nav-dot:hover').styles(color: AppColors.primary),
     ]),
+    // ---- V2-C (refined mode only) ----
+    // dvh keeps the stage the real visible height on phones, where 100vh is
+    // taller than the viewport while the browser toolbar is showing.
+    css('.sticky-showcase.refined .showcase-stage').styles(raw: {'height': '100dvh'}),
+    css('.showcase-cta', [
+      css('&').styles(
+        display: Display.inlineFlex,
+        alignItems: AlignItems.center,
+        minHeight: 2.75.rem,
+        margin: Margin.only(top: 1.25.rem),
+        padding: Padding.symmetric(horizontal: 1.25.rem),
+        radius: BorderRadius.circular(0.5.rem),
+        backgroundColor: AppColors.primary,
+        color: AppColors.background,
+        textDecoration: TextDecoration.none,
+        fontWeight: FontWeight.w700,
+        fontSize: 0.9.rem,
+        raw: {'transition': 'transform 160ms cubic-bezier(0.23, 1, 0.32, 1)'},
+      ),
+      css('&:active').styles(transform: Transform.scale(0.97)),
+      css('&:focus-visible').styles(raw: {'outline': '2px solid ${AppColors.primary.value}', 'outline-offset': '3px'}),
+    ]),
+    css('.nav-dot:focus-visible, .store-btn:focus-visible').styles(raw: {'outline': '2px solid ${AppColors.primary.value}', 'outline-offset': '2px'}),
+    MotionRule.reduced([
+      css('.sticky-showcase.refined .title-char, .sticky-showcase.refined .desc-word').styles(
+        opacity: 1,
+        raw: {'animation': 'none', 'transform': 'none'},
+      ),
+      css('.sticky-showcase.refined .tech-cursor').styles(raw: {'animation': 'none'}),
+      css('.sticky-showcase.refined .showcase-bg, .sticky-showcase.refined .phone-frame').styles(raw: {'transition': 'none'}),
+    ]),
   ];
 }
 
 class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
   static const _rootId = 'sticky-project-showcase';
-  static const _introHeight = 1400.0;
-  static const _scrollPerImage = 800.0;
+  // The original needs ~1400px of scroll per project plus 800px per
+  // screenshot (40,000px+ for six projects); the refined mode keeps the same
+  // choreography in about 60% of the distance.
+  double get _introHeight => component.refined ? 900.0 : 1400.0;
+  double get _scrollPerImage => component.refined ? 450.0 : 800.0;
+  late final bool _reduceMotion = component.refined && prefersReducedMotion();
 
   int _activeIndex = 0;
   int _imageIndex = 0;
@@ -682,6 +723,13 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
     if (techIndex >= tech.length) return;
     final currentText = tech[techIndex];
 
+    if (_reduceMotion) {
+      // No typewriter for visitors who asked for reduced motion: show the
+      // whole word at once.
+      setState(() => _typedTech = currentText);
+      return;
+    }
+
     if (_typingCharIndex < currentText.length) {
       setState(() {
         _typedTech += currentText[_typingCharIndex];
@@ -713,7 +761,8 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
 
     return div(
       id: _rootId,
-      classes: 'sticky-showcase',
+      classes: component.refined ? 'sticky-showcase refined' : 'sticky-showcase',
+      attributes: component.refined ? const {'role': 'region', 'aria-label': 'Project showcase'} : null,
       styles: Styles(height: _totalHeight.px),
       [
         div(classes: 'showcase-stage', styles: Styles(raw: {'--accent': accent.value}), [
@@ -750,7 +799,11 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
             ),
             div(classes: 'info-links', [
               if (androidUrl != null)
-                a(href: androidUrl, classes: 'store-btn', [
+                a(
+                  href: androidUrl,
+                  classes: 'store-btn',
+                  attributes: component.refined ? {'aria-label': 'Get ${project['title']} on Google Play'} : null,
+                  [
                   span(classes: 'store-tooltip', [.text('Google Play')]),
                   svg([
                     path(d: _androidLogoPath, fill: const Color('currentColor'), []),
@@ -763,7 +816,11 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
                 // Material Symbols has no "Apple logo" icon (it's Google's
                 // icon set) -- a real Apple silhouette reads as an actual
                 // logo instead of a generic phone outline.
-                a(href: iosUrl, classes: 'store-btn store-btn-ios', [
+                a(
+                  href: iosUrl,
+                  classes: 'store-btn store-btn-ios',
+                  attributes: component.refined ? {'aria-label': 'Get ${project['title']} on the App Store'} : null,
+                  [
                   span(classes: 'store-tooltip', [.text('App Store')]),
                   svg([
                     path(d: _appleLogoPath, fill: const Color('currentColor'), []),
@@ -776,6 +833,7 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
                   ]),
                 ]),
               if (androidUrl == null && iosUrl == null) span(classes: 'coming-soon', [.text('Coming Soon')]),
+              if (component.refined) a(href: '#contact', classes: 'showcase-cta', [.text('Build something like this')]),
             ]),
           ]),
           div(classes: 'showcase-tech', [
@@ -789,7 +847,9 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
             for (final (i, p) in _projects.indexed)
               button(
                 classes: i == _activeIndex ? 'nav-dot active' : 'nav-dot',
-                attributes: const {'type': 'button'},
+                attributes: component.refined
+                    ? {'type': 'button', 'aria-current': i == _activeIndex ? 'true' : 'false'}
+                    : const {'type': 'button'},
                 events: {'click': (_) => _scrollToProject(i)},
                 [.text((p['title'] as String).toUpperCase())],
               ),

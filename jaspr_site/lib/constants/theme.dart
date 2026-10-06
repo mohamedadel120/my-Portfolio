@@ -120,4 +120,20 @@ List<StyleRule> get styles => [
     raw: {'transition': 'opacity 600ms ease-out, transform 600ms ease-out'},
   ),
   css('.reveal.revealed').styles(opacity: 1, transform: Transform.translate(y: 0.px)),
+  // Phone layout. Sections used 3.75rem (60px) side padding at every width,
+  // which left ~255px of content on a 375px phone, and `1fr` grid tracks /
+  // flex items default to `min-width: auto`, so any long word or wide child
+  // pushed the whole page wider than the screen (452px at 375px). Reclaim
+  // the gutters, let grid/flex children shrink, and wrap long words.
+  css.media(MediaQuery.screen(maxWidth: Breakpoints.mobile.px), [
+    css('section.about, section.expertise, section.experience, section.projects, section.contact').styles(
+      padding: Padding.symmetric(horizontal: 1.25.rem, vertical: 4.rem),
+    ),
+    css('.nav-bar').styles(padding: Padding.symmetric(horizontal: 1.rem, vertical: 1.rem)),
+    css('.about-grid > *, .contact-grid > *, .contact-side > *, .timeline-card, .bento').styles(raw: {'min-width': '0'}),
+    css('.timeline-card-header').styles(flexWrap: FlexWrap.wrap),
+    css('.timeline-row').styles(gap: Gap.all(1.rem)),
+    css('.timeline-card').styles(padding: Padding.all(1.25.rem)),
+    css('p, li, h1, h2, h3, h4, dd, dt').styles(raw: {'overflow-wrap': 'break-word'}),
+  ]),
 ];
