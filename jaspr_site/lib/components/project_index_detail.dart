@@ -121,7 +121,10 @@ class ProjectIndexDetail extends StatefulComponent {
           'box-shadow': '0 24px 48px -20px color-mix(in srgb, var(--accent) 50%, transparent)',
         },
       ),
-      css('img, video').styles(width: 100.percent, height: 100.percent, raw: {'object-fit': 'cover', 'display': 'block'}),
+      // Two rules, not `img, video`: Jaspr prefixes only the first selector of a
+      // nested comma list, so a bare `video` would style every video on the page.
+      css('img').styles(width: 100.percent, height: 100.percent, raw: {'object-fit': 'cover', 'display': 'block'}),
+      css('video').styles(width: 100.percent, height: 100.percent, raw: {'object-fit': 'cover', 'display': 'block'}),
     ]),
     css('.idx-thumbs', [
       css('&').styles(
