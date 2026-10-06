@@ -209,6 +209,42 @@ void main() {
     });
   });
 
+  group('pinned showcase (V2-E)', () {
+    test('every project text and link is in the HTML, only the first is active', () async {
+      final html = await render(ProjectsVariant.pinnedShowcase, all);
+      for (var i = 1; i <= 3; i++) {
+        expect(html, contains('Description of app $i'));
+        expect(html, contains('play.google.com/store/apps/details?id=app$i'));
+        expect(html, contains('https://img.test/$i-1.webp'));
+      }
+      expect(RegExp('class="pp-info"').allMatches(html), hasLength(3));
+      expect(RegExp('data-active="true"').allMatches(html), hasLength(2)); // info + phone
+      expect(html, contains('Project 1 / 3'));
+      expect(html, contains('Skip to contact'));
+    });
+
+    test('has exactly one client component', () async {
+      final html = await render(ProjectsVariant.pinnedShowcase, all);
+      expect(RegExp('<!--@').allMatches(html), hasLength(1));
+    });
+
+    test('inactive projects expose only their first screenshot', () async {
+      final html = await render(ProjectsVariant.pinnedShowcase, all);
+      // Jaspr also serialises the project data into an HTML comment for
+      // hydration, so look at the real <img src> attributes only.
+      final sources = RegExp(r'<img[^>]*src="([^"]+)"').allMatches(html).map((m) => m.group(1)).toList();
+      expect(sources, contains('https://img.test/3-1.webp'));
+      expect(sources, isNot(contains('https://img.test/3-2.webp')));
+      // The active project adds the screenshot that is about to play.
+      expect(sources, contains('https://img.test/1-2.webp'));
+    });
+
+    test('empty list renders nothing harmful', () async {
+      final html = await render(ProjectsVariant.pinnedShowcase, const []);
+      expect(html, isNot(contains('pp-info')));
+    });
+  });
+
   test('production default is the original design', () {
     expect(projectsVariant, ProjectsVariant.v1);
   });

@@ -17,6 +17,10 @@ enum ProjectsVariant {
 
   /// V2-D: one screen per project, stacked sticky stages, screenshot gallery.
   stageShowcase,
+
+  /// V2-E: the section stays pinned; scrolling switches project in place
+  /// (phone plays the screenshots like a video, text is typed).
+  pinnedShowcase,
 }
 
 /// Chosen at launch with `--dart-define=PROJECTS_VARIANT=<name>` (see
@@ -32,4 +36,6 @@ const projectsVariant = _requested == 'caseStudy'
             ? ProjectsVariant.refinedSticky
             : _requested == 'stageShowcase'
                 ? ProjectsVariant.stageShowcase
-                : ProjectsVariant.v1;
+                : _requested == 'pinnedShowcase'
+                    ? ProjectsVariant.pinnedShowcase
+                    : ProjectsVariant.v1;

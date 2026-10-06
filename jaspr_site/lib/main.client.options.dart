@@ -13,6 +13,8 @@ import 'package:jaspr_site/components/custom_cursor.dart'
 import 'package:jaspr_site/components/header.dart' deferred as _header;
 import 'package:jaspr_site/components/project_index_detail.dart'
     deferred as _project_index_detail;
+import 'package:jaspr_site/components/project_pinned_showcase.dart'
+    deferred as _project_pinned_showcase;
 import 'package:jaspr_site/components/project_showcase.dart'
     deferred as _project_showcase;
 import 'package:jaspr_site/components/project_stage_showcase.dart'
@@ -61,6 +63,14 @@ ClientOptions get defaultClientOptions => ClientOptions(
             .toList(),
       ),
       loader: _project_index_detail.loadLibrary,
+    ),
+    'project_pinned_showcase': ClientLoader(
+      (p) => _project_pinned_showcase.ProjectPinnedShowcase(
+        projects: (p['projects'] as List<Object?>)
+            .map((i) => (i as Map<String, Object?>))
+            .toList(),
+      ),
+      loader: _project_pinned_showcase.loadLibrary,
     ),
     'project_showcase': ClientLoader(
       (p) => _project_showcase.StickyProjectShowcase(

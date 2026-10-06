@@ -3,6 +3,7 @@ import 'package:jaspr/server.dart';
 
 import '../components/project_case_studies.dart';
 import '../components/project_index_detail.dart';
+import '../components/project_pinned_showcase.dart';
 import '../components/project_showcase.dart';
 import '../components/project_stage_showcase.dart';
 import '../constants/projects_variant.dart';
@@ -46,6 +47,7 @@ class ProjectsSection extends AsyncStatelessComponent {
       ProjectsVariant.indexDetail => ProjectIndexDetail(projects: projects),
       ProjectsVariant.refinedSticky => StickyProjectShowcase(projects: projects, refined: true),
       ProjectsVariant.stageShowcase => ProjectStageShowcase(projects: projects),
+      ProjectsVariant.pinnedShowcase => ProjectPinnedShowcase(projects: projects),
     };
   }
 

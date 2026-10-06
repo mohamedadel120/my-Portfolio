@@ -12,6 +12,8 @@ import 'package:jaspr_site/components/project_case_studies.dart'
     as _project_case_studies;
 import 'package:jaspr_site/components/project_index_detail.dart'
     as _project_index_detail;
+import 'package:jaspr_site/components/project_pinned_showcase.dart'
+    as _project_pinned_showcase;
 import 'package:jaspr_site/components/project_showcase.dart'
     as _project_showcase;
 import 'package:jaspr_site/components/project_stage_showcase.dart'
@@ -63,6 +65,11 @@ ServerOptions get defaultServerOptions => ServerOptions(
           'project_index_detail',
           params: __project_index_detailProjectIndexDetail,
         ),
+    _project_pinned_showcase.ProjectPinnedShowcase:
+        ClientTarget<_project_pinned_showcase.ProjectPinnedShowcase>(
+          'project_pinned_showcase',
+          params: __project_pinned_showcaseProjectPinnedShowcase,
+        ),
     _project_showcase.StickyProjectShowcase:
         ClientTarget<_project_showcase.StickyProjectShowcase>(
           'project_showcase',
@@ -88,6 +95,7 @@ ServerOptions get defaultServerOptions => ServerOptions(
     ..._header.Header.styles,
     ..._project_case_studies.ProjectCaseStudies.styles,
     ..._project_index_detail.ProjectIndexDetail.styles,
+    ..._project_pinned_showcase.ProjectPinnedShowcase.styles,
     ..._project_showcase.StickyProjectShowcase.styles,
     ..._project_stage_showcase.ProjectStageShowcase.styles,
     ..._shot_gallery.ShotGalleryView.styles,
@@ -106,6 +114,9 @@ Map<String, Object?> __contact_formContactForm(_contact_form.ContactForm c) => {
 Map<String, Object?> __headerHeader(_header.Header c) => {'cvUrl': c.cvUrl};
 Map<String, Object?> __project_index_detailProjectIndexDetail(
   _project_index_detail.ProjectIndexDetail c,
+) => {'projects': c.projects};
+Map<String, Object?> __project_pinned_showcaseProjectPinnedShowcase(
+  _project_pinned_showcase.ProjectPinnedShowcase c,
 ) => {'projects': c.projects};
 Map<String, Object?> __project_showcaseStickyProjectShowcase(
   _project_showcase.StickyProjectShowcase c,

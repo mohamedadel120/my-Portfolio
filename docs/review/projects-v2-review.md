@@ -4,28 +4,36 @@ Everything here is local. Nothing is pushed, merged or deployed. Production stil
 
 ## See it
 
+Use the launch configurations in `.claude/launch.json` (the preview pane lists them). Only one can run at a time because they share port 8080 and one build daemon; stop the running one before starting another, then wait about 30 seconds for the page to build.
+
+| Configuration | Design |
+| --- | --- |
+| `portfolio-v1-original` | Original, exactly what is live |
+| `portfolio-A-case-study` | V2-A |
+| `portfolio-B-index-detail` | V2-B |
+| `portfolio-C-refined-sticky` | V2-C |
+| `portfolio-D-stage-showcase` | V2-D |
+| `portfolio-E-pinned-showcase` | V2-E |
+
+From a terminal instead:
+
 ```bash
 cd jaspr_site
-dart pub global run jaspr_cli:jaspr serve
+dart pub global run jaspr_cli:jaspr serve --dart-define=PROJECTS_VARIANT=pinnedShowcase
+# values: caseStudy | indexDetail | refinedSticky | stageShowcase | pinnedShowcase (omit for the original)
 ```
 
-Open http://localhost:8080 and scroll to Projects. To switch design, change one line in
-`jaspr_site/lib/constants/projects_variant.dart`:
-
-```dart
-const projectsVariant = ProjectsVariant.caseStudy; // v1 | caseStudy | indexDetail | refinedSticky
-```
-
-The page hot-reloads. Put it back to `v1` before committing anything you intend to ship.
+A build without the define always produces the original design.
 
 ## The variants
 
-| Value | Name | What it is | JS needed |
-| --- | --- | --- | --- |
-| `v1` | Original | Exactly what is live today | yes |
-| `caseStudy` | V2-A | One section per project: big screenshot strip, description, tech, store links, "Build something like this" | no |
-| `indexDetail` | V2-B | List of all projects on the left, detail panel on the right, thumbnails to switch screenshots | for switching |
-| `refinedSticky` | V2-C | The original showcase, ~42% less scrolling (71k px to 41k px), reduced-motion support, keyboard focus and ARIA labels, contact button | yes |
+| Name | What it is |
+| --- | --- |
+| V2-A `caseStudy` | One section per project, server-rendered. Screenshots in a phone mockup gallery (arrows, dots or a slider, swipe, keyboard) |
+| V2-B `indexDetail` | List of projects on the left, detail panel on the right, thumbnails to switch screenshots |
+| V2-C `refinedSticky` | The original scroll-driven showcase with about 42% less scrolling, reduced-motion support, ARIA labels and a contact button |
+| V2-D `stageShowcase` | One screen per project (about 10 screens for 8 projects instead of 79). Screenshots browsed with the phone gallery. All text in the HTML |
+| V2-E `pinnedShowcase` | The section stays pinned. Scrolling switches project in place: the phone cross-fades to the next project and its screenshots play like a video (pause, previous, next, progress), title and description are typed. About 8 screens. Phones and tablets get stacked cards |
 
 Optional case-study fields you can add to a project document in Firestore (shown only when present, never invented): `role`, `problem`, `outcome`. A numeric `rating` (0 to 5) makes "Average store rating" appear in the proof strip.
 
@@ -34,6 +42,7 @@ Optional case-study fields you can add to a project document in Firestore (shown
 - Horizontal scrolling on phones (page was 452px wide on a 375px screen).
 - Removed the fabricated "Rating 4.8" (Projects strip and About section).
 - Dashboard replaced by a proof strip of facts derived from your data.
+- Default browser scrollbars replaced by a thin themed one.
 
 ## Things only you can decide
 
@@ -44,11 +53,11 @@ Optional case-study fields you can add to a project document in Firestore (shown
 ## Tests
 
 ```bash
-cd jaspr_site && dart test      # 37 tests
+cd jaspr_site && dart test      # 53 tests
 cd .. && flutter test           # Flutter app
 ```
 
 ## Roll back
 
 - Whole project to how it was: `git checkout baseline/projects-v1 -- jaspr_site/lib`
-- One variant only: set `projectsVariant` back to `v1`.
+- One variant only: stop using its launch configuration; the default is the original.
