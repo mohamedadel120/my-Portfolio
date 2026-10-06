@@ -52,3 +52,5 @@ bool isMediaLoaded(String id) {
 }
 
 bool prefersReducedMotion() => web.window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+double viewportHeight() => web.window.innerHeight.toDouble();

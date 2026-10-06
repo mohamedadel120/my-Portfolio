@@ -15,6 +15,8 @@ import 'package:jaspr_site/components/project_index_detail.dart'
     deferred as _project_index_detail;
 import 'package:jaspr_site/components/project_showcase.dart'
     deferred as _project_showcase;
+import 'package:jaspr_site/components/project_stage_showcase.dart'
+    deferred as _project_stage_showcase;
 import 'package:jaspr_site/components/scroll_reveal.dart'
     deferred as _scroll_reveal;
 import 'package:jaspr_site/components/shot_gallery.dart'
@@ -68,6 +70,14 @@ ClientOptions get defaultClientOptions => ClientOptions(
         refined: p['refined'] as bool,
       ),
       loader: _project_showcase.loadLibrary,
+    ),
+    'project_stage_showcase': ClientLoader(
+      (p) => _project_stage_showcase.ProjectStageShowcase(
+        projects: (p['projects'] as List<Object?>)
+            .map((i) => (i as Map<String, Object?>))
+            .toList(),
+      ),
+      loader: _project_stage_showcase.loadLibrary,
     ),
     'scroll_reveal': ClientLoader(
       (p) => _scroll_reveal.ScrollReveal(),

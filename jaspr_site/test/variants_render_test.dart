@@ -140,6 +140,59 @@ void main() {
     });
   });
 
+  group('stage showcase (V2-D)', () {
+    test('every project is a complete section in the HTML', () async {
+      final html = await render(ProjectsVariant.stageShowcase, all);
+      for (var i = 1; i <= 3; i++) {
+        expect(html, contains('id="sd-slot-${i - 1}"'));
+        expect(html, contains('Description of app $i'));
+        expect(html, contains('play.google.com/store/apps/details?id=app$i'));
+        expect(html, contains('https://img.test/$i-1.webp'));
+      }
+      expect(RegExp('class="sd-slot"').allMatches(html), hasLength(3));
+    });
+
+    test('has a way past the section, a counter and project navigation', () async {
+      final html = await render(ProjectsVariant.stageShowcase, all);
+      expect(html, contains('href="#contact"'));
+      expect(html, contains('Skip to contact'));
+      expect(html, contains('1 / 3'));
+      expect(RegExp('class="sd-nav-item"').allMatches(html), hasLength(3));
+    });
+
+    test('screenshots are browsed with the gallery, not by scrolling', () async {
+      final html = await render(ProjectsVariant.stageShowcase, all);
+      expect(RegExp('aria-roledescription="carousel"').allMatches(html), hasLength(3));
+    });
+
+    test('is far shorter than the original scroll showcase', () async {
+      // 8 projects x 8 screenshots: the original needs 1400 + 8 x 800 px each.
+      final many = [for (var i = 1; i <= 8; i++) project(i)..['galleryImages'] = [for (var j = 0; j < 8; j++) 'https://img.test/$i-$j.webp']];
+      final stage = await render(ProjectsVariant.stageShowcase, many);
+      final v1 = await render(ProjectsVariant.v1, many);
+      int px(String html) => int.parse(RegExp(r'height:\s*(\d+)').firstMatch(html)!.group(1)!);
+      expect(px(v1), greaterThan(60000));
+      // The stage showcase sets no pixel height of its own: each project is a
+      // 130dvh slot, so 8 projects are about 10 screens however many
+      // screenshots they have.
+      expect(RegExp(r'height:\s*\d{4,}').hasMatch(stage), isFalse);
+    });
+
+    test('has exactly one client component: Jaspr forbids nesting them', () async {
+      // A nested client anchor makes the browser bundle throw on load, which
+      // silently disables every interactive part of the page.
+      final html = await render(ProjectsVariant.stageShowcase, all);
+      expect(RegExp('<!--@').allMatches(html), hasLength(1));
+      expect(html, contains('<!--@project_stage_showcase'));
+      expect(html, isNot(contains('<!--@shot_gallery')));
+    });
+
+    test('empty list renders nothing harmful', () async {
+      final html = await render(ProjectsVariant.stageShowcase, const []);
+      expect(html, isNot(contains('sd-slot')));
+    });
+  });
+
   test('production default is the original design', () {
     expect(projectsVariant, ProjectsVariant.v1);
   });

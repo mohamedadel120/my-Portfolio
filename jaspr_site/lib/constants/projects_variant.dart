@@ -14,6 +14,9 @@ enum ProjectsVariant {
   /// V2-C: the original sticky showcase with shorter scroll, reduced-motion
   /// support, keyboard/ARIA fixes and a contact call to action.
   refinedSticky,
+
+  /// V2-D: one screen per project, stacked sticky stages, screenshot gallery.
+  stageShowcase,
 }
 
 /// Chosen at launch with `--dart-define=PROJECTS_VARIANT=<name>` (see
@@ -27,4 +30,6 @@ const projectsVariant = _requested == 'caseStudy'
         ? ProjectsVariant.indexDetail
         : _requested == 'refinedSticky'
             ? ProjectsVariant.refinedSticky
-            : ProjectsVariant.v1;
+            : _requested == 'stageShowcase'
+                ? ProjectsVariant.stageShowcase
+                : ProjectsVariant.v1;

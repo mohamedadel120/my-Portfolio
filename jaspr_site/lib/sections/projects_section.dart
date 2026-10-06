@@ -4,6 +4,7 @@ import 'package:jaspr/server.dart';
 import '../components/project_case_studies.dart';
 import '../components/project_index_detail.dart';
 import '../components/project_showcase.dart';
+import '../components/project_stage_showcase.dart';
 import '../constants/projects_variant.dart';
 import '../constants/theme.dart';
 import '../data/experience_repository.dart';
@@ -44,6 +45,7 @@ class ProjectsSection extends AsyncStatelessComponent {
       ProjectsVariant.caseStudy => ProjectCaseStudies(projects: projects),
       ProjectsVariant.indexDetail => ProjectIndexDetail(projects: projects),
       ProjectsVariant.refinedSticky => StickyProjectShowcase(projects: projects, refined: true),
+      ProjectsVariant.stageShowcase => ProjectStageShowcase(projects: projects),
     };
   }
 

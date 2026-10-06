@@ -16,18 +16,17 @@ import 'shot_gallery.vm.dart' if (dart.library.js_interop) 'shot_gallery.web.dar
 ///
 /// Every image is in the server-rendered HTML, so without JavaScript the
 /// first screenshots are still visible and indexable.
-@client
-class ShotGallery extends StatefulComponent {
+class ShotGalleryView extends StatefulComponent {
   final String title;
   final List<String> images;
 
   /// The gallery is above the fold, so load the first screenshots right away.
   final bool eagerFirst;
 
-  const ShotGallery({super.key, required this.title, required this.images, this.eagerFirst = false});
+  const ShotGalleryView({super.key, required this.title, required this.images, this.eagerFirst = false});
 
   @override
-  State<ShotGallery> createState() => _ShotGalleryState();
+  State<ShotGalleryView> createState() => _ShotGalleryState();
 
   @css
   static List<StyleRule> get styles => [
@@ -175,7 +174,7 @@ class ShotGallery extends StatefulComponent {
   ];
 }
 
-class _ShotGalleryState extends State<ShotGallery> {
+class _ShotGalleryState extends State<ShotGalleryView> {
   static const _swipeDistance = 40.0;
 
   int _index = 0;
@@ -292,4 +291,21 @@ class _ShotGalleryState extends State<ShotGallery> {
       ],
     );
   }
+}
+
+/// Entry point for server-rendered pages: a hydrated [ShotGalleryView].
+///
+/// Jaspr does not allow a client component inside another client component,
+/// so components that are already `@client` (the stage showcase) use
+/// [ShotGalleryView] directly instead of this wrapper.
+@client
+class ShotGallery extends StatelessComponent {
+  final String title;
+  final List<String> images;
+  final bool eagerFirst;
+
+  const ShotGallery({super.key, required this.title, required this.images, this.eagerFirst = false});
+
+  @override
+  Component build(BuildContext context) => ShotGalleryView(title: title, images: images, eagerFirst: eagerFirst);
 }

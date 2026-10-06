@@ -12,3 +12,4 @@ void smoothScrollTo(double y) {}
 void scheduleTimeout(Duration duration, void Function() callback) {}
 bool isMediaLoaded(String id) => false;
 bool prefersReducedMotion() => false;
+double viewportHeight() => 0;

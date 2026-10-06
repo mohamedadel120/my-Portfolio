@@ -14,6 +14,8 @@ import 'package:jaspr_site/components/project_index_detail.dart'
     as _project_index_detail;
 import 'package:jaspr_site/components/project_showcase.dart'
     as _project_showcase;
+import 'package:jaspr_site/components/project_stage_showcase.dart'
+    as _project_stage_showcase;
 import 'package:jaspr_site/components/scroll_reveal.dart' as _scroll_reveal;
 import 'package:jaspr_site/components/shot_gallery.dart' as _shot_gallery;
 import 'package:jaspr_site/constants/theme.dart' as _theme;
@@ -66,6 +68,11 @@ ServerOptions get defaultServerOptions => ServerOptions(
           'project_showcase',
           params: __project_showcaseStickyProjectShowcase,
         ),
+    _project_stage_showcase.ProjectStageShowcase:
+        ClientTarget<_project_stage_showcase.ProjectStageShowcase>(
+          'project_stage_showcase',
+          params: __project_stage_showcaseProjectStageShowcase,
+        ),
     _scroll_reveal.ScrollReveal: ClientTarget<_scroll_reveal.ScrollReveal>(
       'scroll_reveal',
     ),
@@ -82,7 +89,8 @@ ServerOptions get defaultServerOptions => ServerOptions(
     ..._project_case_studies.ProjectCaseStudies.styles,
     ..._project_index_detail.ProjectIndexDetail.styles,
     ..._project_showcase.StickyProjectShowcase.styles,
-    ..._shot_gallery.ShotGallery.styles,
+    ..._project_stage_showcase.ProjectStageShowcase.styles,
+    ..._shot_gallery.ShotGalleryView.styles,
     ..._about_section.AboutSection.styles,
     ..._contact_section.ContactSection.styles,
     ..._experience_section.ExperienceSection.styles,
@@ -102,6 +110,9 @@ Map<String, Object?> __project_index_detailProjectIndexDetail(
 Map<String, Object?> __project_showcaseStickyProjectShowcase(
   _project_showcase.StickyProjectShowcase c,
 ) => {'projects': c.projects, 'refined': c.refined};
+Map<String, Object?> __project_stage_showcaseProjectStageShowcase(
+  _project_stage_showcase.ProjectStageShowcase c,
+) => {'projects': c.projects};
 Map<String, Object?> __shot_galleryShotGallery(_shot_gallery.ShotGallery c) => {
   'title': c.title,
   'images': c.images,
