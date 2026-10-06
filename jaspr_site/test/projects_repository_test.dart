@@ -78,6 +78,49 @@ void main() {
     });
   });
 
+  group('featured and highlight', () {
+    test('parseFlag accepts booleans and the strings true/false only', () {
+      expect(parseFlag(true), isTrue);
+      expect(parseFlag(false), isFalse);
+      expect(parseFlag('true'), isTrue);
+      expect(parseFlag(' TRUE '), isTrue);
+      for (final other in [null, 'yes', '1', 1, 0, 'false', '', <bool>[]]) {
+        expect(parseFlag(other), isFalse, reason: '$other');
+      }
+    });
+
+    test('fromJson reads both fields and defaults to not featured', () {
+      final plain = ProjectItem.fromJson(const {'title': 'A'});
+      expect(plain.featured, isFalse);
+      expect(plain.highlight, isNull);
+
+      final item = ProjectItem.fromJson({'title': 'G', 'featured': true, 'highlight': '  One app for everything  '});
+      expect(item.featured, isTrue);
+      expect(item.highlight, 'One app for everything');
+    });
+
+    test('blank or wrongly typed highlight is ignored', () {
+      expect(ProjectItem.fromJson({'highlight': '   '}).highlight, isNull);
+      expect(ProjectItem.fromJson({'highlight': 7}).highlight, isNull);
+    });
+
+    test('featured projects come first and everything else keeps its order', () {
+      final docs = [
+        {'title': 'A'},
+        {'title': 'B', 'featured': true},
+        {'title': 'C'},
+        {'title': 'D', 'featured': 'true'},
+        {'title': 'E'},
+      ];
+      expect(parseProjects(docs).map((p) => p.title), ['B', 'D', 'A', 'C', 'E']);
+    });
+
+    test('with no featured project the Firestore order is untouched', () {
+      final docs = [for (final t in ['X', 'Y', 'Z']) {'title': t}];
+      expect(parseProjects(docs).map((p) => p.title), ['X', 'Y', 'Z']);
+    });
+  });
+
   group('earliestStartYear', () {
     test('finds the earliest year across hyphen and en-dash periods', () {
       expect(

@@ -7,6 +7,7 @@
 import 'package:jaspr/server.dart';
 import 'package:jaspr_site/components/contact_form.dart' as _contact_form;
 import 'package:jaspr_site/components/custom_cursor.dart' as _custom_cursor;
+import 'package:jaspr_site/components/featured_label.dart' as _featured_label;
 import 'package:jaspr_site/components/header.dart' as _header;
 import 'package:jaspr_site/components/project_case_studies.dart'
     as _project_case_studies;
@@ -92,6 +93,7 @@ ServerOptions get defaultServerOptions => ServerOptions(
     ..._theme.styles,
     ..._contact_form.ContactForm.styles,
     ..._custom_cursor.CustomCursor.styles,
+    ..._featured_label.FeaturedLabel.styles,
     ..._header.Header.styles,
     ..._project_case_studies.ProjectCaseStudies.styles,
     ..._project_index_detail.ProjectIndexDetail.styles,

@@ -3,6 +3,7 @@ import 'package:jaspr/jaspr.dart';
 
 import '../constants/motion_css.dart';
 import '../constants/theme.dart';
+import 'featured_label.dart';
 import 'project_view.dart';
 
 /// V2-B: an index of every project next to one detail panel. Visitors scan
@@ -296,6 +297,7 @@ class _ProjectIndexDetailState extends State<ProjectIndexDetail> {
         div(classes: 'idx-info', [
           h3(classes: 'idx-title', [.text(view.title)]),
           if (view.downloads.isNotEmpty) p(classes: 'idx-description', [.text(view.downloads)]),
+          FeaturedLabel(view),
           p(classes: 'idx-description', [.text(view.description)]),
           if (view.facts.isNotEmpty)
             dl(classes: 'idx-facts', [

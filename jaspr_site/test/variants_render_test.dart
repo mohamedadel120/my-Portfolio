@@ -245,6 +245,39 @@ void main() {
     });
   });
 
+  group('featured label', () {
+    final featured = project(1)..['featured'] = true..['highlight'] = 'One app for skin analysis and delivery';
+    final plain = [project(2), project(3)];
+
+    for (final variant in [
+      ProjectsVariant.caseStudy,
+      ProjectsVariant.indexDetail,
+      ProjectsVariant.stageShowcase,
+      ProjectsVariant.pinnedShowcase,
+    ]) {
+      test('$variant shows the badge and the headline for a featured project', () async {
+        final html = await render(variant, [featured, ...plain]);
+        expect(RegExp('class="feat-badge"').allMatches(html), hasLength(1));
+        expect(html, contains('One app for skin analysis and delivery'));
+        expect(RegExp('class="feat-highlight"').allMatches(html), hasLength(1));
+      });
+
+      test('$variant shows nothing extra when neither field is set', () async {
+        final html = await render(variant, plain);
+        expect(html, isNot(contains('feat-badge')));
+        expect(html, isNot(contains('feat-highlight')));
+        expect(html, isNot(contains('class="feat"')));
+      });
+    }
+
+    test('a highlight without featured shows the headline but no badge', () async {
+      final only = project(4)..['highlight'] = 'Just a headline';
+      final html = await render(ProjectsVariant.caseStudy, [only]);
+      expect(html, contains('Just a headline'));
+      expect(html, isNot(contains('feat-badge')));
+    });
+  });
+
   test('production default is the original design', () {
     expect(projectsVariant, ProjectsVariant.v1);
   });

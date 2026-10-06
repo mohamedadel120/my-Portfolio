@@ -4,6 +4,7 @@ import 'package:jaspr/jaspr.dart';
 import '../constants/motion_css.dart';
 import '../constants/theme.dart';
 import 'project_showcase.vm.dart' if (dart.library.js_interop) 'project_showcase.web.dart';
+import 'featured_label.dart';
 import 'project_view.dart';
 import 'shot_gallery.dart';
 
@@ -283,6 +284,7 @@ class _ProjectStageShowcaseState extends State<ProjectStageShowcase> {
           div(classes: 'sd-info', [
             h3(id: headingId, classes: 'sd-title', [.text(view.title)]),
             if (view.downloads.isNotEmpty) p(classes: 'sd-meta', [.text(view.downloads)]),
+            FeaturedLabel(view),
             p(classes: 'sd-description', [.text(view.description)]),
             if (view.tech.isNotEmpty)
               ul(classes: 'sd-tech', attributes: {'aria-label': 'Technologies'}, [

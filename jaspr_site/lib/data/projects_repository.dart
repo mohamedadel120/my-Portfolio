@@ -27,6 +27,12 @@ class ProjectItem {
   final String? problem;
   final String? outcome;
 
+  /// Owner-controlled emphasis (Firestore `featured` and `highlight`): a
+  /// featured project is listed first and carries a "Featured" label; the
+  /// highlight is one short headline claim shown before the description.
+  final bool featured;
+  final String? highlight;
+
   const ProjectItem({
     required this.title,
     required this.description,
@@ -43,6 +49,8 @@ class ProjectItem {
     this.role,
     this.problem,
     this.outcome,
+    this.featured = false,
+    this.highlight,
   });
 
   bool get hasAndroid => _isUsable(androidStoreUrl);
@@ -68,6 +76,8 @@ class ProjectItem {
       role: _nonBlank(json['role']),
       problem: _nonBlank(json['problem']),
       outcome: _nonBlank(json['outcome']),
+      featured: parseFlag(json['featured']),
+      highlight: _nonBlank(json['highlight']),
     );
   }
 }
@@ -111,8 +121,22 @@ double? parseRating(Object? raw) {
   return value;
 }
 
+/// Accepts a real boolean or the strings "true" / "false" (any case).
+bool parseFlag(Object? raw) => switch (raw) {
+  bool b => b,
+  String s => s.trim().toLowerCase() == 'true',
+  _ => false,
+};
+
+/// Featured projects first, everything else keeping its Firestore order
+/// (the sort is stable, so featured projects also keep their relative order).
+List<ProjectItem> featuredFirst(List<ProjectItem> projects) => [
+  ...projects.where((p) => p.featured),
+  ...projects.where((p) => !p.featured),
+];
+
 List<ProjectItem> parseProjects(List<Map<String, dynamic>> docs) =>
-    docs.map(ProjectItem.fromJson).toList();
+    featuredFirst(docs.map(ProjectItem.fromJson).toList());
 
 Future<List<ProjectItem>> fetchProjects() async {
   final docs = await _firestore.getCollection('projects');

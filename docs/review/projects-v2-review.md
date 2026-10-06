@@ -37,6 +37,15 @@ A build without the define always produces the original design.
 
 Optional case-study fields you can add to a project document in Firestore (shown only when present, never invented): `role`, `problem`, `outcome`. A numeric `rating` (0 to 5) makes "Average store rating" appear in the proof strip.
 
+Emphasis fields (A, B, D and E; the original v1 and C only get the reordering):
+
+| Field | Type | Effect |
+| --- | --- | --- |
+| `featured` | boolean (`true`) | The project is listed first and shows a "Featured" label. Several featured projects keep their relative order. |
+| `highlight` | string | One short headline claim shown right after the title, before the description. Works with or without `featured`. |
+
+Add them in the Firebase console on the project document. `featured` must be a boolean, not the text "true".
+
 ## Fixed along the way (all variants)
 
 - Horizontal scrolling on phones (page was 452px wide on a 375px screen).
@@ -53,7 +62,7 @@ Optional case-study fields you can add to a project document in Firestore (shown
 ## Tests
 
 ```bash
-cd jaspr_site && dart test      # 53 tests
+cd jaspr_site && dart test      # 68 tests
 cd .. && flutter test           # Flutter app
 ```
 

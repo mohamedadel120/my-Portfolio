@@ -50,6 +50,18 @@ void main() {
     expect(v.accentHex, '#00d9ff');
   });
 
+  test('featured and highlight', () {
+    final v = ProjectView.fromMap({'featured': true, 'highlight': ' Headline '});
+    expect(v.featured, isTrue);
+    expect(v.highlight, 'Headline');
+    final none = ProjectView.fromMap(const {});
+    expect(none.featured, isFalse);
+    expect(none.highlight, isNull);
+    // Only a real boolean true counts once it has crossed into a map.
+    expect(ProjectView.fromMap({'featured': 'true'}).featured, isFalse);
+    expect(ProjectView.fromMap({'highlight': ''}).highlight, isNull);
+  });
+
   test('accent hex is always 6 digits', () {
     expect(ProjectView.fromMap({'color': 0xFF000001}).accentHex, '#000001');
   });

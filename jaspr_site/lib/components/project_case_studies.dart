@@ -2,6 +2,7 @@ import 'package:jaspr/dom.dart';
 import 'package:jaspr/jaspr.dart';
 
 import '../constants/theme.dart';
+import 'featured_label.dart';
 import 'project_view.dart';
 import 'shot_gallery.dart';
 
@@ -60,6 +61,7 @@ class ProjectCaseStudies extends StatelessComponent {
         if (images.isNotEmpty) ShotGallery(title: title, images: images, eagerFirst: index == 0),
         div(classes: 'cs-body', [
           div(classes: 'cs-story', [
+            FeaturedLabel(view),
             p(classes: 'cs-description', [.text(description)]),
             if (facts.isNotEmpty)
               dl(classes: 'cs-facts', [
@@ -149,6 +151,9 @@ class ProjectCaseStudies extends StatelessComponent {
       css.media(MediaQuery.screen(maxWidth: Breakpoints.tablet.px), [
         css('&').styles(raw: {'grid-template-columns': 'minmax(0, 1fr)'}),
       ]),
+    ]),
+    css('.cs-story .feat', [
+      css('&').styles(margin: Margin.only(bottom: 1.rem)),
     ]),
     css('.cs-description', [
       css('&').styles(

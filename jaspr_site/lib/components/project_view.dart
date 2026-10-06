@@ -20,6 +20,10 @@ class ProjectView {
   /// owner has not written any.
   final List<(String, String)> facts;
 
+  /// Owner-set emphasis: a "Featured" label and one headline claim.
+  final bool featured;
+  final String? highlight;
+
   const ProjectView({
     required this.title,
     required this.description,
@@ -31,6 +35,8 @@ class ProjectView {
     required this.downloads,
     required this.accentRgb,
     required this.facts,
+    this.featured = false,
+    this.highlight,
   });
 
   factory ProjectView.fromMap(Map<String, dynamic> map) {
@@ -49,6 +55,8 @@ class ProjectView {
         if (clean(map['problem']) case final problem?) ('The problem', problem),
         if (clean(map['outcome']) case final outcome?) ('The outcome', outcome),
       ],
+      featured: map['featured'] == true,
+      highlight: clean(map['highlight']),
     );
   }
 

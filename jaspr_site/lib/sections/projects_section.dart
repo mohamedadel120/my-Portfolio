@@ -64,6 +64,8 @@ class ProjectsSection extends AsyncStatelessComponent {
     'role': p.role,
     'problem': p.problem,
     'outcome': p.outcome,
+    'featured': p.featured,
+    'highlight': p.highlight,
   };
 
   @css
