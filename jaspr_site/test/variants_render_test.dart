@@ -70,6 +70,22 @@ void main() {
       expect(html, contains('aria-roledescription="carousel"'));
     });
 
+    test('many screenshots use a scrubbable progress bar instead of wrapping dots', () async {
+      final many = project(5)..['galleryImages'] = [for (var j = 0; j < 24; j++) 'https://img.test/m-$j.webp'];
+      final html = await render(ProjectsVariant.caseStudy, [many]);
+      expect(html, contains('type="range"'));
+      expect(html, contains('max="23"'));
+      expect(html, contains('1 / 24'));
+      expect(html, isNot(contains('class="gal-dot"')));
+    });
+
+    test('up to eight screenshots keep the dots', () async {
+      final eight = project(5)..['galleryImages'] = [for (var j = 0; j < 8; j++) 'https://img.test/e-$j.webp'];
+      final html = await render(ProjectsVariant.caseStudy, [eight]);
+      expect(RegExp('class="gal-dot"').allMatches(html), hasLength(8));
+      expect(html, isNot(contains('type="range"')));
+    });
+
     test('a single screenshot shows no browsing controls', () async {
       final one = project(7)..['galleryImages'] = ['https://img.test/only.webp'];
       final html = await render(ProjectsVariant.caseStudy, [one]);

@@ -165,7 +165,44 @@ class ShotGalleryView extends StatefulComponent {
       css('&').styles(
         color: AppColors.textSecondary,
         fontSize: 0.85.rem,
-        raw: {'font-variant-numeric': 'tabular-nums', 'min-width': '3.5rem'},
+        raw: {'font-variant-numeric': 'tabular-nums', 'white-space': 'nowrap'},
+      ),
+    ]),
+    // Scrubbable progress bar used when there are too many screenshots for
+    // dots. `--p` is the filled share of the track.
+    css('.gal-range', [
+      css('&').styles(
+        height: 2.rem,
+        margin: Margin.zero,
+        backgroundColor: Colors.transparent,
+        cursor: Cursor.pointer,
+        raw: {'-webkit-appearance': 'none', 'appearance': 'none', 'width': 'min(16rem, 55vw)', 'flex': '0 1 auto'},
+      ),
+      css('&:focus-visible').styles(raw: {'outline': '2px solid ${AppColors.primary.value}', 'outline-offset': '2px', 'border-radius': '0.5rem'}),
+      css('&::-webkit-slider-runnable-track').styles(
+        height: 4.px,
+        radius: BorderRadius.circular(2.px),
+        raw: {'background': 'linear-gradient(to right, ${AppColors.primary.value} var(--p, 0%), ${AppColors.textPrimary.withValues(alpha: 0.2).value} var(--p, 0%))'},
+      ),
+      css('&::-moz-range-track').styles(
+        height: 4.px,
+        radius: BorderRadius.circular(2.px),
+        raw: {'background': 'linear-gradient(to right, ${AppColors.primary.value} var(--p, 0%), ${AppColors.textPrimary.withValues(alpha: 0.2).value} var(--p, 0%))'},
+      ),
+      css('&::-webkit-slider-thumb').styles(
+        width: 1.rem,
+        height: 1.rem,
+        radius: BorderRadius.circular(50.percent),
+        border: Border.none,
+        backgroundColor: AppColors.primary,
+        raw: {'-webkit-appearance': 'none', 'appearance': 'none', 'margin-top': '-6px'},
+      ),
+      css('&::-moz-range-thumb').styles(
+        width: 1.rem,
+        height: 1.rem,
+        radius: BorderRadius.circular(50.percent),
+        border: Border.none,
+        backgroundColor: AppColors.primary,
       ),
     ]),
     MotionRule.reduced([
@@ -176,6 +213,9 @@ class ShotGalleryView extends StatefulComponent {
 
 class _ShotGalleryState extends State<ShotGalleryView> {
   static const _swipeDistance = 40.0;
+
+  // Above this many screenshots the dots would wrap onto several rows.
+  static const _maxDots = 8;
 
   int _index = 0;
   double? _dragStartX;
@@ -272,6 +312,23 @@ class _ShotGalleryState extends State<ShotGalleryView> {
             [span(classes: 'material-symbols-rounded', [.text('chevron_right')])],
           ),
           div(classes: 'gal-footer', [
+            if (images.length > _maxDots)
+              // Too many screenshots for dots (they wrap into rows): a
+              // scrubbable progress bar instead.
+              input(
+                classes: 'gal-range',
+                type: InputType.range,
+                attributes: {
+                  'min': '0',
+                  'max': '$_last',
+                  'step': '1',
+                  'value': '$_index',
+                  'aria-label': 'Screenshot ${_index + 1} of ${images.length}',
+                },
+                styles: Styles(raw: {'--p': '${(_index / _last * 100).toStringAsFixed(1)}%'}),
+                events: {'input': (e) => _go(inputValue(e) ?? _index)},
+              )
+            else
             div(classes: 'gal-dots', [
               for (var i = 0; i < images.length; i++)
                 button(

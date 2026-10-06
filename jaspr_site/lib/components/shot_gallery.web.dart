@@ -19,3 +19,10 @@ double pointerX(dynamic event) {
   if (!js.isA<web.PointerEvent>()) return 0;
   return ((js as JSObject).getProperty('clientX'.toJS) as JSNumber).toDartDouble;
 }
+
+/// Numeric value of the `<input>` that fired [event], or null.
+int? inputValue(dynamic event) {
+  final target = ((event as JSAny?) as JSObject?)?.getProperty('target'.toJS) as JSObject?;
+  final value = target?.getProperty('value'.toJS) as JSString?;
+  return value == null ? null : int.tryParse(value.toDart);
+}
