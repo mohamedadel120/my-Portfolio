@@ -99,7 +99,7 @@ class ProjectStageShowcase extends StatefulComponent {
         position: Position.absolute(left: 2.rem),
         color: AppColors.textSecondary,
         fontSize: 0.85.rem,
-        raw: {'top': '6.4rem', 'font-variant-numeric': 'tabular-nums'},
+        raw: {'top': '6.4rem', 'font-variant-numeric': 'tabular-nums', 'white-space': 'nowrap'},
       ),
     ]),
     // One slot per project. The stage is 100dvh and sticks for the extra
@@ -130,7 +130,12 @@ class ProjectStageShowcase extends StatefulComponent {
       css('.gal').styles(raw: {'--h': 'min(30rem, 56dvh)'}),
     ]),
     css('.sd-info', [
-      css('&').styles(display: Display.flex, flexDirection: FlexDirection.column, gap: Gap.all(1.1.rem), raw: {'min-width': '0'}),
+      css('&').styles(
+        display: Display.flex,
+        flexDirection: FlexDirection.column,
+        gap: Gap.all(1.1.rem),
+        raw: {'min-width': '0', 'max-height': 'calc(100dvh - 9rem)', 'overflow-y': 'auto', 'scrollbar-width': 'thin'},
+      ),
     ]),
     css('.sd-title', [
       css('&').styles(
@@ -148,7 +153,9 @@ class ProjectStageShowcase extends StatefulComponent {
         color: AppColors.textSecondary,
         lineHeight: Unit.expression('1.7'),
         maxWidth: Unit.expression('65ch'),
-        raw: {'display': '-webkit-box', '-webkit-line-clamp': '7', '-webkit-box-orient': 'vertical', 'overflow': 'hidden'},
+        // Never truncate the description: if a very long one does not fit a short
+        // screen, the info column scrolls instead (see .sd-info).
+        raw: {'overflow-wrap': 'break-word'},
       ),
     ]),
     css('.sd-tech', [
@@ -207,7 +214,9 @@ class ProjectStageShowcase extends StatefulComponent {
         },
       ),
       css('.sd-stage .gal').styles(raw: {'--h': '24rem'}),
-      css('.sd-description').styles(raw: {'-webkit-line-clamp': 'unset', 'display': 'block'}),
+      // Stacked layout: the page scrolls, not the info column.
+      css('.sd-info').styles(raw: {'max-height': 'none', 'overflow-y': 'visible'}),
+
     ]),
   ];
 }
@@ -246,7 +255,7 @@ class _ProjectStageShowcaseState extends State<ProjectStageShowcase> {
     return div(classes: 'sd', attributes: {'role': 'region', 'aria-label': 'Projects'}, [
       div(classes: 'sd-chrome', [
         a(href: '#contact', classes: 'sd-skip', [.text('Skip to contact')]),
-        span(classes: 'sd-counter', attributes: {'aria-hidden': 'true'}, [.text('${_active + 1} / ${_views.length}')]),
+        span(classes: 'sd-counter', attributes: {'aria-hidden': 'true'}, [.text('Project ${_active + 1} / ${_views.length}')]),
         ul(classes: 'sd-nav', attributes: {'aria-label': 'Jump to project'}, [
           for (final (i, view) in _views.indexed)
             li([

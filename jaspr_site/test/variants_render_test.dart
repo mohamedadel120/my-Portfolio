@@ -172,7 +172,7 @@ void main() {
       final html = await render(ProjectsVariant.stageShowcase, all);
       expect(html, contains('href="#contact"'));
       expect(html, contains('Skip to contact'));
-      expect(html, contains('1 / 3'));
+      expect(html, contains('Project 1 / 3'));
       expect(RegExp('class="sd-nav-item"').allMatches(html), hasLength(3));
     });
 
