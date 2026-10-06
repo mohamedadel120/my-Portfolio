@@ -33,70 +33,89 @@ class ShotGalleryView extends StatefulComponent {
     css('.gal', [
       css('&').styles(
         position: Position.relative(),
-        raw: {'--h': '30rem', '--w': 'calc(var(--h) * 9 / 19.5)', '--gap': '1.25rem'},
+        display: Display.flex,
+        flexDirection: FlexDirection.column,
+        alignItems: AlignItems.center,
+        gap: Gap.all(0.5.rem),
+        raw: {'--h': '30rem', '--w': 'calc(var(--h) * 9 / 19.5)'},
       ),
       css.media(MediaQuery.screen(maxWidth: Breakpoints.mobile.px), [
-        css('&').styles(raw: {'--h': '24rem', '--gap': '0.9rem'}),
+        css('&').styles(raw: {'--h': '24rem'}),
       ]),
     ]),
+    // Previous button, phone, next button on one row.
+    css('.gal-stage', [
+      css('&').styles(
+        display: Display.flex,
+        alignItems: AlignItems.center,
+        justifyContent: JustifyContent.center,
+        gap: Gap.all(1.25.rem),
+        maxWidth: 100.percent,
+      ),
+      css.media(MediaQuery.screen(maxWidth: Breakpoints.mobile.px), [
+        css('&').styles(gap: Gap.all(0.6.rem)),
+      ]),
+    ]),
+    // The phone body: dark bezel, accent glow, and a notch.
+    css('.gal-device', [
+      css('&').styles(
+        position: Position.relative(),
+        padding: Padding.all(10.px),
+        radius: BorderRadius.circular(2.75.rem),
+        raw: {
+          'flex': '0 0 auto',
+          'width': 'calc(var(--w) + 20px)',
+          'background': 'linear-gradient(135deg, #555555 0%, #222222 40%, #111111 60%, #444444 100%)',
+          'box-shadow': '0 30px 50px -10px rgba(0,0,0,0.5), 0 20px 60px 0 color-mix(in srgb, var(--accent, ${AppColors.primary.value}) 40%, transparent)',
+        },
+      ),
+    ]),
+    css('.gal-island', [
+      css('&').styles(
+        position: Position.absolute(top: 20.px, left: 50.percent),
+        width: 5.rem,
+        height: 1.6.rem,
+        radius: BorderRadius.circular(1.rem),
+        backgroundColor: Colors.black,
+        zIndex: ZIndex(2),
+        raw: {'transform': 'translateX(-50%)', 'pointer-events': 'none'},
+      ),
+      css.media(MediaQuery.screen(maxWidth: Breakpoints.mobile.px), [
+        css('&').styles(width: 4.rem, height: 1.35.rem),
+      ]),
+    ]),
+    // The screen: clips the strip of screenshots so only one shows.
     css('.gal-viewport', [
       css('&').styles(
         overflow: Overflow.hidden,
-        padding: Padding.symmetric(vertical: 1.rem),
-        raw: {
-          'touch-action': 'pan-y',
-          'user-select': 'none',
-          '-webkit-mask-image': 'linear-gradient(to right, transparent, #000 10%, #000 90%, transparent)',
-          'mask-image': 'linear-gradient(to right, transparent, #000 10%, #000 90%, transparent)',
-        },
+        radius: BorderRadius.circular(2.25.rem),
+        backgroundColor: Colors.black,
+        raw: {'touch-action': 'pan-y', 'user-select': 'none', 'height': 'var(--h)', 'cursor': 'grab'},
       ),
-      css('&:focus-visible').styles(raw: {'outline': '2px solid ${AppColors.primary.value}', 'outline-offset': '2px'}),
+      css('&:active').styles(raw: {'cursor': 'grabbing'}),
+      css('&:focus-visible').styles(raw: {'outline': '2px solid ${AppColors.primary.value}', 'outline-offset': '3px'}),
     ]),
-    // The track is as wide as all slides; `margin-left: 50%` puts its left
-    // edge at the viewport centre and the translate pulls the current slide
-    // back so it sits exactly in the middle.
     css('.gal-track', [
       css('&').styles(
         display: Display.flex,
-        gap: Gap.all(Unit.expression('var(--gap)')),
-        width: Unit.expression('max-content'),
+        height: 100.percent,
         raw: {
-          'margin-left': '50%',
-          'transform': 'translateX(calc(-1 * (var(--i) * (var(--w) + var(--gap)) + var(--w) / 2)))',
+          'width': 'max-content',
+          'transform': 'translateX(calc(-1 * var(--i) * var(--w)))',
           'transition': 'transform 380ms cubic-bezier(0.23, 1, 0.32, 1)',
         },
       ),
     ]),
     css('.gal-slide', [
-      css('&').styles(
-        width: Unit.expression('var(--w)'),
-        height: Unit.expression('var(--h)'),
-        padding: Padding.zero,
-        border: Border.none,
-        backgroundColor: Colors.transparent,
-        cursor: Cursor.pointer,
-        raw: {
-          'flex': '0 0 auto',
-          'transform': 'scale(0.86)',
-          'opacity': '0.45',
-          'transition': 'transform 380ms cubic-bezier(0.23, 1, 0.32, 1), opacity 380ms ease',
-        },
-      ),
-      css('&[aria-current="true"]').styles(cursor: Cursor.defaultCursor, raw: {'transform': 'scale(1)', 'opacity': '1'}),
-      css('&:focus-visible').styles(raw: {'outline': '2px solid ${AppColors.primary.value}', 'outline-offset': '4px', 'border-radius': '1.25rem'}),
+      css('&').styles(width: Unit.expression('var(--w)'), height: 100.percent, raw: {'flex': '0 0 auto'}),
       css('img').styles(
         width: 100.percent,
         height: 100.percent,
-        radius: BorderRadius.circular(1.25.rem),
-        border: Border.all(color: AppColors.textPrimary.withValues(alpha: 0.14), width: 1.px),
-        backgroundColor: AppColors.surface,
         raw: {'object-fit': 'cover', 'display': 'block', 'pointer-events': 'none'},
       ),
     ]),
     css('.gal-btn', [
       css('&').styles(
-        position: Position.absolute(top: 50.percent),
-        zIndex: ZIndex(2),
         display: Display.flex,
         alignItems: AlignItems.center,
         justifyContent: JustifyContent.center,
@@ -109,18 +128,16 @@ class ShotGalleryView extends StatefulComponent {
         color: AppColors.textPrimary,
         cursor: Cursor.pointer,
         raw: {
-          'margin-top': '-1.5rem',
-          'backdrop-filter': 'blur(6px)',
+          'flex': '0 0 auto',
           'transition': 'transform 160ms cubic-bezier(0.23, 1, 0.32, 1), background-color 160ms ease, opacity 160ms ease',
         },
       ),
       css('&:active').styles(transform: Transform.scale(0.94)),
       css('&:focus-visible').styles(raw: {'outline': '2px solid ${AppColors.primary.value}', 'outline-offset': '2px'}),
+      // Kept in the layout (so the phone never shifts) but invisible at the ends.
       css('&[disabled]').styles(raw: {'opacity': '0', 'pointer-events': 'none'}),
-      css('&.prev').styles(raw: {'left': '0.5rem'}),
-      css('&.next').styles(raw: {'right': '0.5rem'}),
       css.media(MediaQuery.screen(maxWidth: Breakpoints.mobile.px), [
-        css('&').styles(width: 2.5.rem, height: 2.5.rem, raw: {'margin-top': '-1.25rem'}),
+        css('&').styles(width: 2.5.rem, height: 2.5.rem),
       ]),
     ]),
     RawMediaRule.hoverCapable([
@@ -249,68 +266,76 @@ class _ShotGalleryState extends State<ShotGalleryView> {
     if (delta >= _swipeDistance) _go(_index - 1);
   }
 
+
   @override
   Component build(BuildContext context) {
     final images = component.images;
     final title = component.title;
     if (images.isEmpty) return div([]);
+    final several = images.length > 1;
+
+    final prev = button(
+      classes: 'gal-btn',
+      attributes: {'type': 'button', 'aria-label': 'Previous screenshot', if (_index == 0) 'disabled': ''},
+      events: {'click': (_) => _go(_index - 1)},
+      [span(classes: 'material-symbols-rounded', [.text('chevron_left')])],
+    );
+    final next = button(
+      classes: 'gal-btn',
+      attributes: {'type': 'button', 'aria-label': 'Next screenshot', if (_index == _last) 'disabled': ''},
+      events: {'click': (_) => _go(_index + 1)},
+      [span(classes: 'material-symbols-rounded', [.text('chevron_right')])],
+    );
 
     return div(
       classes: 'gal',
       attributes: {'role': 'group', 'aria-roledescription': 'carousel', 'aria-label': '$title screenshots'},
       [
-        div(
-          classes: 'gal-viewport',
-          attributes: {'tabindex': '0', 'aria-label': '$title screenshots. Use the left and right arrow keys to browse.'},
-          events: {
-            'keydown': _onKey,
-            'pointerdown': (e) => _dragStartX = pointerX(e),
-            'pointerup': _onPointerUp,
-            'pointercancel': (_) => _dragStartX = null,
-          },
-          [
-            div(classes: 'gal-track', styles: Styles(raw: {'--i': '$_index'}), [
-              for (final (i, src) in images.indexed)
-                button(
-                  classes: 'gal-slide',
-                  attributes: {
-                    'type': 'button',
-                    'aria-label': 'Screenshot ${i + 1} of ${images.length}',
-                    'aria-current': i == _index ? 'true' : 'false',
-                    'tabindex': '-1',
-                  },
-                  events: {'click': (_) => _go(i)},
-                  [
-                    img(
-                      src: src,
-                      alt: '$title screenshot ${i + 1} of ${images.length}',
-                      attributes: {
-                        // The current screenshot and its neighbours load
-                        // right away so a step never shows an empty frame;
-                        // the rest wait until needed.
-                        'loading': (i - _index).abs() <= 1 && (component.eagerFirst || _index > 0) ? 'eager' : 'lazy',
-                        'decoding': 'async',
-                        'draggable': 'false',
-                      },
+        div(classes: 'gal-stage', [
+          if (several) prev,
+          // The phone: the current screenshot is shown on its screen and the
+          // others slide in from the sides, like swiping through the app.
+          div(classes: 'gal-device', [
+            div(classes: 'gal-island', []),
+            div(
+              classes: 'gal-viewport',
+              attributes: {'tabindex': '0', 'aria-label': '$title screenshots. Use the left and right arrow keys to browse.'},
+              events: {
+                'keydown': _onKey,
+                'pointerdown': (e) => _dragStartX = pointerX(e),
+                'pointerup': _onPointerUp,
+                'pointercancel': (_) => _dragStartX = null,
+              },
+              [
+                div(classes: 'gal-track', styles: Styles(raw: {'--i': '$_index'}), [
+                  for (final (i, src) in images.indexed)
+                    div(
+                      classes: 'gal-slide',
+                      // Screenshots other than the current one are hidden from
+                      // screen readers so they are not all announced at once.
+                      attributes: {'aria-hidden': i == _index ? 'false' : 'true'},
+                      [
+                        img(
+                          src: src,
+                          alt: '$title screenshot ${i + 1} of ${images.length}',
+                          attributes: {
+                            // The current screenshot and its neighbours load
+                            // right away so a step never shows an empty
+                            // screen; the rest wait until needed.
+                            'loading': (i - _index).abs() <= 1 && (component.eagerFirst || _index > 0) ? 'eager' : 'lazy',
+                            'decoding': 'async',
+                            'draggable': 'false',
+                          },
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-            ]),
-          ],
-        ),
-        if (images.length > 1) ...[
-          button(
-            classes: 'gal-btn prev',
-            attributes: {'type': 'button', 'aria-label': 'Previous screenshot', if (_index == 0) 'disabled': ''},
-            events: {'click': (_) => _go(_index - 1)},
-            [span(classes: 'material-symbols-rounded', [.text('chevron_left')])],
-          ),
-          button(
-            classes: 'gal-btn next',
-            attributes: {'type': 'button', 'aria-label': 'Next screenshot', if (_index == _last) 'disabled': ''},
-            events: {'click': (_) => _go(_index + 1)},
-            [span(classes: 'material-symbols-rounded', [.text('chevron_right')])],
-          ),
+                ]),
+              ],
+            ),
+          ]),
+          if (several) next,
+        ]),
+        if (several)
           div(classes: 'gal-footer', [
             if (images.length > _maxDots)
               // Too many screenshots for dots (they wrap into rows): a
@@ -329,22 +354,21 @@ class _ShotGalleryState extends State<ShotGalleryView> {
                 events: {'input': (e) => _go(inputValue(e) ?? _index)},
               )
             else
-            div(classes: 'gal-dots', [
-              for (var i = 0; i < images.length; i++)
-                button(
-                  classes: 'gal-dot',
-                  attributes: {
-                    'type': 'button',
-                    'aria-label': 'Go to screenshot ${i + 1}',
-                    'aria-current': i == _index ? 'true' : 'false',
-                  },
-                  events: {'click': (_) => _go(i)},
-                  [span([])],
-                ),
-            ]),
+              div(classes: 'gal-dots', [
+                for (var i = 0; i < images.length; i++)
+                  button(
+                    classes: 'gal-dot',
+                    attributes: {
+                      'type': 'button',
+                      'aria-label': 'Go to screenshot ${i + 1}',
+                      'aria-current': i == _index ? 'true' : 'false',
+                    },
+                    events: {'click': (_) => _go(i)},
+                    [span([])],
+                  ),
+              ]),
             span(classes: 'gal-count', attributes: {'aria-live': 'polite'}, [.text('${_index + 1} / ${images.length}')]),
           ]),
-        ],
       ],
     );
   }
