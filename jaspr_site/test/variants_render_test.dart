@@ -78,7 +78,7 @@ void main() {
       final html = await render(ProjectsVariant.caseStudy, [project(9, full: false)]);
       expect(html, contains('App 9'));
       expect(html, contains('Coming soon'));
-      expect(html, isNot(contains('cs-shots')));
+      expect(html, isNot(contains('strip-row')));
     });
 
     test('empty list renders nothing harmful', () async {

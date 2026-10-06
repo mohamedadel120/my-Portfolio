@@ -3,6 +3,7 @@ import 'package:jaspr/jaspr.dart';
 
 import '../constants/theme.dart';
 import 'project_view.dart';
+import 'shot_strip.dart';
 
 /// V2-A: one case study per project, rendered entirely on the server (plain
 /// HTML + CSS, no client JavaScript), so every title, description, link and
@@ -56,29 +57,7 @@ class ProjectCaseStudies extends StatelessComponent {
             attributes: const {'playsinline': '', 'preload': 'none', 'aria-label': 'Video preview'},
             [],
           ),
-        if (images.isNotEmpty)
-          div(
-            classes: 'cs-shots',
-            attributes: {
-              'role': 'region',
-              'aria-label': '$title screenshots',
-              'tabindex': '0',
-            },
-            [
-              for (final (j, src) in images.indexed)
-                img(
-                  src: src,
-                  alt: '$title screenshot ${j + 1} of ${images.length}',
-                  classes: 'cs-shot',
-                  attributes: {
-                    // The first screenshot of the first project is likely
-                    // above the fold; everything else loads on demand.
-                    'loading': index == 0 && j == 0 ? 'eager' : 'lazy',
-                    'decoding': 'async',
-                  },
-                ),
-            ],
-          ),
+        if (images.isNotEmpty) ShotStrip(id: 'cs-strip-$index', title: title, images: images, eagerFirst: index == 0),
         div(classes: 'cs-body', [
           div(classes: 'cs-story', [
             p(classes: 'cs-description', [.text(description)]),
@@ -160,39 +139,6 @@ class ProjectCaseStudies extends StatelessComponent {
         radius: BorderRadius.circular(0.75.rem),
         backgroundColor: AppColors.surface,
       ),
-    ]),
-    // Screenshots sit in one horizontally scrollable, snapping row. It is a
-    // focusable region so keyboard users can scroll it with the arrow keys.
-    css('.cs-shots', [
-      css('&').styles(
-        display: Display.flex,
-        gap: Gap.all(1.25.rem),
-        padding: Padding.only(bottom: 1.rem),
-        raw: {
-          'overflow-x': 'auto',
-          'scroll-snap-type': 'x proximity',
-          'overscroll-behavior-x': 'contain',
-          'scrollbar-width': 'thin',
-        },
-      ),
-      css('&:focus-visible').styles(raw: {'outline': '2px solid ${AppColors.primary.value}', 'outline-offset': '4px'}),
-    ]),
-    css('.cs-shot', [
-      css('&').styles(
-        height: 30.rem,
-        radius: BorderRadius.circular(1.rem),
-        border: Border.all(color: AppColors.textPrimary.withValues(alpha: 0.12), width: 1.px),
-        backgroundColor: AppColors.surface,
-        raw: {
-          'aspect-ratio': '9 / 19.5',
-          'flex': '0 0 auto',
-          'object-fit': 'cover',
-          'scroll-snap-align': 'start',
-        },
-      ),
-      css.media(MediaQuery.screen(maxWidth: Breakpoints.mobile.px), [
-        css('&').styles(height: 24.rem),
-      ]),
     ]),
     css('.cs-body', [
       css('&').styles(

@@ -17,6 +17,7 @@ import 'package:jaspr_site/components/project_showcase.dart'
     deferred as _project_showcase;
 import 'package:jaspr_site/components/scroll_reveal.dart'
     deferred as _scroll_reveal;
+import 'package:jaspr_site/components/shot_strip.dart' deferred as _shot_strip;
 
 /// Default [ClientOptions] for use with your Jaspr project.
 ///
@@ -70,6 +71,15 @@ ClientOptions get defaultClientOptions => ClientOptions(
     'scroll_reveal': ClientLoader(
       (p) => _scroll_reveal.ScrollReveal(),
       loader: _scroll_reveal.loadLibrary,
+    ),
+    'shot_strip': ClientLoader(
+      (p) => _shot_strip.ShotStrip(
+        id: p['id'] as String,
+        title: p['title'] as String,
+        images: (p['images'] as List<Object?>).cast<String>(),
+        eagerFirst: p['eagerFirst'] as bool,
+      ),
+      loader: _shot_strip.loadLibrary,
     ),
   },
 );

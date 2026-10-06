@@ -1,5 +1,7 @@
 import 'package:jaspr/dom.dart';
 
+import 'motion_css.dart';
+
 /// Design tokens ported from the Flutter app's `AppColors`
 /// (lib/core/constants/app_colors.dart) and `AppTheme`
 /// (lib/core/theme/app_theme.dart). Kept as plain Dart constants, same as
@@ -58,7 +60,17 @@ List<StyleRule> get styles => [
     '&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,400,0..1,0'
     '&display=swap',
   ),
-  css('html').styles(raw: {'scroll-behavior': 'smooth'}),
+  // Smooth scrolling is off for visitors who asked for reduced motion (see
+  // the MotionRule below), and every scrollbar uses a slim, themed track
+  // instead of the browser's default white one.
+  css('html').styles(raw: {
+    'scroll-behavior': 'smooth',
+    'scrollbar-width': 'thin',
+    'scrollbar-color': '${AppColors.primary.withValues(alpha: 0.45).value} ${AppColors.background.value}',
+  }),
+  MotionRule.reduced([
+    css('html').styles(raw: {'scroll-behavior': 'auto'}),
+  ]),
   // No box-sizing reset existed anywhere in the site -- every element
   // defaulted to content-box, so `width`/`height`/`min-height` never
   // actually included padding/border. That silently made `.hero`'s
