@@ -4,33 +4,7 @@ import 'package:jaspr/jaspr.dart';
 import '../constants/motion_css.dart';
 import '../constants/theme.dart';
 import 'project_showcase.vm.dart' if (dart.library.js_interop) 'project_showcase.web.dart';
-
-// Material Symbols has no real Apple/Android brand marks -- these are the
-// Simple Icons (simpleicons.org, CC0) single-path glyphs, viewBox 0 0 24 24.
-const _appleLogoPath =
-    'M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 '
-    '3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 '
-    '3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637 '
-    '-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039 '
-    '-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429 '
-    '-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zm3.415-3.132c'
-    '.843-1.012 1.404-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78 '
-    '.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701z';
-const _androidLogoPath =
-    'M17.523 15.34c-.5 0-.906.406-.906.906s.406.906.906.906.906-.406.906'
-    '-.906-.406-.906-.906-.906zm-11.046 0c-.5 0-.906.406-.906.906s.406.906'
-    '.906.906.906-.406.906-.906-.406-.906-.906-.906zm11.323-6.42l1.809-3.13'
-    'a.375.375 0 00-.649-.375l-1.831 3.17A11.045 11.045 0 0012 8.077c-1.85 '
-    '0-3.6.37-5.13 1.008L5.038 5.914a.375.375 0 00-.649.375l1.809 3.13A10.245 '
-    '10.245 0 001.2 17.523h21.6a10.245 10.245 0 00-4.998-8.603z';
-// Simple Icons "Google Play" -- shown in place of the Android robot on hover
-// so the button reads as "this is where it links to", not just "this is
-// Android".
-const _googlePlayPath =
-    'M3 20.5v-17c0-.59.34-1.11.84-1.35L13.69 12l-9.85 9.85c-.5-.24-.84-.76'
-    '-.84-1.35zm13.81-5.38L6.05 21.34l8.49-8.49 3.27 3.27zm3.35-4.31c.34.27'
-    '.59.68.59 1.19s-.22.9-.57 1.18l-2.29 1.32-3.5-3.5 3.5-3.5 2.27 1.31z'
-    'M6.05 2.66l10.76 6.22-3.27 3.27-8.49-8.49z';
+import 'store_icons.dart';
 
 /// Ported from `StickyProjectShowcase` — a scroll-driven phone mockup that
 /// stays pinned while cycling through each project's gallery images/video,
@@ -806,10 +780,10 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
                   [
                   span(classes: 'store-tooltip', [.text('Google Play')]),
                   svg([
-                    path(d: _androidLogoPath, fill: const Color('currentColor'), []),
+                    path(d: androidLogoPath, fill: const Color('currentColor'), []),
                   ], viewBox: '0 0 24 24', width: 1.3.rem, height: 1.3.rem, classes: 'store-icon icon-default'),
                   svg([
-                    path(d: _googlePlayPath, fill: const Color('currentColor'), []),
+                    path(d: googlePlayPath, fill: const Color('currentColor'), []),
                   ], viewBox: '0 0 24 24', width: 1.3.rem, height: 1.3.rem, classes: 'store-icon icon-hover'),
                 ]),
               if (iosUrl != null)
@@ -823,7 +797,7 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
                   [
                   span(classes: 'store-tooltip', [.text('App Store')]),
                   svg([
-                    path(d: _appleLogoPath, fill: const Color('currentColor'), []),
+                    path(d: appleLogoPath, fill: const Color('currentColor'), []),
                   ], viewBox: '0 0 24 24', width: 1.3.rem, height: 1.3.rem, classes: 'store-icon icon-default'),
                   div(classes: 'store-icon icon-hover appstore-glyph', [
                     div(classes: 'as-bar as-bar-left', []),
