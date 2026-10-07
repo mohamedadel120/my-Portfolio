@@ -3,8 +3,10 @@ import 'package:jaspr/jaspr.dart';
 
 import '../constants/motion_css.dart';
 import '../constants/theme.dart';
+import 'cta_link.dart';
 import 'featured_label.dart';
 import 'project_view.dart';
+import 'store_buttons.dart';
 
 /// V2-B: an index of every project next to one detail panel. Visitors scan
 /// the whole list at a glance and open what interests them; nothing is
@@ -315,24 +317,7 @@ class _ProjectIndexDetailState extends State<ProjectIndexDetail> {
               for (final item in view.tech) li([.text(item)]),
             ]),
           div(classes: 'idx-links', [
-            if (view.androidUrl != null)
-              a(
-                href: view.androidUrl!,
-                classes: 'idx-link',
-                target: Target.blank,
-                attributes: {'rel': 'noopener', 'aria-label': 'Get ${view.title} on Google Play (opens in a new tab)'},
-                [.text('Google Play')],
-              ),
-            if (view.iosUrl != null)
-              a(
-                href: view.iosUrl!,
-                classes: 'idx-link',
-                target: Target.blank,
-                attributes: {'rel': 'noopener', 'aria-label': 'Get ${view.title} on the App Store (opens in a new tab)'},
-                [.text('App Store')],
-              ),
-            if (!view.hasStoreLink) span(classes: 'idx-soon', [.text('Coming soon')]),
-            a(href: '#contact', classes: 'idx-cta', [.text('Build something like this')]),
+StoreButtons(view),            const CtaLink(),
           ]),
         ]),
       ],

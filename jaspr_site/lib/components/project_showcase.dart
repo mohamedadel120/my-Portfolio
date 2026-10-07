@@ -4,6 +4,7 @@ import 'package:jaspr/jaspr.dart';
 import '../constants/motion_css.dart';
 import '../constants/theme.dart';
 import 'project_showcase.vm.dart' if (dart.library.js_interop) 'project_showcase.web.dart';
+import 'cta_link.dart';
 import 'store_icons.dart';
 
 /// Ported from `StickyProjectShowcase` — a scroll-driven phone mockup that
@@ -807,7 +808,7 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
                   ]),
                 ]),
               if (androidUrl == null && iosUrl == null) span(classes: 'coming-soon', [.text('Coming Soon')]),
-              if (component.refined) a(href: '#contact', classes: 'showcase-cta', [.text('Build something like this')]),
+              if (component.refined) const CtaLink(),
             ]),
           ]),
           div(classes: 'showcase-tech', [

@@ -6,6 +6,7 @@
 
 import 'package:jaspr/server.dart';
 import 'package:jaspr_site/components/contact_form.dart' as _contact_form;
+import 'package:jaspr_site/components/cta_link.dart' as _cta_link;
 import 'package:jaspr_site/components/custom_cursor.dart' as _custom_cursor;
 import 'package:jaspr_site/components/featured_label.dart' as _featured_label;
 import 'package:jaspr_site/components/header.dart' as _header;
@@ -21,6 +22,7 @@ import 'package:jaspr_site/components/project_stage_showcase.dart'
     as _project_stage_showcase;
 import 'package:jaspr_site/components/scroll_reveal.dart' as _scroll_reveal;
 import 'package:jaspr_site/components/shot_gallery.dart' as _shot_gallery;
+import 'package:jaspr_site/components/store_buttons.dart' as _store_buttons;
 import 'package:jaspr_site/constants/theme.dart' as _theme;
 import 'package:jaspr_site/sections/about_section.dart' as _about_section;
 import 'package:jaspr_site/sections/contact_section.dart' as _contact_section;
@@ -92,6 +94,7 @@ ServerOptions get defaultServerOptions => ServerOptions(
   styles: () => [
     ..._theme.styles,
     ..._contact_form.ContactForm.styles,
+    ..._cta_link.CtaLink.styles,
     ..._custom_cursor.CustomCursor.styles,
     ..._featured_label.FeaturedLabel.styles,
     ..._header.Header.styles,
@@ -101,6 +104,7 @@ ServerOptions get defaultServerOptions => ServerOptions(
     ..._project_showcase.StickyProjectShowcase.styles,
     ..._project_stage_showcase.ProjectStageShowcase.styles,
     ..._shot_gallery.ShotGalleryView.styles,
+    ..._store_buttons.StoreButtons.styles,
     ..._about_section.AboutSection.styles,
     ..._contact_section.ContactSection.styles,
     ..._experience_section.ExperienceSection.styles,

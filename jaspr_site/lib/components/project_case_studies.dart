@@ -2,8 +2,10 @@ import 'package:jaspr/dom.dart';
 import 'package:jaspr/jaspr.dart';
 
 import '../constants/theme.dart';
+import 'cta_link.dart';
 import 'featured_label.dart';
 import 'project_view.dart';
+import 'store_buttons.dart';
 import 'shot_gallery.dart';
 
 /// V2-A: one case study per project, rendered entirely on the server (plain
@@ -34,8 +36,6 @@ class ProjectCaseStudies extends StatelessComponent {
     final tech = view.tech;
     final images = view.images;
     final videoUrl = view.videoUrl;
-    final androidUrl = view.androidUrl;
-    final iosUrl = view.iosUrl;
     final downloads = view.downloads;
     final facts = view.facts;
     final headingId = 'cs-title-$index';
@@ -78,24 +78,7 @@ class ProjectCaseStudies extends StatelessComponent {
                 for (final item in tech) li([.text(item)]),
               ]),
             div(classes: 'cs-links', [
-              if (androidUrl != null)
-                a(
-                  href: androidUrl,
-                  classes: 'cs-link',
-                  target: Target.blank,
-                  attributes: {'rel': 'noopener', 'aria-label': 'Get $title on Google Play (opens in a new tab)'},
-                  [.text('Google Play')],
-                ),
-              if (iosUrl != null)
-                a(
-                  href: iosUrl,
-                  classes: 'cs-link',
-                  target: Target.blank,
-                  attributes: {'rel': 'noopener', 'aria-label': 'Get $title on the App Store (opens in a new tab)'},
-                  [.text('App Store')],
-                ),
-              if (androidUrl == null && iosUrl == null) span(classes: 'cs-soon', [.text('Coming soon')]),
-              a(href: '#contact', classes: 'cs-cta', [.text('Build something like this')]),
+StoreButtons(view),              const CtaLink(),
             ]),
           ]),
         ]),

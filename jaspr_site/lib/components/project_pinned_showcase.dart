@@ -5,9 +5,11 @@ import '../constants/motion_css.dart';
 import '../constants/theme.dart';
 import 'pinned_helpers.vm.dart' if (dart.library.js_interop) 'pinned_helpers.web.dart';
 import 'project_showcase.vm.dart' if (dart.library.js_interop) 'project_showcase.web.dart';
+import 'cta_link.dart';
 import 'featured_label.dart';
 import 'project_view.dart';
 import 'shot_gallery.dart';
+import 'store_buttons.dart';
 
 /// V2-E: the section stays pinned on screen. Scrolling does not move the
 /// page down the screen; each step of scroll switches to the next project
@@ -107,11 +109,26 @@ class ProjectPinnedShowcase extends StatefulComponent {
         raw: {
           'height': '100dvh',
           'grid-template-columns': 'minmax(0, 26rem) minmax(0, 1fr)',
-          'padding': '6rem 12rem 2rem 4rem',
+          // Clears the fixed navigation bar (about 6.5rem) at any window height.
+          'padding': '7rem 12rem 1.5rem 4rem',
           'background': 'radial-gradient(circle at 65% 50%, color-mix(in srgb, var(--accent) 16%, ${AppColors.background.value}) 0%, ${AppColors.background.value} 65%)',
           'transition': 'background 600ms ease',
         },
       ),
+    ]),
+    // A readable tint of the app's own colour for buttons, progress and focus
+    // (the raw colour can be very dark).
+    css('.pp-stage, .pp-phone').styles(raw: {'--accent-fg': 'color-mix(in srgb, var(--accent) 62%, #ffffff)'}),
+    // Short windows (laptops, browsers with toolbars): tighter type and gaps so
+    // the text never needs more room than there is.
+    RawMediaRule('(max-height: 820px)', [
+      css('.pp-stage').styles(raw: {'padding-top': '6.25rem', 'gap': '2rem'}),
+      css('.pp-info').styles(raw: {'gap': '0.65rem'}),
+      css('.pp-tech li').styles(raw: {'font-size': '0.72rem', 'padding': '0.2rem 0.55rem'}),
+    ]),
+    RawMediaRule('(max-height: 680px)', [
+      css('.pp-description').styles(raw: {'line-height': '1.5'}),
+      css('.pp-stage').styles(raw: {'padding-top': '5.75rem'}),
     ]),
     // All projects' information sits in one grid cell; only the active one shows.
     css('.pp-infos', [
@@ -121,8 +138,13 @@ class ProjectPinnedShowcase extends StatefulComponent {
       css('&').styles(
         display: Display.flex,
         flexDirection: FlexDirection.column,
-        gap: Gap.all(1.1.rem),
         raw: {
+          'gap': 'clamp(0.6rem, 1.7dvh, 1.1rem)',
+          // Safety net: if a very long text still does not fit, the column
+          // scrolls instead of running under the navigation bar.
+          'max-height': 'calc(100dvh - 8.75rem)',
+          'overflow-y': 'auto',
+          'scrollbar-width': 'thin',
           'grid-area': '1 / 1',
           'min-width': '0',
           'opacity': '0',
@@ -135,7 +157,7 @@ class ProjectPinnedShowcase extends StatefulComponent {
     css('.pp-title', [
       css('&').styles(
         color: AppColors.textPrimary,
-        fontSize: Unit.expression('clamp(1.75rem, 3.4vw, 2.75rem)'),
+        fontSize: Unit.expression('clamp(1.5rem, min(3.2vw, 5.4dvh), 2.6rem)'),
         lineHeight: Unit.expression('1.12'),
       ),
     ]),
@@ -144,9 +166,9 @@ class ProjectPinnedShowcase extends StatefulComponent {
       css('&').styles(
         margin: Margin.zero,
         color: AppColors.textSecondary,
-        lineHeight: Unit.expression('1.7'),
+        lineHeight: Unit.expression('1.62'),
         maxWidth: Unit.expression('65ch'),
-        raw: {'overflow-wrap': 'break-word'},
+        raw: {'overflow-wrap': 'break-word', 'font-size': 'clamp(0.82rem, 2dvh, 1rem)'},
       ),
     ]),
     // Visually hidden full text, kept for screen readers while the visible
@@ -197,29 +219,11 @@ class ProjectPinnedShowcase extends StatefulComponent {
         fontSize: 0.78.rem,
       ),
     ]),
+    // Store buttons (the round originals) and the call to action share a row.
     css('.pp-links', [
-      css('&').styles(display: Display.flex, flexWrap: FlexWrap.wrap, alignItems: AlignItems.center, gap: Gap.all(0.7.rem)),
+      css('&').styles(display: Display.flex, flexWrap: FlexWrap.wrap, alignItems: AlignItems.center, gap: Gap.all(1.rem)),
+      css('.info-links').styles(gap: Gap.all(0.85.rem)),
     ]),
-    css('.pp-link, .pp-cta', [
-      css('&').styles(
-        display: Display.inlineFlex,
-        alignItems: AlignItems.center,
-        minHeight: 2.75.rem,
-        padding: Padding.symmetric(horizontal: 1.1.rem),
-        radius: BorderRadius.circular(0.5.rem),
-        textDecoration: TextDecoration.none,
-        fontSize: 0.9.rem,
-        fontWeight: FontWeight.w600,
-        raw: {'transition': 'transform 160ms cubic-bezier(0.23, 1, 0.32, 1)'},
-      ),
-      css('&:active').styles(transform: Transform.scale(0.97)),
-      css('&:focus-visible').styles(raw: {'outline': '2px solid ${AppColors.primary.value}', 'outline-offset': '3px'}),
-    ]),
-    css('.pp-link', [
-      css('&').styles(color: AppColors.textPrimary, border: Border.all(color: AppColors.textPrimary.withValues(alpha: 0.3), width: 1.px)),
-    ]),
-    css('.pp-cta', [css('&').styles(backgroundColor: AppColors.primary, color: AppColors.background)]),
-    css('.pp-soon', [css('&').styles(color: AppColors.textSecondary, fontSize: 0.9.rem)]),
     // Phone column.
     css('.pp-media', [
       css('&').styles(
@@ -279,34 +283,87 @@ class ProjectPinnedShowcase extends StatefulComponent {
       ),
       css('&[data-current="true"]').styles(raw: {'opacity': '1'}),
     ]),
-    css('.pp-controls', [
-      css('&').styles(display: Display.flex, alignItems: AlignItems.center, justifyContent: JustifyContent.center, gap: Gap.all(0.6.rem), raw: {'flex-wrap': 'wrap'}),
+    // Previous / phone / next on one row: the arrows sit beside the phone.
+    css('.pp-deck', [
+      css('&').styles(display: Display.flex, alignItems: AlignItems.center, justifyContent: JustifyContent.center, gap: Gap.all(1.rem)),
     ]),
     css('.pp-btn', [
       css('&').styles(
         display: Display.flex,
         alignItems: AlignItems.center,
         justifyContent: JustifyContent.center,
-        width: 2.5.rem,
-        height: 2.5.rem,
+        width: 2.9.rem,
+        height: 2.9.rem,
         padding: Padding.zero,
         radius: BorderRadius.circular(50.percent),
-        border: Border.all(color: AppColors.textPrimary.withValues(alpha: 0.3), width: 1.px),
-        backgroundColor: AppColors.background.withValues(alpha: 0.85),
-        color: AppColors.textPrimary,
+        backgroundColor: AppColors.background.withValues(alpha: 0.6),
         cursor: Cursor.pointer,
-        raw: {'transition': 'transform 160ms cubic-bezier(0.23, 1, 0.32, 1), background-color 160ms ease'},
+        raw: {
+          'flex': '0 0 auto',
+          'color': 'var(--accent-fg)',
+          'border': '1.5px solid color-mix(in srgb, var(--accent-fg) 60%, transparent)',
+          'box-shadow': '0 0 18px -4px color-mix(in srgb, var(--accent) 60%, transparent)',
+          'transition': 'transform 160ms cubic-bezier(0.23, 1, 0.32, 1), background-color 160ms ease, color 160ms ease',
+        },
       ),
       css('&:active').styles(transform: Transform.scale(0.94)),
-      css('&:focus-visible').styles(raw: {'outline': '2px solid ${AppColors.primary.value}', 'outline-offset': '2px'}),
+      css('&:focus-visible').styles(raw: {'outline': '2px solid var(--accent-fg)', 'outline-offset': '3px'}),
     ]),
     RawMediaRule.hoverCapable([
-      css('.pp-btn:hover').styles(backgroundColor: AppColors.primary, color: AppColors.background),
+      css('.pp-btn:hover').styles(raw: {'background-color': 'var(--accent-fg)', 'color': '#000000'}),
+    ]),
+    // Tap anywhere on the screen to pause the screenshots; tap again to play.
+    css('.pp-tap', [
+      css('&').styles(position: Position.absolute(top: Unit.zero, left: Unit.zero, right: Unit.zero, bottom: Unit.zero), zIndex: ZIndex(1), cursor: Cursor.pointer),
+    ]),
+    css('.pp-paused', [
+      css('&').styles(
+        position: Position.absolute(top: 45.percent, left: 50.percent),
+        zIndex: ZIndex(2),
+        display: Display.flex,
+        alignItems: AlignItems.center,
+        justifyContent: JustifyContent.center,
+        width: 4.rem,
+        height: 4.rem,
+        radius: BorderRadius.circular(50.percent),
+        backgroundColor: Colors.black.withValues(alpha: 0.55),
+        color: Colors.white,
+        raw: {'transform': 'translate(-50%, -50%)', 'pointer-events': 'none', 'backdrop-filter': 'blur(4px)'},
+      ),
+      css('span').styles(fontSize: 2.4.rem),
+    ]),
+    // Player bar over the bottom of the screen, like a video.
+    css('.pp-hud', [
+      css('&').styles(
+        position: Position.absolute(left: Unit.zero, right: Unit.zero, bottom: Unit.zero),
+        zIndex: ZIndex(3),
+        display: Display.flex,
+        alignItems: AlignItems.center,
+        gap: Gap.all(0.45.rem),
+        raw: {'padding': '2.2rem 0.8rem 1.1rem', 'background': 'linear-gradient(to top, rgba(0,0,0,0.72), transparent)', 'pointer-events': 'none'},
+      ),
+    ]),
+    css('.pp-hud-btn', [
+      css('&').styles(
+        display: Display.flex,
+        alignItems: AlignItems.center,
+        justifyContent: JustifyContent.center,
+        width: 1.9.rem,
+        height: 1.9.rem,
+        padding: Padding.zero,
+        border: Border.none,
+        radius: BorderRadius.circular(50.percent),
+        backgroundColor: Colors.white.withValues(alpha: 0.18),
+        cursor: Cursor.pointer,
+        raw: {'flex': '0 0 auto', 'color': 'var(--accent-fg)', 'pointer-events': 'auto'},
+      ),
+      css('span').styles(fontSize: 1.2.rem),
+      css('&:focus-visible').styles(raw: {'outline': '2px solid var(--accent-fg)', 'outline-offset': '2px'}),
     ]),
     // Story-style progress: one segment per screenshot, the current one fills
     // over the time it is shown.
     css('.pp-segs', [
-      css('&').styles(display: Display.flex, alignItems: AlignItems.center, gap: Gap.all(0.25.rem), raw: {'width': 'min(14rem, 40vw)'}),
+      css('&').styles(display: Display.flex, alignItems: AlignItems.center, gap: Gap.all(0.2.rem), raw: {'flex': '1 1 0', 'min-width': '0', 'pointer-events': 'auto'}),
     ]),
     css('.pp-seg', [
       css('&').styles(
@@ -318,24 +375,23 @@ class ProjectPinnedShowcase extends StatefulComponent {
         cursor: Cursor.pointer,
         raw: {'flex': '1 1 0', 'min-width': '0'},
       ),
-      css('&:focus-visible').styles(raw: {'outline': '2px solid ${AppColors.primary.value}', 'outline-offset': '1px'}),
+      css('&:focus-visible').styles(raw: {'outline': '2px solid var(--accent-fg)', 'outline-offset': '1px'}),
       css('&::before').styles(
         content: '',
         position: Position.absolute(left: Unit.zero, right: Unit.zero),
         height: 4.px,
         radius: BorderRadius.circular(2.px),
-        backgroundColor: AppColors.textPrimary.withValues(alpha: 0.22),
+        backgroundColor: Colors.white.withValues(alpha: 0.32),
         raw: {'top': '50%', 'transform': 'translateY(-50%)'},
       ),
-      css('&[data-done="true"]::before').styles(backgroundColor: AppColors.primary),
+      css('&[data-done="true"]::before').styles(raw: {'background-color': 'var(--accent-fg)'}),
     ]),
     css('.pp-seg-fill', [
       css('&').styles(
         position: Position.absolute(left: Unit.zero),
         height: 4.px,
         radius: BorderRadius.circular(2.px),
-        backgroundColor: AppColors.primary,
-        raw: {'top': '50%', 'transform': 'translateY(-50%)', 'width': '0%'},
+        raw: {'background-color': 'var(--accent-fg)', 'top': '50%', 'transform': 'translateY(-50%)', 'width': '0%'},
       ),
       css('&[data-run="true"]').styles(raw: {'animation': 'ppFill var(--ms) linear forwards'}),
       css('&[data-static="true"]').styles(raw: {'width': '100%'}),
@@ -345,10 +401,10 @@ class ProjectPinnedShowcase extends StatefulComponent {
       'to': Styles(raw: {'width': '100%'}),
     }),
     css('.pp-count', [
-      css('&').styles(color: AppColors.textSecondary, fontSize: 0.85.rem, raw: {'font-variant-numeric': 'tabular-nums', 'white-space': 'nowrap'}),
+      css('&').styles(color: Colors.white, fontSize: 0.72.rem, raw: {'font-variant-numeric': 'tabular-nums', 'white-space': 'nowrap', 'flex': '0 0 auto'}),
     ]),
     MotionRule.reduced([
-      css('.pp-info, .pp-phone, .pp-shot, .pp-stage').styles(raw: {'transition': 'none'}),
+      css('.pp-info, .pp-phone, .pp-shot, .pp-stage, .pp-btn').styles(raw: {'transition': 'none'}),
     ]),
     // Tablets and phones: stacked cards, no pinning.
     css('.pp-card', [
@@ -378,7 +434,6 @@ class _ProjectPinnedShowcaseState extends State<ProjectPinnedShowcase> {
   int _active = 0;
   int _shot = 0;
   bool _playing = true;
-  bool _hovering = false;
   bool _inView = false;
   bool _narrow = false;
   bool _reduce = false;
@@ -482,7 +537,16 @@ class _ProjectPinnedShowcaseState extends State<ProjectPinnedShowcase> {
 
   // ---- screenshots ----
 
-  bool get _autoplay => _effects && _playing && _inView && !_hovering;
+  bool get _autoplay => _effects && _playing && _inView;
+
+  /// The screenshots keep playing while the pointer rests on the phone; they
+  /// only stop when the visitor taps the screen (or the pause button) and
+  /// resume the same way.
+  void _togglePlay() {
+    if (!_effects) return;
+    _playing = !_playing;
+    _restartShots();
+  }
 
   void _restartShots() {
     _shotToken++;
@@ -557,23 +621,13 @@ class _ProjectPinnedShowcaseState extends State<ProjectPinnedShowcase> {
           styles: Styles(raw: {'--accent': _views[_active].accentHex}),
           [
             div(classes: 'pp-infos', [for (final (i, view) in _views.indexed) _info(view, i)]),
-            div(
-              classes: 'pp-media',
-              events: {
-                'mouseenter': (_) {
-                  _hovering = true;
-                  _restartShots();
-                },
-                'mouseleave': (_) {
-                  _hovering = false;
-                  _restartShots();
-                },
-              },
-              [
+            div(classes: 'pp-media', [
+              div(classes: 'pp-deck', [
+                if (_views[_active].images.length > 1) _arrow(-1),
                 div(classes: 'pp-phones', [for (final (i, view) in _views.indexed) _phone(view, i)]),
-                _controls(_views[_active]),
-              ],
-            ),
+                if (_views[_active].images.length > 1) _arrow(1),
+              ]),
+            ]),
           ],
         ),
       ],
@@ -614,24 +668,8 @@ class _ProjectPinnedShowcaseState extends State<ProjectPinnedShowcase> {
             for (final (k, item) in view.tech.indexed) li(styles: Styles(raw: {'--k': '$k'}), [.text(item)]),
           ]),
         div(classes: 'pp-links', [
-          if (view.androidUrl != null)
-            a(
-              href: view.androidUrl!,
-              classes: 'pp-link',
-              target: Target.blank,
-              attributes: {'rel': 'noopener', 'aria-label': 'Get ${view.title} on Google Play (opens in a new tab)', if (!active) 'tabindex': '-1'},
-              [.text('Google Play')],
-            ),
-          if (view.iosUrl != null)
-            a(
-              href: view.iosUrl!,
-              classes: 'pp-link',
-              target: Target.blank,
-              attributes: {'rel': 'noopener', 'aria-label': 'Get ${view.title} on the App Store (opens in a new tab)', if (!active) 'tabindex': '-1'},
-              [.text('App Store')],
-            ),
-          if (!view.hasStoreLink) span(classes: 'pp-soon', [.text('Coming soon')]),
-          a(href: '#contact', classes: 'pp-cta', attributes: {if (!active) 'tabindex': '-1'}, [.text('Build something like this')]),
+          StoreButtons(view, focusable: active),
+          CtaLink(focusable: active),
         ]),
       ],
     );
@@ -671,33 +709,40 @@ class _ProjectPinnedShowcaseState extends State<ProjectPinnedShowcase> {
             ),
           if (images.isEmpty && view.videoUrl != null)
             video(src: view.videoUrl!, controls: true, muted: true, attributes: const {'playsinline': '', 'preload': 'none'}, []),
+          if (active && images.length > 1) ...[
+            // Mouse and touch convenience only: the pause button below is the
+            // keyboard- and screen-reader-accessible control.
+            if (_effects) div(classes: 'pp-tap', attributes: {'aria-hidden': 'true'}, events: {'click': (_) => _togglePlay()}, []),
+            if (_effects && !_playing)
+              div(classes: 'pp-paused', attributes: {'aria-hidden': 'true'}, [span(classes: 'material-symbols-rounded', [.text('play_arrow')])]),
+            _controls(view),
+          ],
         ]),
       ],
     );
   }
 
+  Component _arrow(int delta) {
+    return button(
+      classes: 'pp-btn',
+      attributes: {'type': 'button', 'aria-label': delta < 0 ? 'Previous screenshot' : 'Next screenshot'},
+      events: {'click': (_) => _stepShot(delta)},
+      [span(classes: 'material-symbols-rounded', [.text(delta < 0 ? 'chevron_left' : 'chevron_right')])],
+    );
+  }
+
+  /// The player bar over the bottom of the screen: pause / play, one segment
+  /// per screenshot (or a position bar when there are many) and the count.
   Component _controls(ProjectView view) {
     final count = view.images.length;
-    if (count < 2) return div(classes: 'pp-controls', []);
     final useSegments = count <= 12;
 
-    return div(classes: 'pp-controls', [
-      button(
-        classes: 'pp-btn',
-        attributes: {'type': 'button', 'aria-label': 'Previous screenshot'},
-        events: {'click': (_) => _stepShot(-1)},
-        [span(classes: 'material-symbols-rounded', [.text('chevron_left')])],
-      ),
+    return div(classes: 'pp-hud', [
       if (_effects)
         button(
-          classes: 'pp-btn',
+          classes: 'pp-hud-btn',
           attributes: {'type': 'button', 'aria-label': _playing ? 'Pause screenshots' : 'Play screenshots', 'aria-pressed': '${!_playing}'},
-          events: {
-            'click': (_) {
-              _playing = !_playing;
-              _restartShots();
-            },
-          },
+          events: {'click': (_) => _togglePlay()},
           [span(classes: 'material-symbols-rounded', [.text(_playing ? 'pause' : 'play_arrow')])],
         ),
       if (useSegments)
@@ -726,12 +771,6 @@ class _ProjectPinnedShowcaseState extends State<ProjectPinnedShowcase> {
             span(classes: 'pp-seg-fill', styles: Styles(raw: {'width': '${((_shot + 1) / count * 100).toStringAsFixed(1)}%'}), []),
           ]),
         ]),
-      button(
-        classes: 'pp-btn',
-        attributes: {'type': 'button', 'aria-label': 'Next screenshot'},
-        events: {'click': (_) => _stepShot(1)},
-        [span(classes: 'material-symbols-rounded', [.text('chevron_right')])],
-      ),
       span(classes: 'pp-count', attributes: {'aria-live': 'off'}, [.text('${_shot + 1} / $count')]),
     ]);
   }
@@ -752,26 +791,7 @@ class _ProjectPinnedShowcaseState extends State<ProjectPinnedShowcase> {
           ul(classes: 'pp-tech', attributes: {'aria-label': 'Technologies'}, [
             for (final item in view.tech) li([.text(item)]),
           ]),
-        div(classes: 'pp-links', [
-          if (view.androidUrl != null)
-            a(
-              href: view.androidUrl!,
-              classes: 'pp-link',
-              target: Target.blank,
-              attributes: {'rel': 'noopener', 'aria-label': 'Get ${view.title} on Google Play (opens in a new tab)'},
-              [.text('Google Play')],
-            ),
-          if (view.iosUrl != null)
-            a(
-              href: view.iosUrl!,
-              classes: 'pp-link',
-              target: Target.blank,
-              attributes: {'rel': 'noopener', 'aria-label': 'Get ${view.title} on the App Store (opens in a new tab)'},
-              [.text('App Store')],
-            ),
-          if (!view.hasStoreLink) span(classes: 'pp-soon', [.text('Coming soon')]),
-          a(href: '#contact', classes: 'pp-cta', [.text('Build something like this')]),
-        ]),
+        div(classes: 'pp-links', [StoreButtons(view), const CtaLink()]),
       ],
     );
   }

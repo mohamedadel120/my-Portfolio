@@ -4,8 +4,10 @@ import 'package:jaspr/jaspr.dart';
 import '../constants/motion_css.dart';
 import '../constants/theme.dart';
 import 'project_showcase.vm.dart' if (dart.library.js_interop) 'project_showcase.web.dart';
+import 'cta_link.dart';
 import 'featured_label.dart';
 import 'project_view.dart';
+import 'store_buttons.dart';
 import 'shot_gallery.dart';
 
 /// V2-D: one screen per project. Each project sits in its own tall slot and
@@ -291,24 +293,7 @@ class _ProjectStageShowcaseState extends State<ProjectStageShowcase> {
                 for (final item in view.tech) li([.text(item)]),
               ]),
             div(classes: 'sd-links', [
-              if (view.androidUrl != null)
-                a(
-                  href: view.androidUrl!,
-                  classes: 'sd-link',
-                  target: Target.blank,
-                  attributes: {'rel': 'noopener', 'aria-label': 'Get ${view.title} on Google Play (opens in a new tab)'},
-                  [.text('Google Play')],
-                ),
-              if (view.iosUrl != null)
-                a(
-                  href: view.iosUrl!,
-                  classes: 'sd-link',
-                  target: Target.blank,
-                  attributes: {'rel': 'noopener', 'aria-label': 'Get ${view.title} on the App Store (opens in a new tab)'},
-                  [.text('App Store')],
-                ),
-              if (!view.hasStoreLink) span(classes: 'sd-soon', [.text('Coming soon')]),
-              a(href: '#contact', classes: 'sd-cta', [.text('Build something like this')]),
+StoreButtons(view),              const CtaLink(),
             ]),
           ]),
           div(classes: 'sd-media', [

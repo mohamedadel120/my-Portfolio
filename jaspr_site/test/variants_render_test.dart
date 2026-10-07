@@ -141,9 +141,9 @@ void main() {
     test('adds the contact call to action and region label; v1 does not', () async {
       final refined = await render(ProjectsVariant.refinedSticky, all);
       final v1 = await render(ProjectsVariant.v1, all);
-      expect(refined, contains('Build something like this'));
+      expect(refined, contains('build yours'));
       expect(refined, contains('aria-label="Project showcase"'));
-      expect(v1, isNot(contains('Build something like this')));
+      expect(v1, isNot(contains('build yours')));
       expect(v1, isNot(contains('aria-label="Project showcase"')));
     });
 
@@ -242,6 +242,58 @@ void main() {
     test('empty list renders nothing harmful', () async {
       final html = await render(ProjectsVariant.pinnedShowcase, const []);
       expect(html, isNot(contains('pp-info')));
+    });
+  });
+
+  group('store buttons and call to action', () {
+    for (final variant in [
+      ProjectsVariant.caseStudy,
+      ProjectsVariant.indexDetail,
+      ProjectsVariant.stageShowcase,
+      ProjectsVariant.pinnedShowcase,
+      ProjectsVariant.refinedSticky,
+    ]) {
+      test('$variant uses the round store buttons and the shared call to action', () async {
+        final html = await render(variant, all);
+        expect(html, contains('class="store-btn"'));
+        expect(html, contains('store-btn store-btn-ios'));
+        expect(html, contains('class="store-tooltip"'));
+        // C keeps the original buttons, which are labelled without the tab note.
+        expect(html, contains(variant == ProjectsVariant.refinedSticky ? 'aria-label="Get App 1 on Google Play"' : 'aria-label="Get App 1 on Google Play (opens in a new tab)"'));
+        expect(html, contains('class="cta-btn"'));
+        expect(html, contains('build yours'));
+        expect(html, contains('rocket_launch'));
+        expect(html, isNot(contains('Build something like this')));
+      });
+    }
+
+    test('a project on neither store says coming soon instead of showing store buttons', () async {
+      final html = await render(ProjectsVariant.caseStudy, [project(9, full: false)]);
+      expect(html, contains('Coming soon'));
+      expect(html, isNot(contains('class="store-btn"')));
+    });
+  });
+
+  group('pinned showcase controls', () {
+    test('arrows flank the phone and the player bar sits over the screen', () async {
+      final html = await render(ProjectsVariant.pinnedShowcase, all);
+      final deck = RegExp(r'class="pp-deck">(.*?)</div>\s*</div>\s*</div>', dotAll: true).hasMatch(html);
+      expect(deck || html.contains('class="pp-deck"'), isTrue);
+      expect(html.indexOf('aria-label="Previous screenshot"'), lessThan(html.indexOf('class="pp-phones"')));
+      expect(html.indexOf('aria-label="Next screenshot"'), greaterThan(html.indexOf('class="pp-phones"')));
+      expect(html, contains('class="pp-hud"'));
+      expect(html, contains('class="pp-tap"'));
+      // The previous and next arrows are no longer inside the player bar.
+      final hud = RegExp(r'class="pp-hud">.*?class="pp-count"', dotAll: true).firstMatch(html)!.group(0)!;
+      expect(hud, isNot(contains('Previous screenshot')));
+      expect(hud, isNot(contains('Next screenshot')));
+    });
+
+    test('a project with a single screenshot has no arrows or player bar', () async {
+      final one = project(7)..['galleryImages'] = ['https://img.test/only.webp'];
+      final html = await render(ProjectsVariant.pinnedShowcase, [one]);
+      expect(html, isNot(contains('aria-label="Next screenshot"')));
+      expect(html, isNot(contains('class="pp-hud"')));
     });
   });
 
