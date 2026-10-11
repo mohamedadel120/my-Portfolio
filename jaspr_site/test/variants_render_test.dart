@@ -346,7 +346,7 @@ void main() {
     });
   });
 
-  test('production default is the original design', () {
-    expect(projectsVariant, ProjectsVariant.v1);
+  test('production default is the chosen design (V2-E, pinned showcase)', () {
+    expect(projectsVariant, ProjectsVariant.pinnedShowcase);
   });
 }
