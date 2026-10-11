@@ -62,7 +62,7 @@ Add them in the Firebase console on the project document. `featured` must be a b
 ## Tests
 
 ```bash
-cd jaspr_site && dart test      # 76 tests
+cd jaspr_site && dart test      # 84 tests
 cd .. && flutter test           # Flutter app
 ```
 

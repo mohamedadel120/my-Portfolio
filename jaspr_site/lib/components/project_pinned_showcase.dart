@@ -73,6 +73,19 @@ class ProjectPinnedShowcase extends StatefulComponent {
     RawMediaRule.hoverCapable([
       css('.pp-nav-item:hover').styles(color: AppColors.textPrimary),
     ]),
+    // The featured project is marked in the list too.
+    css('.pp-nav-star', [
+      css('&').styles(
+        display: Display.inlineBlock,
+        width: 0.9.rem,
+        height: 0.9.rem,
+        margin: Margin.only(right: 0.35.rem),
+        overflow: Overflow.hidden,
+        color: AppColors.primary,
+        fontSize: 0.9.rem,
+        raw: {'line-height': '1', 'vertical-align': '-0.1em', 'font-variation-settings': "'FILL' 1"},
+      ),
+    ]),
     css('.pp-skip', [
       css('&').styles(
         position: Position.absolute(right: 1.5.rem),
@@ -611,7 +624,11 @@ class _ProjectPinnedShowcaseState extends State<ProjectPinnedShowcase> {
                   classes: 'pp-nav-item',
                   attributes: {'type': 'button', 'aria-current': i == _active ? 'true' : 'false'},
                   events: {'click': (_) => _goToProject(i)},
-                  [.text(view.title)],
+                  [
+                    if (view.featured)
+                      span(classes: 'material-symbols-rounded pp-nav-star', attributes: {'aria-hidden': 'true'}, [.text('star')]),
+                    .text(view.title),
+                  ],
                 ),
               ]),
           ]),

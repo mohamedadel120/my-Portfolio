@@ -9,6 +9,7 @@ import '../components/project_stage_showcase.dart';
 import '../constants/projects_variant.dart';
 import '../constants/theme.dart';
 import '../data/experience_repository.dart';
+import '../data/preview_data.dart';
 import '../data/projects_repository.dart';
 
 /// Proof strip (verifiable facts only) plus the scroll-driven phone-mockup
@@ -35,7 +36,7 @@ class ProjectsSection extends AsyncStatelessComponent {
     return section(id: 'projects', classes: 'projects', [
       h2(classes: 'section-title', [.text('Projects')]),
       ...proofStrip(summary),
-      showcase(variant, [for (final p in projects) _toMap(p)]),
+      showcase(variant, withPreviewData([for (final p in projects) _toMap(p)])),
     ]);
   }
 

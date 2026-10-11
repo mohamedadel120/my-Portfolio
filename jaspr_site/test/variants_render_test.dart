@@ -322,6 +322,14 @@ void main() {
       });
     }
 
+    test('the badge reads "Featured project" and the pinned list stars the project', () async {
+      final html = await render(ProjectsVariant.pinnedShowcase, [featured, ...plain]);
+      expect(html, contains('Featured project'));
+      expect(RegExp('pp-nav-star').allMatches(html), hasLength(1));
+      final plainHtml = await render(ProjectsVariant.pinnedShowcase, plain);
+      expect(plainHtml, isNot(contains('pp-nav-star')));
+    });
+
     test('a highlight without featured shows the headline but no badge', () async {
       final only = project(4)..['highlight'] = 'Just a headline';
       final html = await render(ProjectsVariant.caseStudy, [only]);

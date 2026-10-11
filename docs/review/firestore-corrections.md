@@ -7,19 +7,13 @@ the rest is ready to paste.
 
 Field types matter: `featured` must be a **boolean**, everything else here is a **string**.
 
-## Answer these first
+## Your answers (12 Oct)
 
-| # | Question | Why it matters |
-| --- | --- | --- |
-| 1 | Gomla downloads: 10,000+ or 5,000+? | `downloads` field says 10,000+, the description says 5,000+ |
-| 2 | Albatal downloads: 5,000+ or 10,000+? | `downloads` says 5,000+, the description says 10,000+ |
-| 3 | Stock: is 10,000+ downloads accurate? | Shown on the site |
-| 4 | DrugZa: where does "35% increase in customer engagement" come from, and over what period? | Specific number a visitor may ask about |
-| 5 | to-let: show "100" downloads, "100+", or hide it? | 100 reads as small next to the others |
-| 6 | Gomla headline: which of the three options in `project-story-drafts.md`? (If "first app", in which region?) | Goes in `highlight` |
-| 7 | "I" or "we" across the site? | Wording of `problem` and `outcome` |
-| 8 | Your role per project | Goes in `role` |
-| 9 | Ratings: real store ratings per app (when you have them) | Goes in `rating` (a number 0 to 5) |
+- Gomla and Stock: 10,000+ downloads. Albatal: 1,000+. Every other project: no number.
+- Gomla is the featured app and is listed first.
+- Still open: the Gomla headline (safe wording below, or "the first app ..." with a region), "I" or "we", your role per project, real ratings, the Palleta problem, and the AI technology Gomla uses.
+
+Preview all of this locally before editing Firestore: start the `portfolio-E-preview-data` launch configuration.
 
 ## Document by document
 
@@ -30,7 +24,7 @@ Field types matter: `featured` must be a **boolean**, everything else here is a 
 | `highlight` | string | **ASK (#6).** Safe option: `One app for AI skin analysis, virtual makeup try-on and delivery to your door.` |
 | `problem` | string | `Buying beauty products usually means going to a store to try them, and not every product suits every skin. Many customers first had to see a dermatologist just to learn their skin type before they could buy something suitable.` |
 | `description` | string | `We built an app that uses AI to analyze your skin. It tells you your skin type, which products you need and which ones you do not. You can try products such as makeup virtually before buying, then order them and have them delivered to your door.` |
-| `downloads` | string | **ASK (#1)** |
+| `downloads` | string | `10,000+` |
 | `tech` | array of strings | add the AI technology you used (**ASK**: own model, an API, on-device?), for example `AI` |
 | `role`, `outcome`, `rating` | | **ASK** (#8, #9). Leave unset until you have them |
 
@@ -40,16 +34,16 @@ Note: this replaces the current description ("comprehensive e-commerce solution 
 ### Stock Mobile App  (`2KVhxJcl6K73DYEN5UTm`)
 | Field | Type | Value |
 | --- | --- | --- |
-| `description` | string | Remove the unverified rating. Suggested: `A powerful B2B inventory management platform designed for businesses to efficiently track and manage their stock. Built with clean architecture and Bloc pattern for scalable state management.` (add `The app has passed 10,000+ downloads.` once #3 is confirmed) |
+| `description` | string | Remove the unverified rating. Suggested: `A powerful B2B inventory management platform designed for businesses to efficiently track and manage their stock. Built with clean architecture and Bloc pattern for scalable state management.` followed by `The app has passed 10,000+ downloads.` |
 | `problem` | string | **Draft, confirm or rewrite:** `Businesses that buy and sell in bulk often track stock by hand, so counts drift and reordering becomes guesswork.` |
-| `downloads` | string | **ASK (#3)**; currently `10,000+` |
+| `downloads` | string | `10,000+` (unchanged) |
 
 ### Albatal Mobile App  (`C76zqleRPNpSMqgOa6n2`)
 | Field | Type | Value |
 | --- | --- | --- |
-| `description` | string | Suggested (rating removed, no download claim until #2): `A full-featured marketplace platform that connects sellers and customers seamlessly. Includes a robust seller dashboard for inventory management, order processing, and analytics, while giving customers a smooth shopping experience.` |
+| `description` | string | Suggested (rating and the 10,000+ claim removed): `A full-featured marketplace platform that connects sellers and customers seamlessly. Includes a robust seller dashboard for inventory management, order processing, and analytics, while giving customers a smooth shopping experience.` |
 | `problem` | string | **Draft:** `Sellers need a way to reach customers, and customers want one place to buy from many sellers.` |
-| `downloads` | string | **ASK (#2)** |
+| `downloads` | string | `1,000+` |
 
 ### Palleta Mobile App  (`HScIAMJKMOaysit45JoR`)
 | Field | Type | Value |
@@ -62,7 +56,7 @@ Note: this replaces the current description ("comprehensive e-commerce solution 
 | --- | --- | --- |
 | `description` | string | Clean version of the current marketing copy: `Rent smarter, move faster. to-let streamlines the entire renting process into one simple interface designed for people on the move, with instant discovery of places tailored to your budget and lifestyle.` |
 | `problem` | string | **Draft:** `Finding a place to rent is slow and scattered across many sources.` |
-| `downloads` | string | **ASK (#5)** |
+| `downloads` | string | delete the field (or leave it empty): no number |
 
 ### ureva  (`TklMGh00giLBs6aLGKKk`)
 | Field | Type | Value |
@@ -79,9 +73,25 @@ Note: this replaces the current description ("comprehensive e-commerce solution 
 ### DrugZa - TagPharma  (`j4vecmFJxiAbW2AhN5yo`)
 | Field | Type | Value |
 | --- | --- | --- |
-| `description` | string | **ASK (#4).** If you cannot source it, remove the last sentence ("...a significant 35% increase in customer engagement") |
+| `description` | string | `A specialized healthcare application connecting patients with pharmaceutical services. Features local data storage using SQLite and Hive for offline functionality, ensuring seamless access to medical information.` (the 35% claim removed) |
 | `problem` | string | **Draft:** `Patients need access to medical and pharmacy information even when their connection is poor.` |
-| `downloads` | string | `High Engagement` is vague; replace with a real figure or leave |
+| `downloads` | string | delete the field (or leave it empty) |
+
+## Ratings and figures in your other texts (About and Experience)
+
+These sentences come from your own Firestore text, outside `projects`, and still show on the site.
+They use the 4.8 rating you said is not confirmed yet, and the 35% figures:
+
+| Where | Text on the site |
+| --- | --- |
+| `profile_info/main` > `professionalSummary` | "...10,000+ downloads and 4.8-star ratings on Google Play." |
+| `experiences` (Stock role) | "Led design and maintenance of Stock App (B2B), achieving 10,000+ downloads and 4.8-star rating" |
+| `experiences` (Innovation Company) | "Led design and implementation of Al-Taqwa Mobile App (1,000+ downloads, 4.8-star rating)" |
+| `experiences` | "Delivered Tag-pharma & DrugZa Mobile App with 35% increase in customer engagement" |
+| `experiences` (Innovation Company) | "Delivered Global Dent Mobile App with 35% increase in customer engagement" |
+
+If the ratings are not confirmed, drop the "4.8-star" parts; if the 35% figures cannot be sourced,
+drop those phrases. The download figures there match what you told me (Stock 10,000+).
 
 ## Other places with unverified numbers (not in `projects`)
 
