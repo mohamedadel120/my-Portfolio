@@ -63,7 +63,8 @@ class StoreButtons extends StatelessComponent {
             ]),
           ],
         ),
-      if (!view.hasStoreLink) span(classes: 'sb-soon', [.text('Coming soon')]),
+      // Not repeated when the project's own status line already says so.
+      if (!view.hasStoreLink && !view.downloads.toLowerCase().contains('coming soon')) span(classes: 'sb-soon', [.text('Coming soon')]),
     ]);
   }
 

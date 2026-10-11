@@ -33,7 +33,7 @@ A build without the define always produces the original design.
 | V2-B `indexDetail` | List of projects on the left, detail panel on the right, thumbnails to switch screenshots |
 | V2-C `refinedSticky` | The original scroll-driven showcase with about 42% less scrolling, reduced-motion support, ARIA labels and a contact button |
 | V2-D `stageShowcase` | One screen per project (about 10 screens for 8 projects instead of 79). Screenshots browsed with the phone gallery. All text in the HTML |
-| V2-E `pinnedShowcase` | The section stays pinned. Scrolling switches project in place: the phone cross-fades to the next project and its screenshots play like a video (pause, previous, next, progress), title and description are typed. About 8 screens. Phones and tablets get stacked cards |
+| V2-E `pinnedShowcase` | The section stays pinned. Scrolling switches project in place: the phone cross-fades to the next project and its screenshots play like a video (pause, previous, next, progress), title and description are typed. About 8 screens. Phones get stacked cards; tablets and small windows (768px and up) keep the pinned stage |
 
 Optional case-study fields you can add to a project document in Firestore (shown only when present, never invented): `role`, `problem`, `outcome`. A numeric `rating` (0 to 5) makes "Average store rating" appear in the proof strip.
 
@@ -62,7 +62,7 @@ Add them in the Firebase console on the project document. `featured` must be a b
 ## Tests
 
 ```bash
-cd jaspr_site && dart test      # 84 tests
+cd jaspr_site && dart test      # 86 tests
 cd .. && flutter test           # Flutter app
 ```
 

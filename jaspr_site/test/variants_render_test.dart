@@ -267,6 +267,14 @@ void main() {
       });
     }
 
+    test('"Coming soon" is not repeated when the status line already says it', () async {
+      final soon = project(9, full: false)..['downloads'] = 'Coming Soon';
+      final html = await render(ProjectsVariant.pinnedShowcase, [soon]);
+      // Ignore Jaspr's hydration data comment, which repeats the raw fields.
+      final markup = html.replaceAll(RegExp(r'<!--@[\s\S]*?-->'), '');
+      expect(RegExp('coming soon', caseSensitive: false).allMatches(markup), hasLength(1));
+    });
+
     test('a project on neither store says coming soon instead of showing store buttons', () async {
       final html = await render(ProjectsVariant.caseStudy, [project(9, full: false)]);
       expect(html, contains('Coming soon'));

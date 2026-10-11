@@ -135,13 +135,29 @@ class ProjectPinnedShowcase extends StatefulComponent {
     // Short windows (laptops, browsers with toolbars): tighter type and gaps so
     // the text never needs more room than there is.
     RawMediaRule('(max-height: 820px)', [
-      css('.pp-stage').styles(raw: {'padding-top': '6.25rem', 'gap': '2rem'}),
-      css('.pp-info').styles(raw: {'gap': '0.65rem'}),
-      css('.pp-tech li').styles(raw: {'font-size': '0.72rem', 'padding': '0.2rem 0.55rem'}),
+      css('.pp .pp-stage').styles(raw: {'padding-top': '6.25rem', 'gap': '2rem'}),
+      css('.pp .pp-info').styles(raw: {'gap': '0.65rem'}),
+      css('.pp .pp-tech li').styles(raw: {'font-size': '0.72rem', 'padding': '0.2rem 0.55rem'}),
+    ]),
+    // Tablets and small windows (768px to 1199px wide): the project list on
+    // the right gives way to the counter, gutters shrink and the phone column
+    // takes only the room it needs, so text and phone both fit side by side.
+    RawMediaRule('(max-width: 1199px)', [
+      css('.pp .pp-nav').styles(display: Display.none),
+      css('.pp .pp-stage').styles(raw: {
+        'padding': '7rem 2rem 1.5rem 2rem',
+        'gap': '1.5rem',
+        'grid-template-columns': 'minmax(0, 1fr) auto',
+      }),
+      css('.pp .pp-media').styles(raw: {'--h': 'min(26rem, 52dvh)'}),
+      css('.pp .pp-deck').styles(raw: {'gap': '0.6rem'}),
+      css('.pp .pp-btn').styles(raw: {'width': '2.4rem', 'height': '2.4rem'}),
+      css('.pp .pp-counter').styles(raw: {'left': '2rem'}),
+      css('.pp .pp-skip').styles(raw: {'right': '2rem'}),
     ]),
     RawMediaRule('(max-height: 680px)', [
-      css('.pp-description').styles(raw: {'line-height': '1.5'}),
-      css('.pp-stage').styles(raw: {'padding-top': '5.75rem'}),
+      css('.pp .pp-description').styles(raw: {'line-height': '1.5'}),
+      css('.pp .pp-stage').styles(raw: {'padding-top': '5.75rem'}),
     ]),
     // All projects' information sits in one grid cell; only the active one shows.
     css('.pp-infos', [
