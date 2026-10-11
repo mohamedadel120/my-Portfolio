@@ -32,6 +32,8 @@ void main() {
   const ogImage = 'https://muhammed-adel.web.app/og_image.png';
 
   runApp(Document(
+    // Tells screen readers and search engines the page is in English.
+    lang: 'en',
     title: 'Mohamed Adel - Flutter Developer Portfolio',
     meta: {
       'description': description,

@@ -109,7 +109,9 @@ class ExperienceSection extends AsyncStatelessComponent {
     ]),
     css('.timeline-period', [
       css('&').styles(
-        color: AppColors.secondary,
+        // A lighter tint of the theme purple: the raw #7B2CBF on black is only
+        // 3:1, below the 4.5:1 that small text needs.
+        color: const Color('#C59BFF'),
         fontFamily: FontFamily.list([FontFamily('JetBrains Mono'), FontFamilies.monospace]),
         fontSize: 0.8.rem,
         fontWeight: FontWeight.w600,
