@@ -44,8 +44,8 @@ class ProjectView {
       title: (map['title'] as String?)?.trim() ?? '',
       description: (map['description'] as String?)?.trim() ?? '',
       tech: _strings(map['tech']),
-      images: _strings(map['galleryImages']),
-      videoUrl: clean(map['videoUrl']),
+      images: [for (final src in _strings(map['galleryImages'])) siteUrl(src)],
+      videoUrl: switch (clean(map['videoUrl'])) { final url? => siteUrl(url), null => null },
       androidUrl: clean(map['androidStoreUrl']),
       iosUrl: clean(map['iosStoreUrl']),
       downloads: (map['downloads'] as String?)?.trim() ?? '',
@@ -73,4 +73,15 @@ class ProjectView {
 
   static List<String> _strings(Object? value) =>
       value is List ? value.whereType<String>().where((s) => s.trim().isNotEmpty).toList() : const [];
+}
+
+/// Media paths stored in Firestore may be relative to the site root
+/// (`assets/videos/demo.mp4`). Relative URLs resolve against the current page,
+/// so on `/projects` they would point at `/projects/assets/...`; anchor them at
+/// the root instead. Absolute URLs (`https://`, `//`, `data:`) and paths that
+/// already start with `/` are returned unchanged.
+String siteUrl(String url) {
+  final trimmed = url.trim();
+  if (trimmed.startsWith('/') || RegExp(r'^[a-zA-Z][a-zA-Z0-9+.-]*:').hasMatch(trimmed)) return trimmed;
+  return '/$trimmed';
 }

@@ -19,7 +19,7 @@ void main() {
     });
     expect(v.title, 'Stock');
     expect(v.tech, ['Flutter', 'Bloc']);
-    expect(v.images, ['a.webp', 'b.webp']);
+    expect(v.images, ['/a.webp', '/b.webp']);
     expect(v.hasStoreLink, isTrue);
     expect(v.accentRgb, 0xFF0000);
     expect(v.accentHex, '#ff0000');
@@ -60,6 +60,25 @@ void main() {
     // Only a real boolean true counts once it has crossed into a map.
     expect(ProjectView.fromMap({'featured': 'true'}).featured, isFalse);
     expect(ProjectView.fromMap({'highlight': ''}).highlight, isNull);
+  });
+
+  group('siteUrl', () {
+    test('anchors root-relative media at the site root', () {
+      expect(siteUrl('assets/videos/drugza_demo.mp4'), '/assets/videos/drugza_demo.mp4');
+      expect(siteUrl('  images/a.webp '), '/images/a.webp');
+    });
+
+    test('leaves absolute and already-rooted URLs alone', () {
+      for (final url in ['https://i.ibb.co/x.webp', 'http://a.b/c.png', '//cdn.test/x.png', 'data:image/png;base64,AAA', '/assets/v.mp4']) {
+        expect(siteUrl(url), url);
+      }
+    });
+
+    test('is applied to screenshots and the video', () {
+      final v = ProjectView.fromMap({'galleryImages': ['shots/1.webp', 'https://x/2.webp'], 'videoUrl': 'assets/videos/d.mp4'});
+      expect(v.images, ['/shots/1.webp', 'https://x/2.webp']);
+      expect(v.videoUrl, '/assets/videos/d.mp4');
+    });
   });
 
   test('accent hex is always 6 digits', () {
