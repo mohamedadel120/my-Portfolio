@@ -56,6 +56,13 @@ void main() {
       expect(byTitle(out, 'ureva'), {'title': 'ureva', 'downloads': 'Coming Soon', 'description': 'Gold.'});
     });
 
+    test('the Gomla headline makes no "first" or "only" claim', () {
+      final headline = (out.first['highlight'] as String).toLowerCase();
+      for (final claim in ['first', 'only', 'unique', '#1', 'number one']) {
+        expect(headline, isNot(contains(claim)));
+      }
+    });
+
     test('only Gomla is featured', () {
       expect(out.where((p) => p['featured'] == true), hasLength(1));
     });

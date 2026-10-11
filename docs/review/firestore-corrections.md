@@ -11,7 +11,8 @@ Field types matter: `featured` must be a **boolean**, everything else here is a 
 
 - Gomla and Stock: 10,000+ downloads. Albatal: 1,000+. Every other project: no number.
 - Gomla is the featured app and is listed first.
-- Still open: the Gomla headline (safe wording below, or "the first app ..." with a region), "I" or "we", your role per project, real ratings, the Palleta problem, and the AI technology Gomla uses.
+- Gomla headline: no "first app" claim; it shows what makes the app different instead (below).
+- Still open: "I" or "we", your role per project, real ratings, the Palleta problem, and the AI technology Gomla uses.
 
 Preview all of this locally before editing Firestore: start the `portfolio-E-preview-data` launch configuration.
 
@@ -21,12 +22,17 @@ Preview all of this locally before editing Firestore: start the `portfolio-E-pre
 | Field | Type | Value |
 | --- | --- | --- |
 | `featured` | boolean | `true` |
-| `highlight` | string | **ASK (#6).** Safe option: `One app for AI skin analysis, virtual makeup try-on and delivery to your door.` |
+| `highlight` | string | `Not just a beauty store: AI reads your skin, you try makeup on before you buy, and it arrives at your door.` (no "first" claim, as you asked; alternatives below) |
 | `problem` | string | `Buying beauty products usually means going to a store to try them, and not every product suits every skin. Many customers first had to see a dermatologist just to learn their skin type before they could buy something suitable.` |
 | `description` | string | `We built an app that uses AI to analyze your skin. It tells you your skin type, which products you need and which ones you do not. You can try products such as makeup virtually before buying, then order them and have them delivered to your door.` |
 | `downloads` | string | `10,000+` |
 | `tech` | array of strings | add the AI technology you used (**ASK**: own model, an API, on-device?), for example `AI` |
 | `role`, `outcome`, `rating` | | **ASK** (#8, #9). Leave unset until you have them |
+
+Other `highlight` wordings that show what sets Gomla apart without claiming it is the first or only one:
+
+- `Skin analysis, virtual try-on and delivery, all in one app.`
+- `Find out your skin type, try makeup on virtually, and get the right products delivered.`
 
 Note: this replaces the current description ("comprehensive e-commerce solution ... 5,000+ downloads
 ... 4.8-star ratings"), which no longer matches the app.

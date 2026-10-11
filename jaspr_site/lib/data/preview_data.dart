@@ -13,7 +13,7 @@ const previewData = bool.fromEnvironment('PREVIEW_DATA');
 const Map<String, Map<String, Object>> previewCorrections = {
   'Gomla': {
     'featured': true,
-    'highlight': 'One app for AI skin analysis, virtual makeup try-on and delivery to your door.',
+    'highlight': 'Not just a beauty store: AI reads your skin, you try makeup on before you buy, and it arrives at your door.',
     'problem': 'Buying beauty products usually means going to a store to try them, and not every product suits every skin. '
         'Many customers first had to see a dermatologist just to learn their skin type before they could buy something suitable.',
     'description': 'We built an app that uses AI to analyze your skin. It tells you your skin type, which products you need and which ones you do not. '
