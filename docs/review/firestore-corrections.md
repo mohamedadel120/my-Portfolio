@@ -14,7 +14,7 @@ Field types matter: `featured` must be a **boolean**, everything else here is a 
 - Gomla headline: no "first app" claim; it shows what makes the app different instead (below).
 - Still open: "I" or "we", your role per project, real ratings, the Palleta problem, and the AI technology Gomla uses.
 
-Preview all of this locally before editing Firestore: start the `portfolio-E-preview-data` launch configuration.
+Preview all of this locally before editing Firestore: start the `portfolio-preview-data` launch configuration.
 
 ## Document by document
 

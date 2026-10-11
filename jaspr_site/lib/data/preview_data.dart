@@ -3,7 +3,7 @@
 /// content before editing the real database.
 ///
 /// Only active with `--dart-define=PREVIEW_DATA=true` (the
-/// `portfolio-E-preview-data` launch configuration). Every production build
+/// `portfolio-preview-data` launch configuration). Every production build
 /// leaves the projects exactly as Firestore returns them: Firestore stays the
 /// only source of truth, and these values must be copied there to go live.
 const previewData = bool.fromEnvironment('PREVIEW_DATA');

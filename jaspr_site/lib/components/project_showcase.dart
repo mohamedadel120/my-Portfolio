@@ -1,11 +1,35 @@
 import 'package:jaspr/dom.dart';
 import 'package:jaspr/jaspr.dart';
 
-import '../constants/motion_css.dart';
 import '../constants/theme.dart';
 import 'project_showcase.vm.dart' if (dart.library.js_interop) 'project_showcase.web.dart';
-import 'cta_link.dart';
-import 'store_icons.dart';
+
+// Material Symbols has no real Apple/Android brand marks -- these are the
+// Simple Icons (simpleicons.org, CC0) single-path glyphs, viewBox 0 0 24 24.
+const _appleLogoPath =
+    'M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 '
+    '3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 '
+    '3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637 '
+    '-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039 '
+    '-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429 '
+    '-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zm3.415-3.132c'
+    '.843-1.012 1.404-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78 '
+    '.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701z';
+const _androidLogoPath =
+    'M17.523 15.34c-.5 0-.906.406-.906.906s.406.906.906.906.906-.406.906'
+    '-.906-.406-.906-.906-.906zm-11.046 0c-.5 0-.906.406-.906.906s.406.906'
+    '.906.906.906-.406.906-.906-.406-.906-.906-.906zm11.323-6.42l1.809-3.13'
+    'a.375.375 0 00-.649-.375l-1.831 3.17A11.045 11.045 0 0012 8.077c-1.85 '
+    '0-3.6.37-5.13 1.008L5.038 5.914a.375.375 0 00-.649.375l1.809 3.13A10.245 '
+    '10.245 0 001.2 17.523h21.6a10.245 10.245 0 00-4.998-8.603z';
+// Simple Icons "Google Play" -- shown in place of the Android robot on hover
+// so the button reads as "this is where it links to", not just "this is
+// Android".
+const _googlePlayPath =
+    'M3 20.5v-17c0-.59.34-1.11.84-1.35L13.69 12l-9.85 9.85c-.5-.24-.84-.76'
+    '-.84-1.35zm13.81-5.38L6.05 21.34l8.49-8.49 3.27 3.27zm3.35-4.31c.34.27'
+    '.59.68.59 1.19s-.22.9-.57 1.18l-2.29 1.32-3.5-3.5 3.5-3.5 2.27 1.31z'
+    'M6.05 2.66l10.76 6.22-3.27 3.27-8.49-8.49z';
 
 /// Ported from `StickyProjectShowcase` — a scroll-driven phone mockup that
 /// stays pinned while cycling through each project's gallery images/video,
@@ -25,12 +49,7 @@ import 'store_icons.dart';
 class StickyProjectShowcase extends StatefulComponent {
   final List<Map<String, dynamic>> projects;
 
-  /// V2-C. Same showcase with a shorter scroll, reduced-motion support,
-  /// keyboard/ARIA fixes and a contact call to action. `false` keeps the
-  /// original behaviour exactly.
-  final bool refined;
-
-  const StickyProjectShowcase({super.key, required this.projects, this.refined = false});
+  const StickyProjectShowcase({super.key, required this.projects});
 
   @override
   State<StickyProjectShowcase> createState() => _StickyProjectShowcaseState();
@@ -502,48 +521,13 @@ class StickyProjectShowcase extends StatefulComponent {
       css('.nav-dot.active').styles(color: AppColors.primary, fontWeight: FontWeight.w700),
       css('.nav-dot:hover').styles(color: AppColors.primary),
     ]),
-    // ---- V2-C (refined mode only) ----
-    // dvh keeps the stage the real visible height on phones, where 100vh is
-    // taller than the viewport while the browser toolbar is showing.
-    css('.sticky-showcase.refined .showcase-stage').styles(raw: {'height': '100dvh'}),
-    css('.showcase-cta', [
-      css('&').styles(
-        display: Display.inlineFlex,
-        alignItems: AlignItems.center,
-        minHeight: 2.75.rem,
-        margin: Margin.only(top: 1.25.rem),
-        padding: Padding.symmetric(horizontal: 1.25.rem),
-        radius: BorderRadius.circular(0.5.rem),
-        backgroundColor: AppColors.primary,
-        color: AppColors.background,
-        textDecoration: TextDecoration.none,
-        fontWeight: FontWeight.w700,
-        fontSize: 0.9.rem,
-        raw: {'transition': 'transform 160ms cubic-bezier(0.23, 1, 0.32, 1)'},
-      ),
-      css('&:active').styles(transform: Transform.scale(0.97)),
-      css('&:focus-visible').styles(raw: {'outline': '2px solid ${AppColors.primary.value}', 'outline-offset': '3px'}),
-    ]),
-    css('.nav-dot:focus-visible, .store-btn:focus-visible').styles(raw: {'outline': '2px solid ${AppColors.primary.value}', 'outline-offset': '2px'}),
-    MotionRule.reduced([
-      css('.sticky-showcase.refined .title-char, .sticky-showcase.refined .desc-word').styles(
-        opacity: 1,
-        raw: {'animation': 'none', 'transform': 'none'},
-      ),
-      css('.sticky-showcase.refined .tech-cursor').styles(raw: {'animation': 'none'}),
-      css('.sticky-showcase.refined .showcase-bg, .sticky-showcase.refined .phone-frame').styles(raw: {'transition': 'none'}),
-    ]),
   ];
 }
 
 class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
   static const _rootId = 'sticky-project-showcase';
-  // The original needs ~1400px of scroll per project plus 800px per
-  // screenshot (40,000px+ for six projects); the refined mode keeps the same
-  // choreography in about 60% of the distance.
-  double get _introHeight => component.refined ? 900.0 : 1400.0;
-  double get _scrollPerImage => component.refined ? 450.0 : 800.0;
-  late final bool _reduceMotion = component.refined && prefersReducedMotion();
+  static const _introHeight = 1400.0;
+  static const _scrollPerImage = 800.0;
 
   int _activeIndex = 0;
   int _imageIndex = 0;
@@ -698,13 +682,6 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
     if (techIndex >= tech.length) return;
     final currentText = tech[techIndex];
 
-    if (_reduceMotion) {
-      // No typewriter for visitors who asked for reduced motion: show the
-      // whole word at once.
-      setState(() => _typedTech = currentText);
-      return;
-    }
-
     if (_typingCharIndex < currentText.length) {
       setState(() {
         _typedTech += currentText[_typingCharIndex];
@@ -736,8 +713,7 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
 
     return div(
       id: _rootId,
-      classes: component.refined ? 'sticky-showcase refined' : 'sticky-showcase',
-      attributes: component.refined ? const {'role': 'region', 'aria-label': 'Project showcase'} : null,
+      classes: 'sticky-showcase',
       styles: Styles(height: _totalHeight.px),
       [
         div(classes: 'showcase-stage', styles: Styles(raw: {'--accent': accent.value}), [
@@ -774,31 +750,23 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
             ),
             div(classes: 'info-links', [
               if (androidUrl != null)
-                a(
-                  href: androidUrl,
-                  classes: 'store-btn',
-                  attributes: component.refined ? {'aria-label': 'Get ${project['title']} on Google Play'} : null,
-                  [
+                a(href: androidUrl, classes: 'store-btn', [
                   span(classes: 'store-tooltip', [.text('Google Play')]),
                   svg([
-                    path(d: androidLogoPath, fill: const Color('currentColor'), []),
+                    path(d: _androidLogoPath, fill: const Color('currentColor'), []),
                   ], viewBox: '0 0 24 24', width: 1.3.rem, height: 1.3.rem, classes: 'store-icon icon-default'),
                   svg([
-                    path(d: googlePlayPath, fill: const Color('currentColor'), []),
+                    path(d: _googlePlayPath, fill: const Color('currentColor'), []),
                   ], viewBox: '0 0 24 24', width: 1.3.rem, height: 1.3.rem, classes: 'store-icon icon-hover'),
                 ]),
               if (iosUrl != null)
                 // Material Symbols has no "Apple logo" icon (it's Google's
                 // icon set) -- a real Apple silhouette reads as an actual
                 // logo instead of a generic phone outline.
-                a(
-                  href: iosUrl,
-                  classes: 'store-btn store-btn-ios',
-                  attributes: component.refined ? {'aria-label': 'Get ${project['title']} on the App Store'} : null,
-                  [
+                a(href: iosUrl, classes: 'store-btn store-btn-ios', [
                   span(classes: 'store-tooltip', [.text('App Store')]),
                   svg([
-                    path(d: appleLogoPath, fill: const Color('currentColor'), []),
+                    path(d: _appleLogoPath, fill: const Color('currentColor'), []),
                   ], viewBox: '0 0 24 24', width: 1.3.rem, height: 1.3.rem, classes: 'store-icon icon-default'),
                   div(classes: 'store-icon icon-hover appstore-glyph', [
                     div(classes: 'as-bar as-bar-left', []),
@@ -808,7 +776,6 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
                   ]),
                 ]),
               if (androidUrl == null && iosUrl == null) span(classes: 'coming-soon', [.text('Coming Soon')]),
-              if (component.refined) const CtaLink(),
             ]),
           ]),
           div(classes: 'showcase-tech', [
@@ -822,9 +789,7 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
             for (final (i, p) in _projects.indexed)
               button(
                 classes: i == _activeIndex ? 'nav-dot active' : 'nav-dot',
-                attributes: component.refined
-                    ? {'type': 'button', 'aria-current': i == _activeIndex ? 'true' : 'false'}
-                    : const {'type': 'button'},
+                attributes: const {'type': 'button'},
                 events: {'click': (_) => _scrollToProject(i)},
                 [.text((p['title'] as String).toUpperCase())],
               ),

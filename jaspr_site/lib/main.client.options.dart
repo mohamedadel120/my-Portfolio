@@ -11,18 +11,12 @@ import 'package:jaspr_site/components/contact_form.dart'
 import 'package:jaspr_site/components/custom_cursor.dart'
     deferred as _custom_cursor;
 import 'package:jaspr_site/components/header.dart' deferred as _header;
-import 'package:jaspr_site/components/project_index_detail.dart'
-    deferred as _project_index_detail;
 import 'package:jaspr_site/components/project_pinned_showcase.dart'
     deferred as _project_pinned_showcase;
 import 'package:jaspr_site/components/project_showcase.dart'
     deferred as _project_showcase;
-import 'package:jaspr_site/components/project_stage_showcase.dart'
-    deferred as _project_stage_showcase;
 import 'package:jaspr_site/components/scroll_reveal.dart'
     deferred as _scroll_reveal;
-import 'package:jaspr_site/components/shot_gallery.dart'
-    deferred as _shot_gallery;
 
 /// Default [ClientOptions] for use with your Jaspr project.
 ///
@@ -56,14 +50,6 @@ ClientOptions get defaultClientOptions => ClientOptions(
       (p) => _header.Header(cvUrl: p['cvUrl'] as String),
       loader: _header.loadLibrary,
     ),
-    'project_index_detail': ClientLoader(
-      (p) => _project_index_detail.ProjectIndexDetail(
-        projects: (p['projects'] as List<Object?>)
-            .map((i) => (i as Map<String, Object?>))
-            .toList(),
-      ),
-      loader: _project_index_detail.loadLibrary,
-    ),
     'project_pinned_showcase': ClientLoader(
       (p) => _project_pinned_showcase.ProjectPinnedShowcase(
         projects: (p['projects'] as List<Object?>)
@@ -77,29 +63,12 @@ ClientOptions get defaultClientOptions => ClientOptions(
         projects: (p['projects'] as List<Object?>)
             .map((i) => (i as Map<String, Object?>))
             .toList(),
-        refined: p['refined'] as bool,
       ),
       loader: _project_showcase.loadLibrary,
-    ),
-    'project_stage_showcase': ClientLoader(
-      (p) => _project_stage_showcase.ProjectStageShowcase(
-        projects: (p['projects'] as List<Object?>)
-            .map((i) => (i as Map<String, Object?>))
-            .toList(),
-      ),
-      loader: _project_stage_showcase.loadLibrary,
     ),
     'scroll_reveal': ClientLoader(
       (p) => _scroll_reveal.ScrollReveal(),
       loader: _scroll_reveal.loadLibrary,
-    ),
-    'shot_gallery': ClientLoader(
-      (p) => _shot_gallery.ShotGallery(
-        title: p['title'] as String,
-        images: (p['images'] as List<Object?>).cast<String>(),
-        eagerFirst: p['eagerFirst'] as bool,
-      ),
-      loader: _shot_gallery.loadLibrary,
     ),
   },
 );

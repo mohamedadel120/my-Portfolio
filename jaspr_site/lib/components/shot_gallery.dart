@@ -374,19 +374,3 @@ class _ShotGalleryState extends State<ShotGalleryView> {
   }
 }
 
-/// Entry point for server-rendered pages: a hydrated [ShotGalleryView].
-///
-/// Jaspr does not allow a client component inside another client component,
-/// so components that are already `@client` (the stage showcase) use
-/// [ShotGalleryView] directly instead of this wrapper.
-@client
-class ShotGallery extends StatelessComponent {
-  final String title;
-  final List<String> images;
-  final bool eagerFirst;
-
-  const ShotGallery({super.key, required this.title, required this.images, this.eagerFirst = false});
-
-  @override
-  Component build(BuildContext context) => ShotGalleryView(title: title, images: images, eagerFirst: eagerFirst);
-}

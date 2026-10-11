@@ -10,16 +10,10 @@ import 'package:jaspr_site/components/cta_link.dart' as _cta_link;
 import 'package:jaspr_site/components/custom_cursor.dart' as _custom_cursor;
 import 'package:jaspr_site/components/featured_label.dart' as _featured_label;
 import 'package:jaspr_site/components/header.dart' as _header;
-import 'package:jaspr_site/components/project_case_studies.dart'
-    as _project_case_studies;
-import 'package:jaspr_site/components/project_index_detail.dart'
-    as _project_index_detail;
 import 'package:jaspr_site/components/project_pinned_showcase.dart'
     as _project_pinned_showcase;
 import 'package:jaspr_site/components/project_showcase.dart'
     as _project_showcase;
-import 'package:jaspr_site/components/project_stage_showcase.dart'
-    as _project_stage_showcase;
 import 'package:jaspr_site/components/scroll_reveal.dart' as _scroll_reveal;
 import 'package:jaspr_site/components/shot_gallery.dart' as _shot_gallery;
 import 'package:jaspr_site/components/store_buttons.dart' as _store_buttons;
@@ -63,11 +57,6 @@ ServerOptions get defaultServerOptions => ServerOptions(
       'header',
       params: __headerHeader,
     ),
-    _project_index_detail.ProjectIndexDetail:
-        ClientTarget<_project_index_detail.ProjectIndexDetail>(
-          'project_index_detail',
-          params: __project_index_detailProjectIndexDetail,
-        ),
     _project_pinned_showcase.ProjectPinnedShowcase:
         ClientTarget<_project_pinned_showcase.ProjectPinnedShowcase>(
           'project_pinned_showcase',
@@ -78,17 +67,8 @@ ServerOptions get defaultServerOptions => ServerOptions(
           'project_showcase',
           params: __project_showcaseStickyProjectShowcase,
         ),
-    _project_stage_showcase.ProjectStageShowcase:
-        ClientTarget<_project_stage_showcase.ProjectStageShowcase>(
-          'project_stage_showcase',
-          params: __project_stage_showcaseProjectStageShowcase,
-        ),
     _scroll_reveal.ScrollReveal: ClientTarget<_scroll_reveal.ScrollReveal>(
       'scroll_reveal',
-    ),
-    _shot_gallery.ShotGallery: ClientTarget<_shot_gallery.ShotGallery>(
-      'shot_gallery',
-      params: __shot_galleryShotGallery,
     ),
   },
   styles: () => [
@@ -98,11 +78,8 @@ ServerOptions get defaultServerOptions => ServerOptions(
     ..._custom_cursor.CustomCursor.styles,
     ..._featured_label.FeaturedLabel.styles,
     ..._header.Header.styles,
-    ..._project_case_studies.ProjectCaseStudies.styles,
-    ..._project_index_detail.ProjectIndexDetail.styles,
     ..._project_pinned_showcase.ProjectPinnedShowcase.styles,
     ..._project_showcase.StickyProjectShowcase.styles,
-    ..._project_stage_showcase.ProjectStageShowcase.styles,
     ..._shot_gallery.ShotGalleryView.styles,
     ..._store_buttons.StoreButtons.styles,
     ..._about_section.AboutSection.styles,
@@ -118,20 +95,9 @@ Map<String, Object?> __contact_formContactForm(_contact_form.ContactForm c) => {
   'recipientEmail': c.recipientEmail,
 };
 Map<String, Object?> __headerHeader(_header.Header c) => {'cvUrl': c.cvUrl};
-Map<String, Object?> __project_index_detailProjectIndexDetail(
-  _project_index_detail.ProjectIndexDetail c,
-) => {'projects': c.projects};
 Map<String, Object?> __project_pinned_showcaseProjectPinnedShowcase(
   _project_pinned_showcase.ProjectPinnedShowcase c,
 ) => {'projects': c.projects};
 Map<String, Object?> __project_showcaseStickyProjectShowcase(
   _project_showcase.StickyProjectShowcase c,
-) => {'projects': c.projects, 'refined': c.refined};
-Map<String, Object?> __project_stage_showcaseProjectStageShowcase(
-  _project_stage_showcase.ProjectStageShowcase c,
 ) => {'projects': c.projects};
-Map<String, Object?> __shot_galleryShotGallery(_shot_gallery.ShotGallery c) => {
-  'title': c.title,
-  'images': c.images,
-  'eagerFirst': c.eagerFirst,
-};
