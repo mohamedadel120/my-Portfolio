@@ -321,6 +321,16 @@ class StickyProjectShowcase extends StatefulComponent {
           'box-shadow': '0 0 20px 2px rgba(42, 192, 245, 0.5)',
         },
       ),
+      // Google Play gets its own brand treatment too (green to blue, white
+      // mark), so the two buttons answer hover the same way.
+      css('.store-btn-play:hover').styles(
+        color: Colors.white,
+        border: Border.all(color: const Color('#00c46a'), width: 1.px),
+        raw: {
+          'background': 'linear-gradient(135deg, #00d26a 0%, #0091ea 100%)',
+          'box-shadow': '0 0 20px 2px rgba(0, 196, 106, 0.45)',
+        },
+      ),
       css('.store-tooltip', [
         css('&').styles(
           position: Position.absolute(bottom: 100.percent, left: 50.percent),
@@ -753,7 +763,7 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
             ),
             div(classes: 'info-links', [
               if (androidUrl != null)
-                a(href: androidUrl, classes: 'store-btn', attributes: const {'target': '_blank', 'rel': 'noopener noreferrer'}, [
+                a(href: androidUrl, classes: 'store-btn store-btn-play',attributes: const {'target': '_blank', 'rel': 'noopener noreferrer'}, [
                   span(classes: 'store-tooltip', [.text('Google Play')]),
                   svg([
                     path(d: _androidLogoPath, fill: const Color('currentColor'), []),

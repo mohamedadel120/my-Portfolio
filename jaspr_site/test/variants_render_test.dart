@@ -103,7 +103,7 @@ void main() {
 
     test('round store buttons and the shared call to action', () async {
       final html = await render(ProjectsVariant.pinnedShowcase, all);
-      expect(html, contains('class="store-btn"'));
+      expect(html, contains('class="store-btn store-btn-play"'));
       expect(html, contains('store-btn store-btn-ios'));
       expect(html, contains('class="store-tooltip"'));
       expect(html, contains('aria-label="Get App 1 on Google Play (opens in a new tab)"'));
@@ -116,7 +116,7 @@ void main() {
     test('a project on neither store says coming soon instead of store buttons', () async {
       final html = markupOnly(await render(ProjectsVariant.pinnedShowcase, [project(9, full: false)]));
       expect(html, contains('Coming soon'));
-      expect(html, isNot(contains('class="store-btn"')));
+      expect(html, isNot(contains('class="store-btn')));
     });
 
     test('"Coming soon" is not repeated when the status line already says it', () async {

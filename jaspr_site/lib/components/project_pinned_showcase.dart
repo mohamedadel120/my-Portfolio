@@ -171,9 +171,14 @@ class ProjectPinnedShowcase extends StatefulComponent {
           'gap': 'clamp(0.6rem, 1.7dvh, 1.1rem)',
           // Safety net: if a very long text still does not fit, the column
           // scrolls instead of running under the navigation bar.
-          'max-height': 'calc(100dvh - 8.75rem)',
+          'max-height': 'calc(100dvh - 5.75rem)',
           'overflow-y': 'auto',
           'scrollbar-width': 'thin',
+          // A scrolling box clips everything outside it, which cut the store
+          // buttons' tooltips off at the left edge. The padding gives them
+          // room; the negative margin keeps the text where it was.
+          'padding': '2.5rem 0 0.5rem 2.5rem',
+          'margin': '-2.5rem 0 -0.5rem -2.5rem',
           'grid-area': '1 / 1',
           'min-width': '0',
           'opacity': '0',

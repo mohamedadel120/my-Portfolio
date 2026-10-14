@@ -31,7 +31,7 @@ class StoreButtons extends StatelessComponent {
       if (androidUrl != null)
         a(
           href: androidUrl,
-          classes: 'store-btn',
+          classes: 'store-btn store-btn-play',
           target: Target.blank,
           attributes: {'rel': 'noopener', 'aria-label': 'Get ${view.title} on Google Play (opens in a new tab)', ...tab},
           [
