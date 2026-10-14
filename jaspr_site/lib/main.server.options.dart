@@ -19,6 +19,8 @@ import 'package:jaspr_site/components/shot_gallery.dart' as _shot_gallery;
 import 'package:jaspr_site/components/store_buttons.dart' as _store_buttons;
 import 'package:jaspr_site/components/visit_tracker.dart' as _visit_tracker;
 import 'package:jaspr_site/constants/theme.dart' as _theme;
+import 'package:jaspr_site/sections/about_brief_section.dart'
+    as _about_brief_section;
 import 'package:jaspr_site/sections/about_section.dart' as _about_section;
 import 'package:jaspr_site/sections/contact_section.dart' as _contact_section;
 import 'package:jaspr_site/sections/experience_section.dart'
@@ -90,6 +92,7 @@ ServerOptions get defaultServerOptions => ServerOptions(
     ..._project_showcase.StickyProjectShowcase.styles,
     ..._shot_gallery.ShotGalleryView.styles,
     ..._store_buttons.StoreButtons.styles,
+    ..._about_brief_section.AboutBriefSection.styles,
     ..._about_section.AboutSection.styles,
     ..._contact_section.ContactSection.styles,
     ..._experience_section.ExperienceSection.styles,
