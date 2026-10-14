@@ -254,7 +254,7 @@ class StickyProjectShowcase extends StatefulComponent {
     css('.info-title', [
       css('&').styles(
         color: AppColors.textPrimary,
-        fontFamily: FontFamily.list([FontFamily('IBM Plex Mono'), FontFamilies.monospace]),
+        fontFamily: AppFonts.of(FontRole.heading, was: AppFonts.ibmPlexMono),
         fontSize: 2.5.rem,
         margin: Margin.only(bottom: 1.25.rem),
       ),
@@ -271,7 +271,7 @@ class StickyProjectShowcase extends StatefulComponent {
     css('.info-description', [
       css('&').styles(
         color: AppColors.textSecondary,
-        fontFamily: FontFamily.list([FontFamily('JetBrains Mono'), FontFamilies.monospace]),
+        fontFamily: AppFonts.of(FontRole.text, was: AppFonts.jetBrainsMono),
         fontSize: 1.rem,
         lineHeight: Unit.expression('1.6'),
         margin: Margin.only(bottom: 2.5.rem),
@@ -334,7 +334,7 @@ class StickyProjectShowcase extends StatefulComponent {
           radius: BorderRadius.circular(0.4.rem),
           backgroundColor: AppColors.surface,
           color: AppColors.textPrimary,
-          fontFamily: FontFamily.list([FontFamily('JetBrains Mono'), FontFamilies.monospace]),
+          fontFamily: AppFonts.of(FontRole.accent, was: AppFonts.jetBrainsMono),
           fontSize: 0.7.rem,
           whiteSpace: WhiteSpace.noWrap,
           opacity: 0,
@@ -432,7 +432,7 @@ class StickyProjectShowcase extends StatefulComponent {
       ),
       css('.coming-soon').styles(
         color: AppColors.textSecondary,
-        fontFamily: FontFamily.list([FontFamily('JetBrains Mono'), FontFamilies.monospace]),
+        fontFamily: AppFonts.of(FontRole.text, was: AppFonts.jetBrainsMono),
         fontSize: 0.85.rem,
         padding: Padding.symmetric(horizontal: 1.rem, vertical: 0.6.rem),
         radius: BorderRadius.circular(1.5.rem),
@@ -461,7 +461,7 @@ class StickyProjectShowcase extends StatefulComponent {
       css('.tech-label').styles(
         display: Display.block,
         color: AppColors.textSecondary,
-        fontFamily: FontFamily.list([FontFamily('JetBrains Mono'), FontFamilies.monospace]),
+        fontFamily: AppFonts.of(FontRole.accent, was: AppFonts.jetBrainsMono),
         fontSize: 0.85.rem,
         letterSpacing: 2.px,
         margin: Margin.only(bottom: 1.25.rem),
@@ -469,7 +469,7 @@ class StickyProjectShowcase extends StatefulComponent {
       css('.tech-word').styles(
         display: Display.block,
         color: AppColors.textPrimary,
-        fontFamily: FontFamily.list([FontFamily('IBM Plex Mono'), FontFamilies.monospace]),
+        fontFamily: AppFonts.of(FontRole.heading, was: AppFonts.ibmPlexMono),
         fontWeight: FontWeight.w700,
         fontSize: 2.5.rem,
       ),
@@ -516,7 +516,7 @@ class StickyProjectShowcase extends StatefulComponent {
         backgroundColor: Colors.transparent,
         border: Border.none,
         color: AppColors.textSecondary,
-        fontFamily: FontFamily.list([FontFamily('Space Mono'), FontFamilies.monospace]),
+        fontFamily: AppFonts.of(FontRole.accent, was: AppFonts.spaceMono),
         fontSize: 0.7.rem,
         letterSpacing: 1.px,
         cursor: Cursor.pointer,

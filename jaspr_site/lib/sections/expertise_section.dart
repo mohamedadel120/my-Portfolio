@@ -68,7 +68,7 @@ class ExpertiseSection extends AsyncStatelessComponent {
         color: AppColors.primary,
         raw: {
           'transform': 'scale(1.2) rotate(-8deg)',
-          'filter': 'drop-shadow(0 0 10px ${AppColors.primary.withValues(alpha: 0.6).value})',
+          'filter': 'drop-shadow(0 0 10px ${AppColors.glow(0.6).value})',
         },
       ),
       css('&:hover .expertise-index').styles(color: AppColors.secondaryText),
@@ -94,9 +94,9 @@ class ExpertiseSection extends AsyncStatelessComponent {
     css('.expertise-index', [
       css('&').styles(
         color: AppColors.textTertiary,
-        fontFamily: FontFamily.list([FontFamily('Space Mono'), FontFamilies.monospace]),
-        fontSize: 1.25.rem,
-        fontWeight: FontWeight.w700,
+        fontFamily: AppFonts.of(FontRole.accent, was: AppFonts.spaceMono),
+        fontSize: AppType.size(TypeStep.small, was: 1.25.rem),
+        fontWeight: themed(FontWeight.w700, calm: FontWeight.w500),
         width: 3.rem,
         raw: {'transition': 'color 250ms ease'},
       ),
@@ -112,9 +112,9 @@ class ExpertiseSection extends AsyncStatelessComponent {
     css('.expertise-title', [
       css('&').styles(
         color: AppColors.textPrimary,
-        fontFamily: FontFamily.list([FontFamily('IBM Plex Mono'), FontFamilies.monospace]),
+        fontFamily: AppFonts.of(FontRole.heading, was: AppFonts.ibmPlexMono),
         fontWeight: FontWeight.w600,
-        fontSize: 1.5.rem,
+        fontSize: AppType.size(TypeStep.h3, was: 1.5.rem),
         margin: Margin.only(bottom: 0.5.rem),
         raw: {'transition': 'color 250ms ease'},
       ),
@@ -122,8 +122,8 @@ class ExpertiseSection extends AsyncStatelessComponent {
     css('.expertise-description', [
       css('&').styles(
         color: AppColors.textSecondary,
-        fontFamily: FontFamily.list([FontFamily('JetBrains Mono'), FontFamilies.monospace]),
-        fontSize: 0.95.rem,
+        fontFamily: AppFonts.of(FontRole.text, was: AppFonts.jetBrainsMono),
+        fontSize: AppType.size(TypeStep.body, was: 0.95.rem),
         lineHeight: Unit.expression('1.6'),
         maxWidth: 700.px,
       ),

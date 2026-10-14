@@ -76,10 +76,12 @@ class WhyChooseMeSection extends AsyncStatelessComponent {
       css('&').styles(
         padding: Padding.all(1.75.rem),
         radius: BorderRadius.circular(1.25.rem),
+        // The new directions keep each card's colour on its icon only: a flat
+        // surface and a neutral hairline instead of a tinted gradient and glow.
         raw: {
-          'background': 'linear-gradient(135deg, ${_accent(12)}, ${_accent(6)} 50%, ${AppColors.surface.value})',
-          'border': '1.5px solid ${_accent(25)}',
-          'box-shadow': '0 4px 20px ${_accent(12)}',
+          'background': themed('linear-gradient(135deg, ${_accent(12)}, ${_accent(6)} 50%, ${AppColors.surface.value})', calm: AppColors.surface.value),
+          'border': themed('1.5px solid ${_accent(25)}', calm: '1px solid ${AppColors.outline(0.25).value}'),
+          'box-shadow': themed('0 4px 20px ${_accent(12)}', calm: 'none'),
         },
       ),
       // Beats the global `.reveal` transition on specificity.
@@ -88,7 +90,7 @@ class WhyChooseMeSection extends AsyncStatelessComponent {
         raw: {
           'translate': '0 -6px',
           'border-color': _accent(50),
-          'box-shadow': '0 8px 30px ${_accent(30)}',
+          'box-shadow': '0 8px 30px ${_accent(themed(30, calm: 12))}',
         },
       ),
     ]),
@@ -109,17 +111,17 @@ class WhyChooseMeSection extends AsyncStatelessComponent {
     css('.reason-title', [
       css('&').styles(
         color: AppColors.textPrimary,
-        fontFamily: FontFamily.list([FontFamily('JetBrains Mono'), FontFamilies.monospace]),
-        fontSize: 1.3.rem,
-        fontWeight: FontWeight.w700,
+        fontFamily: AppFonts.of(FontRole.heading, was: AppFonts.jetBrainsMono),
+        fontSize: AppType.size(TypeStep.h3, was: 1.3.rem),
+        fontWeight: themed(FontWeight.w700, calm: AppFonts.active.headingWeight),
         margin: Margin.only(bottom: 0.75.rem),
       ),
     ]),
     css('.reason-description', [
       css('&').styles(
         color: AppColors.textSecondary,
-        fontFamily: FontFamily.list([FontFamily('JetBrains Mono'), FontFamilies.monospace]),
-        fontSize: 0.95.rem,
+        fontFamily: AppFonts.of(FontRole.text, was: AppFonts.jetBrainsMono),
+        fontSize: AppType.size(TypeStep.body, was: 0.95.rem),
         lineHeight: Unit.expression('1.6'),
         margin: Margin.zero,
       ),

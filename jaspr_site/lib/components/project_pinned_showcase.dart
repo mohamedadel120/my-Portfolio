@@ -62,8 +62,8 @@ class ProjectPinnedShowcase extends StatefulComponent {
         backgroundColor: Colors.transparent,
         color: AppColors.textTertiary,
         cursor: Cursor.pointer,
-        fontFamily: FontFamily.list([AppFonts.body, FontFamilies.monospace]),
-        fontSize: 0.75.rem,
+        fontFamily: AppFonts.body,
+        fontSize: AppType.size(TypeStep.label, was: 0.75.rem),
         textAlign: TextAlign.right,
         raw: {'transition': 'color 160ms ease'},
       ),
@@ -98,7 +98,7 @@ class ProjectPinnedShowcase extends StatefulComponent {
         backgroundColor: AppColors.background.withValues(alpha: 0.8),
         color: AppColors.textPrimary,
         textDecoration: TextDecoration.none,
-        fontSize: 0.8.rem,
+        fontSize: AppType.size(TypeStep.small, was: 0.8.rem),
         raw: {'top': '6rem', 'backdrop-filter': 'blur(6px)'},
       ),
       css('&:focus-visible').styles(raw: {'outline': '2px solid ${AppColors.primary.value}', 'outline-offset': '2px'}),
@@ -107,7 +107,8 @@ class ProjectPinnedShowcase extends StatefulComponent {
       css('&').styles(
         position: Position.absolute(left: 2.rem),
         color: AppColors.textSecondary,
-        fontSize: 0.85.rem,
+        fontFamily: themed(null, calm: AppFonts.of(FontRole.accent, was: AppFonts.jetBrainsMono)),
+        fontSize: AppType.size(TypeStep.small, was: 0.85.rem),
         raw: {'top': '6.4rem', 'font-variant-numeric': 'tabular-nums', 'white-space': 'nowrap'},
       ),
     ]),
@@ -195,7 +196,7 @@ class ProjectPinnedShowcase extends StatefulComponent {
         lineHeight: Unit.expression('1.12'),
       ),
     ]),
-    css('.pp-meta', [css('&').styles(margin: Margin.zero, color: AppColors.textTertiary, fontSize: 0.85.rem)]),
+    css('.pp-meta', [css('&').styles(margin: Margin.zero, color: AppColors.textTertiary, fontSize: AppType.size(TypeStep.small, was: 0.85.rem))]),
     css('.pp-description', [
       css('&').styles(
         margin: Margin.zero,
@@ -250,7 +251,8 @@ class ProjectPinnedShowcase extends StatefulComponent {
         radius: BorderRadius.circular(0.5.rem),
         border: Border.all(color: AppColors.textPrimary.withValues(alpha: 0.18), width: 1.px),
         color: AppColors.textPrimary,
-        fontSize: 0.78.rem,
+        fontFamily: themed(null, calm: AppFonts.of(FontRole.accent, was: AppFonts.jetBrainsMono)),
+        fontSize: AppType.size(TypeStep.label, was: 0.78.rem),
       ),
     ]),
     // Store buttons (the round originals) and the call to action share a row.

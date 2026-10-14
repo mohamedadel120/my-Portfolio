@@ -1,21 +1,26 @@
 import 'package:jaspr/dom.dart';
 
 import 'motion_css.dart';
+import 'theme_direction.dart';
+
+export 'theme_direction.dart';
 
 /// Design tokens ported from the Flutter app's `AppColors`
 /// (lib/core/constants/app_colors.dart) and `AppTheme`
 /// (lib/core/theme/app_theme.dart). Kept as plain Dart constants, same as
 /// the Flutter side, just consumed by [Styles] objects instead of a
-/// `ThemeData`/`ColorScheme`.
+/// `ThemeData`/`ColorScheme`. Directions a and b (see theme_direction.dart)
+/// keep the cyan but put it on slightly blue-tinted, calmer surfaces, and
+/// swap the purple second accent for a quiet slate.
 class AppColors {
   static const primary = Color('#00D9FF'); // Cyan
-  static const secondary = Color('#7B2CBF'); // Purple
+  static const secondary = isCalm ? Color('#64748B') : Color('#7B2CBF'); // Purple
   // Lighter purple for text: #7B2CBF on the dark surfaces is only ~2.5:1
   // contrast, below the 4.5:1 WCAG AA minimum for body text.
-  static const secondaryText = Color('#B57BFF');
-  static const background = Color('#000000');
-  static const surface = Color('#121212');
-  static const surfaceLight = Color('#1E1E1E');
+  static const secondaryText = isCalm ? Color('#A9B4C2') : Color('#B57BFF');
+  static const background = isCalm ? Color('#0B0E13') : Color('#000000');
+  static const surface = isCalm ? Color('#12161D') : Color('#121212');
+  static const surfaceLight = isCalm ? Color('#1A1F27') : Color('#1E1E1E');
 
   static const textPrimary = Color('#FFFFFF');
   static const textSecondary = Color('#FFFFFFB3'); // white70 = 70% alpha
@@ -25,15 +30,134 @@ class AppColors {
   static const lightSecondary = Color('#424242');
   static const lightSurface = Color('#F5F5F5');
   static const lightSurfaceContainerHighest = Color('#E0E0E0');
+
+  /// The cyan as a glow (shadows, halos). Full strength today; the new
+  /// directions keep a faint trace so hover states still read as lifting.
+  static Color glow(double alpha) => primary.withValues(alpha: alpha * (isCalm ? 0.4 : 1));
+
+  /// A card or field outline: cyan today, a neutral hairline in the new
+  /// directions so the accent is left for links, buttons and active states.
+  static Color outline(double alpha) => isCalm ? textPrimary.withValues(alpha: 0.1) : primary.withValues(alpha: alpha);
 }
 
-/// Body copy uses JetBrains Mono, headings use IBM Plex Mono — same pairing
-/// as `AppTheme._buildTextTheme`. Loaded via real `<link>` tags (see
-/// main.server.dart's `Document.head`) instead of the `google_fonts`
-/// package's runtime fetch-and-swap.
+/// One Google Fonts family: its name, the generic family it falls back to
+/// and the css2 axis spec (only the weights the site uses).
+class WebFont {
+  final String name;
+  final FontFamily generic;
+  final String axes;
+
+  const WebFont(this.name, this.generic, [this.axes = '']);
+
+  FontFamily get family => FontFamily.list([FontFamily(name), generic]);
+
+  String get query => 'family=${name.replaceAll(' ', '+')}${axes.isEmpty ? '' : ':$axes'}';
+}
+
+/// What a piece of text is for. The new directions choose a family per
+/// role; today's look keeps each component's own family (the `was:` value).
+enum FontRole {
+  /// Paragraphs, form fields, buttons, links: anything read at length.
+  text,
+
+  /// Section titles, card titles, names, big numbers.
+  heading,
+
+  /// The hero name.
+  display,
+
+  /// Small labels, tags, periods, counters.
+  accent,
+}
+
+/// The families a direction loads and which one each [FontRole] uses.
+class DirectionFonts {
+  final List<WebFont> loaded;
+  final Map<FontRole, WebFont> roles;
+  final FontWeight headingWeight;
+
+  const DirectionFonts(this.loaded, this.roles, {this.headingWeight = FontWeight.w700});
+
+  /// One css2 request for every family, `display=swap` so text shows in the
+  /// fallback font instead of staying invisible while the files load.
+  String get importUrl => 'https://fonts.googleapis.com/css2?${[for (final f in loaded) f.query].join('&')}&display=swap';
+}
+
+/// Fonts per direction. Today's look loads seven families (body JetBrains
+/// Mono, headings IBM Plex Mono, nav Fira Code, labels Space Mono, hero
+/// links Oswald, hero name Orbitron, mobile menu Anton) through the
+/// stylesheet's `@import`, instead of the `google_fonts` package's runtime
+/// fetch-and-swap. The new directions load two, as variable fonts so every
+/// weight in the range comes from one file.
 class AppFonts {
-  static const body = FontFamily('JetBrains Mono');
-  static const heading = FontFamily('IBM Plex Mono');
+  static const jetBrainsMono = WebFont('JetBrains Mono', FontFamilies.monospace, 'wght@400;500;700');
+  static const ibmPlexMono = WebFont('IBM Plex Mono', FontFamilies.monospace, 'wght@600;700;900');
+  static const firaCode = WebFont('Fira Code', FontFamilies.monospace, 'wght@400;600');
+  static const spaceMono = WebFont('Space Mono', FontFamilies.monospace, 'wght@400;700');
+  static const oswald = WebFont('Oswald', FontFamilies.sansSerif, 'wght@400;700');
+  static const orbitron = WebFont('Orbitron', FontFamilies.sansSerif, 'wght@500;700');
+  static const anton = WebFont('Anton', FontFamilies.sansSerif);
+
+  // a: Manrope is a geometric grotesk that stays open and legible at small
+  // sizes on dark backgrounds; JetBrains Mono (already the brand's mono)
+  // only for the small technical accents.
+  static const _manrope = WebFont('Manrope', FontFamilies.sansSerif, 'wght@400..800');
+  static const _jetBrainsMonoAccent = WebFont('JetBrains Mono', FontFamilies.monospace, 'wght@400..700');
+
+  // b: Fraunces is a soft, slightly quirky serif that makes the headings feel
+  // personal; Inter carries all text and the (uppercase, tracked) labels.
+  static const _fraunces = WebFont('Fraunces', FontFamilies.serif, 'wght@400..700');
+  static const _inter = WebFont('Inter', FontFamilies.sansSerif, 'wght@400..800');
+
+  static const byDirection = {
+    ThemeDirection.current: DirectionFonts([jetBrainsMono, ibmPlexMono, firaCode, spaceMono, oswald, orbitron, anton], {}),
+    ThemeDirection.a: DirectionFonts([_manrope, _jetBrainsMonoAccent], {
+      FontRole.text: _manrope,
+      FontRole.heading: _manrope,
+      FontRole.display: _manrope,
+      FontRole.accent: _jetBrainsMonoAccent,
+    }),
+    ThemeDirection.b: DirectionFonts([_fraunces, _inter], {
+      FontRole.text: _inter,
+      FontRole.heading: _fraunces,
+      FontRole.display: _fraunces,
+      FontRole.accent: _inter,
+    }, headingWeight: FontWeight.w600),
+  };
+
+  static final active = byDirection[themeDirection]!;
+
+  /// The family for a piece of text: [was] (its family today) in the current
+  /// look, the direction's family for [role] otherwise.
+  static FontFamily of(FontRole role, {required WebFont was}) => isCalm ? active.roles[role]!.family : was.family;
+
+  static final body = of(FontRole.text, was: jetBrainsMono);
+  static final heading = of(FontRole.heading, was: ibmPlexMono);
+}
+
+/// The one type scale of the new directions, smallest to largest.
+enum TypeStep { label, small, body, lead, h3, h2, title, display }
+
+/// Font sizes. Today's look keeps every component's own size (the `was:`
+/// value); the new directions map each piece of text to a [TypeStep].
+class AppType {
+  static Unit size(TypeStep step, {required Unit was}) => isCalm ? scale(themeDirection, step) : was;
+
+  static Unit scale(ThemeDirection direction, TypeStep step) => switch (step) {
+    TypeStep.label => 0.75.rem,
+    TypeStep.small => 0.875.rem,
+    TypeStep.body => 1.rem,
+    TypeStep.lead => 1.125.rem,
+    TypeStep.h3 => 1.25.rem,
+    TypeStep.h2 => const Unit.expression('clamp(1.5rem, 1.25rem + 1vw, 2rem)'),
+    // The serif of direction b carries a larger title and hero name well.
+    TypeStep.title => direction == ThemeDirection.b
+        ? const Unit.expression('clamp(2.25rem, 1.5rem + 3vw, 3.5rem)')
+        : const Unit.expression('clamp(2rem, 1.5rem + 2.5vw, 3rem)'),
+    TypeStep.display => direction == ThemeDirection.b
+        ? const Unit.expression('clamp(3rem, 1.5rem + 7vw, 8rem)')
+        : const Unit.expression('clamp(2.75rem, 1.5rem + 6vw, 7rem)'),
+  };
 }
 
 /// Same three tiers as `ResponsiveBreakpoints`
@@ -51,17 +175,7 @@ class Breakpoints {
 /// Component-local styles live on each component's own `@css` getter.
 @css
 List<StyleRule> get styles => [
-  css.import(
-    'https://fonts.googleapis.com/css2'
-    '?family=JetBrains+Mono:wght@400;500;700'
-    '&family=IBM+Plex+Mono:wght@600;700;900'
-    '&family=Fira+Code:wght@400;600'
-    '&family=Space+Mono:wght@400;700'
-    '&family=Oswald:wght@400;700'
-    '&family=Orbitron:wght@500;700'
-    '&family=Anton'
-    '&display=swap',
-  ),
+  css.import(googleFontsUrl),
   // The icon font on its own, cut down to the icons the site uses at the one
   // size it uses: the full Material Symbols variable font is about 1.4 MB,
   // which alone delayed the first paint on mobile by several seconds. The
@@ -73,7 +187,7 @@ List<StyleRule> get styles => [
   css('html').styles(raw: {
     'scroll-behavior': 'smooth',
     'scrollbar-width': 'thin',
-    'scrollbar-color': '${AppColors.primary.withValues(alpha: 0.45).value} ${AppColors.background.value}',
+    'scrollbar-color': '${themed(AppColors.primary.withValues(alpha: 0.45), calm: AppColors.textPrimary.withValues(alpha: 0.2)).value} ${AppColors.background.value}',
   }),
   MotionRule.reduced([
     css('html').styles(raw: {'scroll-behavior': 'auto'}),
@@ -94,18 +208,25 @@ List<StyleRule> get styles => [
   css('html, body').styles(
     backgroundColor: AppColors.background,
     color: AppColors.textPrimary,
-    fontFamily: .list([AppFonts.body, FontFamilies.monospace]),
+    fontFamily: AppFonts.body,
     margin: .zero,
     minHeight: 100.vh,
     padding: .zero,
   ),
+  // The new directions' proportional text gets the usual reading defaults:
+  // a comfortable line height and the thinner, crisper dark-mode rendering.
+  if (isCalm)
+    css('body').styles(
+      lineHeight: Unit.expression('1.6'),
+      raw: {'-webkit-font-smoothing': 'antialiased', '-moz-osx-font-smoothing': 'grayscale', 'text-rendering': 'optimizeLegibility'},
+    ),
   css(':root[data-theme="light"] body').styles(
     backgroundColor: Colors.white,
     color: Colors.black,
   ),
   css('h1, h2, h3, h4, h5, h6').styles(
-    fontFamily: .list([AppFonts.heading, FontFamilies.monospace]),
-    fontWeight: .w700,
+    fontFamily: AppFonts.heading,
+    fontWeight: AppFonts.active.headingWeight,
     margin: .zero,
   ),
   css('.material-symbols-rounded').styles(raw: {
@@ -114,22 +235,26 @@ List<StyleRule> get styles => [
   css('section').styles(raw: {'scroll-margin-top': '80px'}),
   css('.section-title', [
     css('&').styles(
-      fontFamily: .list([AppFonts.heading, FontFamilies.monospace]),
-      fontSize: Unit.expression('clamp(2.25rem, 5vw, 4rem)'),
-      fontWeight: .w800,
-      letterSpacing: (-1).px,
+      fontFamily: AppFonts.heading,
+      fontSize: AppType.size(TypeStep.title, was: Unit.expression('clamp(2.25rem, 5vw, 4rem)')),
+      fontWeight: themed(.w800, calm: AppFonts.active.headingWeight),
+      letterSpacing: themed((-1).px, calm: (-0.02).em),
       lineHeight: Unit.expression('1.1'),
       color: AppColors.textPrimary,
       textAlign: TextAlign.center,
     ),
+    // Today a wide cyan-to-purple bar; the new directions keep a short,
+    // plain cyan mark.
     css('&::after').styles(
       content: '',
       display: .block,
-      width: 6.25.rem,
-      height: 4.px,
-      margin: Margin.only(top: 1.5.rem, left: Unit.auto, right: Unit.auto),
+      width: themed(6.25.rem, calm: 2.5.rem),
+      height: themed(4.px, calm: 3.px),
+      margin: Margin.only(top: themed(1.5.rem, calm: 1.25.rem), left: Unit.auto, right: Unit.auto),
       radius: BorderRadius.circular(2.px),
-      raw: {'background': 'linear-gradient(90deg, ${AppColors.primary.value}, ${AppColors.secondary.value})'},
+      raw: {
+        'background': themed('linear-gradient(90deg, ${AppColors.primary.value}, ${AppColors.secondary.value})', calm: AppColors.primary.value),
+      },
     ),
   ]),
   // Reveal-on-scroll: elements start hidden/offset, then get `.revealed`
@@ -170,6 +295,9 @@ const materialIconNames = [
   'design_services', 'download', 'email', 'format_quote', 'link', 'location_on', 'mail', 'pause',
   'people', 'phone_android', 'play_arrow', 'rocket_launch', 'speed', 'stacks', 'star',
 ];
+
+/// The text fonts of the active direction, in one request (see [AppFonts]).
+final googleFontsUrl = AppFonts.active.importUrl;
 
 /// Optical size 24 and weight 400 only (what `.material-symbols-rounded`
 /// asks for), with the FILL axis kept for the filled star.

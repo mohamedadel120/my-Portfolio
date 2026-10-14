@@ -6,6 +6,7 @@ import 'components/custom_cursor.dart';
 import 'components/header.dart';
 import 'components/scroll_reveal.dart';
 import 'components/visit_tracker.dart';
+import 'constants/theme_direction.dart';
 import 'data/profile_repository.dart';
 import 'pages/home.dart';
 import 'pages/about.dart';
@@ -34,7 +35,10 @@ class App extends AsyncStatelessComponent {
       Header(cvUrl: hero.cvUrl),
       const ScrollReveal(),
       const VisitTracker(),
-      const CustomCursor(),
+      // Today's look only. The new directions keep the system cursor: it is
+      // instant, respects the visitor's own cursor size and contrast settings,
+      // and never hides what is under it.
+      if (!isCalm) const CustomCursor(),
       // Page content lives in <main> so screen readers can jump past the nav.
       main_([
         Router(

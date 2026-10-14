@@ -45,7 +45,7 @@ class Header extends StatefulComponent {
       css('&.scrolled').styles(
         backgroundColor: AppColors.background.withValues(alpha: 0.85),
         border: Border.only(
-          bottom: BorderSide.solid(color: AppColors.primary.withValues(alpha: 0.15), width: 1.px),
+          bottom: BorderSide.solid(color: AppColors.outline(0.15), width: 1.px),
         ),
       ),
       css('.nav-inner', [
@@ -61,7 +61,7 @@ class Header extends StatefulComponent {
         css('&').styles(raw: {'transition': 'filter 250ms ease, transform 250ms ease'}),
         css('&:hover').styles(
           transform: Transform.scale(1.08),
-          raw: {'filter': 'drop-shadow(0 0 10px ${AppColors.primary.withValues(alpha: 0.6).value})'},
+          raw: {'filter': 'drop-shadow(0 0 10px ${AppColors.glow(0.6).value})'},
         ),
       ]),
       css('.nav-logo img', [
@@ -91,9 +91,10 @@ class Header extends StatefulComponent {
             display: Display.inlineBlock,
             color: AppColors.textSecondary,
             textDecoration: TextDecoration.none,
-            fontFamily: FontFamily.list([FontFamily('Fira Code'), FontFamilies.monospace]),
-            fontSize: 1.rem,
+            fontFamily: AppFonts.of(FontRole.text, was: AppFonts.firaCode),
+            fontSize: AppType.size(TypeStep.small, was: 1.rem),
             fontWeight: FontWeight.w600,
+            letterSpacing: themed(null, calm: 0.04.em),
             padding: Padding.symmetric(horizontal: 1.6.rem, vertical: 0.85.rem),
             radius: BorderRadius.circular(999.px),
             raw: {'transition': 'color 200ms, background-color 200ms'},
@@ -109,7 +110,7 @@ class Header extends StatefulComponent {
             opacity: 0,
             raw: {
               'transform': 'translateX(-50%)',
-              'box-shadow': '0 0 16px 2px ${AppColors.primary.withValues(alpha: 0.6).value}',
+              'box-shadow': '0 0 16px 2px ${AppColors.glow(0.6).value}',
               'transition': 'opacity 250ms ease',
             },
           ),
@@ -121,17 +122,20 @@ class Header extends StatefulComponent {
           css('&').styles(color: AppColors.primary, backgroundColor: AppColors.primary.withValues(alpha: 0.08)),
           css('&::before').styles(opacity: 1),
           // The old inline "< LABEL />" bracket motif, now scoped to just
-          // the active pill instead of every link's hover state.
-          css('.nav-label::before').styles(
-            content: '<',
-            color: AppColors.secondaryText,
-            margin: Margin.only(right: 0.3.rem),
-          ),
-          css('.nav-label::after').styles(
-            content: '/>',
-            color: AppColors.secondaryText,
-            margin: Margin.only(left: 0.3.rem),
-          ),
+          // the active pill instead of every link's hover state. Today's look
+          // only: the new directions drop the code-editor references.
+          if (!isCalm) ...[
+            css('.nav-label::before').styles(
+              content: '<',
+              color: AppColors.secondaryText,
+              margin: Margin.only(right: 0.3.rem),
+            ),
+            css('.nav-label::after').styles(
+              content: '/>',
+              color: AppColors.secondaryText,
+              margin: Margin.only(left: 0.3.rem),
+            ),
+          ],
         ]),
       ]),
       css('.cv-button', [
@@ -139,7 +143,7 @@ class Header extends StatefulComponent {
           backgroundColor: AppColors.primary,
           color: Colors.black,
           fontWeight: FontWeight.w700,
-          fontSize: 0.85.rem,
+          fontSize: AppType.size(TypeStep.small, was: 0.85.rem),
           padding: Padding.symmetric(horizontal: 1.6.rem, vertical: 1.rem),
           radius: BorderRadius.circular(4.px),
           textDecoration: TextDecoration.none,
@@ -149,7 +153,7 @@ class Header extends StatefulComponent {
         ),
         css('&:hover').styles(
           transform: Transform.scale(1.08),
-          raw: {'box-shadow': '0 0 20px 2px ${AppColors.primary.withValues(alpha: 0.5).value}'},
+          raw: {'box-shadow': '0 0 20px 2px ${AppColors.glow(0.5).value}'},
         ),
       ]),
       css('.menu-toggle', [
@@ -194,9 +198,10 @@ class Header extends StatefulComponent {
         css('&').styles(
           color: AppColors.textPrimary,
           textDecoration: TextDecoration.none,
-          fontFamily: FontFamily.list([FontFamily('Anton'), FontFamilies.sansSerif]),
-          fontSize: 2.5.rem,
-          letterSpacing: 1.px,
+          fontFamily: AppFonts.of(FontRole.heading, was: AppFonts.anton),
+          fontSize: AppType.size(TypeStep.h2, was: 2.5.rem),
+          fontWeight: themed(null, calm: AppFonts.active.headingWeight),
+          letterSpacing: themed(1.px, calm: 0.02.em),
           opacity: 0,
           animation: Animation(
             name: 'fade-in-up',
@@ -209,15 +214,16 @@ class Header extends StatefulComponent {
       // carries it too -- the header's own CV button is desktop-only.
       css('a.mobile-cv-button').styles(
         margin: Margin.only(top: 1.rem),
-        fontFamily: FontFamily.list([FontFamily('Fira Code'), FontFamilies.monospace]),
-        fontSize: 1.rem,
+        fontFamily: AppFonts.of(FontRole.text, was: AppFonts.firaCode),
+        fontSize: AppType.size(TypeStep.body, was: 1.rem),
         color: Colors.black,
       ),
       css('.mobile-menu-footer', [
         css('&').styles(
           position: Position.absolute(bottom: 2.5.rem),
           color: AppColors.textTertiary,
-          fontSize: 0.7.rem,
+          fontFamily: themed(null, calm: AppFonts.of(FontRole.accent, was: AppFonts.jetBrainsMono)),
+          fontSize: AppType.size(TypeStep.label, was: 0.7.rem),
           letterSpacing: 2.px,
         ),
       ]),

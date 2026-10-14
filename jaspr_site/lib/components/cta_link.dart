@@ -42,11 +42,11 @@ class CtaLink extends StatelessComponent {
         backgroundColor: AppColors.primary,
         color: AppColors.background,
         textDecoration: TextDecoration.none,
-        fontFamily: FontFamily.list([AppFonts.body, FontFamilies.monospace]),
-        fontSize: 1.rem,
-        fontWeight: FontWeight.w800,
+        fontFamily: AppFonts.body,
+        fontSize: AppType.size(TypeStep.body, was: 1.rem),
+        fontWeight: themed(FontWeight.w800, calm: FontWeight.w700),
         raw: {
-          'box-shadow': '0 10px 28px -10px ${AppColors.primary.withValues(alpha: 0.7).value}, inset 0 1px 0 rgba(255,255,255,0.35)',
+          'box-shadow': '0 10px 28px -10px ${AppColors.glow(0.7).value}, inset 0 1px 0 rgba(255,255,255,0.35)',
           'transition': 'transform 180ms cubic-bezier(0.23, 1, 0.32, 1), box-shadow 180ms ease',
         },
       ),
@@ -67,7 +67,7 @@ class CtaLink extends StatelessComponent {
     RawMediaRule.hoverCapable([
       css('.cta-btn:hover').styles(
         transform: Transform.translate(y: (-2).px),
-        raw: {'box-shadow': '0 16px 34px -10px ${AppColors.primary.withValues(alpha: 0.85).value}, inset 0 1px 0 rgba(255,255,255,0.35)'},
+        raw: {'box-shadow': '0 16px 34px -10px ${AppColors.glow(0.85).value}, inset 0 1px 0 rgba(255,255,255,0.35)'},
       ),
       css('.cta-btn:hover .cta-icon').styles(raw: {'transform': 'translate(3px, -3px) rotate(8deg)'}),
     ]),

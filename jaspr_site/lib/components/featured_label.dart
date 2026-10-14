@@ -44,9 +44,10 @@ class FeaturedLabel extends StatelessComponent {
         border: Border.all(color: AppColors.primary, width: 1.px),
         backgroundColor: AppColors.primary.withValues(alpha: 0.14),
         color: AppColors.primary,
-        fontSize: 0.78.rem,
-        fontWeight: FontWeight.w800,
-        raw: {'box-shadow': '0 0 22px -6px ${AppColors.primary.withValues(alpha: 0.7).value}'},
+        fontFamily: themed(null, calm: AppFonts.of(FontRole.accent, was: AppFonts.jetBrainsMono)),
+        fontSize: AppType.size(TypeStep.label, was: 0.78.rem),
+        fontWeight: themed(FontWeight.w800, calm: FontWeight.w600),
+        raw: {'box-shadow': '0 0 22px -6px ${AppColors.glow(0.7).value}'},
       ),
     ]),
     css('.feat-star', [

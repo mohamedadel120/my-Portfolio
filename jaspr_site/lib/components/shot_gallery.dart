@@ -181,7 +181,7 @@ class ShotGalleryView extends StatefulComponent {
     css('.gal-count', [
       css('&').styles(
         color: AppColors.textSecondary,
-        fontSize: 0.85.rem,
+        fontSize: AppType.size(TypeStep.small, was: 0.85.rem),
         raw: {'font-variant-numeric': 'tabular-nums', 'white-space': 'nowrap'},
       ),
     ]),

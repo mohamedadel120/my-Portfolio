@@ -79,8 +79,8 @@ class ContactSection extends AsyncStatelessComponent {
     css('.contact-subtitle', [
       css('&').styles(
         color: AppColors.textSecondary,
-        fontFamily: FontFamily.list([FontFamily('JetBrains Mono'), FontFamilies.monospace]),
-        fontSize: 1.1.rem,
+        fontFamily: AppFonts.of(FontRole.text, was: AppFonts.jetBrainsMono),
+        fontSize: AppType.size(TypeStep.lead, was: 1.1.rem),
         margin: Margin.only(top: 1.5.rem),
       ),
     ]),
@@ -108,7 +108,7 @@ class ContactSection extends AsyncStatelessComponent {
         padding: Padding.all(1.75.rem),
         backgroundColor: AppColors.surface,
         radius: BorderRadius.circular(1.25.rem),
-        border: Border.all(color: AppColors.primary.withValues(alpha: 0.3), width: 1.5.px),
+        border: Border.all(color: AppColors.outline(0.3), width: themed(1.5.px, calm: 1.px)),
       ),
     ]),
     css('.info-row', [
@@ -127,14 +127,14 @@ class ContactSection extends AsyncStatelessComponent {
       ),
       css('.info-label').styles(
         color: AppColors.textSecondary,
-        fontFamily: FontFamily.list([FontFamily('Space Mono'), FontFamilies.monospace]),
-        fontSize: 0.7.rem,
+        fontFamily: AppFonts.of(FontRole.accent, was: AppFonts.spaceMono),
+        fontSize: AppType.size(TypeStep.label, was: 0.7.rem),
         letterSpacing: 1.px,
       ),
       css('.info-value').styles(
         color: AppColors.textPrimary,
-        fontFamily: FontFamily.list([FontFamily('JetBrains Mono'), FontFamilies.monospace]),
-        fontSize: 1.rem,
+        fontFamily: AppFonts.of(FontRole.text, was: AppFonts.jetBrainsMono),
+        fontSize: AppType.size(TypeStep.body, was: 1.rem),
         margin: Margin.only(top: 0.2.rem),
         // Long values (the email address) must wrap instead of widening
         // the card past the screen.
@@ -150,13 +150,13 @@ class ContactSection extends AsyncStatelessComponent {
         padding: Padding.all(1.5.rem),
         backgroundColor: AppColors.surface,
         radius: BorderRadius.circular(1.25.rem),
-        border: Border.all(color: AppColors.primary.withValues(alpha: 0.2), width: 1.px),
+        border: Border.all(color: AppColors.outline(0.2), width: 1.px),
       ),
       css('.social-heading').styles(
         color: AppColors.textPrimary,
-        fontFamily: FontFamily.list([FontFamily('JetBrains Mono'), FontFamilies.monospace]),
-        fontWeight: FontWeight.w700,
-        fontSize: 1.1.rem,
+        fontFamily: AppFonts.of(FontRole.heading, was: AppFonts.jetBrainsMono),
+        fontWeight: themed(FontWeight.w700, calm: AppFonts.active.headingWeight),
+        fontSize: AppType.size(TypeStep.lead, was: 1.1.rem),
       ),
     ]),
     css('.social-button', [
@@ -166,9 +166,9 @@ class ContactSection extends AsyncStatelessComponent {
         gap: Gap.all(0.75.rem),
         color: AppColors.primary,
         textDecoration: TextDecoration.none,
-        fontFamily: FontFamily.list([FontFamily('JetBrains Mono'), FontFamilies.monospace]),
+        fontFamily: AppFonts.of(FontRole.text, was: AppFonts.jetBrainsMono),
         fontWeight: FontWeight.w600,
-        fontSize: 0.95.rem,
+        fontSize: AppType.size(TypeStep.body, was: 0.95.rem),
         padding: Padding.symmetric(vertical: 0.75.rem, horizontal: 1.rem),
         radius: BorderRadius.circular(0.75.rem),
         border: Border.all(color: AppColors.primary.withValues(alpha: 0.4), width: 1.5.px),
@@ -181,11 +181,11 @@ class ContactSection extends AsyncStatelessComponent {
         padding: Padding.all(1.25.rem),
         textAlign: TextAlign.center,
         color: AppColors.textPrimary.withValues(alpha: 0.5),
-        fontFamily: FontFamily.list([FontFamily('JetBrains Mono'), FontFamilies.monospace]),
-        fontSize: 0.9.rem,
+        fontFamily: AppFonts.of(FontRole.text, was: AppFonts.jetBrainsMono),
+        fontSize: AppType.size(TypeStep.small, was: 0.9.rem),
         backgroundColor: AppColors.surface.withValues(alpha: 0.9),
         radius: BorderRadius.circular(0.9.rem),
-        border: Border.all(color: AppColors.primary.withValues(alpha: 0.3), width: 1.5.px),
+        border: Border.all(color: AppColors.outline(0.3), width: themed(1.5.px, calm: 1.px)),
       ),
     ]),
   ];

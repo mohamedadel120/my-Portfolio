@@ -83,8 +83,8 @@ class ProjectsSection extends AsyncStatelessComponent {
         margin: Margin.only(top: 3.rem, bottom: 3.75.rem),
         padding: Padding.symmetric(vertical: 1.5.rem),
         border: Border.only(
-          top: BorderSide(color: AppColors.primary.withValues(alpha: 0.3), width: 1.px),
-          bottom: BorderSide(color: AppColors.primary.withValues(alpha: 0.3), width: 1.px),
+          top: BorderSide(color: AppColors.outline(0.3), width: 1.px),
+          bottom: BorderSide(color: AppColors.outline(0.3), width: 1.px),
         ),
         raw: {
           'grid-template-columns': 'repeat(auto-fit, minmax(10rem, 1fr))',
@@ -96,14 +96,14 @@ class ProjectsSection extends AsyncStatelessComponent {
       css('&').styles(display: Display.flex, flexDirection: FlexDirection.column, gap: Gap.all(0.35.rem), margin: Margin.zero),
       css('dt').styles(
         color: AppColors.textSecondary,
-        fontFamily: FontFamily.list([FontFamily('JetBrains Mono'), FontFamilies.monospace]),
-        fontSize: 0.8.rem,
+        fontFamily: AppFonts.of(FontRole.accent, was: AppFonts.jetBrainsMono),
+        fontSize: AppType.size(TypeStep.label, was: 0.8.rem),
       ),
       css('dd').styles(
         margin: Margin.zero,
         color: AppColors.textPrimary,
-        fontFamily: FontFamily.list([FontFamily('JetBrains Mono'), FontFamilies.monospace]),
-        fontSize: 1.25.rem,
+        fontFamily: AppFonts.of(FontRole.heading, was: AppFonts.jetBrainsMono),
+        fontSize: AppType.size(TypeStep.h3, was: 1.25.rem),
         fontWeight: FontWeight.w600,
         raw: {'font-variant-numeric': 'tabular-nums'},
       ),
