@@ -17,6 +17,7 @@ import 'package:jaspr_site/components/project_showcase.dart'
 import 'package:jaspr_site/components/scroll_reveal.dart' as _scroll_reveal;
 import 'package:jaspr_site/components/shot_gallery.dart' as _shot_gallery;
 import 'package:jaspr_site/components/store_buttons.dart' as _store_buttons;
+import 'package:jaspr_site/components/visit_tracker.dart' as _visit_tracker;
 import 'package:jaspr_site/constants/theme.dart' as _theme;
 import 'package:jaspr_site/sections/about_section.dart' as _about_section;
 import 'package:jaspr_site/sections/contact_section.dart' as _contact_section;
@@ -26,6 +27,10 @@ import 'package:jaspr_site/sections/expertise_section.dart'
     as _expertise_section;
 import 'package:jaspr_site/sections/hero_section.dart' as _hero_section;
 import 'package:jaspr_site/sections/projects_section.dart' as _projects_section;
+import 'package:jaspr_site/sections/testimonials_section.dart'
+    as _testimonials_section;
+import 'package:jaspr_site/sections/why_choose_me_section.dart'
+    as _why_choose_me_section;
 
 /// Default [ServerOptions] for use with your Jaspr project.
 ///
@@ -70,6 +75,9 @@ ServerOptions get defaultServerOptions => ServerOptions(
     _scroll_reveal.ScrollReveal: ClientTarget<_scroll_reveal.ScrollReveal>(
       'scroll_reveal',
     ),
+    _visit_tracker.VisitTracker: ClientTarget<_visit_tracker.VisitTracker>(
+      'visit_tracker',
+    ),
   },
   styles: () => [
     ..._theme.styles,
@@ -88,6 +96,8 @@ ServerOptions get defaultServerOptions => ServerOptions(
     ..._expertise_section.ExpertiseSection.styles,
     ..._hero_section.HeroSection.styles,
     ..._projects_section.ProjectsSection.styles,
+    ..._testimonials_section.TestimonialsSection.styles,
+    ..._why_choose_me_section.WhyChooseMeSection.styles,
   ],
 );
 

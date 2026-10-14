@@ -10,14 +10,21 @@ import '../data/contact_repository.dart';
 /// components/contact_form.dart, a `@client` component) — everything else
 /// here is static, server-rendered content.
 class ContactSection extends AsyncStatelessComponent {
-  const ContactSection({super.key});
+  /// True when this section is the whole page (its own route), so its
+  /// title becomes the page's `<h1>` instead of an `<h2>`.
+  final bool standalone;
+
+  const ContactSection({super.key, this.standalone = false});
 
   @override
   Future<Component> build(BuildContext context) async {
     final contact = await fetchContactData();
 
     return section(id: 'contact', classes: 'contact', [
-      h2(classes: 'section-title', [.text('Get In Touch')]),
+      if (standalone)
+        h1(classes: 'section-title', [.text('Get In Touch')])
+      else
+        h2(classes: 'section-title', [.text('Get In Touch')]),
       p(classes: 'contact-subtitle', [.text("Let's build something amazing together!")]),
       div(classes: 'contact-grid', [
         div(classes: 'reveal', [ContactForm(recipientEmail: contact.email)]),
@@ -36,6 +43,8 @@ class ContactSection extends AsyncStatelessComponent {
               a(
                 href: link.url,
                 classes: link.name == 'GitHub' ? 'social-button secondary' : 'social-button',
+                // Web profiles open in a new tab so the visitor keeps the portfolio open.
+                attributes: link.url.startsWith('http') ? const {'target': '_blank', 'rel': 'noopener noreferrer'} : null,
                 [
                   span(classes: 'material-symbols-rounded', [.text(link.iconKey)]),
                   .text(link.name),
@@ -44,14 +53,14 @@ class ContactSection extends AsyncStatelessComponent {
           ]),
         ]),
       ]),
-      p(classes: 'contact-footer', [.text('© 2026 Mohamed Adel - Flutter Developer Portfolio. Built with ❤️ using Flutter')]),
+      p(classes: 'contact-footer', [.text('© 2026 Mohamed Adel - Flutter Developer Portfolio. Built with ❤️ using Dart & Jaspr')]),
     ]);
   }
 
   Component _infoRow(String icon, String label, String value, String? href) {
     final content = [
       span(classes: 'material-symbols-rounded info-icon', [.text(icon)]),
-      div([
+      div(classes: 'info-text', [
         p(classes: 'info-label', [.text(label)]),
         p(classes: 'info-value', [.text(value)]),
       ]),
@@ -63,6 +72,9 @@ class ContactSection extends AsyncStatelessComponent {
   static List<StyleRule> get styles => [
     css('.contact', [
       css('&').styles(padding: Padding.symmetric(horizontal: 3.75.rem, vertical: 6.25.rem)),
+      css.media(MediaQuery.screen(maxWidth: Breakpoints.mobile.px), [
+        css('&').styles(padding: Padding.symmetric(horizontal: 1.25.rem, vertical: 4.rem)),
+      ]),
     ]),
     css('.contact-subtitle', [
       css('&').styles(
@@ -76,13 +88,13 @@ class ContactSection extends AsyncStatelessComponent {
       css('&').styles(
         display: Display.grid,
         gridTemplate: GridTemplate(
-          columns: GridTracks([GridTrack(TrackSize.fr(2)), GridTrack(TrackSize.fr(1))]),
+          columns: GridTracks([GridTrack(TrackSize.minmax(TrackSize(Unit.zero), TrackSize.fr(2))), GridTrack(TrackSize.minmax(TrackSize(Unit.zero), TrackSize.fr(1)))]),
         ),
         gap: Gap.all(2.5.rem),
         margin: Margin.only(top: 3.75.rem),
       ),
       css.media(MediaQuery.screen(maxWidth: Breakpoints.tablet.px), [
-        css('&').styles(gridTemplate: GridTemplate(columns: GridTracks([GridTrack(TrackSize.fr(1))]))),
+        css('&').styles(gridTemplate: GridTemplate(columns: GridTracks([GridTrack(TrackSize.minmax(TrackSize(Unit.zero), TrackSize.fr(1)))]))),
       ]),
     ]),
     css('.contact-side', [
@@ -114,7 +126,7 @@ class ContactSection extends AsyncStatelessComponent {
         backgroundColor: AppColors.primary.withValues(alpha: 0.1),
       ),
       css('.info-label').styles(
-        color: AppColors.textTertiary,
+        color: AppColors.textSecondary,
         fontFamily: FontFamily.list([FontFamily('Space Mono'), FontFamilies.monospace]),
         fontSize: 0.7.rem,
         letterSpacing: 1.px,
@@ -124,7 +136,11 @@ class ContactSection extends AsyncStatelessComponent {
         fontFamily: FontFamily.list([FontFamily('JetBrains Mono'), FontFamilies.monospace]),
         fontSize: 1.rem,
         margin: Margin.only(top: 0.2.rem),
+        // Long values (the email address) must wrap instead of widening
+        // the card past the screen.
+        raw: {'overflow-wrap': 'anywhere'},
       ),
+      css('.info-text').styles(minWidth: Unit.zero),
     ]),
     css('.social-card', [
       css('&').styles(
@@ -157,7 +173,7 @@ class ContactSection extends AsyncStatelessComponent {
         radius: BorderRadius.circular(0.75.rem),
         border: Border.all(color: AppColors.primary.withValues(alpha: 0.4), width: 1.5.px),
       ),
-      css('&.secondary').styles(color: AppColors.secondary, border: Border.all(color: AppColors.secondary.withValues(alpha: 0.4), width: 1.5.px)),
+      css('&.secondary').styles(color: AppColors.secondaryText, border: Border.all(color: AppColors.secondary.withValues(alpha: 0.4), width: 1.5.px)),
     ]),
     css('.contact-footer', [
       css('&').styles(

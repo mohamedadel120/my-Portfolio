@@ -164,6 +164,9 @@ class HeroSection extends AsyncStatelessComponent {
         fontWeight: FontWeight.w700,
         fontSize: 1.rem,
         letterSpacing: 1.px,
+        // Vertical padding brings the tap target to ~44px on phones.
+        display: Display.inlineBlock,
+        padding: Padding.symmetric(vertical: 0.75.rem),
       ),
       css('a:hover').styles(color: AppColors.primary),
     ]),

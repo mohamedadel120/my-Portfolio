@@ -6,10 +6,13 @@ service cloud.firestore {
       allow read: if true;
     }
 
-    // Allow public write access to the analytics collection for visitor stats
-    // (unauthenticated site visitors log their own page views/clicks).
+    // Visitor stats. Anonymous site visitors may only bump the counters on
+    // analytics/summary, one event per write, by the amounts
+    // jaspr_site/lib/data/analytics_repository.dart sends; anything else
+    // (other docs, deletes, arbitrary fields or values) needs the admin.
     match /analytics/{document} {
-      allow write: if true;
+      allow write: if request.auth != null;
+      allow create, update: if document == 'summary' && isAnalyticsEvent();
     }
 
     // Content collections managed from the admin dashboard: readable by
@@ -31,6 +34,113 @@ service cloud.firestore {
     }
     match /why_choose_me/{document} {
       allow write: if request.auth != null;
+    }
+
+    // ---- analytics event validation -------------------------------------
+
+    // Sections the site reports dwell time / interactions for.
+    function analyticsSections() {
+      return ['Home', 'About', 'Expertise', 'Experience', 'Projects', 'Contact'];
+    }
+
+    function oldStats() {
+      return resource == null ? {} : resource.data;
+    }
+
+    function changedStats() {
+      return request.resource.data.diff(oldStats()).affectedKeys();
+    }
+
+    function delta(field) {
+      return request.resource.data.get(field, 0) - oldStats().get(field, 0);
+    }
+
+    // How much [key] inside the map field [field] went up by.
+    function mapDelta(field, key) {
+      return request.resource.data.get(field, {}).get(key, 0)
+          - oldStats().get(field, {}).get(key, 0);
+    }
+
+    function changedInMap(field) {
+      return request.resource.data.get(field, {})
+          .diff(oldStats().get(field, {})).affectedKeys();
+    }
+
+    // Only [key] of map field [field] changed, and it went up by exactly 1.
+    function mapBumpedOnce(field, key) {
+      return request.resource.data.get(field, {}) is map
+          && changedInMap(field).hasOnly([key])
+          && mapDelta(field, key) == 1;
+    }
+
+    // Exactly one section key of [field] changed, each section moved by
+    // 0..[maxBy], so the changed one went up by 1..[maxBy].
+    function oneSectionBumped(field, maxBy) {
+      let sections = analyticsSections();
+      return request.resource.data.get(field, {}) is map
+          && changedInMap(field).size() == 1
+          && changedInMap(field).hasOnly(sections)
+          && mapDelta(field, sections[0]) >= 0 && mapDelta(field, sections[0]) <= maxBy
+          && mapDelta(field, sections[1]) >= 0 && mapDelta(field, sections[1]) <= maxBy
+          && mapDelta(field, sections[2]) >= 0 && mapDelta(field, sections[2]) <= maxBy
+          && mapDelta(field, sections[3]) >= 0 && mapDelta(field, sections[3]) <= maxBy
+          && mapDelta(field, sections[4]) >= 0 && mapDelta(field, sections[4]) <= maxBy
+          && mapDelta(field, sections[5]) >= 0 && mapDelta(field, sections[5]) <= maxBy;
+    }
+
+    // 'YYYY-MM-DD' (UTC) for [t], matching the visitsOverTime keys.
+    function dayKey(t) {
+      return string(t.year())
+          + (t.month() < 10 ? '-0' : '-') + string(t.month())
+          + (t.day() < 10 ? '-0' : '-') + string(t.day());
+    }
+
+    // The client stamps its own UTC date, so allow a day either side of the
+    // server's for clock skew around midnight.
+    function visitDayBumped() {
+      return mapBumpedOnce('visitsOverTime', dayKey(request.time))
+          || mapBumpedOnce('visitsOverTime', dayKey(request.time - duration.value(1, 'd')))
+          || mapBumpedOnce('visitsOverTime', dayKey(request.time + duration.value(1, 'd')));
+    }
+
+    // logVisit: totalVisits +1, today's visitsOverTime +1, and
+    // uniqueVisitors +1 on a browser's first visit.
+    function isVisitEvent() {
+      return changedStats().hasOnly(['totalVisits', 'uniqueVisitors', 'visitsOverTime'])
+          && delta('totalVisits') == 1
+          && (delta('uniqueVisitors') == 0 || delta('uniqueVisitors') == 1)
+          && visitDayBumped();
+    }
+
+    // logProjectClick: totalClicks +1, Projects interactions +1, and +1 on
+    // the topProjects entry named by lastClickedProject (written alongside,
+    // because rules can't otherwise tell which map key changed).
+    function isProjectClickEvent() {
+      let project = request.resource.data.get('lastClickedProject', null);
+      return changedStats().hasOnly(
+              ['totalClicks', 'topProjects', 'interactionsPerSection', 'lastClickedProject'])
+          && delta('totalClicks') == 1
+          && project is string && project.size() > 0 && project.size() <= 100
+          && mapBumpedOnce('topProjects', project)
+          && request.resource.data.topProjects.size() <= 200
+          && mapBumpedOnce('interactionsPerSection', 'Projects');
+    }
+
+    // logSectionTime: up to 30 minutes of dwell time on one section.
+    function isSectionTimeEvent() {
+      return changedStats().hasOnly(['timeSpentPerSection'])
+          && oneSectionBumped('timeSpentPerSection', 1800);
+    }
+
+    // logInteraction: +1 on one section.
+    function isInteractionEvent() {
+      return changedStats().hasOnly(['interactionsPerSection'])
+          && oneSectionBumped('interactionsPerSection', 1);
+    }
+
+    function isAnalyticsEvent() {
+      return isVisitEvent() || isProjectClickEvent()
+          || isSectionTimeEvent() || isInteractionEvent();
     }
   }
 }

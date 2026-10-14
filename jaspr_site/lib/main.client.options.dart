@@ -17,6 +17,8 @@ import 'package:jaspr_site/components/project_showcase.dart'
     deferred as _project_showcase;
 import 'package:jaspr_site/components/scroll_reveal.dart'
     deferred as _scroll_reveal;
+import 'package:jaspr_site/components/visit_tracker.dart'
+    deferred as _visit_tracker;
 
 /// Default [ClientOptions] for use with your Jaspr project.
 ///
@@ -69,6 +71,10 @@ ClientOptions get defaultClientOptions => ClientOptions(
     'scroll_reveal': ClientLoader(
       (p) => _scroll_reveal.ScrollReveal(),
       loader: _scroll_reveal.loadLibrary,
+    ),
+    'visit_tracker': ClientLoader(
+      (p) => _visit_tracker.VisitTracker(),
+      loader: _visit_tracker.loadLibrary,
     ),
   },
 );

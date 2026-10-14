@@ -40,6 +40,9 @@ class ExpertiseSection extends AsyncStatelessComponent {
   static List<StyleRule> get styles => [
     css('.expertise', [
       css('&').styles(padding: Padding.symmetric(horizontal: 3.75.rem, vertical: 6.25.rem)),
+      css.media(MediaQuery.screen(maxWidth: Breakpoints.mobile.px), [
+        css('&').styles(padding: Padding.symmetric(horizontal: 1.25.rem, vertical: 4.rem)),
+      ]),
     ]),
     css('.expertise-list', [
       css('&').styles(margin: Margin.only(top: 4.5.rem)),
@@ -54,6 +57,9 @@ class ExpertiseSection extends AsyncStatelessComponent {
         border: Border.only(bottom: BorderSide.solid(color: Colors.white.withValues(alpha: 0.1))),
         raw: {'transition': 'background-color 250ms, transform 250ms ease, padding-left 250ms ease'},
       ),
+      css.media(MediaQuery.screen(maxWidth: Breakpoints.mobile.px), [
+        css('&').styles(gap: Gap.all(1.rem), padding: Padding.symmetric(vertical: 1.75.rem, horizontal: 0.25.rem)),
+      ]),
       css('&:hover').styles(
         backgroundColor: Colors.white.withValues(alpha: 0.03),
         transform: Transform.translate(x: 0.5.rem),
@@ -65,7 +71,7 @@ class ExpertiseSection extends AsyncStatelessComponent {
           'filter': 'drop-shadow(0 0 10px ${AppColors.primary.withValues(alpha: 0.6).value})',
         },
       ),
-      css('&:hover .expertise-index').styles(color: AppColors.secondary),
+      css('&:hover .expertise-index').styles(color: AppColors.secondaryText),
       css('&:hover .expertise-title').styles(color: AppColors.primary),
       // A left accent bar that grows in from the middle on hover, echoing
       // the section-title underline's gradient elsewhere on the page.
@@ -84,6 +90,7 @@ class ExpertiseSection extends AsyncStatelessComponent {
       ),
       css('&:hover::before').styles(opacity: 1, raw: {'transform': 'translateY(-50%) scaleY(1)'}),
     ]),
+    css('.expertise-text').styles(minWidth: Unit.zero, flex: Flex(grow: 1, shrink: 1)),
     css('.expertise-index', [
       css('&').styles(
         color: AppColors.textTertiary,

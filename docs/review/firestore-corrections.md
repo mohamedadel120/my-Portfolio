@@ -91,6 +91,7 @@ They use the 4.8 rating you said is not confirmed yet, and the 35% figures:
 | Where | Text on the site |
 | --- | --- |
 | `profile_info/main` > `professionalSummary` | "...10,000+ downloads and 4.8-star ratings on Google Play." |
+| `why_choose_me` (track record reason) | "10,000+ downloads, 4.8-star ratings, and successf..." |
 | `experiences` (Stock role) | "Led design and maintenance of Stock App (B2B), achieving 10,000+ downloads and 4.8-star rating" |
 | `experiences` (Innovation Company) | "Led design and implementation of Al-Taqwa Mobile App (1,000+ downloads, 4.8-star rating)" |
 | `experiences` | "Delivered Tag-pharma & DrugZa Mobile App with 35% increase in customer engagement" |

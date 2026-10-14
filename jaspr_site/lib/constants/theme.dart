@@ -10,6 +10,9 @@ import 'motion_css.dart';
 class AppColors {
   static const primary = Color('#00D9FF'); // Cyan
   static const secondary = Color('#7B2CBF'); // Purple
+  // Lighter purple for text: #7B2CBF on the dark surfaces is only ~2.5:1
+  // contrast, below the 4.5:1 WCAG AA minimum for body text.
+  static const secondaryText = Color('#B57BFF');
   static const background = Color('#000000');
   static const surface = Color('#121212');
   static const surfaceLight = Color('#1E1E1E');
@@ -61,7 +64,8 @@ List<StyleRule> get styles => [
   ),
   // The icon font on its own, cut down to the icons the site uses at the one
   // size it uses: the full Material Symbols variable font is about 1.4 MB,
-  // which alone delayed the first paint on mobile by several seconds.
+  // which alone delayed the first paint on mobile by several seconds. The
+  // icon list is `materialIconNames` below.
   css.import(materialSymbolsUrl),
   // Smooth scrolling is off for visitors who asked for reduced motion (see
   // the MotionRule below), and every scrollbar uses a slim, themed track
@@ -74,6 +78,10 @@ List<StyleRule> get styles => [
   MotionRule.reduced([
     css('html').styles(raw: {'scroll-behavior': 'auto'}),
   ]),
+  // Backstop against any decorative layer (e.g. the hero aurora) widening
+  // the page on phones. `clip` (unlike `hidden`) doesn't create a scroll
+  // container, so position: sticky inside the page keeps working.
+  css('html, body').styles(raw: {'overflow-x': 'clip'}),
   // No box-sizing reset existed anywhere in the site -- every element
   // defaulted to content-box, so `width`/`height`/`min-height` never
   // actually included padding/border. That silently made `.hero`'s
@@ -159,7 +167,7 @@ List<StyleRule> get styles => [
 /// for any icon that is used but not listed. Keep it sorted.
 const materialIconNames = [
   'architecture', 'bolt', 'call', 'chevron_left', 'chevron_right', 'cloud', 'code',
-  'design_services', 'download', 'email', 'link', 'location_on', 'mail', 'pause',
+  'design_services', 'download', 'email', 'format_quote', 'link', 'location_on', 'mail', 'pause',
   'people', 'phone_android', 'play_arrow', 'rocket_launch', 'speed', 'stacks', 'star',
 ];
 

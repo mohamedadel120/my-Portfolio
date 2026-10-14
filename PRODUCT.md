@@ -1,44 +1,141 @@
-# Product
+# PRODUCT.md: Mohamed Adel Portfolio
 
 <!-- impeccable:product-schema 1 -->
 
-## Platform
+Durable product context for design work on this site. Facts are drawn from the
+code, the live Firestore content, and Muhammed's brand kit; anything marked
+*(inferred)* still needs his confirmation.
 
-web
+## What it is
 
-## Stack
-Dart. The live site is Flutter Web (`lib/`, WASM, Firebase Hosting). The confirmed future is the Jaspr static-site rewrite in `jaspr_site/` (pre-rendered HTML, Firestore REST for content). New UI work targets `jaspr_site/`; `lib/` is kept working until the migration ships.
+The personal portfolio of **Mohamed Adel (Muhammed)**, a Flutter developer
+based in Cairo with 3+ years shipping cross-platform mobile apps for iOS and
+Android. Live at https://muhammed-adel.web.app.
 
-## Users
-Prospective freelance clients and hiring companies looking at Mohamed Adel's work. They arrive to judge quality and decide whether to get in touch or hire. (Audience split is the owner's description: "attract clients and companies".)
+- **Live surface:** `jaspr_site/` — a statically pre-rendered Jaspr (Dart)
+  site, deployed to Firebase Hosting on every push to `main`. Content is
+  fetched from Firestore at build time and baked into plain HTML, so crawlers
+  and `llms.txt` readers get real content without JavaScript.
+- **Legacy surface:** `lib/` — the earlier Flutter Web (WASM) build. No longer
+  deployed; it is the source the Jaspr tokens and sections were ported from.
+  Treat it as reference, not as a design target.
+- **Pages:** `/` (Hero, About, Expertise, Experience, Projects, Contact on one
+  scroll), plus `/about`, `/projects`, `/contact`.
 
-## Product Purpose
-A personal portfolio owned by its subject: show his shipped mobile work in the best possible light and convert visitors into contacts (clients) and interviews (companies). Success is a visitor reaching the contact form or CV after seeing the projects.
+## Why it exists
 
-## Positioning
-A Flutter developer whose own site is itself evidence of craft: custom, animated, content-driven from Firestore, and pre-rendered for search once on Jaspr.
+Credibility that converts into opportunity: job offers, freelance and agency
+leads, and trust for a future product. Not follower count or vanity metrics.
+The site is the destination his LinkedIn, Instagram and TikTok content points
+to, so it has to read as the same person.
 
-## Operating Context
-Content (projects, experience, expertise, hero copy) lives in Firestore and is edited without a rebuild. Deployed to Firebase Hosting (`muhammed-adel.web.app`) via GitHub Actions. Site copy is English; the owner works in Arabic (Egyptian).
+## Who it is for
 
-## Capabilities and Constraints
-- Sections: hero, about, expertise, experience, projects, contact (home page) plus /about, /projects, /contact routes.
-- Dark and light themes exist; dark is the default identity.
-- Project presentation (the sticky showcase) is open for redesign proposals; nothing else is declared binding.
-- Undecided: whether `lib/` is retired once Jaspr ships.
+1. **Recruiters and hiring managers** scanning for Flutter talent. They skim
+   in under a minute and want role, seniority, shipped apps, and a CV link.
+2. **Founders and agencies hiring for an app** *(inferred)*. They want proof
+   that apps shipped and succeeded in the stores, and an easy way to make
+   contact.
+3. **Developers from his content audience** (Arabic-speaking, Egypt and the
+   Gulf) who follow a post back to the site. They judge craft and code taste.
 
-## Brand Commitments
-None declared as binding. The current cyan and purple on black, monospace type pairing, and custom cursor are the incumbent look, not confirmed constraints.
+The site itself is in English. Arabic appears only in the logo wordmark.
 
-## Evidence on Hand
-Case-study imagery for six projects in `assets/images/` (adruse, albatal, gomla, hi_gold, paletta, stock), optional video in `assets/videos/`, GitHub and LinkedIn links, `jaspr_site/web/og_image.png`. No testimonials or metrics are confirmed; the stats dashboard values come from project data and must not be invented.
+## Proof the design must carry
 
-## Product Principles
-1. The work leads: projects get the most room and the best presentation.
-2. One clear next step: every section points toward contacting or hiring.
-3. The site demonstrates craft by being fast, accessible and robust, not only decorative.
-4. Content stays editable in Firestore; design must survive any content length.
-5. Honest claims: no invented numbers, clients or testimonials.
+These are the strongest facts on the site; design should make them easy to
+find, not bury them in decoration.
 
-## Accessibility & Inclusion
-Respect reduced-motion and keyboard use; no specific standard was required by the owner.
+- **Gomla (featured, his strongest app):** 10,000+ downloads. AI skin analysis,
+  virtual makeup try-on and delivery in one app. Shown first, with a
+  "Featured project" badge. Do not call it "the first app of its kind": the
+  owner cannot verify that; describe what it does instead.
+- **Stock (B2B inventory):** 10,000+ downloads. Flutter, Bloc, Clean Architecture.
+- **Albatal (marketplace):** 1,000+ downloads.
+- Other projects: no download figure.
+- **Ratings are not confirmed yet.** No "4.8★" (or any rating) may be shown
+  until the owner supplies real per-app ratings (`rating` field).
+- Further shipped apps with real screenshots: Adruse, Albatal, Paletta,
+  Drugza (demo video).
+- Testimonials from named clients (The First-Agency, Stock Tech, Gomla).
+- Downloadable CV (Google Drive link in `profile_info/main.cvUrl`).
+
+Content lives in Firestore (`profile_info`, `projects`, `experience`,
+`expertise`, `testimonials`) and is edited there, not in code. Design must
+survive content length changing without a rebuild of the layout.
+
+## Brand personality
+
+Precise, technical, quietly confident. A developer who lets shipped work and
+specific numbers do the talking. Confidence comes from specificity, never from
+hype ("no 🚀 game changer"). Terminal and code culture is native to the brand,
+not a costume: monospace type, a `muhammed@flutter:~$` prompt with a cyan block
+cursor as signature, series-style eyebrows.
+
+## Visual identity (current state and source of truth)
+
+Muhammed's brand kit (the `muhammed-brand` skill) is the authority for color
+and type. The live site predates parts of it and diverges:
+
+| | Brand kit | Live site today |
+|---|---|---|
+| Background | `#0A0E14` | `#000000` |
+| Primary cyan | `#18C8EF` (sampled from logo) | `#00D9FF` |
+| Purple | `#8B7BEF`, code keywords only | `#7B2CBF`, used in gradients |
+| Headlines | Inter 800 | IBM Plex Mono, Orbitron (hero name), Oswald, Anton |
+| Body / labels | JetBrains Mono | JetBrains Mono, Space Mono, Fira Code |
+| Rules | No new accents, no gradients beyond soft panel glows | Cyan→purple gradient underline on section titles |
+
+Brand-kit rules that apply to the site: never improvise a new accent color;
+red `#FF5C5C` is for wrong/broken states only; no stock illustration; the
+logo (cyan Arabic wordmark in a circle) is a small corner signature, never
+recolored or placed on a light background.
+
+*Open:* whether to converge the site onto the brand kit's tokens and type, or
+keep the site's own louder display treatment (Orbitron hero name) as an
+intentional web-only exception.
+
+## Anti-references
+
+- Generic "dev portfolio template" looks: gradient blobs, glassmorphism cards,
+  skill progress bars with percentages, emoji-heavy copy.
+- Hype voice and unverifiable superlatives.
+- Decoration that slows the page or hides the shipped apps below the fold.
+
+## Constraints
+
+- **Static and fast.** Content must render without JavaScript; animations are
+  CSS-first and must respect `prefers-reduced-motion`. Performance has been a
+  repeated focus in the commit history (LCP, off-screen animation pausing,
+  compressed media).
+- **Responsive tiers:** mobile < 768px, tablet 768–1023px, desktop ≥ 1024px,
+  wide desktop ≥ 1440px (`jaspr_site/lib/constants/theme.dart`).
+- **Dark first.** A light theme toggle exists (`data-theme="light"`); the logo
+  rule above means light mode needs care around the mark.
+- **Accessibility:** WCAG 2.1 AA contrast and full keyboard reachability
+  *(inferred target)*. The custom cursor must never replace focus visibility.
+- **Privacy:** Firestore `profile_info` holds a street address and phone
+  number. Public pages show city and country only unless Muhammed says
+  otherwise.
+
+## Known content issues to confirm before design touches them
+
+- A testimonial from "Jane Doe, Senior Tech Lead, TechFlow Systems" reads as
+  placeholder data. Do not feature or redesign around it until confirmed.
+- About-section features and skills come from hardcoded fallbacks (with
+  duplicates) because Firestore lacks those fields.
+
+## Confirmed by the owner (October 2026)
+
+- Audience: both clients and companies; the goal is to be contacted or hired.
+- The Projects section uses the pinned showcase: the section stays on screen,
+  scroll switches project in place, the phone plays screenshots like a short
+  video (tap to pause), text is typed. Phones get stacked cards.
+- Download figures: Gomla and Stock 10,000+, Albatal 1,000+, the rest none.
+  Unverified figures (ratings, "35% increase in engagement") stay off the site.
+- Gomla story (owner's words): people had to go to a store to try beauty
+  products, and many needed a dermatologist to learn their skin type first;
+  the app analyses your skin with AI, says which products you need and which
+  you do not, lets you try makeup virtually, and delivers to your door.
+- Pending from the owner: real ratings, role per project, "I" or "we", the
+  Palleta problem statement, the AI technology Gomla uses.

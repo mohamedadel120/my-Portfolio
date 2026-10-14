@@ -5,6 +5,7 @@ import 'package:jaspr_router/jaspr_router.dart';
 import 'components/custom_cursor.dart';
 import 'components/header.dart';
 import 'components/scroll_reveal.dart';
+import 'components/visit_tracker.dart';
 import 'data/profile_repository.dart';
 import 'pages/home.dart';
 import 'pages/about.dart';
@@ -32,31 +33,35 @@ class App extends AsyncStatelessComponent {
     return div(classes: 'app-shell', [
       Header(cvUrl: hero.cvUrl),
       const ScrollReveal(),
+      const VisitTracker(),
       const CustomCursor(),
-      Router(
-        routes: [
-          Route(
-            path: '/',
-            title: 'Mohamed Adel - Flutter Developer Portfolio',
-            builder: (context, state) => const Home(),
-          ),
-          Route(
-            path: '/about',
-            title: 'About - Mohamed Adel, Flutter Developer',
-            builder: (context, state) => const About(),
-          ),
-          Route(
-            path: '/projects',
-            title: 'Projects - Mohamed Adel, Flutter Developer',
-            builder: (context, state) => const Projects(),
-          ),
-          Route(
-            path: '/contact',
-            title: 'Contact - Mohamed Adel, Flutter Developer',
-            builder: (context, state) => const Contact(),
-          ),
-        ],
-      ),
+      // Page content lives in <main> so screen readers can jump past the nav.
+      main_([
+        Router(
+          routes: [
+            Route(
+              path: '/',
+              title: 'Mohamed Adel - Flutter Developer Portfolio',
+              builder: (context, state) => const Home(),
+            ),
+            Route(
+              path: '/about',
+              title: 'About - Mohamed Adel, Flutter Developer',
+              builder: (context, state) => const About(),
+            ),
+            Route(
+              path: '/projects',
+              title: 'Projects - Mohamed Adel, Flutter Developer',
+              builder: (context, state) => const Projects(),
+            ),
+            Route(
+              path: '/contact',
+              title: 'Contact - Mohamed Adel, Flutter Developer',
+              builder: (context, state) => const Contact(),
+            ),
+          ],
+        ),
+      ]),
     ]);
   }
 }

@@ -22,7 +22,11 @@ class ProjectsSection extends AsyncStatelessComponent {
   /// previews can pass another one explicitly.
   final ProjectsVariant variant;
 
-  const ProjectsSection({super.key, this.variant = projectsVariant});
+  /// True when this section is the whole page (its own route), so its
+  /// title becomes the page's `<h1>` instead of an `<h2>`.
+  final bool standalone;
+
+  const ProjectsSection({super.key, this.variant = projectsVariant, this.standalone = false});
 
   @override
   Future<Component> build(BuildContext context) async {
@@ -31,7 +35,10 @@ class ProjectsSection extends AsyncStatelessComponent {
     final summary = computeProofSummary(projects, experiences);
 
     return section(id: 'projects', classes: 'projects', [
-      h2(classes: 'section-title', [.text('Projects')]),
+      if (standalone)
+        h1(classes: 'section-title', [.text('Projects')])
+      else
+        h2(classes: 'section-title', [.text('Projects')]),
       ...proofStrip(summary),
       showcase(variant, withPreviewData([for (final p in projects) _toMap(p)])),
     ]);
@@ -66,6 +73,9 @@ class ProjectsSection extends AsyncStatelessComponent {
   static List<StyleRule> get styles => [
     css('.projects', [
       css('&').styles(padding: Padding.symmetric(horizontal: 3.75.rem, vertical: 6.25.rem)),
+      css.media(MediaQuery.screen(maxWidth: Breakpoints.mobile.px), [
+        css('&').styles(padding: Padding.symmetric(horizontal: 1.25.rem, vertical: 4.rem)),
+      ]),
     ]),
     css('.proof-strip', [
       css('&').styles(

@@ -515,7 +515,7 @@ class StickyProjectShowcase extends StatefulComponent {
         fontSize: 0.7.rem,
         letterSpacing: 1.px,
         cursor: Cursor.pointer,
-        padding: Padding.symmetric(vertical: 0.25.rem),
+        padding: Padding.symmetric(vertical: 0.6.rem),
         transition: Transition('color', duration: 200.ms),
       ),
       css('.nav-dot.active').styles(color: AppColors.primary, fontWeight: FontWeight.w700),
@@ -526,8 +526,11 @@ class StickyProjectShowcase extends StatefulComponent {
 
 class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
   static const _rootId = 'sticky-project-showcase';
-  static const _introHeight = 1400.0;
-  static const _scrollPerImage = 800.0;
+  // Scroll distance (px) each project holds the sticky stage for. Was
+  // 1400 + 800 per screenshot, which made the section ~71,000px tall (about
+  // 80 screens) and buried Testimonials and Contact below it.
+  static const _introHeight = 600.0;
+  static const _scrollPerImage = 220.0;
 
   int _activeIndex = 0;
   int _imageIndex = 0;
@@ -750,7 +753,7 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
             ),
             div(classes: 'info-links', [
               if (androidUrl != null)
-                a(href: androidUrl, classes: 'store-btn', [
+                a(href: androidUrl, classes: 'store-btn', attributes: const {'target': '_blank', 'rel': 'noopener noreferrer'}, [
                   span(classes: 'store-tooltip', [.text('Google Play')]),
                   svg([
                     path(d: _androidLogoPath, fill: const Color('currentColor'), []),
@@ -763,7 +766,7 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
                 // Material Symbols has no "Apple logo" icon (it's Google's
                 // icon set) -- a real Apple silhouette reads as an actual
                 // logo instead of a generic phone outline.
-                a(href: iosUrl, classes: 'store-btn store-btn-ios', [
+                a(href: iosUrl, classes: 'store-btn store-btn-ios', attributes: const {'target': '_blank', 'rel': 'noopener noreferrer'}, [
                   span(classes: 'store-tooltip', [.text('App Store')]),
                   svg([
                     path(d: _appleLogoPath, fill: const Color('currentColor'), []),
