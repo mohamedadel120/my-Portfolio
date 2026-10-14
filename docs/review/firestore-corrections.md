@@ -2,8 +2,13 @@
 
 Project: `my-website-bf9e6`, collection `projects`. Writes to this collection need a signed-in admin
 (`firestore.rules`), so these edits are made by you in the Firebase console (or your admin
-dashboard). Nothing below has been applied. Every value marked **ASK** needs your answer first;
-the rest is ready to paste.
+dashboard). Every value marked **ASK** needs your answer first; the rest is ready to paste.
+
+**Applied on 14 Oct 2026** (at your request): Gomla's `featured`, `highlight`, `problem`,
+`description`; Stock's and Albatal's descriptions; Albatal `1,000+`; to-let's description and its
+download number cleared; and every "4.8-star" phrase in About, Why Choose Me and Experience. Not
+applied yet: the **Draft** problems, the percentage claims (35%, 30%, 20%), DrugZa's description and
+the **ASK** items.
 
 Field types matter: `featured` must be a **boolean**, everything else here is a **string**.
 
