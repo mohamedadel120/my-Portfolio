@@ -157,25 +157,31 @@ class _ContactFormState extends State<ContactForm> {
         .text("I'd love to hear from you. Send me a message and I'll respond as soon as possible."),
       ]),
       div(classes: 'form-field', [
-        label([.text('Your Name')]),
+        label(attributes: const {'for': 'contact-name'}, [.text('Your Name')]),
         input<String>(
+          id: 'contact-name',
+          attributes: const {'name': 'name', 'autocomplete': 'name'},
           type: InputType.text,
           value: _name,
           onInput: (value) => setState(() => _name = value),
         ),
       ]),
       div(classes: 'form-field', [
-        label([.text('Your Email')]),
+        label(attributes: const {'for': 'contact-email'}, [.text('Your Email')]),
         input<String>(
+          id: 'contact-email',
+          attributes: const {'name': 'email', 'autocomplete': 'email'},
           type: InputType.email,
           value: _email,
           onInput: (value) => setState(() => _email = value),
         ),
       ]),
       div(classes: 'form-field', [
-        label([.text('Your Message')]),
+        label(attributes: const {'for': 'contact-message'}, [.text('Your Message')]),
         textarea(
           [.text(_message)],
+          id: 'contact-message',
+          attributes: const {'name': 'message'},
           rows: 5,
           onInput: (value) => setState(() => _message = value),
         ),

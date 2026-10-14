@@ -46,6 +46,10 @@ void main() {
       'twitter:image': ogImage,
     },
     head: [
+      // Open the connections to Google Fonts early: the font stylesheet is
+      // render-blocking, so every round trip saved shows the page sooner.
+      link(rel: 'preconnect', href: 'https://fonts.googleapis.com'),
+      link(rel: 'preconnect', href: 'https://fonts.gstatic.com', attributes: const {'crossorigin': ''}),
       link(rel: 'icon', type: 'image/png', href: 'favicon.png'),
       link(rel: 'manifest', href: 'manifest.json'),
       // Document's `meta` map always renders a `name=` attribute; Open Graph

@@ -401,7 +401,7 @@ class ProjectPinnedShowcase extends StatefulComponent {
         padding: Padding.zero,
         border: Border.none,
         backgroundColor: Colors.transparent,
-        cursor: Cursor.pointer,
+        display: Display.block,
         raw: {'flex': '1 1 0', 'min-width': '0'},
       ),
       css('&:focus-visible').styles(raw: {'outline': '2px solid var(--accent-fg)', 'outline-offset': '1px'}),
@@ -779,12 +779,14 @@ class _ProjectPinnedShowcaseState extends State<ProjectPinnedShowcase> {
           [span(classes: 'material-symbols-rounded', [.text(_playing ? 'pause' : 'play_arrow')])],
         ),
       if (useSegments)
-        div(classes: 'pp-segs', attributes: {'role': 'group', 'aria-label': 'Screenshots'}, [
+        // Progress only: the segments are too small to be reliable touch
+        // targets, so stepping is done with the arrows beside the phone (and
+        // the count reads out the position).
+        div(classes: 'pp-segs', attributes: {'aria-hidden': 'true'}, [
           for (var i = 0; i < count; i++)
-            button(
+            span(
               classes: 'pp-seg',
-              attributes: {'type': 'button', 'aria-label': 'Screenshot ${i + 1} of $count', 'aria-current': i == _shot ? 'true' : 'false', 'data-done': '${i < _shot}'},
-              events: {'click': (_) => _goShot(i)},
+              attributes: {'data-done': '${i < _shot}'},
               [
                 if (i == _shot)
                   span(
