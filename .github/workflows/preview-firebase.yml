@@ -1,0 +1,63 @@
+name: Preview pull request on Firebase Hosting
+
+# Every pull request into main gets its own temporary copy of the site on a
+# Firebase Hosting preview channel, so a change can be checked on a real URL
+# before it is merged. Nothing here touches the live site: only pushes to main
+# deploy it (deploy-firebase.yml). The bot comments the preview URL on the PR;
+# the channel expires on its own after 7 days.
+
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  pull-requests: write
+  checks: write
+
+concurrency:
+  group: preview-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  test-build-preview:
+    # Secrets are not available to pull requests from forks.
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v4
+
+      - name: Setup Dart 🛠️
+        uses: dart-lang/setup-dart@v1
+        with:
+          sdk: stable
+
+      - name: Activate Jaspr CLI 📦
+        # Same pinned version as the production deploy.
+        run: dart pub global activate jaspr_cli 0.23.2
+
+      - name: Install dependencies 📦
+        working-directory: jaspr_site
+        run: dart pub get
+
+      - name: Analyze 🔎
+        working-directory: jaspr_site
+        run: dart analyze lib test
+
+      - name: Test 🧪
+        working-directory: jaspr_site
+        run: dart test
+
+      - name: Build Jaspr site 🏗️
+        working-directory: jaspr_site
+        run: dart pub global run jaspr_cli:jaspr build --sitemap-domain=https://muhammed-adel.web.app
+
+      - name: Deploy preview channel 🔍
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: "${{ secrets.GITHUB_TOKEN }}"
+          firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_MY_WEBSITE_BF9E6 }}"
+          projectId: my-website-bf9e6
+          expires: 7d
