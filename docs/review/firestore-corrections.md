@@ -6,9 +6,10 @@ dashboard). Every value marked **ASK** needs your answer first; the rest is read
 
 **Applied on 14 Oct 2026** (at your request): Gomla's `featured`, `highlight`, `problem`,
 `description`; Stock's and Albatal's descriptions; Albatal `1,000+`; to-let's description and its
-download number cleared; and every "4.8-star" phrase in About, Why Choose Me and Experience. Not
-applied yet: the **Draft** problems, the percentage claims (35%, 30%, 20%), DrugZa's description and
-the **ASK** items.
+download number cleared; and every "4.8-star" phrase in About, Why Choose Me and Experience.
+Then every unconfirmed percentage in your own texts (35%, 30%, 25%, 20%, 20-30%) in Experience, Why
+Choose Me and DrugZa's description, plus DrugZa's "High Engagement" label. Not applied: the
+**Draft** problems, the **ASK** items, and the "25%" inside a client testimonial (their words).
 
 Field types matter: `featured` must be a **boolean**, everything else here is a **string**.
 
