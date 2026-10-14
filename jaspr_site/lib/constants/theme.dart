@@ -57,9 +57,12 @@ List<StyleRule> get styles => [
     '&family=Oswald:wght@400;700'
     '&family=Orbitron:wght@500;700'
     '&family=Anton'
-    '&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,400,0..1,0'
     '&display=swap',
   ),
+  // The icon font on its own, cut down to the icons the site uses at the one
+  // size it uses: the full Material Symbols variable font is about 1.4 MB,
+  // which alone delayed the first paint on mobile by several seconds.
+  css.import(materialSymbolsUrl),
   // Smooth scrolling is off for visitors who asked for reduced motion (see
   // the MotionRule below), and every scrollbar uses a slim, themed track
   // instead of the browser's default white one.
@@ -149,3 +152,20 @@ List<StyleRule> get styles => [
     css('p, li, h1, h2, h3, h4, dd, dt').styles(raw: {'overflow-wrap': 'break-word'}),
   ]),
 ];
+
+/// Every Material Symbols icon the site renders. Google Fonts only serves the
+/// glyphs listed here (`icon_names`), so an icon missing from this list shows
+/// as its name in plain text; test/material_icons_test.dart checks the source
+/// for any icon that is used but not listed. Keep it sorted.
+const materialIconNames = [
+  'architecture', 'bolt', 'call', 'chevron_left', 'chevron_right', 'cloud', 'code',
+  'design_services', 'download', 'email', 'link', 'location_on', 'mail', 'pause',
+  'people', 'phone_android', 'play_arrow', 'rocket_launch', 'speed', 'stacks', 'star',
+];
+
+/// Optical size 24 and weight 400 only (what `.material-symbols-rounded`
+/// asks for), with the FILL axis kept for the filled star.
+final materialSymbolsUrl = 'https://fonts.googleapis.com/css2'
+    '?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0..1,0'
+    '&icon_names=${materialIconNames.join(',')}'
+    '&display=block';
