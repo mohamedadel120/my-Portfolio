@@ -1,3 +1,4 @@
+import 'package:my_web_site/core/utils/motion.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -179,7 +180,7 @@ class _GlassMenuItem extends StatelessWidget {
                 ),
               )
                   .animate(
-                      onPlay: (controller) => controller.repeat(reverse: true))
+                      onPlay: (controller) => loopAnimation(context, controller, reverse: true))
                   .scale(
                       begin: const Offset(0.8, 0.8),
                       end: const Offset(1.2, 1.2),

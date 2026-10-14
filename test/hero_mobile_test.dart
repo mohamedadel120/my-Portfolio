@@ -16,6 +16,7 @@ class FakeHeroRepository implements HeroRepository {
       title: 'Test Title',
       subtitle: 'Test Subtitle',
       helloGreeting: 'Hello',
+      cvUrl: 'https://example.com/cv.pdf',
       showAurora: false,
     );
   }
@@ -30,6 +31,7 @@ class FakeHeroCubit extends Cubit<HeroState> implements HeroCubit {
             title: 'Test Title',
             subtitle: 'Test Subtitle',
             helloGreeting: 'Hello',
+            cvUrl: 'https://example.com/cv.pdf',
             showAurora: false,
           ),
         ));
@@ -76,8 +78,8 @@ void main() {
     await tester.pump(const Duration(seconds: 1));
 
     // Assert
-    expect(find.text('TEST TITLE'), findsOneWidget);
-    expect(find.text('TEST NAME'), findsOneWidget);
+    expect(find.text('TEST TITLE', findRichText: true), findsOneWidget);
+    expect(find.text('TEST NAME', findRichText: true), findsOneWidget);
 
     // Verify content visibility
     expect(find.text('ABOUT'), findsOneWidget);

@@ -1,5 +1,7 @@
 import 'package:jaspr/dom.dart';
 
+import 'motion_css.dart';
+
 /// Design tokens ported from the Flutter app's `AppColors`
 /// (lib/core/constants/app_colors.dart) and `AppTheme`
 /// (lib/core/theme/app_theme.dart). Kept as plain Dart constants, same as
@@ -60,19 +62,22 @@ List<StyleRule> get styles => [
     '&family=Anton'
     '&display=swap',
   ),
-  // Icons are a separate request so `icon_names` can subset the font: the
-  // full Material Symbols variable font is ~1.4MB, these glyphs ~10KB.
-  // Any new icon ligature used on the site (including new cases in
-  // utils/icon_mapper.dart) must be added here, in alphabetical order, or it
-  // renders as plain text.
-  css.import(
-    'https://fonts.googleapis.com/css2'
-    '?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,400,0..1,0'
-    '&icon_names=apps,architecture,bolt,call,cloud,code,design_services,download,email,format_quote,'
-    'link,location_on,mail,people,phone_android,speed,stacks,star'
-    '&display=block',
-  ),
-  css('html').styles(raw: {'scroll-behavior': 'smooth'}),
+  // The icon font on its own, cut down to the icons the site uses at the one
+  // size it uses: the full Material Symbols variable font is about 1.4 MB,
+  // which alone delayed the first paint on mobile by several seconds. The
+  // icon list is `materialIconNames` below.
+  css.import(materialSymbolsUrl),
+  // Smooth scrolling is off for visitors who asked for reduced motion (see
+  // the MotionRule below), and every scrollbar uses a slim, themed track
+  // instead of the browser's default white one.
+  css('html').styles(raw: {
+    'scroll-behavior': 'smooth',
+    'scrollbar-width': 'thin',
+    'scrollbar-color': '${AppColors.primary.withValues(alpha: 0.45).value} ${AppColors.background.value}',
+  }),
+  MotionRule.reduced([
+    css('html').styles(raw: {'scroll-behavior': 'auto'}),
+  ]),
   // Backstop against any decorative layer (e.g. the hero aurora) widening
   // the page on phones. `clip` (unlike `hidden`) doesn't create a scroll
   // container, so position: sticky inside the page keeps working.
@@ -138,4 +143,37 @@ List<StyleRule> get styles => [
     raw: {'transition': 'opacity 600ms ease-out, transform 600ms ease-out'},
   ),
   css('.reveal.revealed').styles(opacity: 1, transform: Transform.translate(y: 0.px)),
+  // Phone layout. Sections used 3.75rem (60px) side padding at every width,
+  // which left ~255px of content on a 375px phone, and `1fr` grid tracks /
+  // flex items default to `min-width: auto`, so any long word or wide child
+  // pushed the whole page wider than the screen (452px at 375px). Reclaim
+  // the gutters, let grid/flex children shrink, and wrap long words.
+  css.media(MediaQuery.screen(maxWidth: Breakpoints.mobile.px), [
+    css('section.about, section.expertise, section.experience, section.projects, section.contact').styles(
+      padding: Padding.symmetric(horizontal: 1.25.rem, vertical: 4.rem),
+    ),
+    css('.nav-bar').styles(padding: Padding.symmetric(horizontal: 1.rem, vertical: 1.rem)),
+    css('.about-grid > *, .contact-grid > *, .contact-side > *, .timeline-card, .bento').styles(raw: {'min-width': '0'}),
+    css('.timeline-card-header').styles(flexWrap: FlexWrap.wrap),
+    css('.timeline-row').styles(gap: Gap.all(1.rem)),
+    css('.timeline-card').styles(padding: Padding.all(1.25.rem)),
+    css('p, li, h1, h2, h3, h4, dd, dt').styles(raw: {'overflow-wrap': 'break-word'}),
+  ]),
 ];
+
+/// Every Material Symbols icon the site renders. Google Fonts only serves the
+/// glyphs listed here (`icon_names`), so an icon missing from this list shows
+/// as its name in plain text; test/material_icons_test.dart checks the source
+/// for any icon that is used but not listed. Keep it sorted.
+const materialIconNames = [
+  'architecture', 'bolt', 'call', 'chevron_left', 'chevron_right', 'cloud', 'code',
+  'design_services', 'download', 'email', 'format_quote', 'link', 'location_on', 'mail', 'pause',
+  'people', 'phone_android', 'play_arrow', 'rocket_launch', 'speed', 'stacks', 'star',
+];
+
+/// Optical size 24 and weight 400 only (what `.material-symbols-rounded`
+/// asks for), with the FILL axis kept for the filled star.
+final materialSymbolsUrl = 'https://fonts.googleapis.com/css2'
+    '?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0..1,0'
+    '&icon_names=${materialIconNames.join(',')}'
+    '&display=block';

@@ -14,7 +14,7 @@ class Projects extends StatelessComponent {
       path: '/projects',
       title: 'Projects - Mohamed Adel, Flutter Developer',
       description:
-          'Flutter apps shipped by Mohamed Adel, including Stock (10,000+ downloads, 4.8 stars) and Gomla, live on Google Play and the App Store.',
+          'Flutter apps shipped by Mohamed Adel, including Gomla and Stock (10,000+ downloads each), live on Google Play and the App Store.',
     ),
     ProjectsSection(standalone: true),
   ]);

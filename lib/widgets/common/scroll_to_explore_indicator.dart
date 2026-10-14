@@ -1,3 +1,4 @@
+import 'package:my_web_site/core/utils/motion.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -49,7 +50,7 @@ class ScrollToExploreIndicator extends StatelessWidget {
                 letterSpacing: 1.5,
               ),
             )
-                .animate(onPlay: (controller) => controller.repeat())
+                .animate(onPlay: (controller) => loopAnimation(context, controller))
                 .fadeIn(duration: 1000.ms)
                 .then()
                 .fadeOut(duration: 1000.ms),
@@ -59,7 +60,7 @@ class ScrollToExploreIndicator extends StatelessWidget {
               color: AppColors.primary,
               size: isMobile ? 24 : 28,
             )
-                .animate(onPlay: (controller) => controller.repeat())
+                .animate(onPlay: (controller) => loopAnimation(context, controller))
                 .fadeIn(duration: 800.ms)
                 .then()
                 .moveY(

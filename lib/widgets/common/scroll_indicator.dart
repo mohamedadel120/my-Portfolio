@@ -1,3 +1,4 @@
+import 'package:my_web_site/core/utils/motion.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -41,7 +42,7 @@ class ScrollIndicator extends StatelessWidget {
                   color: Theme.of(context).colorScheme.primary,
                   size: 24,
                 )
-                    .animate(onPlay: (controller) => controller.repeat())
+                    .animate(onPlay: (controller) => loopAnimation(context, controller))
                     .moveY(
                       begin: 0,
                       end: isExpanded

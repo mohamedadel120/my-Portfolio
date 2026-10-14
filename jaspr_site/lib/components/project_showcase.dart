@@ -31,6 +31,16 @@ const _googlePlayPath =
     '.59.68.59 1.19s-.22.9-.57 1.18l-2.29 1.32-3.5-3.5 3.5-3.5 2.27 1.31z'
     'M6.05 2.66l10.76 6.22-3.27 3.27-8.49-8.49z';
 
+/// The hover shared by the Google Play and App Store buttons.
+StyleRule _storeHover(String selector) => css(selector).styles(
+  color: Colors.white,
+  border: Border.all(color: const Color('#00c46a'), width: 1.px),
+  raw: {
+    'background': 'linear-gradient(135deg, #00d26a 0%, #0091ea 100%)',
+    'box-shadow': '0 0 20px 2px rgba(0, 196, 106, 0.45)',
+  },
+);
+
 /// Ported from `StickyProjectShowcase` — a scroll-driven phone mockup that
 /// stays pinned while cycling through each project's gallery images/video,
 /// with the tech-stack word and left-side info panel advancing in sync.
@@ -310,17 +320,11 @@ class StickyProjectShowcase extends StatefulComponent {
         transform: Transform.scale(1.12),
         raw: {'box-shadow': '0 0 20px 2px ${AppColors.primary.withValues(alpha: 0.5).value}'},
       ),
-      // App Store's actual brand colors -- blue gradient fill, white mark --
-      // instead of sharing the generic cyan/black hover with the Android
-      // button, since that scheme doesn't read as "App Store" at all.
-      css('.store-btn-ios:hover').styles(
-        color: Colors.white,
-        border: Border.all(color: const Color('#2ac0f5'), width: 1.px),
-        raw: {
-          'background': 'linear-gradient(135deg, #2ac0f5 0%, #1c54f7 100%)',
-          'box-shadow': '0 0 20px 2px rgba(42, 192, 245, 0.5)',
-        },
-      ),
+      // Both store buttons share one hover: a green-to-blue fill with a white
+      // mark (instead of the generic cyan/black accent). Two rules rather
+      // than one comma selector, which Jaspr would only prefix in part.
+      _storeHover('.store-btn-play:hover'),
+      _storeHover('.store-btn-ios:hover'),
       css('.store-tooltip', [
         css('&').styles(
           position: Position.absolute(bottom: 100.percent, left: 50.percent),
@@ -367,11 +371,12 @@ class StickyProjectShowcase extends StatefulComponent {
         css('&').styles(
           // Explicit dead-center positioning instead of the "static
           // position frozen by position:absolute" trick the simpler svg
-          // icons rely on -- at this glyph's larger size (2.7rem, vs the
-          // other icons' 1.3rem) that trick left it visibly off-center.
+          // icons rely on, which leaves this box visibly off-center. Sized
+          // so the mark matches the Google Play mark, and it grows in with
+          // the same scale (0.6 to 1).
           position: Position.absolute(top: 50.percent, left: 50.percent),
           raw: {
-            'font-size': '1.8rem',
+            'font-size': '0.95rem',
             'transform': 'translate(-50%, -50%) scale(0.6)',
           },
           width: 1.5.em,
@@ -753,7 +758,7 @@ class _StickyProjectShowcaseState extends State<StickyProjectShowcase> {
             ),
             div(classes: 'info-links', [
               if (androidUrl != null)
-                a(href: androidUrl, classes: 'store-btn', attributes: const {'target': '_blank', 'rel': 'noopener noreferrer'}, [
+                a(href: androidUrl, classes: 'store-btn store-btn-play',attributes: const {'target': '_blank', 'rel': 'noopener noreferrer'}, [
                   span(classes: 'store-tooltip', [.text('Google Play')]),
                   svg([
                     path(d: _androidLogoPath, fill: const Color('currentColor'), []),

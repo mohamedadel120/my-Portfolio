@@ -47,3 +47,14 @@ Future<List<ExperienceItem>> fetchExperiences() async {
   });
   return items;
 }
+
+/// First year found in any experience period, or null when no period
+/// contains a four-digit year.
+int? earliestStartYear(List<ExperienceItem> items) {
+  final years = [
+    for (final item in items)
+      if (_periodStartYear(item.period) > 0) _periodStartYear(item.period),
+  ];
+  if (years.isEmpty) return null;
+  return years.reduce((a, b) => a < b ? a : b);
+}

@@ -1,3 +1,4 @@
+import 'package:my_web_site/core/utils/motion.dart';
 import 'package:my_web_site/widgets/common/app_loading_indicator.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -76,7 +77,7 @@ class AboutMobileView extends StatelessWidget {
                             (scrollOffset - sectionStartOffset).abs() <
                                 viewportHeight * 2;
                         return isNearViewport
-                            ? blob.animate(onPlay: (c) => c.repeat()).scale(
+                            ? blob.animate(onPlay: (c) => loopAnimation(context, c)).scale(
                                   duration: 10.seconds,
                                   begin: const Offset(1, 1),
                                   end: const Offset(1.5, 1.5),

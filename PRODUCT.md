@@ -1,4 +1,6 @@
-# PRODUCT.md — Mohamed Adel Portfolio
+# PRODUCT.md: Mohamed Adel Portfolio
+
+<!-- impeccable:product-schema 1 -->
 
 Durable product context for design work on this site. Facts are drawn from the
 code, the live Firestore content, and Muhammed's brand kit; anything marked
@@ -44,9 +46,15 @@ The site itself is in English. Arabic appears only in the logo wordmark.
 These are the strongest facts on the site; design should make them easy to
 find, not bury them in decoration.
 
-- **Stock (B2B inventory):** 10,000+ downloads, 4.8★ on Google Play and the
-  App Store. Flutter, Bloc, Clean Architecture.
-- **Gomla (e-commerce):** 5,000+ downloads, 4.8★, payments integration.
+- **Gomla (featured, his strongest app):** 10,000+ downloads. AI skin analysis,
+  virtual makeup try-on and delivery in one app. Shown first, with a
+  "Featured project" badge. Do not call it "the first app of its kind": the
+  owner cannot verify that; describe what it does instead.
+- **Stock (B2B inventory):** 10,000+ downloads. Flutter, Bloc, Clean Architecture.
+- **Albatal (marketplace):** 1,000+ downloads.
+- Other projects: no download figure.
+- **Ratings are not confirmed yet.** No "4.8★" (or any rating) may be shown
+  until the owner supplies real per-app ratings (`rating` field).
 - Further shipped apps with real screenshots: Adruse, Albatal, Paletta,
   Drugza (demo video).
 - Testimonials from named clients (The First-Agency, Stock Tech, Gomla).
@@ -116,3 +124,18 @@ intentional web-only exception.
   placeholder data. Do not feature or redesign around it until confirmed.
 - About-section features and skills come from hardcoded fallbacks (with
   duplicates) because Firestore lacks those fields.
+
+## Confirmed by the owner (October 2026)
+
+- Audience: both clients and companies; the goal is to be contacted or hired.
+- The Projects section uses the pinned showcase: the section stays on screen,
+  scroll switches project in place, the phone plays screenshots like a short
+  video (tap to pause), text is typed. Phones get stacked cards.
+- Download figures: Gomla and Stock 10,000+, Albatal 1,000+, the rest none.
+  Unverified figures (ratings, "35% increase in engagement") stay off the site.
+- Gomla story (owner's words): people had to go to a store to try beauty
+  products, and many needed a dermatologist to learn their skin type first;
+  the app analyses your skin with AI, says which products you need and which
+  you do not, lets you try makeup virtually, and delivers to your door.
+- Pending from the owner: real ratings, role per project, "I" or "we", the
+  Palleta problem statement, the AI technology Gomla uses.

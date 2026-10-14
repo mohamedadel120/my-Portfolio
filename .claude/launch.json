@@ -1,0 +1,23 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "portfolio",
+      "runtimeExecutable": "powershell",
+      "runtimeArgs": ["-NoProfile", "-Command", "Set-Location jaspr_site; dart pub global run jaspr_cli:jaspr serve"],
+      "port": 8080
+    },
+    {
+      "name": "portfolio-preview-data",
+      "runtimeExecutable": "powershell",
+      "runtimeArgs": ["-NoProfile", "-Command", "Set-Location jaspr_site; dart pub global run jaspr_cli:jaspr serve --dart-define=PREVIEW_DATA=true"],
+      "port": 8080
+    },
+    {
+      "name": "portfolio-v1-original",
+      "runtimeExecutable": "powershell",
+      "runtimeArgs": ["-NoProfile", "-Command", "Set-Location jaspr_site; dart pub global run jaspr_cli:jaspr serve --dart-define=PROJECTS_VARIANT=v1"],
+      "port": 8080
+    }
+  ]
+}

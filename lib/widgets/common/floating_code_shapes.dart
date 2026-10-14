@@ -1,3 +1,4 @@
+import 'package:my_web_site/core/utils/motion.dart';
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -78,7 +79,7 @@ class FloatingCodeShapes extends StatelessWidget {
                   if (!isVisible) return positioned;
 
                   return positioned
-                      .animate(onPlay: (controller) => controller.repeat())
+                      .animate(onPlay: (controller) => loopAnimation(context, controller))
                       .fadeIn(delay: (index * 100).ms, duration: 2000.ms)
                       .then()
                       .moveY(

@@ -65,7 +65,7 @@ class Header extends StatefulComponent {
         ),
       ]),
       css('.nav-logo img', [
-        css('&').styles(height: 3.25.rem),
+        css('&').styles(height: 3.25.rem, width: Unit.auto),
       ]),
       // "Tubelight" pill nav: a floating rounded capsule around the links,
       // each item pill-shaped, with a glowing bar ("lamp") fading in above
@@ -258,7 +258,9 @@ class _HeaderState extends State<Header> {
     return header(classes: _scrolled ? 'nav-bar scrolled' : 'nav-bar', [
       div(classes: 'nav-inner', [
         a(href: '/#hero', classes: 'nav-logo', [
-          img(src: 'images/logo1.png', alt: 'Mohamed Adel'),
+          // Intrinsic size reserves the space before the image loads (no layout shift);
+          // CSS sets the displayed height.
+          img(src: 'images/logo1.png', alt: 'Mohamed Adel', attributes: const {'width': '450', 'height': '450'}),
         ]),
         nav(classes: 'nav-links desktop-only', [
           for (final link in _links)

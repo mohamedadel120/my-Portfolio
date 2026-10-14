@@ -40,7 +40,7 @@ class AboutLocalDataSourceImpl implements AboutLocalDataSource {
           iconCode: 'devices_rounded',
         ),
       ],
-      skills: const [
+      skills: [
         TechnicalSkill(
           name: 'Flutter & Dart',
           progress: 0.95,

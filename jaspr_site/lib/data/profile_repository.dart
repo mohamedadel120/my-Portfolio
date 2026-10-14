@@ -115,7 +115,8 @@ Future<AboutData> fetchAboutData() async {
   return AboutData(
     professionalSummary: data['professionalSummary'] as String? ?? '',
     downloadsCount: data['downloadsCount'] as String? ?? '10k+',
-    ratings: data['ratings'] as String? ?? '4.8',
+    // No fallback: a rating is only shown once the owner supplies a real one.
+    ratings: data['ratings'] as String? ?? '',
     features: rawFeatures != null && rawFeatures.isNotEmpty
         ? rawFeatures
             .cast<Map<String, dynamic>>()

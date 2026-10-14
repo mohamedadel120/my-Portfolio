@@ -13,88 +13,93 @@ class ProjectStatsDashboard extends StatelessWidget {
     required this.isTablet,
   });
 
+  // Firestore / local data can omit a field or send it as int or double, so
+  // read every stat defensively instead of casting.
+  num _num(String key) {
+    final value = stats[key];
+    return value is num ? value : 0;
+  }
+
   @override
   Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    final dividerColor = scheme.primary.withValues(alpha: 0.3);
+
+    final items = [
+      _StatItem(
+        icon: Icons.apps_rounded,
+        label: 'Projects',
+        value: '${_num('totalProjects').toInt()}',
+        color: scheme.primary,
+        isMobile: isMobile,
+        isTablet: isTablet,
+      ),
+      _StatItem(
+        icon: Icons.download_rounded,
+        label: 'Downloads',
+        value: '${(_num('totalDownloads') / 1000).toStringAsFixed(0)}K+',
+        color: scheme.secondary,
+        isMobile: isMobile,
+        isTablet: isTablet,
+      ),
+      _StatItem(
+        icon: Icons.star_rounded,
+        label: 'Rating',
+        value: _num('averageRating').toStringAsFixed(1),
+        color: scheme.primary,
+        isMobile: isMobile,
+        isTablet: isTablet,
+      ),
+      _StatItem(
+        icon: Icons.code_rounded,
+        label: 'Tech Stacks',
+        value: '${_num('techStacks').toInt()}',
+        color: scheme.secondary,
+        isMobile: isMobile,
+        isTablet: isTablet,
+      ),
+    ];
+
     return Container(
-      padding: EdgeInsets.all(isMobile ? 20 : (isTablet ? 24 : 28)),
+      padding: EdgeInsets.symmetric(
+        horizontal: isMobile ? 8 : (isTablet ? 20 : 28),
+        vertical: isMobile ? 20 : (isTablet ? 24 : 28),
+      ),
+      // Elevation is declared once, by the border; the extra drop shadow
+      // under a bordered gradient card read as a ghost card.
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            Theme.of(context).colorScheme.primary.withValues(alpha: 0.15),
-            Theme.of(context).colorScheme.secondary.withValues(alpha: 0.1),
-            Theme.of(context).colorScheme.surface.withValues(alpha: 0.9),
+            scheme.primary.withValues(alpha: 0.15),
+            scheme.secondary.withValues(alpha: 0.1),
+            scheme.surface.withValues(alpha: 0.9),
           ],
           stops: const [0.0, 0.5, 1.0],
         ),
-        borderRadius: BorderRadius.circular(24),
+        borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.3),
-          width: 1.5,
+          color: scheme.primary.withValues(alpha: 0.3),
         ),
-        boxShadow: [
-          BoxShadow(
-            color: Theme.of(
-              context,
-            ).colorScheme.primary.withValues(alpha: 0.15),
-            blurRadius: 25,
-            spreadRadius: 0,
-            offset: const Offset(0, 6),
-          ),
-        ],
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          _StatItem(
-            icon: Icons.apps_rounded,
-            label: 'Projects',
-            value: '${stats['totalProjects']}',
-            color: Theme.of(context).colorScheme.primary,
-            isMobile: isMobile,
-            isTablet: isTablet,
-          ),
-          Container(
-            width: 1,
-            height: isMobile ? 40 : 50,
-            color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.3),
-          ),
-          _StatItem(
-            icon: Icons.download_rounded,
-            label: 'Downloads',
-            value: '${(stats['totalDownloads'] / 1000).toStringAsFixed(0)}K+',
-            color: Theme.of(context).colorScheme.secondary,
-            isMobile: isMobile,
-            isTablet: isTablet,
-          ),
-          Container(
-            width: 1,
-            height: isMobile ? 40 : 50,
-            color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.3),
-          ),
-          _StatItem(
-            icon: Icons.star_rounded,
-            label: 'Rating',
-            value: stats['averageRating'].toStringAsFixed(1),
-            color: Theme.of(context).colorScheme.primary,
-            isMobile: isMobile,
-            isTablet: isTablet,
-          ),
-          Container(
-            width: 1,
-            height: isMobile ? 40 : 50,
-            color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.3),
-          ),
-          _StatItem(
-            icon: Icons.code_rounded,
-            label: 'Tech Stacks',
-            value: '${stats['techStacks']}',
-            color: Theme.of(context).colorScheme.secondary,
-            isMobile: isMobile,
-            isTablet: isTablet,
-          ),
-        ],
+      child: IntrinsicHeight(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            for (var i = 0; i < items.length; i++) ...[
+              if (i > 0)
+                Container(
+                  width: 1,
+                  height: isMobile ? 40 : 50,
+                  color: dividerColor,
+                ),
+              // Equal flexible columns so four stats never overflow a
+              // 360px phone, whatever the label length.
+              Expanded(child: items[i]),
+            ],
+          ],
+        ),
       ),
     );
   }
@@ -119,45 +124,56 @@ class _StatItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Container(
-          padding: EdgeInsets.all(isMobile ? 10 : 12),
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                color.withValues(alpha: 0.3),
-                color.withValues(alpha: 0.15),
-              ],
+    final onSurface = Theme.of(context).colorScheme.onSurface;
+
+    return Semantics(
+      label: '$label: $value',
+      excludeSemantics: true,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            padding: EdgeInsets.all(isMobile ? 10 : 12),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  color.withValues(alpha: 0.3),
+                  color.withValues(alpha: 0.15),
+                ],
+              ),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: color.withValues(alpha: 0.4)),
             ),
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: color.withValues(alpha: 0.4), width: 1.5),
+            child: Icon(icon, color: color, size: isMobile ? 24 : 28),
           ),
-          child: Icon(icon, color: color, size: isMobile ? 24 : 28),
-        ),
-        SizedBox(height: isMobile ? 8 : 12),
-        Text(
-          value,
-          style: GoogleFonts.jetBrainsMono(
-            fontSize: isMobile ? 20 : (isTablet ? 24 : 28),
-            fontWeight: FontWeight.bold,
-            color: Theme.of(context).colorScheme.onSurface,
-            letterSpacing: 0.5,
+          SizedBox(height: isMobile ? 8 : 12),
+          FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Text(
+              value,
+              style: GoogleFonts.jetBrainsMono(
+                fontSize: isMobile ? 20 : (isTablet ? 24 : 28),
+                fontWeight: FontWeight.bold,
+                color: onSurface,
+                letterSpacing: 0.5,
+                fontFeatures: const [FontFeature.tabularFigures()],
+              ),
+            ),
           ),
-        ),
-        const SizedBox(height: 4),
-        Text(
-          label,
-          style: GoogleFonts.jetBrainsMono(
-            fontSize: isMobile ? 11 : (isTablet ? 12 : 13),
-            color: Theme.of(
-              context,
-            ).colorScheme.onSurface.withValues(alpha: 0.7),
-            letterSpacing: 0.3,
+          const SizedBox(height: 4),
+          Text(
+            label,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            textAlign: TextAlign.center,
+            style: GoogleFonts.jetBrainsMono(
+              fontSize: isMobile ? 11 : (isTablet ? 12 : 13),
+              color: onSurface.withValues(alpha: 0.7),
+              letterSpacing: 0.3,
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

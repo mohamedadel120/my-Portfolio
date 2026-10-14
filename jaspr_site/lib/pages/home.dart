@@ -20,7 +20,7 @@ class Home extends StatelessComponent {
         path: '/',
         title: 'Mohamed Adel - Flutter Developer Portfolio',
         description:
-            'Mohamed Adel, Flutter developer in Cairo with 3+ years shipping iOS and Android apps. Stock: 10,000+ downloads, 4.8 stars. Download the CV or get in touch.',
+            'Mohamed Adel, Flutter developer in Cairo with 3+ years shipping iOS and Android apps. Gomla and Stock: 10,000+ downloads each. Download the CV or get in touch.',
       ),
       HeroSection(),
       AboutSection(),

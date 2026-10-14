@@ -45,11 +45,12 @@ class AboutSection extends AsyncStatelessComponent {
                 span(classes: 'impact-value', [.text(about.downloadsCount)]),
                 span(classes: 'impact-label', [.text('DOWNLOADS')]),
               ]),
-              div(classes: 'impact-stat', [
-                span(classes: 'material-symbols-rounded impact-icon', [.text('star')]),
-                span(classes: 'impact-value', [.text(about.ratings)]),
-                span(classes: 'impact-label', [.text('RATINGS')]),
-              ]),
+              if (about.ratings.trim().isNotEmpty)
+                div(classes: 'impact-stat', [
+                  span(classes: 'material-symbols-rounded impact-icon', [.text('star')]),
+                  span(classes: 'impact-value', [.text(about.ratings)]),
+                  span(classes: 'impact-label', [.text('RATINGS')]),
+                ]),
             ]),
           ],
         ),

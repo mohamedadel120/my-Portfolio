@@ -1,3 +1,4 @@
+import 'package:my_web_site/core/utils/motion.dart';
 import 'package:my_web_site/widgets/common/app_loading_indicator.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -101,8 +102,9 @@ class _HeroMobileViewState extends State<HeroMobileView> {
                                   return isNearViewport
                                       ? aurora
                                           .animate(
-                                              onPlay: (c) =>
-                                                  c.repeat(reverse: true))
+                                              onPlay: (c) => loopAnimation(
+                                                  context, c,
+                                                  reverse: true))
                                           .scale(
                                             begin: const Offset(1, 1),
                                             end: const Offset(1.2, 1.2),

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AnalyticsService {
@@ -12,7 +13,7 @@ class AnalyticsService {
       final docRef = _firestore.collection('analytics').doc('summary');
       final String today = DateTime.now().toIso8601String().split('T').first;
 
-      Map<String, dynamic> data = {
+      final Map<String, dynamic> data = {
         'totalVisits': FieldValue.increment(1),
         'visitsOverTime': {
           today: FieldValue.increment(1),
@@ -26,7 +27,7 @@ class AnalyticsService {
 
       await docRef.set(data, SetOptions(merge: true));
     } catch (e) {
-      print('Error logging visit: $e');
+      debugPrint('Error logging visit: $e');
     }
   }
 
@@ -40,7 +41,7 @@ class AnalyticsService {
         }
       }, SetOptions(merge: true));
     } catch (e) {
-      print('Error logging project click: $e');
+      debugPrint('Error logging project click: $e');
     }
   }
 }
