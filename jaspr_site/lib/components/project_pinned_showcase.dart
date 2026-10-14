@@ -5,6 +5,7 @@ import '../constants/motion_css.dart';
 import '../constants/theme.dart';
 import 'pinned_helpers.vm.dart' if (dart.library.js_interop) 'pinned_helpers.web.dart';
 import 'project_showcase.vm.dart' if (dart.library.js_interop) 'project_showcase.web.dart';
+import 'case_study_link.dart';
 import 'cta_link.dart';
 import 'featured_label.dart';
 import 'project_view.dart';
@@ -701,6 +702,7 @@ class _ProjectPinnedShowcaseState extends State<ProjectPinnedShowcase> {
         if (view.downloads.isNotEmpty) p(classes: 'pp-meta', [.text(view.downloads)]),
         FeaturedLabel(view),
         p(classes: 'pp-description', [_typed(view.description, _typedDesc, active, showCaret: descTyping)]),
+        CaseStudyLink(view, focusable: active),
         if (view.tech.isNotEmpty)
           ul(classes: 'pp-tech', attributes: {'aria-label': 'Technologies'}, [
             for (final (k, item) in view.tech.indexed) li(styles: Styles(raw: {'--k': '$k'}), [.text(item)]),
@@ -827,6 +829,7 @@ class _ProjectPinnedShowcaseState extends State<ProjectPinnedShowcase> {
         if (view.images.isNotEmpty) ShotGalleryView(title: view.title, images: view.images, eagerFirst: index == 0),
         FeaturedLabel(view),
         p(classes: 'pp-description', [.text(view.description)]),
+        CaseStudyLink(view),
         if (view.tech.isNotEmpty)
           ul(classes: 'pp-tech', attributes: {'aria-label': 'Technologies'}, [
             for (final item in view.tech) li([.text(item)]),

@@ -5,11 +5,13 @@
 // Generated with jaspr_builder
 
 import 'package:jaspr/server.dart';
+import 'package:jaspr_site/components/case_study_link.dart' as _case_study_link;
 import 'package:jaspr_site/components/contact_form.dart' as _contact_form;
 import 'package:jaspr_site/components/cta_link.dart' as _cta_link;
 import 'package:jaspr_site/components/custom_cursor.dart' as _custom_cursor;
 import 'package:jaspr_site/components/featured_label.dart' as _featured_label;
 import 'package:jaspr_site/components/header.dart' as _header;
+import 'package:jaspr_site/components/project_gallery.dart' as _project_gallery;
 import 'package:jaspr_site/components/project_pinned_showcase.dart'
     as _project_pinned_showcase;
 import 'package:jaspr_site/components/project_showcase.dart'
@@ -19,6 +21,8 @@ import 'package:jaspr_site/components/shot_gallery.dart' as _shot_gallery;
 import 'package:jaspr_site/components/store_buttons.dart' as _store_buttons;
 import 'package:jaspr_site/components/visit_tracker.dart' as _visit_tracker;
 import 'package:jaspr_site/constants/theme.dart' as _theme;
+import 'package:jaspr_site/pages/project_case_study.dart'
+    as _project_case_study;
 import 'package:jaspr_site/sections/about_section.dart' as _about_section;
 import 'package:jaspr_site/sections/contact_section.dart' as _contact_section;
 import 'package:jaspr_site/sections/experience_section.dart'
@@ -62,6 +66,11 @@ ServerOptions get defaultServerOptions => ServerOptions(
       'header',
       params: __headerHeader,
     ),
+    _project_gallery.ProjectGallery:
+        ClientTarget<_project_gallery.ProjectGallery>(
+          'project_gallery',
+          params: __project_galleryProjectGallery,
+        ),
     _project_pinned_showcase.ProjectPinnedShowcase:
         ClientTarget<_project_pinned_showcase.ProjectPinnedShowcase>(
           'project_pinned_showcase',
@@ -81,6 +90,7 @@ ServerOptions get defaultServerOptions => ServerOptions(
   },
   styles: () => [
     ..._theme.styles,
+    ..._case_study_link.CaseStudyLink.styles,
     ..._contact_form.ContactForm.styles,
     ..._cta_link.CtaLink.styles,
     ..._custom_cursor.CustomCursor.styles,
@@ -90,6 +100,7 @@ ServerOptions get defaultServerOptions => ServerOptions(
     ..._project_showcase.StickyProjectShowcase.styles,
     ..._shot_gallery.ShotGalleryView.styles,
     ..._store_buttons.StoreButtons.styles,
+    ..._project_case_study.ProjectCaseStudy.styles,
     ..._about_section.AboutSection.styles,
     ..._contact_section.ContactSection.styles,
     ..._experience_section.ExperienceSection.styles,
@@ -105,6 +116,9 @@ Map<String, Object?> __contact_formContactForm(_contact_form.ContactForm c) => {
   'recipientEmail': c.recipientEmail,
 };
 Map<String, Object?> __headerHeader(_header.Header c) => {'cvUrl': c.cvUrl};
+Map<String, Object?> __project_galleryProjectGallery(
+  _project_gallery.ProjectGallery c,
+) => {'title': c.title, 'images': c.images};
 Map<String, Object?> __project_pinned_showcaseProjectPinnedShowcase(
   _project_pinned_showcase.ProjectPinnedShowcase c,
 ) => {'projects': c.projects};

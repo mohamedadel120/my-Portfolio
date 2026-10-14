@@ -12,12 +12,16 @@ class CtaLink extends StatelessComponent {
   /// False inside a hidden (inactive) panel, so keyboard focus skips it.
   final bool focusable;
 
-  const CtaLink({this.focusable = true, super.key});
+  /// Root-relative, so it reaches the contact section from any page (on the
+  /// home page itself it just scrolls there).
+  final String href;
+
+  const CtaLink({this.focusable = true, this.href = '/#contact', super.key});
 
   @override
   Component build(BuildContext context) {
     return a(
-      href: '#contact',
+      href: href,
       classes: 'cta-btn',
       attributes: {if (!focusable) 'tabindex': '-1'},
       [

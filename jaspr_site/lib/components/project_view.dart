@@ -24,6 +24,10 @@ class ProjectView {
   final bool featured;
   final String? highlight;
 
+  /// URL name of the case study page; null when the project has none (for
+  /// example in tests that build a map by hand).
+  final String? slug;
+
   const ProjectView({
     required this.title,
     required this.description,
@@ -37,6 +41,7 @@ class ProjectView {
     required this.facts,
     this.featured = false,
     this.highlight,
+    this.slug,
   });
 
   factory ProjectView.fromMap(Map<String, dynamic> map) {
@@ -57,10 +62,21 @@ class ProjectView {
       ],
       featured: map['featured'] == true,
       highlight: clean(map['highlight']),
+      slug: clean(map['slug']),
     );
   }
 
   bool get hasStoreLink => androidUrl != null || iosUrl != null;
+
+  /// Address of this project's case study page, or null without a slug.
+  String? get caseStudyPath => slug == null ? null : '/projects/$slug';
+
+  /// The owner-written story fields, each null until written.
+  String? factOf(String label) => [for (final (l, v) in facts) if (l == label) v].firstOrNull;
+
+  /// "Android and iOS", "Android", ... from the store links; empty when the
+  /// project is on neither store.
+  String get platforms => [if (androidUrl != null) 'Android', if (iosUrl != null) 'iOS'].join(' and ');
 
   /// A `#rrggbb` string safe to drop into a CSS custom property.
   String get accentHex => '#${accentRgb.toRadixString(16).padLeft(6, '0')}';

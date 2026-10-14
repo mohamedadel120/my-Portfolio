@@ -166,7 +166,7 @@ List<StyleRule> get styles => [
 /// as its name in plain text; test/material_icons_test.dart checks the source
 /// for any icon that is used but not listed. Keep it sorted.
 const materialIconNames = [
-  'architecture', 'bolt', 'call', 'chevron_left', 'chevron_right', 'cloud', 'code',
+  'architecture', 'arrow_back', 'arrow_forward', 'bolt', 'call', 'chevron_left', 'chevron_right', 'cloud', 'code',
   'design_services', 'download', 'email', 'format_quote', 'link', 'location_on', 'mail', 'pause',
   'people', 'phone_android', 'play_arrow', 'rocket_launch', 'speed', 'stacks', 'star',
 ];

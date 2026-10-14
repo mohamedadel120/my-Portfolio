@@ -6,7 +6,10 @@ import 'components/custom_cursor.dart';
 import 'components/header.dart';
 import 'components/scroll_reveal.dart';
 import 'components/visit_tracker.dart';
+import 'components/project_view.dart';
 import 'data/profile_repository.dart';
+import 'pages/project_case_study.dart';
+import 'sections/projects_section.dart';
 import 'pages/home.dart';
 import 'pages/about.dart';
 import 'pages/projects.dart';
@@ -29,6 +32,12 @@ class App extends AsyncStatelessComponent {
     // just also pulling cvUrl this time so the nav's "DOWNLOAD CV" button
     // has a real link instead of the placeholder href="#" it shipped with.
     final hero = await fetchHeroData();
+
+    // One case study page per project, at a fixed address each: a static
+    // build only generates routes it can list, so `/projects/:slug` (a
+    // path parameter) would not be pre-rendered.
+    final projects = await fetchProjectMaps();
+    final count = projects.length;
 
     return div(classes: 'app-shell', [
       Header(cvUrl: hero.cvUrl),
@@ -54,6 +63,17 @@ class App extends AsyncStatelessComponent {
               title: 'Projects - Mohamed Adel, Flutter Developer',
               builder: (context, state) => const Projects(),
             ),
+            for (final (i, project) in projects.indexed)
+              Route(
+                path: '/projects/${project['slug']}',
+                title: ProjectCaseStudy.pageTitle(ProjectView.fromMap(project)),
+                builder: (context, state) => ProjectCaseStudy(
+                  project: project,
+                  // The list wraps around, so the last project leads back to the first.
+                  previous: count > 1 ? projects[(i - 1 + count) % count] : null,
+                  next: count > 1 ? projects[(i + 1) % count] : null,
+                ),
+              ),
             Route(
               path: '/contact',
               title: 'Contact - Mohamed Adel, Flutter Developer',

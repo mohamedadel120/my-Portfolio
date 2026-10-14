@@ -7,6 +7,7 @@ import '../constants/projects_variant.dart';
 import '../constants/theme.dart';
 import '../data/experience_repository.dart';
 import '../data/preview_data.dart';
+import '../data/project_slug.dart';
 import '../data/projects_repository.dart';
 
 /// Proof strip (verifiable facts only) plus the scroll-driven phone-mockup
@@ -40,7 +41,7 @@ class ProjectsSection extends AsyncStatelessComponent {
       else
         h2(classes: 'section-title', [.text('Projects')]),
       ...proofStrip(summary),
-      showcase(variant, withPreviewData([for (final p in projects) _toMap(p)])),
+      showcase(variant, projectMaps(projects)),
     ]);
   }
 
@@ -51,23 +52,6 @@ class ProjectsSection extends AsyncStatelessComponent {
       ProjectsVariant.pinnedShowcase => ProjectPinnedShowcase(projects: projects),
     };
   }
-
-  Map<String, dynamic> _toMap(ProjectItem p) => {
-    'title': p.title,
-    'description': p.description,
-    'tech': p.tech,
-    'color': p.color,
-    'downloads': p.downloads,
-    'galleryImages': p.galleryImages,
-    'androidStoreUrl': p.androidStoreUrl,
-    'iosStoreUrl': p.iosStoreUrl,
-    'videoUrl': p.videoUrl,
-    'role': p.role,
-    'problem': p.problem,
-    'outcome': p.outcome,
-    'featured': p.featured,
-    'highlight': p.highlight,
-  };
 
   @css
   static List<StyleRule> get styles => [
@@ -110,6 +94,33 @@ class ProjectsSection extends AsyncStatelessComponent {
     ]),
   ];
 }
+
+/// Every project as the plain map the presentations (and the case study
+/// pages) read through [ProjectView], each with its unique `slug`. One
+/// function for both, so the showcase links and the generated pages always
+/// agree on the addresses.
+List<Map<String, dynamic>> projectMaps(List<ProjectItem> projects) =>
+    withSlugs(withPreviewData([for (final p in projects) _toMap(p)]));
+
+Future<List<Map<String, dynamic>>> fetchProjectMaps() async => projectMaps(await fetchProjects());
+
+Map<String, dynamic> _toMap(ProjectItem p) => {
+  'title': p.title,
+  'description': p.description,
+  'tech': p.tech,
+  'color': p.color,
+  'downloads': p.downloads,
+  'galleryImages': p.galleryImages,
+  'androidStoreUrl': p.androidStoreUrl,
+  'iosStoreUrl': p.iosStoreUrl,
+  'videoUrl': p.videoUrl,
+  'role': p.role,
+  'problem': p.problem,
+  'outcome': p.outcome,
+  'featured': p.featured,
+  'highlight': p.highlight,
+  'slug': p.slug,
+};
 
 /// One fact: a label and its value. Public so tests can render it.
 class ProofFact {

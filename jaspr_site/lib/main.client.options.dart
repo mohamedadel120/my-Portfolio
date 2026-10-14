@@ -11,6 +11,8 @@ import 'package:jaspr_site/components/contact_form.dart'
 import 'package:jaspr_site/components/custom_cursor.dart'
     deferred as _custom_cursor;
 import 'package:jaspr_site/components/header.dart' deferred as _header;
+import 'package:jaspr_site/components/project_gallery.dart'
+    deferred as _project_gallery;
 import 'package:jaspr_site/components/project_pinned_showcase.dart'
     deferred as _project_pinned_showcase;
 import 'package:jaspr_site/components/project_showcase.dart'
@@ -51,6 +53,13 @@ ClientOptions get defaultClientOptions => ClientOptions(
     'header': ClientLoader(
       (p) => _header.Header(cvUrl: p['cvUrl'] as String),
       loader: _header.loadLibrary,
+    ),
+    'project_gallery': ClientLoader(
+      (p) => _project_gallery.ProjectGallery(
+        title: p['title'] as String,
+        images: (p['images'] as List<Object?>).cast<String>(),
+      ),
+      loader: _project_gallery.loadLibrary,
     ),
     'project_pinned_showcase': ClientLoader(
       (p) => _project_pinned_showcase.ProjectPinnedShowcase(

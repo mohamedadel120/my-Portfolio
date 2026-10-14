@@ -33,6 +33,10 @@ class ProjectItem {
   final bool featured;
   final String? highlight;
 
+  /// Owner-chosen URL name of the case study page (Firestore `slug`). When
+  /// absent the site makes one from the title (see data/project_slug.dart).
+  final String? slug;
+
   const ProjectItem({
     required this.title,
     required this.description,
@@ -51,6 +55,7 @@ class ProjectItem {
     this.outcome,
     this.featured = false,
     this.highlight,
+    this.slug,
   });
 
   bool get hasAndroid => _isUsable(androidStoreUrl);
@@ -78,6 +83,7 @@ class ProjectItem {
       outcome: _nonBlank(json['outcome']),
       featured: parseFlag(json['featured']),
       highlight: _nonBlank(json['highlight']),
+      slug: _nonBlank(json['slug']),
     );
   }
 }
