@@ -113,17 +113,34 @@ class ProjectPinnedShowcase extends StatefulComponent {
         color: AppColors.textPrimary,
         textDecoration: TextDecoration.none,
         fontSize: AppType.size(TypeStep.small, was: 0.8.rem),
-        raw: {'top': '6rem', 'backdrop-filter': 'blur(6px)'},
+        // Below the fixed header (it used to sit half under it).
+        raw: {'top': '7.5rem', 'backdrop-filter': 'blur(6px)'},
       ),
       css('&:focus-visible').styles(raw: {'outline': '2px solid ${AppColors.primary.value}', 'outline-offset': '2px'}),
+      // A keyboard shortcut: hidden until it receives focus from the Tab key,
+      // like any skip link, but still read by screen readers.
+      css('&:not(:focus-visible)').styles(raw: {
+        'clip-path': 'inset(50%)',
+        'width': '1px',
+        'height': '1px',
+        'min-height': '0',
+        'padding': '0',
+        'border': '0',
+        'overflow': 'hidden',
+        'white-space': 'nowrap',
+      }),
     ]),
+    // Which project out of how many. Only below 1200px, where the project list
+    // on the right is hidden (the list already shows it on wider screens), and
+    // at the bottom of the stage, clear of the fixed header.
     css('.pp-counter', [
       css('&').styles(
-        position: Position.absolute(left: 2.rem),
+        position: Position.absolute(left: 2.rem, bottom: 1.25.rem),
+        display: Display.none,
         color: AppColors.textSecondary,
         fontFamily: themed(null, calm: AppFonts.of(FontRole.accent, was: AppFonts.jetBrainsMono)),
         fontSize: AppType.size(TypeStep.small, was: 0.85.rem),
-        raw: {'top': '6.4rem', 'font-variant-numeric': 'tabular-nums', 'white-space': 'nowrap'},
+        raw: {'font-variant-numeric': 'tabular-nums', 'white-space': 'nowrap'},
       ),
     ]),
     // The pinned stage. Information on the left, the phone on the right of it.
@@ -167,7 +184,7 @@ class ProjectPinnedShowcase extends StatefulComponent {
       css('.pp .pp-media').styles(raw: {'--h': 'min(26rem, 52dvh)'}),
       css('.pp .pp-deck').styles(raw: {'gap': '0.6rem'}),
       css('.pp .pp-btn').styles(raw: {'width': '2.4rem', 'height': '2.4rem'}),
-      css('.pp .pp-counter').styles(raw: {'left': '2rem'}),
+      css('.pp .pp-counter').styles(raw: {'left': '2rem', 'display': 'block'}),
       css('.pp .pp-skip').styles(raw: {'right': '2rem'}),
     ]),
     RawMediaRule('(max-height: 680px)', [
