@@ -1,6 +1,7 @@
 import 'package:jaspr/dom.dart';
 import 'package:jaspr/server.dart';
 
+import '../constants/home_layout.dart';
 import '../constants/theme.dart';
 import '../data/profile_repository.dart';
 
@@ -10,12 +11,35 @@ import '../data/profile_repository.dart';
 /// crawler sees. Entrance animations (staggered fade+slide for the eyebrow/
 /// name/footer) and the aurora's slow pulse are plain CSS `@keyframes`
 /// instead of the original's `flutter_animate` calls.
+///
+/// The v2 home layout (see constants/home_layout.dart) swaps the giant name
+/// for a headline that says what Mohamed builds and proves it; the name moves
+/// into the eyebrow line. v1 is today's hero, untouched.
 class HeroSection extends AsyncStatelessComponent {
-  const HeroSection({super.key});
+  /// Which home structure this hero belongs to. Defaults to [homeLayout].
+  final HomeLayout layout;
+
+  /// The v2 headline option (index into [heroCopies]). Ignored by v1.
+  final int copyIndex;
+
+  const HeroSection({super.key, this.layout = homeLayout, this.copyIndex = heroCopyIndex});
 
   @override
   Future<Component> build(BuildContext context) async {
     final hero = await fetchHeroData();
+    return content(hero, layout: layout, copyIndex: copyIndex);
+  }
+
+  /// The hero markup for [hero]. Public so tests can render every layout and
+  /// headline option without a network fetch.
+  static Component content(HeroData hero, {HomeLayout layout = homeLayout, int copyIndex = heroCopyIndex}) {
+    return switch (layout) {
+      HomeLayout.v1 => _v1(hero),
+      HomeLayout.v2 => _v2(hero, heroCopies[copyIndex]),
+    };
+  }
+
+  static Component _v1(HeroData hero) {
     // Original's _buildTitleSpans: the word "DEVELOPER" within the eyebrow
     // title (e.g. "FLUTTER DEVELOPER") is colored differently from the rest.
     final titleParts = hero.title.toUpperCase().split('DEVELOPER');
@@ -37,6 +61,27 @@ class HeroSection extends AsyncStatelessComponent {
         h1(classes: 'hero-name', [.text(hero.name.toUpperCase())]),
         div(classes: 'hero-footer', [
           p(classes: 'hero-subtitle', [.text(hero.subtitle)]),
+          div(classes: 'hero-actions', [
+            a(href: '/#projects', classes: 'hero-action', [.text('PROJECTS →')]),
+            a(href: '/#contact', classes: 'hero-action', [.text('CONTACT →')]),
+          ]),
+        ]),
+      ]),
+    ]);
+  }
+
+  static Component _v2(HeroData hero, HeroCopy copy) {
+    return section(id: 'hero', classes: 'hero hero-v2', [
+      div(classes: 'hero-aurora', []),
+      div(classes: 'hero-content reveal', [
+        div(classes: 'hero-eyebrow', [
+          span([.text(hero.name.toUpperCase())]),
+          div(classes: 'hero-eyebrow-line', []),
+          span(classes: 'hero-location', [.text('${hero.title.toUpperCase()} · CAIRO, EGYPT')]),
+        ]),
+        h1(classes: 'hero-headline', [.text(copy.headline)]),
+        div(classes: 'hero-footer', [
+          p(classes: 'hero-subtitle', [.text(copy.subline)]),
           div(classes: 'hero-actions', [
             a(href: '/#projects', classes: 'hero-action', [.text('PROJECTS →')]),
             a(href: '/#contact', classes: 'hero-action', [.text('CONTACT →')]),
@@ -131,6 +176,28 @@ class HeroSection extends AsyncStatelessComponent {
       '0%': Styles(opacity: 0, transform: Transform.translate(y: 50.px)),
       '100%': Styles(opacity: 1, transform: Transform.translate(y: Unit.zero)),
     }),
+    // v2: a sentence, not a name, so a readable size and line length instead
+    // of the name's viewport-filling display type. Same entrance as the name.
+    css('.hero-headline', [
+      css('&').styles(
+        maxWidth: 22.em,
+        fontFamily: FontFamily.list([AppFonts.heading, FontFamilies.monospace]),
+        fontSize: Unit.expression('clamp(2rem, 5vw, 4.5rem)'),
+        fontWeight: FontWeight.w800,
+        lineHeight: Unit.expression('1.1'),
+        letterSpacing: (-1).px,
+        color: AppColors.textPrimary,
+        margin: Margin.only(bottom: 3.rem),
+        opacity: 0,
+        raw: {'animation': 'heroFadeSlideY 1000ms ease-out 200ms both'},
+      ),
+    ]),
+    css('.hero-v2', [
+      css.media(MediaQuery.screen(maxWidth: Breakpoints.mobile.px), [
+        css('&').styles(padding: Padding.symmetric(horizontal: 1.25.rem, vertical: 6.25.rem)),
+      ]),
+    ]),
+    css('.hero-v2 .hero-subtitle').styles(maxWidth: 520.px),
     css('.hero-footer', [
       css('&').styles(
         display: Display.flex,

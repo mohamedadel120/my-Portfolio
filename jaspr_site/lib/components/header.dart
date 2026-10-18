@@ -2,6 +2,7 @@ import 'package:jaspr/dom.dart';
 import 'package:jaspr/jaspr.dart';
 
 import 'header_scroll.vm.dart' if (dart.library.js_interop) 'header_scroll.web.dart';
+import '../constants/home_layout.dart';
 import '../constants/theme.dart';
 
 /// Ported from the Flutter app's `_InteractiveNavBar` (in
@@ -234,14 +235,24 @@ class _HeaderState extends State<Header> {
   bool _menuOpen = false;
   String? _activeSection;
 
-  static const _links = [
-    (label: 'HOME', href: '/#hero', id: 'hero'),
-    (label: 'ABOUT', href: '/#about', id: 'about'),
-    (label: 'EXPERTISE', href: '/#expertise', id: 'expertise'),
-    (label: 'EXPERIENCE', href: '/#experience', id: 'experience'),
-    (label: 'PROJECTS', href: '/#projects', id: 'projects'),
-    (label: 'CONTACT', href: '/#contact', id: 'contact'),
-  ];
+  // Same order as the home page's sections. The v2 layout has no Expertise
+  // section (it is folded into About), so it has no link for it either.
+  static const _links = homeLayout == HomeLayout.v2
+      ? [
+          (label: 'HOME', href: '/#hero', id: 'hero'),
+          (label: 'PROJECTS', href: '/#projects', id: 'projects'),
+          (label: 'EXPERIENCE', href: '/#experience', id: 'experience'),
+          (label: 'ABOUT', href: '/#about', id: 'about'),
+          (label: 'CONTACT', href: '/#contact', id: 'contact'),
+        ]
+      : [
+          (label: 'HOME', href: '/#hero', id: 'hero'),
+          (label: 'ABOUT', href: '/#about', id: 'about'),
+          (label: 'EXPERTISE', href: '/#expertise', id: 'expertise'),
+          (label: 'EXPERIENCE', href: '/#experience', id: 'experience'),
+          (label: 'PROJECTS', href: '/#projects', id: 'projects'),
+          (label: 'CONTACT', href: '/#contact', id: 'contact'),
+        ];
 
   @override
   void initState() {
