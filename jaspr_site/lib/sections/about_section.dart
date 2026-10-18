@@ -239,13 +239,13 @@ class AboutSection extends AsyncStatelessComponent {
         css('&').styles(raw: {'grid-template-columns': 'minmax(0, 1fr)'}),
       ]),
       css('.feature-card').styles(
-        backgroundColor: Colors.white.withValues(alpha: 0.03),
+        backgroundColor: AppColors.textPrimary.withValues(alpha: 0.03),
         radius: BorderRadius.circular(1.rem),
         padding: Padding.all(1.rem),
         raw: {'transition': 'transform 200ms ease, background-color 200ms ease'},
       ),
       css('.feature-card:hover').styles(
-        backgroundColor: Colors.white.withValues(alpha: 0.07),
+        backgroundColor: AppColors.textPrimary.withValues(alpha: 0.07),
         transform: Transform.translate(y: (-3).px),
       ),
       css('.feature-icon').styles(color: AppColors.primary, fontSize: 1.25.rem),
@@ -275,7 +275,7 @@ class AboutSection extends AsyncStatelessComponent {
       ),
       css('.skill-track').styles(
         height: 6.px,
-        backgroundColor: Colors.white.withValues(alpha: 0.08),
+        backgroundColor: AppColors.textPrimary.withValues(alpha: 0.08),
         radius: BorderRadius.circular(3.px),
         overflow: Overflow.hidden,
       ),

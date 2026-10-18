@@ -66,7 +66,7 @@ class FeaturedLabel extends StatelessComponent {
         fontSize: Unit.expression('clamp(1.05rem, 2.3dvh, 1.3rem)'),
         fontWeight: FontWeight.w700,
         lineHeight: Unit.expression('1.45'),
-        raw: {'color': 'var(--accent-fg, #ffffff)'},
+        raw: {'color': 'var(--accent-fg, ${AppColors.textPrimary.value})'},
         maxWidth: Unit.expression('60ch'),
       ),
     ]),

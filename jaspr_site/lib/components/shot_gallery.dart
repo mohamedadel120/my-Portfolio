@@ -66,7 +66,10 @@ class ShotGalleryView extends StatefulComponent {
           'flex': '0 0 auto',
           'width': 'calc(var(--w) + 20px)',
           'background': 'linear-gradient(135deg, #555555 0%, #222222 40%, #111111 60%, #444444 100%)',
-          'box-shadow': '0 30px 50px -10px rgba(0,0,0,0.5), 0 20px 60px 0 color-mix(in srgb, var(--accent, ${AppColors.primary.value}) 40%, transparent)',
+          'box-shadow': lit(
+            '0 30px 50px -10px rgba(0,0,0,0.5), 0 20px 60px 0 color-mix(in srgb, var(--accent, ${AppColors.primary.value}) 40%, transparent)',
+            light: '0 40px 70px -30px rgba(22,23,26,0.45), 0 24px 60px -10px color-mix(in srgb, var(--accent, ${AppColors.primary.value}) 28%, transparent)',
+          ),
         },
       ),
     ]),
@@ -141,7 +144,7 @@ class ShotGalleryView extends StatefulComponent {
       ]),
     ]),
     RawMediaRule.hoverCapable([
-      css('.gal-btn:hover').styles(backgroundColor: AppColors.primary, color: AppColors.background),
+      css('.gal-btn:hover').styles(backgroundColor: AppColors.primary, color: AppColors.onPrimary),
     ]),
     css('.gal-footer', [
       css('&').styles(

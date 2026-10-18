@@ -133,7 +133,7 @@ class ProjectPinnedShowcase extends StatefulComponent {
     ]),
     // A readable tint of the app's own colour for buttons, progress and focus
     // (the raw colour can be very dark).
-    css('.pp-stage, .pp-phone').styles(raw: {'--accent-fg': 'color-mix(in srgb, var(--accent) 62%, #ffffff)'}),
+    css('.pp-stage, .pp-phone').styles(raw: {'--accent-fg': AppColors.accentText}),
     // Short windows (laptops, browsers with toolbars): tighter type and gaps so
     // the text never needs more room than there is.
     RawMediaRule('(max-height: 820px)', [
@@ -281,7 +281,10 @@ class ProjectPinnedShowcase extends StatefulComponent {
           'grid-area': '1 / 1',
           'width': 'calc(var(--w) + 20px)',
           'background': 'linear-gradient(135deg, #555555 0%, #222222 40%, #111111 60%, #444444 100%)',
-          'box-shadow': '0 30px 50px -10px rgba(0,0,0,0.5), 0 20px 60px 0 color-mix(in srgb, var(--accent) 45%, transparent)',
+          'box-shadow': lit(
+            '0 30px 50px -10px rgba(0,0,0,0.5), 0 20px 60px 0 color-mix(in srgb, var(--accent) 45%, transparent)',
+            light: '0 40px 70px -30px rgba(22,23,26,0.45), 0 24px 60px -10px color-mix(in srgb, var(--accent) 30%, transparent)',
+          ),
           'opacity': '0',
           'visibility': 'hidden',
           'transform': 'scale(0.96)',
@@ -347,7 +350,7 @@ class ProjectPinnedShowcase extends StatefulComponent {
       css('&:focus-visible').styles(raw: {'outline': '2px solid var(--accent-fg)', 'outline-offset': '3px'}),
     ]),
     RawMediaRule.hoverCapable([
-      css('.pp-btn:hover').styles(raw: {'background-color': 'var(--accent-fg)', 'color': '#000000'}),
+      css('.pp-btn:hover').styles(raw: {'background-color': 'var(--accent-fg)', 'color': lit('#000000', light: '#ffffff')}),
     ]),
     // Tap anywhere on the screen to pause the screenshots; tap again to play.
     css('.pp-tap', [

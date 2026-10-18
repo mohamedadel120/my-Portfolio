@@ -83,7 +83,7 @@ class Header extends StatefulComponent {
           padding: Padding.all(0.45.rem),
           raw: {
             'backdrop-filter': 'blur(12px)',
-            'box-shadow': '0 4px 20px rgba(0, 0, 0, 0.3)',
+            'box-shadow': lit('0 4px 20px rgba(0, 0, 0, 0.3)', light: '0 4px 20px rgba(22, 23, 26, 0.08)'),
           },
         ),
         css('a', [
@@ -142,7 +142,7 @@ class Header extends StatefulComponent {
       css('.cv-button', [
         css('&').styles(
           backgroundColor: AppColors.primary,
-          color: Colors.black,
+          color: AppColors.onPrimary,
           fontWeight: FontWeight.w700,
           fontSize: AppType.size(TypeStep.small, was: 0.85.rem),
           padding: Padding.symmetric(horizontal: 1.6.rem, vertical: 1.rem),
@@ -217,7 +217,7 @@ class Header extends StatefulComponent {
         margin: Margin.only(top: 1.rem),
         fontFamily: AppFonts.of(FontRole.text, was: AppFonts.firaCode),
         fontSize: AppType.size(TypeStep.body, was: 1.rem),
-        color: Colors.black,
+        color: AppColors.onPrimary,
       ),
       css('.mobile-menu-footer', [
         css('&').styles(

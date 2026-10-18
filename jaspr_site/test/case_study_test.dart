@@ -147,6 +147,7 @@ void main() {
     final html = body(utf8.decode(result.body));
     expect(html, contains('href="/projects/gomla"'));
     expect(html, contains('href="/projects/stock"'));
-    expect(html, contains('aria-label="Read the Gomla Mobile App case study"'));
+    // The visible words start the accessible name (voice control).
+    expect(html, contains('aria-label="Read the case study: Gomla Mobile App"'));
   });
 }

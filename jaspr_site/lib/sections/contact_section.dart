@@ -180,7 +180,7 @@ class ContactSection extends AsyncStatelessComponent {
         margin: Margin.only(top: 3.75.rem),
         padding: Padding.all(1.25.rem),
         textAlign: TextAlign.center,
-        color: AppColors.textPrimary.withValues(alpha: 0.5),
+        color: lit(AppColors.textPrimary.withValues(alpha: 0.5), light: AppColors.textTertiary),
         fontFamily: AppFonts.of(FontRole.text, was: AppFonts.jetBrainsMono),
         fontSize: AppType.size(TypeStep.small, was: 0.9.rem),
         backgroundColor: AppColors.surface.withValues(alpha: 0.9),

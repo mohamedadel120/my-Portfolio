@@ -58,7 +58,7 @@ class AboutBriefSection extends AsyncStatelessComponent {
     css('.about-brief-summary', [
       css('&').styles(
         color: AppColors.textSecondary,
-        fontFamily: FontFamily.list([FontFamily('JetBrains Mono'), FontFamilies.monospace]),
+        fontFamily: AppFonts.of(FontRole.text, was: AppFonts.jetBrainsMono),
         fontSize: 1.125.rem,
         lineHeight: Unit.expression('1.7'),
         margin: Margin.only(bottom: 3.rem),
@@ -82,7 +82,7 @@ class AboutBriefSection extends AsyncStatelessComponent {
     css('.skill-group-title', [
       css('&').styles(
         color: AppColors.primary,
-        fontFamily: FontFamily.list([FontFamily('Space Mono'), FontFamilies.monospace]),
+        fontFamily: AppFonts.of(FontRole.accent, was: AppFonts.spaceMono),
         fontSize: 0.8.rem,
         letterSpacing: 2.px,
         textTransform: TextTransform.upperCase,
@@ -100,11 +100,11 @@ class AboutBriefSection extends AsyncStatelessComponent {
       ),
       css('li').styles(
         color: AppColors.textPrimary,
-        fontFamily: FontFamily.list([FontFamily('JetBrains Mono'), FontFamilies.monospace]),
+        fontFamily: AppFonts.of(FontRole.text, was: AppFonts.jetBrainsMono),
         fontSize: 0.85.rem,
         padding: Padding.symmetric(horizontal: 0.75.rem, vertical: 0.4.rem),
         radius: BorderRadius.circular(999.px),
-        backgroundColor: Colors.white.withValues(alpha: 0.05),
+        backgroundColor: AppColors.textPrimary.withValues(alpha: 0.05),
         border: Border.all(color: AppColors.textPrimary.withValues(alpha: 0.1), width: 1.px),
       ),
     ]),

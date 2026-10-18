@@ -44,7 +44,7 @@ class CtaLink extends StatelessComponent {
         padding: Padding.symmetric(horizontal: 1.5.rem),
         radius: BorderRadius.circular(0.9.rem),
         backgroundColor: AppColors.primary,
-        color: AppColors.background,
+        color: AppColors.onPrimary,
         textDecoration: TextDecoration.none,
         fontFamily: AppFonts.body,
         fontSize: AppType.size(TypeStep.body, was: 1.rem),
@@ -55,7 +55,7 @@ class CtaLink extends StatelessComponent {
         },
       ),
       css('&:active').styles(transform: Transform.scale(0.97)),
-      css('&:focus-visible').styles(raw: {'outline': '2px solid #ffffff', 'outline-offset': '3px'}),
+      css('&:focus-visible').styles(raw: {'outline': '2px solid ${AppColors.textPrimary.value}', 'outline-offset': '3px'}),
     ]),
     css('.cta-icon', [
       css('&').styles(

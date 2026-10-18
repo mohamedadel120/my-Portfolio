@@ -54,14 +54,14 @@ class ExpertiseSection extends AsyncStatelessComponent {
         alignItems: AlignItems.center,
         gap: Gap.all(2.rem),
         padding: Padding.symmetric(vertical: 2.5.rem, horizontal: 1.rem),
-        border: Border.only(bottom: BorderSide.solid(color: Colors.white.withValues(alpha: 0.1))),
+        border: Border.only(bottom: BorderSide.solid(color: AppColors.textPrimary.withValues(alpha: 0.1))),
         raw: {'transition': 'background-color 250ms, transform 250ms ease, padding-left 250ms ease'},
       ),
       css.media(MediaQuery.screen(maxWidth: Breakpoints.mobile.px), [
         css('&').styles(gap: Gap.all(1.rem), padding: Padding.symmetric(vertical: 1.75.rem, horizontal: 0.25.rem)),
       ]),
       css('&:hover').styles(
-        backgroundColor: Colors.white.withValues(alpha: 0.03),
+        backgroundColor: AppColors.textPrimary.withValues(alpha: 0.03),
         transform: Transform.translate(x: 0.5.rem),
       ),
       css('&:hover .expertise-icon').styles(

@@ -22,7 +22,9 @@ class CaseStudyLink extends StatelessComponent {
     return a(
       href: path,
       classes: 'case-link',
-      attributes: {'aria-label': 'Read the ${view.title} case study', if (!focusable) 'tabindex': '-1'},
+      // The visible words start the accessible name, so voice control users
+      // can say what they see ("click read the case study").
+      attributes: {'aria-label': 'Read the case study: ${view.title}', if (!focusable) 'tabindex': '-1'},
       [
         .text('Read the case study'),
         span(classes: 'material-symbols-rounded case-link-icon', attributes: {'aria-hidden': 'true'}, [.text('arrow_forward')]),
@@ -48,7 +50,7 @@ class CaseStudyLink extends StatelessComponent {
           'padding-bottom': '2px',
         },
       ),
-      css('&:focus-visible').styles(raw: {'outline': '2px solid #ffffff', 'outline-offset': '3px'}),
+      css('&:focus-visible').styles(raw: {'outline': '2px solid ${AppColors.textPrimary.value}', 'outline-offset': '3px'}),
     ]),
     css('.case-link-icon').styles(
       width: 1.1.rem,

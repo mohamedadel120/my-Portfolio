@@ -157,7 +157,7 @@ class ProjectCaseStudy extends StatelessComponent {
         maxWidth: 72.rem,
         margin: Margin.symmetric(horizontal: Unit.auto),
         padding: Padding.only(top: 8.rem, bottom: 6.rem, left: 2.5.rem, right: 2.5.rem),
-        raw: {'--accent-fg': 'color-mix(in srgb, var(--accent) 62%, #ffffff)'},
+        raw: {'--accent-fg': AppColors.accentText},
       ),
       css.media(MediaQuery.screen(maxWidth: Breakpoints.mobile.px), [
         css('&').styles(gap: Gap.all(3.rem), padding: Padding.only(top: 6.5.rem, bottom: 4.rem, left: 1.25.rem, right: 1.25.rem)),
@@ -304,7 +304,7 @@ class ProjectCaseStudy extends StatelessComponent {
       ),
       css('&:focus-visible').styles(raw: {'outline': '2px solid ${AppColors.primary.value}', 'outline-offset': '3px'}),
     ]),
-    css('.cs-next-forward').styles(raw: {'align-items': 'flex-end', 'text-align': 'right', 'border-left': '1px solid rgba(255,255,255,0.12)', 'border-right': '3px solid var(--accent)'}),
+    css('.cs-next-forward').styles(raw: {'align-items': 'flex-end', 'text-align': 'right', 'border-left': '1px solid ${AppColors.textPrimary.withValues(alpha: 0.12).value}', 'border-right': '3px solid var(--accent)'}),
     css('.cs-next-label').styles(
       display: Display.inlineFlex,
       alignItems: AlignItems.center,

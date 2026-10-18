@@ -13,18 +13,24 @@ export 'theme_direction.dart';
 /// keep the cyan but put it on slightly blue-tinted, calmer surfaces, and
 /// swap the purple second accent for a quiet slate.
 class AppColors {
-  static const primary = Color('#00D9FF'); // Cyan
+  // Direction c is light: the neon cyan cannot carry text on off-white, so a
+  // deep teal of the same hue does (about 7:1 on the page colour, and 4.5:1
+  // or more even on its own tinted backgrounds such as the active nav link).
+  static const primary = isLight ? Color('#155E75') : Color('#00D9FF'); // Cyan
   static const secondary = isCalm ? Color('#64748B') : Color('#7B2CBF'); // Purple
   // Lighter purple for text: #7B2CBF on the dark surfaces is only ~2.5:1
   // contrast, below the 4.5:1 WCAG AA minimum for body text.
-  static const secondaryText = isCalm ? Color('#A9B4C2') : Color('#B57BFF');
-  static const background = isCalm ? Color('#0B0E13') : Color('#000000');
-  static const surface = isCalm ? Color('#12161D') : Color('#121212');
-  static const surfaceLight = isCalm ? Color('#1A1F27') : Color('#1E1E1E');
+  static const secondaryText = isLight ? Color('#475569') : isCalm ? Color('#A9B4C2') : Color('#B57BFF');
+  static const background = isLight ? Color('#F6F5F1') : isCalm ? Color('#0B0E13') : Color('#000000');
+  static const surface = isLight ? Color('#FFFFFF') : isCalm ? Color('#12161D') : Color('#121212');
+  static const surfaceLight = isLight ? Color('#EEECE6') : isCalm ? Color('#1A1F27') : Color('#1E1E1E');
 
-  static const textPrimary = Color('#FFFFFF');
-  static const textSecondary = Color('#FFFFFFB3'); // white70 = 70% alpha
-  static const textTertiary = Color('#FFFFFF8A'); // white54 = 54% alpha
+  static const textPrimary = isLight ? Color('#16171A') : Color('#FFFFFF');
+  static const textSecondary = isLight ? Color('#16171AB8') : Color('#FFFFFFB3'); // white70 = 70% alpha
+  static const textTertiary = isLight ? Color('#16171A9E') : Color('#FFFFFF8A'); // white54 = 54% alpha
+
+  /// What sits on a [primary] fill (buttons): dark on the cyan, white on the teal.
+  static const onPrimary = isLight ? Color('#FFFFFF') : background;
 
   // Light theme overrides (from AppTheme.lightTheme's ColorScheme.light)
   static const lightSecondary = Color('#424242');
@@ -33,7 +39,17 @@ class AppColors {
 
   /// The cyan as a glow (shadows, halos). Full strength today; the new
   /// directions keep a faint trace so hover states still read as lifting.
-  static Color glow(double alpha) => primary.withValues(alpha: alpha * (isCalm ? 0.4 : 1));
+  /// On the light page a glow would look like a smudge, so it becomes a soft
+  /// ink shadow that still reads as lifting.
+  static Color glow(double alpha) =>
+      isLight ? const Color('#16171A').withValues(alpha: alpha * 0.18) : primary.withValues(alpha: alpha * (isCalm ? 0.4 : 1));
+
+  /// A readable version of a project's own colour (`var(--accent)`) for text:
+  /// lightened on the dark page, darkened on the light one, so a yellow app
+  /// still gives readable text on off-white.
+  static const accentText = isLight
+      ? 'color-mix(in srgb, var(--accent) 55%, #000000)'
+      : 'color-mix(in srgb, var(--accent) 62%, #ffffff)';
 
   /// A card or field outline: cyan today, a neutral hairline in the new
   /// directions so the accent is left for links, buttons and active states.
@@ -109,6 +125,11 @@ class AppFonts {
   static const _fraunces = WebFont('Fraunces', FontFamilies.serif, 'wght@400..700');
   static const _inter = WebFont('Inter', FontFamilies.sansSerif, 'wght@400..800');
 
+  // c: Geist is a precise, neutral grotesk in the spirit of product sites;
+  // its own mono sets the numbers and tags, so the two read as one family.
+  static const _geist = WebFont('Geist', FontFamilies.sansSerif, 'wght@400..800');
+  static const _geistMono = WebFont('Geist Mono', FontFamilies.monospace, 'wght@400..600');
+
   static const byDirection = {
     ThemeDirection.current: DirectionFonts([jetBrainsMono, ibmPlexMono, firaCode, spaceMono, oswald, orbitron, anton], {}),
     ThemeDirection.a: DirectionFonts([_manrope, _jetBrainsMonoAccent], {
@@ -122,6 +143,12 @@ class AppFonts {
       FontRole.heading: _fraunces,
       FontRole.display: _fraunces,
       FontRole.accent: _inter,
+    }, headingWeight: FontWeight.w600),
+    ThemeDirection.c: DirectionFonts([_geist, _geistMono], {
+      FontRole.text: _geist,
+      FontRole.heading: _geist,
+      FontRole.display: _geist,
+      FontRole.accent: _geistMono,
     }, headingWeight: FontWeight.w600),
   };
 
@@ -238,7 +265,7 @@ List<StyleRule> get styles => [
       fontFamily: AppFonts.heading,
       fontSize: AppType.size(TypeStep.title, was: Unit.expression('clamp(2.25rem, 5vw, 4rem)')),
       fontWeight: themed(.w800, calm: AppFonts.active.headingWeight),
-      letterSpacing: themed((-1).px, calm: (-0.02).em),
+      letterSpacing: themed((-1).px, calm: lit((-0.02).em, light: (-0.035).em)),
       lineHeight: Unit.expression('1.1'),
       color: AppColors.textPrimary,
       textAlign: TextAlign.center,

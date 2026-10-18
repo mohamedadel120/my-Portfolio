@@ -55,7 +55,7 @@ class ContactForm extends StatefulComponent {
       ),
       css('input, textarea').styles(
         color: AppColors.textPrimary,
-        backgroundColor: AppColors.background,
+        backgroundColor: lit(AppColors.background, light: AppColors.surface),
         fontFamily: AppFonts.of(FontRole.text, was: AppFonts.jetBrainsMono),
         fontSize: AppType.size(TypeStep.body, was: 1.rem),
         padding: Padding.all(0.85.rem),
@@ -71,7 +71,7 @@ class ContactForm extends StatefulComponent {
     css('.submit-button', [
       css('&').styles(
         backgroundColor: AppColors.primary,
-        color: AppColors.background,
+        color: AppColors.onPrimary,
         fontFamily: AppFonts.of(FontRole.text, was: AppFonts.jetBrainsMono),
         fontWeight: FontWeight.w700,
         fontSize: AppType.size(TypeStep.body, was: 1.rem),
