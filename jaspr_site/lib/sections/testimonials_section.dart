@@ -107,11 +107,13 @@ class TestimonialsSection extends AsyncStatelessComponent {
         padding: Padding.all(2.rem),
         radius: BorderRadius.circular(1.5.rem),
         raw: {
-          'background':
-              'linear-gradient(135deg, ${AppColors.primary.withValues(alpha: 0.1).value}, '
-              '${AppColors.secondary.withValues(alpha: 0.08).value} 50%, ${AppColors.surface.value})',
-          'border': '1.5px solid ${AppColors.primary.withValues(alpha: 0.2).value}',
-          'box-shadow': '0 4px 20px ${AppColors.primary.withValues(alpha: 0.1).value}',
+          'background': themed(
+            'linear-gradient(135deg, ${AppColors.primary.withValues(alpha: 0.1).value}, '
+                '${AppColors.secondary.withValues(alpha: 0.08).value} 50%, ${AppColors.surface.value})',
+            calm: AppColors.surface.value,
+          ),
+          'border': '${themed('1.5px', calm: '1px')} solid ${AppColors.outline(0.2).value}',
+          'box-shadow': '0 4px 20px ${AppColors.glow(0.1).value}',
         },
       ),
       // Beats the global `.reveal` transition on specificity.
@@ -120,7 +122,7 @@ class TestimonialsSection extends AsyncStatelessComponent {
         raw: {
           'translate': '0 -6px',
           'border-color': AppColors.primary.withValues(alpha: 0.4).value,
-          'box-shadow': '0 8px 30px ${AppColors.primary.withValues(alpha: 0.25).value}',
+          'box-shadow': '0 8px 30px ${AppColors.glow(0.25).value}',
         },
       ),
       css.media(MediaQuery.screen(maxWidth: Breakpoints.mobile.px), [
@@ -135,8 +137,10 @@ class TestimonialsSection extends AsyncStatelessComponent {
         padding: Padding.all(0.625.rem),
         radius: BorderRadius.circular(0.75.rem),
         raw: {
-          'background':
-              'linear-gradient(90deg, ${AppColors.primary.withValues(alpha: 0.3).value}, ${AppColors.secondary.withValues(alpha: 0.2).value})',
+          'background': themed(
+            'linear-gradient(90deg, ${AppColors.primary.withValues(alpha: 0.3).value}, ${AppColors.secondary.withValues(alpha: 0.2).value})',
+            calm: AppColors.primary.withValues(alpha: 0.1).value,
+          ),
         },
       ),
     ]),
@@ -157,11 +161,13 @@ class TestimonialsSection extends AsyncStatelessComponent {
         flex: Flex(grow: 1),
         margin: Margin.fromLTRB(Unit.zero, 1.25.rem, Unit.zero, Unit.zero),
         color: AppColors.textPrimary.withValues(alpha: 0.95),
-        fontFamily: FontFamily.list([FontFamily('JetBrains Mono'), FontFamilies.monospace]),
-        fontSize: 1.rem,
-        fontStyle: FontStyle.italic,
+        fontFamily: AppFonts.of(FontRole.text, was: AppFonts.jetBrainsMono),
+        fontSize: AppType.size(TypeStep.body, was: 1.rem),
+        // No italic file is loaded in the new directions; a synthesized slant
+        // reads worse than upright text.
+        fontStyle: themed(FontStyle.italic, calm: FontStyle.normal),
         lineHeight: Unit.expression('1.7'),
-        letterSpacing: 0.2.px,
+        letterSpacing: themed(0.2.px, calm: null),
       ),
     ]),
     css('.testimonial-divider', [
@@ -176,14 +182,18 @@ class TestimonialsSection extends AsyncStatelessComponent {
         display: Display.flex,
         flexDirection: FlexDirection.column,
         gap: Gap.all(0.25.rem),
-        fontFamily: FontFamily.list([FontFamily('JetBrains Mono'), FontFamilies.monospace]),
+        fontFamily: AppFonts.of(FontRole.text, was: AppFonts.jetBrainsMono),
       ),
     ]),
     css('.testimonial-name', [
-      css('&').styles(color: AppColors.primary, fontSize: 1.05.rem, fontWeight: FontWeight.w700),
+      css('&').styles(
+        color: themed(AppColors.primary, calm: AppColors.textPrimary),
+        fontSize: AppType.size(TypeStep.body, was: 1.05.rem),
+        fontWeight: FontWeight.w700,
+      ),
     ]),
     css('.testimonial-role', [
-      css('&').styles(color: AppColors.textSecondary, fontSize: 0.875.rem),
+      css('&').styles(color: AppColors.textSecondary, fontSize: AppType.size(TypeStep.small, was: 0.875.rem)),
     ]),
   ];
 }

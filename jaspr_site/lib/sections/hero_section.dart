@@ -113,8 +113,8 @@ class HeroSection extends AsyncStatelessComponent {
         width: 950.px,
         height: 950.px,
         radius: BorderRadius.circular(50.percent),
-        backgroundColor: AppColors.primary.withValues(alpha: 0.12),
-        shadow: BoxShadow(offsetX: Unit.zero, offsetY: Unit.zero, blur: 160.px, spread: 40.px, color: AppColors.primary.withValues(alpha: 0.12)),
+        backgroundColor: AppColors.glow(0.12),
+        shadow: BoxShadow(offsetX: Unit.zero, offsetY: Unit.zero, blur: 160.px, spread: 40.px, color: AppColors.glow(0.12)),
         // `Animation(count: double.infinity)` serializes to the invalid CSS
         // keyword "infinity" (not "infinite"), silently breaking the whole
         // shorthand -- written out literally instead (see the identical
@@ -143,17 +143,18 @@ class HeroSection extends AsyncStatelessComponent {
       ),
       css('span').styles(
         color: AppColors.textPrimary,
-        fontFamily: FontFamily.list([FontFamily('IBM Plex Mono'), FontFamilies.monospace]),
-        fontWeight: FontWeight.w700,
-        fontSize: 1.rem,
+        fontFamily: AppFonts.of(FontRole.accent, was: AppFonts.ibmPlexMono),
+        fontWeight: themed(FontWeight.w700, calm: FontWeight.w600),
+        fontSize: AppType.size(TypeStep.small, was: 1.rem),
+        letterSpacing: themed(null, calm: 0.08.em),
       ),
       css('.hero-title-highlight').styles(color: AppColors.primary, fontWeight: FontWeight.w500),
       css('.hero-eyebrow-line').styles(width: 40.px, height: 1.px, backgroundColor: AppColors.primary),
       css('.hero-location').styles(
         color: AppColors.textTertiary,
-        fontFamily: FontFamily.list([FontFamily('Space Mono'), FontFamilies.monospace]),
+        fontFamily: AppFonts.of(FontRole.accent, was: AppFonts.spaceMono),
         fontWeight: FontWeight.normal,
-        fontSize: 0.85.rem,
+        fontSize: AppType.size(TypeStep.label, was: 0.85.rem),
       ),
     ]),
     css.keyframes('heroFadeSlideX', {
@@ -162,10 +163,10 @@ class HeroSection extends AsyncStatelessComponent {
     }),
     css('.hero-name', [
       css('&').styles(
-        fontFamily: FontFamily.list([FontFamily('Orbitron'), FontFamilies.sansSerif]),
-        fontSize: Unit.expression('clamp(3rem, 11vw, 18rem)'),
-        lineHeight: Unit.expression('0.9'),
-        letterSpacing: (-4).px,
+        fontFamily: AppFonts.of(FontRole.display, was: AppFonts.orbitron),
+        fontSize: AppType.size(TypeStep.display, was: Unit.expression('clamp(3rem, 11vw, 18rem)')),
+        lineHeight: themed(Unit.expression('0.9'), calm: Unit.expression('0.95')),
+        letterSpacing: themed((-4).px, calm: (-0.03).em),
         color: AppColors.textPrimary,
         margin: Margin.only(bottom: 3.rem),
         opacity: 0,
@@ -217,8 +218,8 @@ class HeroSection extends AsyncStatelessComponent {
       css('&').styles(
         maxWidth: 400.px,
         color: AppColors.textSecondary,
-        fontFamily: FontFamily.list([FontFamily('JetBrains Mono'), FontFamilies.monospace]),
-        fontSize: 1.125.rem,
+        fontFamily: AppFonts.of(FontRole.text, was: AppFonts.jetBrainsMono),
+        fontSize: AppType.size(TypeStep.lead, was: 1.125.rem),
         lineHeight: Unit.expression('1.6'),
       ),
     ]),
@@ -227,10 +228,10 @@ class HeroSection extends AsyncStatelessComponent {
       css('a').styles(
         color: AppColors.textPrimary,
         textDecoration: TextDecoration.none,
-        fontFamily: FontFamily.list([FontFamily('Oswald'), FontFamilies.sansSerif]),
+        fontFamily: AppFonts.of(FontRole.text, was: AppFonts.oswald),
         fontWeight: FontWeight.w700,
-        fontSize: 1.rem,
-        letterSpacing: 1.px,
+        fontSize: AppType.size(TypeStep.body, was: 1.rem),
+        letterSpacing: themed(1.px, calm: 0.06.em),
         // Vertical padding brings the tap target to ~44px on phones.
         display: Display.inlineBlock,
         padding: Padding.symmetric(vertical: 0.75.rem),

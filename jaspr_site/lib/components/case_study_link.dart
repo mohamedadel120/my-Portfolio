@@ -37,7 +37,7 @@ class CaseStudyLink extends StatelessComponent {
         display: Display.inlineFlex,
         alignItems: AlignItems.center,
         gap: Gap.all(0.35.rem),
-        fontFamily: FontFamily.list([AppFonts.body, FontFamilies.monospace]),
+        fontFamily: AppFonts.body,
         fontSize: 0.92.rem,
         fontWeight: FontWeight.w700,
         textDecoration: TextDecoration.none,

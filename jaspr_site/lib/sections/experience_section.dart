@@ -71,7 +71,7 @@ class ExperienceSection extends AsyncStatelessComponent {
         radius: BorderRadius.circular(50.percent),
         backgroundColor: AppColors.primary,
         border: Border.all(color: AppColors.background, width: 3.px),
-        shadow: BoxShadow(offsetX: Unit.zero, offsetY: Unit.zero, blur: 12.px, spread: 2.px, color: AppColors.primary.withValues(alpha: 0.4)),
+        shadow: BoxShadow(offsetX: Unit.zero, offsetY: Unit.zero, blur: 12.px, spread: 2.px, color: AppColors.glow(0.4)),
       ),
     ]),
     css('.timeline-line', [
@@ -89,7 +89,7 @@ class ExperienceSection extends AsyncStatelessComponent {
         padding: Padding.all(2.rem),
         backgroundColor: AppColors.surface,
         radius: BorderRadius.circular(1.25.rem),
-        border: Border.all(color: AppColors.primary.withValues(alpha: 0.15), width: 1.5.px),
+        border: Border.all(color: AppColors.outline(0.15), width: themed(1.5.px, calm: 1.px)),
         minWidth: Unit.zero,
       ),
       css.media(MediaQuery.screen(maxWidth: Breakpoints.mobile.px), [
@@ -107,27 +107,27 @@ class ExperienceSection extends AsyncStatelessComponent {
     ]),
     css('.timeline-company', [
       css('&').styles(
-        color: AppColors.primary,
-        fontFamily: FontFamily.list([FontFamily('JetBrains Mono'), FontFamilies.monospace]),
-        fontSize: 1.5.rem,
-        fontWeight: FontWeight.w700,
+        color: themed(AppColors.primary, calm: AppColors.textPrimary),
+        fontFamily: AppFonts.of(FontRole.heading, was: AppFonts.jetBrainsMono),
+        fontSize: AppType.size(TypeStep.h3, was: 1.5.rem),
+        fontWeight: themed(FontWeight.w700, calm: AppFonts.active.headingWeight),
         margin: Margin.only(bottom: 0.5.rem),
       ),
     ]),
     css('.timeline-role', [
       css('&').styles(
         color: AppColors.textPrimary,
-        fontFamily: FontFamily.list([FontFamily('JetBrains Mono'), FontFamilies.monospace]),
-        fontSize: 1.1.rem,
+        fontFamily: AppFonts.of(FontRole.text, was: AppFonts.jetBrainsMono),
+        fontSize: AppType.size(TypeStep.body, was: 1.1.rem),
         fontWeight: FontWeight.w600,
       ),
     ]),
     css('.timeline-period', [
       css('&').styles(
         color: AppColors.secondaryText,
-        fontFamily: FontFamily.list([FontFamily('JetBrains Mono'), FontFamilies.monospace]),
-        fontSize: 0.8.rem,
-        fontWeight: FontWeight.w600,
+        fontFamily: AppFonts.of(FontRole.accent, was: AppFonts.jetBrainsMono),
+        fontSize: AppType.size(TypeStep.label, was: 0.8.rem),
+        fontWeight: themed(FontWeight.w600, calm: FontWeight.w500),
         padding: Padding.symmetric(horizontal: 1.rem, vertical: 0.5.rem),
         radius: BorderRadius.circular(0.75.rem),
         border: Border.all(color: AppColors.secondary.withValues(alpha: 0.4), width: 1.5.px),
@@ -147,8 +147,8 @@ class ExperienceSection extends AsyncStatelessComponent {
       css('li').styles(
         position: Position.relative(),
         color: AppColors.textPrimary.withValues(alpha: 0.9),
-        fontFamily: FontFamily.list([FontFamily('JetBrains Mono'), FontFamilies.monospace]),
-        fontSize: 1.rem,
+        fontFamily: AppFonts.of(FontRole.text, was: AppFonts.jetBrainsMono),
+        fontSize: AppType.size(TypeStep.body, was: 1.rem),
         lineHeight: Unit.expression('1.7'),
         padding: Padding.only(left: 1.25.rem, bottom: 1.125.rem),
       ),

@@ -71,7 +71,7 @@ class StoreButtons extends StatelessComponent {
   @css
   static List<StyleRule> get styles => [
     css('.sb-soon', [
-      css('&').styles(color: AppColors.textSecondary, fontSize: 0.9.rem, raw: {'align-self': 'center'}),
+      css('&').styles(color: AppColors.textSecondary, fontSize: AppType.size(TypeStep.small, was: 0.9.rem), raw: {'align-self': 'center'}),
     ]),
   ];
 }

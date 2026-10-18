@@ -143,7 +143,9 @@ class ProjectCaseStudy extends StatelessComponent {
     );
   }
 
-  static const _mono = FontFamily.list([AppFonts.body, FontFamilies.monospace]);
+  // Small labels, numbers and tags; headings follow the active direction too.
+  static final _mono = AppFonts.of(FontRole.accent, was: AppFonts.jetBrainsMono);
+  static final _heading = AppFonts.of(FontRole.heading, was: AppFonts.ibmPlexMono);
 
   @css
   static List<StyleRule> get styles => [
@@ -206,7 +208,7 @@ class ProjectCaseStudy extends StatelessComponent {
     css('.cs-title').styles(
       margin: Margin.zero,
       color: AppColors.textPrimary,
-      fontFamily: FontFamily.list([AppFonts.heading, FontFamilies.monospace]),
+      fontFamily: _heading,
       fontSize: Unit.expression('clamp(2rem, 5vw, 3.4rem)'),
       fontWeight: FontWeight.w700,
       lineHeight: Unit.expression('1.08'),
@@ -313,7 +315,7 @@ class ProjectCaseStudy extends StatelessComponent {
     ),
     css('.cs-next-title').styles(
       color: AppColors.textPrimary,
-      fontFamily: FontFamily.list([AppFonts.heading, FontFamilies.monospace]),
+      fontFamily: _heading,
       fontSize: 1.25.rem,
       fontWeight: FontWeight.w700,
     ),
@@ -340,7 +342,7 @@ class ProjectCaseStudy extends StatelessComponent {
     css('.cs-closing-title').styles(
       margin: Margin.zero,
       color: AppColors.textPrimary,
-      fontFamily: FontFamily.list([AppFonts.heading, FontFamilies.monospace]),
+      fontFamily: _heading,
       fontSize: Unit.expression('clamp(1.5rem, 3vw, 2.1rem)'),
     ),
     css('.cs-closing-text').styles(margin: Margin.zero, color: AppColors.textSecondary, maxWidth: Unit.expression('44ch'), lineHeight: Unit.expression('1.6')),
