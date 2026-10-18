@@ -10,6 +10,7 @@ import 'package:jaspr/server.dart';
 
 // Imports the [App] component.
 import 'app.dart';
+import 'constants/theme.dart';
 
 // This file is generated automatically by Jaspr, do not remove or edit.
 import 'main.server.options.dart';
@@ -36,6 +37,8 @@ void main() {
     meta: {
       'author': 'Mohamed Adel',
       'keywords': 'Flutter Developer, Mobile App Developer, Portfolio, Mohamed Adel, Dart, iOS, Android, Cross-platform Development',
+      // Colours the phone's browser bar to match the page.
+      'theme-color': AppColors.background.value,
       'twitter:card': 'summary_large_image',
       'twitter:image': ogImage,
     },

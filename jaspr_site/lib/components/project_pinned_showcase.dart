@@ -35,12 +35,25 @@ class ProjectPinnedShowcase extends StatefulComponent {
 
   @css
   static List<StyleRule> get styles => [
+    // `clip` (not `hidden`) keeps the sticky children working while making
+    // sure nothing pinned can hang out over the next section.
     css('.pp', [
-      css('&').styles(position: Position.relative(), raw: {'height': 'calc(var(--n) * 85dvh + 100dvh)'}),
+      css('&').styles(position: Position.relative(), raw: {'height': 'calc(var(--n) * 85dvh + 100dvh)', 'overflow': 'clip'}),
     ]),
     css('.pp.pp-narrow', [css('&').styles(raw: {'height': 'auto'})]),
+    // The counter, the project list and the skip link: a layer over the whole
+    // pinned stage, so they leave the screen together with it. (They used to
+    // sit on their own zero-height sticky layer, which stayed pinned for a
+    // screen after the stage had scrolled away and floated over the next
+    // section.) Being absolutely positioned it takes no grid cell; only its
+    // controls take clicks.
     css('.pp-chrome', [
-      css('&').styles(position: Position.sticky(top: Unit.zero), height: Unit.zero, zIndex: ZIndex(5)),
+      css('&').styles(
+        position: Position.absolute(top: Unit.zero, left: Unit.zero, right: Unit.zero, bottom: Unit.zero),
+        zIndex: ZIndex(5),
+        raw: {'pointer-events': 'none'},
+      ),
+      css('& > *').styles(raw: {'pointer-events': 'auto'}),
     ]),
     css('.pp-nav', [
       css('&').styles(
@@ -641,29 +654,31 @@ class _ProjectPinnedShowcaseState extends State<ProjectPinnedShowcase> {
       styles: Styles(raw: {'--n': '$_n'}),
       attributes: {'role': 'region', 'aria-label': 'Projects'},
       [
-        div(classes: 'pp-chrome', [
-          a(href: '#contact', classes: 'pp-skip', [.text('Skip to contact')]),
-          span(classes: 'pp-counter', attributes: {'aria-hidden': 'true'}, [.text('Project ${_active + 1} / $_n')]),
-          ul(classes: 'pp-nav', attributes: {'aria-label': 'Jump to project'}, [
-            for (final (i, view) in _views.indexed)
-              li([
-                button(
-                  classes: 'pp-nav-item',
-                  attributes: {'type': 'button', 'aria-current': i == _active ? 'true' : 'false'},
-                  events: {'click': (_) => _goToProject(i)},
-                  [
-                    if (view.featured)
-                      span(classes: 'material-symbols-rounded pp-nav-star', attributes: {'aria-hidden': 'true'}, [.text('star')]),
-                    .text(view.title),
-                  ],
-                ),
-              ]),
-          ]),
-        ]),
         div(
           classes: 'pp-stage',
           styles: Styles(raw: {'--accent': _views[_active].accentHex}),
           [
+            // Inside the pinned stage so the counter, list and skip link
+            // arrive and leave together with it.
+            div(classes: 'pp-chrome', [
+              a(href: '#contact', classes: 'pp-skip', [.text('Skip to contact')]),
+              span(classes: 'pp-counter', attributes: {'aria-hidden': 'true'}, [.text('Project ${_active + 1} / $_n')]),
+              ul(classes: 'pp-nav', attributes: {'aria-label': 'Jump to project'}, [
+                for (final (i, view) in _views.indexed)
+                  li([
+                    button(
+                      classes: 'pp-nav-item',
+                      attributes: {'type': 'button', 'aria-current': i == _active ? 'true' : 'false'},
+                      events: {'click': (_) => _goToProject(i)},
+                      [
+                        if (view.featured)
+                          span(classes: 'material-symbols-rounded pp-nav-star', attributes: {'aria-hidden': 'true'}, [.text('star')]),
+                        .text(view.title),
+                      ],
+                    ),
+                  ]),
+              ]),
+            ]),
             div(classes: 'pp-infos', [for (final (i, view) in _views.indexed) _info(view, i)]),
             div(classes: 'pp-media', [
               div(classes: 'pp-deck', [
