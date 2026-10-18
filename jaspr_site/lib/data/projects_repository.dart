@@ -37,6 +37,10 @@ class ProjectItem {
   /// absent the site makes one from the title (see data/project_slug.dart).
   final String? slug;
 
+  /// Position set by dragging in the admin dashboard (Firestore `sortOrder`);
+  /// 0 when never set.
+  final int sortOrder;
+
   const ProjectItem({
     required this.title,
     required this.description,
@@ -56,6 +60,7 @@ class ProjectItem {
     this.featured = false,
     this.highlight,
     this.slug,
+    this.sortOrder = 0,
   });
 
   bool get hasAndroid => _isUsable(androidStoreUrl);
@@ -84,6 +89,7 @@ class ProjectItem {
       featured: parseFlag(json['featured']),
       highlight: _nonBlank(json['highlight']),
       slug: _nonBlank(json['slug']),
+      sortOrder: json['sortOrder'] is num ? (json['sortOrder'] as num).toInt() : 0,
     );
   }
 }
@@ -141,8 +147,17 @@ List<ProjectItem> featuredFirst(List<ProjectItem> projects) => [
   ...projects.where((p) => !p.featured),
 ];
 
-List<ProjectItem> parseProjects(List<Map<String, dynamic>> docs) =>
-    featuredFirst(docs.map(ProjectItem.fromJson).toList());
+/// The dashboard's order (`sortOrder`), then featured projects first. Both
+/// steps are stable, so projects with the same `sortOrder` (all of them,
+/// until the owner reorders) keep their Firestore order.
+List<ProjectItem> parseProjects(List<Map<String, dynamic>> docs) {
+  final indexed = docs.map(ProjectItem.fromJson).indexed.toList()
+    ..sort((a, b) {
+      final byOrder = a.$2.sortOrder.compareTo(b.$2.sortOrder);
+      return byOrder != 0 ? byOrder : a.$1.compareTo(b.$1);
+    });
+  return featuredFirst([for (final (_, p) in indexed) p]);
+}
 
 Future<List<ProjectItem>> fetchProjects() async {
   final docs = await _firestore.getCollection('projects');

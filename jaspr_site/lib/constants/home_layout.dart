@@ -15,7 +15,9 @@ enum HomeLayout {
 /// `.claude/launch.json`). Without it the current page is used.
 const _requestedLayout = String.fromEnvironment('HOME_LAYOUT');
 
-const homeLayout = _requestedLayout == 'v2' ? HomeLayout.v2 : HomeLayout.v1;
+/// v2 is the chosen structure (owner, 18 Oct 2026); `HOME_LAYOUT=v1` brings
+/// back the previous page.
+const homeLayout = _requestedLayout == 'v1' ? HomeLayout.v1 : HomeLayout.v2;
 
 /// One hero headline option: what Mohamed builds plus the proof, and a short
 /// sub-line. Only confirmed facts: Flutter developer, 3+ years, Cairo/Egypt,

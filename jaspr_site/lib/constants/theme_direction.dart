@@ -26,13 +26,15 @@ enum ThemeDirection {
 /// `.claude/launch.json`. Without it the current look is used.
 const _requested = String.fromEnvironment('THEME_DIRECTION');
 
+/// Direction c is the chosen look (owner, 18 Oct 2026); the others stay
+/// available with `THEME_DIRECTION=current|a|b` for comparison or rollback.
 const themeDirection = _requested == 'a'
     ? ThemeDirection.a
     : _requested == 'b'
     ? ThemeDirection.b
-    : _requested == 'c'
-    ? ThemeDirection.c
-    : ThemeDirection.current;
+    : _requested == 'current'
+    ? ThemeDirection.current
+    : ThemeDirection.c;
 
 /// Direction c is the only light one: everything that assumes a dark page
 /// (white text, white hairlines, glows) asks this.

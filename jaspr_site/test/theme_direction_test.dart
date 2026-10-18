@@ -14,14 +14,15 @@ const _todaysFontImport = 'https://fonts.googleapis.com/css2'
     '&display=swap';
 
 void main() {
-  test('the current look is the default', () {
-    expect(themeDirection, ThemeDirection.current);
-    expect(isCalm, isFalse);
+  test('direction c is the default; the others stay available', () {
+    expect(themeDirection, ThemeDirection.c);
+    expect(isLight, isTrue);
+    expect(ThemeDirection.values, [ThemeDirection.current, ThemeDirection.a, ThemeDirection.b, ThemeDirection.c]);
+    expect(googleFontsUrl, AppFonts.byDirection[ThemeDirection.c]!.importUrl);
   });
 
   test('the current direction requests exactly the same fonts as before', () {
     expect(AppFonts.byDirection[ThemeDirection.current]!.importUrl, _todaysFontImport);
-    expect(googleFontsUrl, _todaysFontImport);
   });
 
   test('the icon font import is unchanged', () {
@@ -44,7 +45,7 @@ void main() {
     expect(imports[1], contains(materialSymbolsUrl));
   });
 
-  for (final direction in [ThemeDirection.a, ThemeDirection.b]) {
+  for (final direction in [ThemeDirection.a, ThemeDirection.b, ThemeDirection.c]) {
     group('direction ${direction.name}', () {
       final fonts = AppFonts.byDirection[direction]!;
 
@@ -84,10 +85,11 @@ void main() {
     });
   }
 
-  test('outside the new directions every component keeps its own font and size', () {
-    expect(AppFonts.of(FontRole.display, was: AppFonts.orbitron).value, "'Orbitron', sans-serif");
-    expect(AppType.size(TypeStep.display, was: 3.rem).value, '3rem');
-    expect(AppColors.glow(0.5).value, AppColors.primary.withValues(alpha: 0.5).value);
-    expect(AppColors.outline(0.3).value, AppColors.primary.withValues(alpha: 0.3).value);
+  test('in the default direction (c) components take the direction\'s fonts, scale and light colours', () {
+    expect(AppFonts.of(FontRole.display, was: AppFonts.orbitron).value, "'Geist', sans-serif");
+    expect(AppType.size(TypeStep.body, was: 3.rem).value, AppType.scale(ThemeDirection.c, TypeStep.body).value);
+    // Light page: ink text, and no cyan glow.
+    expect(AppColors.textPrimary.value, '#16171A');
+    expect(AppColors.glow(0.5).value, isNot(AppColors.primary.withValues(alpha: 0.5).value));
   });
 }

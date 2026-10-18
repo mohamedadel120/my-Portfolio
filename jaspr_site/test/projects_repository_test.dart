@@ -119,6 +119,18 @@ void main() {
       final docs = [for (final t in ['X', 'Y', 'Z']) {'title': t}];
       expect(parseProjects(docs).map((p) => p.title), ['X', 'Y', 'Z']);
     });
+
+    test('the dashboard order (sortOrder) is followed; featured still comes first', () {
+      final docs = [
+        {'title': 'A', 'sortOrder': 2},
+        {'title': 'B', 'sortOrder': 0},
+        {'title': 'C', 'sortOrder': 1, 'featured': true},
+        {'title': 'D', 'sortOrder': 1},
+        {'title': 'E'},
+      ];
+      // E has no sortOrder (0), so it sits with B, after B (Firestore order).
+      expect(parseProjects(docs).map((p) => p.title), ['C', 'B', 'E', 'D', 'A']);
+    });
   });
 
   group('earliestStartYear', () {

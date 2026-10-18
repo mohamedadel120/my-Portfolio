@@ -44,8 +44,9 @@ const about = AboutData(
 void main() {
   setUpAll(() => Jaspr.initializeApp(options: defaultServerOptions));
 
-  test('the current page is the default', () {
-    expect(homeLayout, HomeLayout.v1);
+  test('the chosen structure (v2) is the default; v1 is still available', () {
+    expect(homeLayout, HomeLayout.v2);
+    expect(HomeLayout.values, [HomeLayout.v1, HomeLayout.v2]);
     expect(heroCopyIndex, 0);
     expect(heroCopies, hasLength(3));
   });
@@ -90,7 +91,9 @@ void main() {
 
     for (final (i, copy) in heroCopies.indexed) {
       test('v2 option ${i + 1} renders its headline and sub-line', () async {
-        final html = await render(HeroSection.content(hero, layout: HomeLayout.v2, copyIndex: i));
+        // The dark directions' text hero (direction c has its own, see
+        // direction_c_test.dart).
+        final html = await render(HeroSection.content(hero, layout: HomeLayout.v2, copyIndex: i, light: false));
         expect(html, contains('<h1 class="hero-headline">${copy.headline}</h1>'));
         expect(html, contains(copy.subline));
         expect(html, contains('MOHAMED ADEL'));
