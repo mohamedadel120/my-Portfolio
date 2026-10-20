@@ -120,7 +120,13 @@ class Header extends StatefulComponent {
         // view -- same idea as the .nav-dot.active state in the Projects
         // showcase, just driven by section position instead of an index.
         css('a.active', [
-          css('&').styles(color: AppColors.primary, backgroundColor: AppColors.primary.withValues(alpha: 0.08)),
+          // Light look: a white segment in the grey pill (a teal tint behind
+          // teal text falls just under 4.5:1 contrast).
+          css('&').styles(
+            color: AppColors.primary,
+            backgroundColor: lit(AppColors.primary.withValues(alpha: 0.08), light: AppColors.surface),
+            raw: lit(const <String, String>{}, light: const {'box-shadow': '0 1px 2px rgba(22,23,26,0.08)'}),
+          ),
           css('&::before').styles(opacity: 1),
           // The old inline "< LABEL />" bracket motif, now scoped to just
           // the active pill instead of every link's hover state. Today's look
@@ -157,6 +163,26 @@ class Header extends StatefulComponent {
           raw: {'box-shadow': '0 0 20px 2px ${AppColors.glow(0.5).value}'},
         ),
       ]),
+      // Light look: a quiet outlined pill, so the page's own call to action
+      // ("See the apps") is the strongest thing on screen, not the header.
+      if (isLight) ...[
+        css('.cv-button', [
+          css('&').styles(
+            backgroundColor: AppColors.surface,
+            color: AppColors.textPrimary,
+            border: Border.all(color: AppColors.textPrimary.withValues(alpha: 0.16), width: 1.px),
+            radius: BorderRadius.circular(999.px),
+            padding: Padding.symmetric(horizontal: 1.2.rem, vertical: 0.7.rem),
+            fontWeight: FontWeight.w600,
+            letterSpacing: Unit.zero,
+            raw: {'transition': 'border-color 160ms ease, background-color 160ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1)'},
+          ),
+          // Only a border colour, so a tap leaving it "hovered" on a phone is
+          // harmless; the dark looks' scale-and-glow hover is switched off.
+          css('&:hover').styles(transform: Transform.none, raw: {'box-shadow': 'none', 'border-color': AppColors.textPrimary.withValues(alpha: 0.4).value}),
+          css('&:active').styles(transform: Transform.scale(0.97)),
+        ]),
+      ],
       css('.menu-toggle', [
         css('&').styles(
           backgroundColor: Colors.transparent,
@@ -277,7 +303,9 @@ class _HeaderState extends State<Header> {
         a(href: '/#hero', classes: 'nav-logo', [
           // Intrinsic size reserves the space before the image loads (no layout shift);
           // CSS sets the displayed height.
-          img(src: 'images/logo1.png', alt: 'Mohamed Adel', attributes: const {'width': '450', 'height': '450'}),
+          // The cyan logo on the dark looks, the same mark in the brand teal on
+        // the light one (the cyan has about 1.7:1 contrast on off-white).
+        img(src: isLight ? 'images/logo-teal.png' : 'images/logo1.png', alt: 'Mohamed Adel', attributes: const {'width': '450', 'height': '450'}),
         ]),
         nav(classes: 'nav-links desktop-only', [
           for (final link in _links)

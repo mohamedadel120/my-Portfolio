@@ -156,7 +156,7 @@ class ProjectPinnedShowcase extends StatefulComponent {
           'grid-template-columns': 'minmax(0, 26rem) minmax(0, 1fr)',
           // Clears the fixed navigation bar (about 6.5rem) at any window height.
           'padding': '7rem 12rem 1.5rem 4rem',
-          'background': 'radial-gradient(circle at 65% 50%, color-mix(in srgb, var(--accent) 16%, ${AppColors.background.value}) 0%, ${AppColors.background.value} 65%)',
+          'background': 'radial-gradient(circle at 65% 50%, color-mix(in srgb, var(--accent) ${lit(16, light: 8)}%, ${AppColors.background.value}) 0%, ${AppColors.background.value} 65%)',
           'transition': 'background 600ms ease',
         },
       ),

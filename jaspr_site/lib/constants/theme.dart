@@ -14,16 +14,19 @@ export 'theme_direction.dart';
 /// swap the purple second accent for a quiet slate.
 class AppColors {
   // Direction c is light: the neon cyan cannot carry text on off-white, so a
-  // deep teal of the same hue does (about 7:1 on the page colour, and 4.5:1
-  // or more even on its own tinted backgrounds such as the active nav link).
-  static const primary = isLight ? Color('#155E75') : Color('#00D9FF'); // Cyan
+  // deep teal of the same family does (about 5:1 on the page colour, 5.4:1 on
+  // white; never put it on its own tint). It is also the colour of the light
+  // logo (web/images/logo-teal.png), so the brand reads as one colour.
+  static const primary = isLight ? Color('#0E7490') : Color('#00D9FF'); // Cyan
   static const secondary = isCalm ? Color('#64748B') : Color('#7B2CBF'); // Purple
   // Lighter purple for text: #7B2CBF on the dark surfaces is only ~2.5:1
   // contrast, below the 4.5:1 WCAG AA minimum for body text.
   static const secondaryText = isLight ? Color('#475569') : isCalm ? Color('#A9B4C2') : Color('#B57BFF');
-  static const background = isLight ? Color('#F6F5F1') : isCalm ? Color('#0B0E13') : Color('#000000');
+  // A barely warm off-white: neutral enough that the teal and each app's own
+  // colour sit on it without the page turning beige.
+  static const background = isLight ? Color('#F6F6F3') : isCalm ? Color('#0B0E13') : Color('#000000');
   static const surface = isLight ? Color('#FFFFFF') : isCalm ? Color('#12161D') : Color('#121212');
-  static const surfaceLight = isLight ? Color('#EEECE6') : isCalm ? Color('#1A1F27') : Color('#1E1E1E');
+  static const surfaceLight = isLight ? Color('#EDEDE8') : isCalm ? Color('#1A1F27') : Color('#1E1E1E');
 
   static const textPrimary = isLight ? Color('#16171A') : Color('#FFFFFF');
   static const textSecondary = isLight ? Color('#16171AB8') : Color('#FFFFFFB3'); // white70 = 70% alpha

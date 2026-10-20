@@ -203,7 +203,7 @@ class ProjectCaseStudy extends StatelessComponent {
       fontFamily: _mono,
       fontSize: 0.85.rem,
       fontWeight: FontWeight.w700,
-      raw: {'color': 'var(--accent-fg)', 'letter-spacing': '0.12em', 'text-transform': 'uppercase'},
+      raw: {'color': lit('var(--accent-fg)', light: AppColors.textSecondary.value), 'letter-spacing': '0.12em', 'text-transform': 'uppercase'},
     ),
     css('.cs-title').styles(
       margin: Margin.zero,
@@ -253,7 +253,7 @@ class ProjectCaseStudy extends StatelessComponent {
       fontFamily: _mono,
       fontSize: 0.95.rem,
       fontWeight: FontWeight.w700,
-      raw: {'color': 'var(--accent-fg)', 'letter-spacing': '0.04em'},
+      raw: {'color': lit('var(--accent-fg)', light: AppColors.textPrimary.value), 'letter-spacing': '0.04em'},
     ),
     css('.cs-part-body', [
       css('&').styles(raw: {'min-width': '0'}),

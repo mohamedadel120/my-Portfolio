@@ -45,8 +45,9 @@ class CaseStudyLink extends StatelessComponent {
         textDecoration: TextDecoration.none,
         raw: {
           'align-self': 'flex-start',
-          'color': 'var(--accent-fg, ${AppColors.primary.value})',
-          'border-bottom': '1px solid currentColor',
+          // Light look: ink text, underlined in the app's own colour.
+          'color': lit('var(--accent-fg, ${AppColors.primary.value})', light: AppColors.textPrimary.value),
+          'border-bottom': lit('1px solid currentColor', light: '2px solid var(--accent, ${AppColors.primary.value})'),
           'padding-bottom': '2px',
         },
       ),
