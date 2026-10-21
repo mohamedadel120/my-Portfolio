@@ -305,7 +305,9 @@ class _HeaderState extends State<Header> {
           // CSS sets the displayed height.
           // The cyan logo on the dark looks, the same mark in the brand teal on
         // the light one (the cyan has about 1.7:1 contrast on off-white).
-        img(src: isLight ? 'images/logo-teal.png' : 'images/logo1.png', alt: 'Mohamed Adel', attributes: const {'width': '450', 'height': '450'}),
+        // 160px files for a 52px slot (sharp at 3x); the 450px originals were
+        // up to 54 KB for the same picture.
+        img(src: isLight ? 'images/logo-teal-160.png' : 'images/logo-160.png', alt: 'Mohamed Adel', attributes: const {'width': '160', 'height': '160'}),
         ]),
         nav(classes: 'nav-links desktop-only', [
           for (final link in _links)

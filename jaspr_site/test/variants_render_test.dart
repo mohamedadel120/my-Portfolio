@@ -73,13 +73,18 @@ void main() {
       expect(html, contains('Skip to contact'));
     });
 
-    test('inactive projects expose only their first screenshot', () async {
-      final html = await render(ProjectsVariant.pinnedShowcase, all);
+    test('only the active project and its neighbours load screenshots', () async {
+      final html = await render(ProjectsVariant.pinnedShowcase, [for (var i = 1; i <= 5; i++) project(i)]);
       final sources = RegExp(r'<img[^>]*src="([^"]+)"').allMatches(html).map((m) => m.group(1)).toList();
-      expect(sources, contains('https://img.test/3-1.webp'));
-      expect(sources, isNot(contains('https://img.test/3-2.webp')));
       // The active project adds the screenshot that is about to play.
-      expect(sources, contains('https://img.test/1-2.webp'));
+      expect(sources, containsAll(['https://img.test/1-1.webp', 'https://img.test/1-2.webp']));
+      // Its neighbour keeps its first screenshot ready, nothing more.
+      expect(sources, contains('https://img.test/2-1.webp'));
+      expect(sources, isNot(contains('https://img.test/2-2.webp')));
+      // Projects further away load nothing until the visitor gets close.
+      for (var i = 3; i <= 5; i++) {
+        expect(sources.where((s) => s!.startsWith('https://img.test/$i-')), isEmpty, reason: 'project $i');
+      }
     });
 
     test('arrows flank the phone and the player bar sits over the screen', () async {

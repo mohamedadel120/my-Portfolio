@@ -64,7 +64,7 @@ class HeroSection extends AsyncStatelessComponent {
 
     return section(id: 'hero', classes: 'hero hero-v2 hero-product', [
       div(classes: 'hero-product-grid', [
-        div(classes: 'hero-content reveal', [
+        div(classes: 'hero-content', [
           div(classes: 'hero-eyebrow', [
             span([.text(hero.name.toUpperCase())]),
             div(classes: 'hero-eyebrow-line', []),
@@ -105,7 +105,9 @@ class HeroSection extends AsyncStatelessComponent {
                       alt: '',
                       classes: 'hero-shot',
                       styles: Styles(raw: {'--i': '$i'}),
-                      attributes: {'loading': i == 0 ? 'eager' : 'lazy', 'decoding': 'async', if (i == 0) 'fetchpriority': 'high'},
+                      // The first frame is the first screen's largest image;
+                      // the others only show from 3 s on, so they wait.
+                      attributes: {'loading': i == 0 ? 'eager' : 'lazy', 'decoding': 'async', 'fetchpriority': i == 0 ? 'high' : 'low'},
                     ),
                 ]),
               ]),
@@ -129,7 +131,7 @@ class HeroSection extends AsyncStatelessComponent {
 
     return section(id: 'hero', classes: 'hero', [
       div(classes: 'hero-aurora', []),
-      div(classes: 'hero-content reveal', [
+      div(classes: 'hero-content', [
         div(classes: 'hero-eyebrow', [
           span([
             for (final (i, part) in titleParts.indexed) ...[
@@ -156,7 +158,7 @@ class HeroSection extends AsyncStatelessComponent {
   static Component _v2(HeroData hero, HeroCopy copy) {
     return section(id: 'hero', classes: 'hero hero-v2', [
       div(classes: 'hero-aurora', []),
-      div(classes: 'hero-content reveal', [
+      div(classes: 'hero-content', [
         div(classes: 'hero-eyebrow', [
           span([.text(hero.name.toUpperCase())]),
           div(classes: 'hero-eyebrow-line', []),
@@ -346,6 +348,9 @@ class HeroSection extends AsyncStatelessComponent {
         css('&').styles(raw: {'grid-template-columns': 'minmax(0, 1fr)', 'justify-items': 'start'}),
       ]),
     ]),
+    // The headline is the largest thing on the first screen, so it must be
+    // visible from the first paint: its entrance moves it a little but never
+    // starts it transparent (that held back Largest Contentful Paint).
     css('.hero-product .hero-headline').styles(
       maxWidth: 13.em,
       fontSize: Unit.expression('clamp(2.4rem, 1.4rem + 3.6vw, 4.6rem)'),
@@ -353,8 +358,16 @@ class HeroSection extends AsyncStatelessComponent {
       lineHeight: Unit.expression('1.02'),
       letterSpacing: (-0.04).em,
       margin: Margin.only(bottom: 1.5.rem),
-      raw: {'text-wrap': 'balance'},
+      opacity: 1,
+      raw: {'text-wrap': 'balance', 'animation': 'heroRise 700ms cubic-bezier(0.23, 1, 0.32, 1) both'},
     ),
+    css.keyframes('heroRise', {
+      '0%': Styles(transform: Transform.translate(y: 14.px)),
+      '100%': Styles(transform: Transform.translate(y: Unit.zero)),
+    }),
+    MotionRule.reduced([
+      css('.hero-product .hero-headline').styles(raw: {'animation': 'none'}),
+    ]),
     css('.hero-product .hero-subtitle').styles(
       maxWidth: 34.rem,
       margin: Margin.only(bottom: 2.25.rem),

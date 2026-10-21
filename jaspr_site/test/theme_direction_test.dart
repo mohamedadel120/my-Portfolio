@@ -35,14 +35,16 @@ void main() {
     );
   });
 
-  test('the page stylesheet imports the text fonts and the icons, nothing else', () {
+  test('the page stylesheet imports nothing (an @import blocks the first paint)', () {
     final imports = [
       for (final rule in styles)
         if (rule.toCss().trimLeft().startsWith('@import')) rule.toCss().trim(),
     ];
-    expect(imports, hasLength(2));
-    expect(imports[0], contains(googleFontsUrl));
-    expect(imports[1], contains(materialSymbolsUrl));
+    expect(imports, isEmpty);
+  });
+
+  test('the text fonts and the icon font are both loaded by the page head', () {
+    expect(fontStylesheets, [googleFontsUrl, materialSymbolsUrl]);
   });
 
   for (final direction in [ThemeDirection.a, ThemeDirection.b, ThemeDirection.c]) {

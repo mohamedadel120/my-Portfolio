@@ -43,10 +43,20 @@ void main() {
       'twitter:image': ogImage,
     },
     head: [
-      // Open the connections to Google Fonts early: the font stylesheet is
-      // render-blocking, so every round trip saved shows the page sooner.
+      // Open the connections to Google Fonts early, then fetch the font
+      // stylesheets without blocking the first paint: each is preloaded and
+      // switched to a stylesheet once it arrives, so the page shows straight
+      // away in the fallback fonts and swaps in Geist when it lands (text
+      // fonts use display=swap; the icons sit in clipped boxes until theirs
+      // arrives). Without JavaScript the <noscript> links load them normally.
       link(rel: 'preconnect', href: 'https://fonts.googleapis.com'),
       link(rel: 'preconnect', href: 'https://fonts.gstatic.com', attributes: const {'crossorigin': ''}),
+      // The project screenshots are hosted on imgbb; the hero's phone shows
+      // one on the first screen.
+      link(rel: 'preconnect', href: 'https://i.ibb.co'),
+      for (final href in fontStylesheets)
+        link(rel: 'preload', href: href, attributes: const {'as': 'style', 'onload': "this.onload=null;this.rel='stylesheet'"}),
+      Component.element(tag: 'noscript', children: [for (final href in fontStylesheets) link(rel: 'stylesheet', href: href)]),
       link(rel: 'icon', type: 'image/png', href: 'favicon.png'),
       link(rel: 'manifest', href: 'manifest.json'),
       // Document's `meta` map always renders a `name=` attribute; Open Graph

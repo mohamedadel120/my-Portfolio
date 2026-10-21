@@ -761,9 +761,15 @@ class _ProjectPinnedShowcaseState extends State<ProjectPinnedShowcase> {
       final needed = (current + 1).clamp(0, images.length - 1);
       if (needed > previous) _reach[index] = needed;
     }
-    // Inactive projects keep only their first image in the page (so it is
-    // indexed); the active one adds the next screenshot ahead of time.
-    final rendered = images.isEmpty ? 0 : (active ? (_reach[index] ?? 0) + 1 : 1);
+    // The active project adds the next screenshot ahead of time; its two
+    // neighbours keep their first one ready so a project switch never shows
+    // an empty screen. Projects further away render no image yet: all the
+    // phones sit stacked in view, so `loading="lazy"` cannot hold them back,
+    // and on a phone they all downloaded before anything else (some are
+    // multi-megabyte PNGs). Every screenshot stays indexable on the case
+    // study pages.
+    final near = (index - _active).abs() <= 1;
+    final rendered = images.isEmpty ? 0 : (active ? (_reach[index] ?? 0) + 1 : (near ? 1 : 0));
 
     return div(
       classes: 'pp-phone',
@@ -779,7 +785,9 @@ class _ProjectPinnedShowcaseState extends State<ProjectPinnedShowcase> {
               classes: 'pp-shot',
               attributes: {
                 'data-current': '${active && j == current}',
-                'loading': index == 0 && j == 0 ? 'eager' : 'lazy',
+                // Below the hero on every layout now, so nothing here is
+                // needed for the first screen.
+                'loading': 'lazy',
                 'decoding': 'async',
                 'draggable': 'false',
               },

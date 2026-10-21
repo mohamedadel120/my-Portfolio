@@ -205,12 +205,10 @@ class Breakpoints {
 /// Component-local styles live on each component's own `@css` getter.
 @css
 List<StyleRule> get styles => [
-  css.import(googleFontsUrl),
-  // The icon font on its own, cut down to the icons the site uses at the one
-  // size it uses: the full Material Symbols variable font is about 1.4 MB,
-  // which alone delayed the first paint on mobile by several seconds. The
-  // icon list is `materialIconNames` below.
-  css.import(materialSymbolsUrl),
+  // The text and icon fonts are NOT imported here: an `@import` holds back
+  // the whole page until Google's stylesheet arrives (on a slow phone it was
+  // most of the 5 s before anything showed). main.server.dart loads both
+  // without blocking instead; see [fontStylesheets].
   // Smooth scrolling is off for visitors who asked for reduced motion (see
   // the MotionRule below), and every scrollbar uses a slim, themed track
   // instead of the browser's default white one.
@@ -328,6 +326,12 @@ const materialIconNames = [
 
 /// The text fonts of the active direction, in one request (see [AppFonts]).
 final googleFontsUrl = AppFonts.active.importUrl;
+
+/// The font stylesheets the page loads, in order: the text fonts, then the
+/// icon font (cut down to the icons the site uses at the one size it uses;
+/// the full Material Symbols font is about 1.4 MB). main.server.dart links
+/// them so they do not block the first paint.
+List<String> get fontStylesheets => [googleFontsUrl, materialSymbolsUrl];
 
 /// Optical size 24 and weight 400 only (what `.material-symbols-rounded`
 /// asks for), with the FILL axis kept for the filled star.
