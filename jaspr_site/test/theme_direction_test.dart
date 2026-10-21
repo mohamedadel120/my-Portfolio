@@ -43,6 +43,17 @@ void main() {
     expect(imports, isEmpty);
   });
 
+  test('reveal-on-scroll never hides content unless the client script has started', () {
+    final css = [for (final rule in styles) rule.toCss()].join('\n');
+    // Every rule that hides a .reveal element is scoped to html.reveal-ready,
+    // which only the client script adds.
+    final hiding = RegExp(r'([^{}]*\.reveal[^{}]*)\{[^}]*opacity:\s*0').allMatches(css).map((m) => m.group(1)!.trim());
+    expect(hiding, isNotEmpty);
+    for (final selector in hiding) {
+      expect(selector, contains('html.reveal-ready'), reason: selector);
+    }
+  });
+
   test('the text fonts and the icon font are both loaded by the page head', () {
     expect(fontStylesheets, [googleFontsUrl, materialSymbolsUrl]);
   });

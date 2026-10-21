@@ -290,12 +290,18 @@ List<StyleRule> get styles => [
   // they enter the viewport. Same visual intent as the Flutter app's
   // per-item `GSAPEnhancedAnimation`/`ScrollTriggeredAnimation` staggers,
   // done here with plain CSS transitions instead of a JS animation library.
-  css('.reveal').styles(
-    opacity: 0,
-    transform: Transform.translate(y: 30.px),
-    raw: {'transition': 'opacity 600ms ease-out, transform 600ms ease-out'},
-  ),
-  css('.reveal.revealed').styles(opacity: 1, transform: Transform.translate(y: 0.px)),
+  //
+  // Content is visible by default. Only once the client script has started
+  // (it adds `reveal-ready` to <html>, see scroll_reveal.web.dart) are the
+  // not-yet-seen elements below the fold hidden, so the page never depends
+  // on JavaScript to show its text, and visitors who asked for reduced
+  // motion get no hidden state at all.
+  MotionRule.allowed([
+    css('html.reveal-ready .reveal').styles(
+      raw: {'transition': 'opacity 400ms cubic-bezier(0.23, 1, 0.32, 1), transform 400ms cubic-bezier(0.23, 1, 0.32, 1)'},
+    ),
+    css('html.reveal-ready .reveal:not(.revealed)').styles(opacity: 0, transform: Transform.translate(y: 16.px)),
+  ]),
   // Phone layout. Sections used 3.75rem (60px) side padding at every width,
   // which left ~255px of content on a 375px phone, and `1fr` grid tracks /
   // flex items default to `min-width: auto`, so any long word or wide child
