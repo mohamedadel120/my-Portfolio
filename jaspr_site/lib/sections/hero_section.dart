@@ -324,6 +324,23 @@ class HeroSection extends AsyncStatelessComponent {
       css('a:hover').styles(color: AppColors.primary),
     ]),
     ..._productStyles,
+    // Reduced motion: every hero part simply shows, with no entrance (they
+    // otherwise start at opacity 0 and slide in), and the aurora stops
+    // pulsing. Listed last so it wins over each part's own rule.
+    MotionRule.reduced([
+      for (final selector in [
+        '.hero-eyebrow',
+        '.hero-name',
+        '.hero-headline',
+        '.hero-footer',
+        '.hero-product .hero-subtitle',
+        '.hero-buttons',
+        '.hero-proof-block',
+        '.hero-device-link',
+        '.hero-aurora',
+      ])
+        css(selector).styles(opacity: 1, raw: {'animation': 'none', 'transform': 'none'}),
+    ]),
   ];
 
   // Direction c's hero. Rules are prefixed with `.hero-product` so they win
@@ -372,7 +389,7 @@ class HeroSection extends AsyncStatelessComponent {
       maxWidth: 34.rem,
       margin: Margin.only(bottom: 2.25.rem),
       opacity: 0,
-      raw: {'animation': 'heroFadeSlideYSmall 800ms cubic-bezier(0.23, 1, 0.32, 1) 350ms both'},
+      raw: {'animation': 'heroFadeSlideYSmall 500ms cubic-bezier(0.23, 1, 0.32, 1) 120ms both'},
     ),
     css('.hero-buttons', [
       css('&').styles(
@@ -380,7 +397,7 @@ class HeroSection extends AsyncStatelessComponent {
         flexWrap: FlexWrap.wrap,
         gap: Gap.all(0.75.rem),
         opacity: 0,
-        raw: {'animation': 'heroFadeSlideYSmall 800ms cubic-bezier(0.23, 1, 0.32, 1) 450ms both'},
+        raw: {'animation': 'heroFadeSlideYSmall 500ms cubic-bezier(0.23, 1, 0.32, 1) 180ms both'},
       ),
     ]),
     css('.hero-btn', [
@@ -414,7 +431,7 @@ class HeroSection extends AsyncStatelessComponent {
     css('.hero-proof-block').styles(
       margin: Margin.only(top: 2.5.rem),
       opacity: 0,
-      raw: {'animation': 'heroFadeSlideYSmall 800ms cubic-bezier(0.23, 1, 0.32, 1) 550ms both'},
+      raw: {'animation': 'heroFadeSlideYSmall 500ms cubic-bezier(0.23, 1, 0.32, 1) 240ms both'},
     ),
     css('.hero-proof-label').styles(
       margin: Margin.only(bottom: 0.6.rem),
@@ -465,7 +482,7 @@ class HeroSection extends AsyncStatelessComponent {
         gap: Gap.all(1.25.rem),
         textDecoration: TextDecoration.none,
         opacity: 0,
-        raw: {'animation': 'heroFadeSlideYSmall 900ms cubic-bezier(0.23, 1, 0.32, 1) 300ms both', 'justify-self': 'center'},
+        raw: {'animation': 'heroFadeSlideYSmall 600ms cubic-bezier(0.23, 1, 0.32, 1) 80ms both', 'justify-self': 'center'},
       ),
       css('&:focus-visible').styles(raw: {'outline': '2px solid ${AppColors.primary.value}', 'outline-offset': '6px', 'border-radius': '2rem'}),
     ]),

@@ -16,8 +16,8 @@ Status: ⬜ not started · 🔄 in progress · ✅ done · ⏸ waiting for the o
 
 | # | Step | Where | Needs the owner | Status |
 |---|------|-------|-----------------|--------|
-| 2 | Content never hidden without JavaScript: `.reveal` hides only once the script has started; reduced motion shows it at once | `theme.dart` reveal rules, `scroll_reveal.web.dart` | No | ⬜ |
-| 3 | Hero entrance animations respect reduced motion | `hero_section.dart` | No | ⬜ |
+| 2 | Content never hidden without JavaScript: `.reveal` hides only once the script has started; reduced motion shows it at once | `theme.dart` reveal rules, `scroll_reveal.web.dart` | No | ✅ |
+| 3 | Hero entrance animations respect reduced motion | `hero_section.dart` | No | ✅ |
 | 4 | A project with no screenshots (and a phone still loading) shows an intentional placeholder in the app's colour, not a black screen | `project_pinned_showcase.dart`, `shot_gallery.dart` | No | ⬜ |
 | 5 | Replace the per-character retyping on every project change with a short crossfade | `project_pinned_showcase.dart` | No | ⬜ |
 | 6 | Dashboard: "Discard changes?" before closing a changed form; Profile's Save always visible | dashboard dialogs, `profile_info_page.dart` | No | ⬜ |
