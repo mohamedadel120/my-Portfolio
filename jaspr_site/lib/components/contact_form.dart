@@ -53,7 +53,11 @@ class ContactForm extends StatefulComponent {
         fontFamily: AppFonts.of(FontRole.text, was: AppFonts.jetBrainsMono),
         fontSize: AppType.size(TypeStep.small, was: 0.85.rem),
       ),
-      css('input, textarea').styles(
+      // One rule per element: inside a nested rule Jaspr prefixes only the
+      // first part of a comma selector (`input, textarea` styled every
+      // textarea on the site).
+      for (final field in ['input', 'textarea'])
+      css(field).styles(
         color: AppColors.textPrimary,
         backgroundColor: lit(AppColors.background, light: AppColors.surface),
         fontFamily: AppFonts.of(FontRole.text, was: AppFonts.jetBrainsMono),
@@ -63,7 +67,8 @@ class ContactForm extends StatefulComponent {
         // Fields keep a clearly visible edge in every direction.
         border: Border.all(color: themed(AppColors.primary.withValues(alpha: 0.3), calm: AppColors.textPrimary.withValues(alpha: 0.24)), width: 1.px),
       ),
-      css('input:focus, textarea:focus').styles(
+      for (final field in ['input', 'textarea'])
+      css('$field:focus').styles(
         border: Border.all(color: AppColors.primary, width: 2.px),
         raw: {'outline': 'none'},
       ),

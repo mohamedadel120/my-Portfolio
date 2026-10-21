@@ -138,14 +138,20 @@ class StickyProjectShowcase extends StatefulComponent {
       // `loadeddata` event) -- previously this faded in on a fixed timer
       // regardless of whether the network image had actually arrived, so
       // slow-loading images still flashed blank/black underneath it.
-      css('img, video').styles(
-        width: 100.percent,
-        height: 100.percent,
-        opacity: 0,
-        transition: Transition('opacity', duration: 300.ms),
-        raw: {'object-fit': 'cover'},
-      ),
-      css('img.media-loaded, video.media-loaded').styles(opacity: 1),
+      //
+      // One rule per element: inside a nested rule Jaspr prefixes only the
+      // first part of a comma selector, so `css('img, video')` came out as
+      // `.phone-screen img, video` and hid every <video> on the site.
+      for (final media in ['img', 'video'])
+        css(media).styles(
+          width: 100.percent,
+          height: 100.percent,
+          opacity: 0,
+          transition: Transition('opacity', duration: 300.ms),
+          raw: {'object-fit': 'cover'},
+        ),
+      css('img.media-loaded').styles(opacity: 1),
+      css('video.media-loaded').styles(opacity: 1),
     ]),
     css('.phone-loading', [
       css('&').styles(
@@ -390,7 +396,8 @@ class StickyProjectShowcase extends StatefulComponent {
         // Identical length/width for both legs, mirrored rotation from the
         // same origin point, so they meet symmetrically at the apex. Thick
         // relative to their length for a bold, solid look like the real icon.
-        css('.as-bar-left, .as-bar-right').styles(
+        for (final bar in ['.as-bar-left', '.as-bar-right'])
+        css(bar).styles(
           position: Position.absolute(left: 0.615.em, top: 0.315.em),
           width: 0.27.em,
           height: 1.185.em,

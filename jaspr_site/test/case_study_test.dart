@@ -128,7 +128,7 @@ void main() {
     test('no screenshots: no gallery, and a video when there is one', () async {
       final html = await renderPage(project('DrugZa', extra: {'galleryImages': null, 'videoUrl': 'assets/videos/demo.mp4'}));
       expect(body(html), isNot(contains('class="gal"')));
-      expect(body(html), contains('src="/assets/videos/demo.mp4"'));
+      expect(body(html), contains('src="/assets/videos/demo.mp4#t=0.1"'));
       expect(RegExp('<!--@').allMatches(html.split('</head>').last), isEmpty);
     });
 

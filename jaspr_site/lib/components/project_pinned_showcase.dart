@@ -340,8 +340,41 @@ class ProjectPinnedShowcase extends StatefulComponent {
         overflow: Overflow.hidden,
         radius: BorderRadius.circular(2.25.rem),
         backgroundColor: Colors.black,
-        raw: {'height': 'var(--h)'},
+        // While a screenshot loads the light look shows a soft tint of the
+        // app's colour instead of a black slab.
+        raw: {'height': 'var(--h)', if (isLight) 'background': 'color-mix(in srgb, var(--accent) 16%, ${AppColors.surfaceLight.value})'},
       ),
+      // A demo video fills the screen; its first frame shows before play.
+      css('video').styles(
+        position: Position.absolute(top: Unit.zero, left: Unit.zero),
+        width: 100.percent,
+        height: 100.percent,
+        raw: {'object-fit': 'contain', 'background': '#0f1012'},
+      ),
+    ]),
+    // A project with neither screenshots nor a video: an intentional card in
+    // the app's colour, not an empty phone.
+    css('.pp-empty', [
+      css('&').styles(
+        position: Position.absolute(top: Unit.zero, left: Unit.zero, right: Unit.zero, bottom: Unit.zero),
+        display: Display.flex,
+        flexDirection: FlexDirection.column,
+        alignItems: AlignItems.center,
+        justifyContent: JustifyContent.center,
+        gap: Gap.all(0.6.rem),
+        padding: Padding.all(1.5.rem),
+        textAlign: TextAlign.center,
+        raw: {'background': 'color-mix(in srgb, var(--accent) 22%, ${AppColors.surface.value})'},
+      ),
+      css('.pp-empty-icon').styles(
+        width: 2.5.rem,
+        height: 2.5.rem,
+        overflow: Overflow.hidden,
+        fontSize: 2.5.rem,
+        raw: {'line-height': '1', 'color': 'var(--accent-fg)'},
+      ),
+      css('.pp-empty-title').styles(margin: Margin.zero, color: AppColors.textPrimary, fontWeight: FontWeight.w600, fontSize: 1.05.rem),
+      css('.pp-empty-text').styles(margin: Margin.zero, color: AppColors.textSecondary, fontSize: 0.85.rem),
     ]),
     // Screenshots are stacked and cross-fade, like the frames of a video.
     css('.pp-shot', [
@@ -792,8 +825,16 @@ class _ProjectPinnedShowcaseState extends State<ProjectPinnedShowcase> {
                 'draggable': 'false',
               },
             ),
+          // `#t=0.1` with metadata preload shows the video's first frame
+          // instead of a black box until play.
           if (images.isEmpty && view.videoUrl != null)
-            video(src: view.videoUrl!, controls: true, muted: true, attributes: const {'playsinline': '', 'preload': 'none'}, []),
+            video(src: '${view.videoUrl!}#t=0.1', controls: true, muted: true, attributes: {'playsinline': '', 'preload': 'metadata', 'aria-label': '${view.title} demo video'}, []),
+          if (images.isEmpty && view.videoUrl == null)
+            div(classes: 'pp-empty', [
+              span(classes: 'material-symbols-rounded pp-empty-icon', attributes: {'aria-hidden': 'true'}, [.text('phone_android')]),
+              p(classes: 'pp-empty-title', [.text(view.title)]),
+              p(classes: 'pp-empty-text', [.text('No screenshots yet')]),
+            ]),
           if (active && images.length > 1) ...[
             // Mouse and touch convenience only: the pause button below is the
             // keyboard- and screen-reader-accessible control.

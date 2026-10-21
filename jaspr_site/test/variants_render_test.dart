@@ -73,6 +73,16 @@ void main() {
       expect(html, contains('Skip to contact'));
     });
 
+    test('no screenshots: a demo video shows its first frame, nothing at all shows a placeholder', () async {
+      final noMedia = project(1, full: false);
+      final withVideo = {...project(2, full: false), 'videoUrl': 'assets/videos/demo.mp4'};
+      final html = markupOnly(await render(ProjectsVariant.pinnedShowcase, [noMedia, withVideo]));
+      expect(html, contains('class="pp-empty"'));
+      expect(html, contains('No screenshots yet'));
+      expect(html, contains('src="/assets/videos/demo.mp4#t=0.1"'));
+      expect(html, contains('preload="metadata"'));
+    });
+
     test('only the active project and its neighbours load screenshots', () async {
       final html = await render(ProjectsVariant.pinnedShowcase, [for (var i = 1; i <= 5; i++) project(i)]);
       final sources = RegExp(r'<img[^>]*src="([^"]+)"').allMatches(html).map((m) => m.group(1)).toList();

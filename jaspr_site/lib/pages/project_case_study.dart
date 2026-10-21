@@ -97,9 +97,10 @@ class ProjectCaseStudy extends StatelessComponent {
               _part('See it in action', [
                 video(
                   classes: 'cs-video',
-                  src: videoUrl,
+                  // #t=0.1 + metadata: the first frame shows instead of black.
+                  src: '$videoUrl#t=0.1',
                   controls: true,
-                  preload: Preload.none,
+                  preload: Preload.metadata,
                   attributes: const {'playsinline': ''},
                   [],
                 ),
