@@ -17,4 +17,10 @@ void main() {
     }
     expect(offenders, isEmpty, reason: offenders.join('\n'));
   });
+
+  test('testimonials show no star rating (every stored rating was 5, unconfirmed)', () {
+    final source = File('lib/sections/testimonials_section.dart').readAsStringSync();
+    expect(source, isNot(contains('out of 5 stars')));
+    expect(source, isNot(contains('testimonial-stars')));
+  });
 }

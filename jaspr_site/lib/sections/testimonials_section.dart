@@ -5,10 +5,10 @@ import '../constants/theme.dart';
 import '../data/testimonials_repository.dart';
 
 /// Ported from the Flutter app's `TestimonialsSection`/`_TestimonialCard` —
-/// quote icon, star rating, italic opinion, a fading divider and the author
-/// line, in a two-column grid. Unlike the Flutter card (which always drew
-/// five stars and omitted the name), this uses the stored `rating` and shows
-/// the author's name above their role and company.
+/// quote icon, opinion, a fading divider and the author line, in a
+/// two-column grid, with the author's name above their role and company.
+/// No star rating: every stored `rating` was 5, which reads as a claim
+/// nobody confirmed (the site shows no ratings until they are real).
 class TestimonialsSection extends AsyncStatelessComponent {
   const TestimonialsSection({super.key});
 
@@ -31,21 +31,6 @@ class TestimonialsSection extends AsyncStatelessComponent {
                   .text('format_quote'),
                 ],
               ),
-              div(
-                classes: 'testimonial-stars',
-                attributes: {'role': 'img', 'aria-label': '${_formatRating(t.rating)} out of 5 stars'},
-                [
-                  for (var star = 1; star <= 5; star++)
-                    span(
-                      classes: star <= t.rating.round()
-                          ? 'material-symbols-rounded star filled'
-                          : 'material-symbols-rounded star',
-                      [
-                        .text('star'),
-                      ],
-                    ),
-                ],
-              ),
               blockquote(classes: 'testimonial-opinion', [.text(t.opinion)]),
               div(classes: 'testimonial-divider', []),
               figcaption(classes: 'testimonial-author', [
@@ -59,9 +44,6 @@ class TestimonialsSection extends AsyncStatelessComponent {
       ]),
     ]);
   }
-
-  static String _formatRating(double rating) =>
-      rating == rating.roundToDouble() ? rating.toInt().toString() : rating.toStringAsFixed(1);
 
   // The staggered reveal delay applies only to the scroll-in fade/slide
   // (`transform`); the hover lift uses the separate `translate` property so it
@@ -142,18 +124,6 @@ class TestimonialsSection extends AsyncStatelessComponent {
             calm: AppColors.primary.withValues(alpha: 0.1).value,
           ),
         },
-      ),
-    ]),
-    css('.testimonial-stars', [
-      css('&').styles(
-        display: Display.flex,
-        gap: Gap.all(0.125.rem),
-        margin: Margin.only(top: 1.25.rem),
-      ),
-      css('.star').styles(color: AppColors.textTertiary, fontSize: 1.125.rem),
-      css('.star.filled').styles(
-        color: AppColors.primary,
-        raw: {'font-variation-settings': "'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24"},
       ),
     ]),
     css('.testimonial-opinion', [

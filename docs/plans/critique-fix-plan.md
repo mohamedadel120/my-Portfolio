@@ -10,7 +10,7 @@ Status: ⬜ not started · 🔄 in progress · ✅ done · ⏸ waiting for the o
 
 | # | Step | Where | Needs the owner | Status |
 |---|------|-------|-----------------|--------|
-| 1 | Remove the placeholder testimonial "Jane Doe" and stop showing 5 stars on every testimonial | Firestore `testimonials/UmxyO4OVxxDgshuyrNOS`; `testimonials_section.dart:34-46` | Yes: OK to delete; stars or not | ⏸ |
+| 1 | Remove the placeholder testimonial "Jane Doe" and stop showing 5 stars on every testimonial | Firestore `testimonials/UmxyO4OVxxDgshuyrNOS`; `testimonials_section.dart:34-46` | Yes: OK to delete; stars or not | ✅ |
 
 ## P1 (before publishing v3)
 
