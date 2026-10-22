@@ -21,7 +21,7 @@ Status: ⬜ not started · 🔄 in progress · ✅ done · ⏸ waiting for the o
 | 4 | A project with no screenshots (and a phone still loading) shows an intentional placeholder in the app's colour, not a black screen | `project_pinned_showcase.dart`, `shot_gallery.dart` | No | ✅ |
 | 5 | Replace the per-character retyping on every project change with a short crossfade | `project_pinned_showcase.dart` | No | ✅ |
 | 6 | Dashboard: "Discard changes?" before closing a changed form; Profile's Save always visible | dashboard dialogs, `profile_info_page.dart` | No | ✅ |
-| 7 | Dashboard: usable under 1000 px (sidebar becomes a rail/drawer; cards size to their content) | `dashboard_layout.dart`, `projects_page.dart` | No | ⬜ |
+| 7 | Dashboard: usable under 1000 px (sidebar becomes a rail/drawer; cards size to their content) | `dashboard_layout.dart`, `projects_page.dart` | No | ✅ |
 
 ## P2
 
