@@ -63,7 +63,7 @@ class ProjectCaseStudy extends StatelessComponent {
           div(classes: 'cs-hero', [
             div(classes: 'cs-intro', [
               p(classes: 'cs-kicker', [.text('Case study')]),
-              h1(classes: 'cs-title', [.text(view.title)]),
+              h1(classes: 'cs-title', attributes: const {'dir': 'auto'}, [.text(view.title)]),
               FeaturedLabel(view),
               if (view.downloads.isNotEmpty || view.platforms.isNotEmpty)
                 dl(classes: 'cs-facts', [
@@ -84,11 +84,11 @@ class ProjectCaseStudy extends StatelessComponent {
             if (view.images.isNotEmpty) div(classes: 'cs-media', [ProjectGallery(title: view.title, images: view.images)]),
           ]),
           div(classes: 'cs-story', [
-            if (problem != null) _part('The problem', [p([.text(problem)])]),
+            if (problem != null) _part('The problem', [p(attributes: const {'dir': 'auto'}, [.text(problem)])]),
             // With a problem above it, the description reads as the answer.
-            if (view.description.isNotEmpty) _part(problem != null ? 'The solution' : 'Overview', [p([.text(view.description)])]),
-            if (role != null) _part('My role', [p([.text(role)])]),
-            if (outcome != null) _part('The outcome', [p([.text(outcome)])]),
+            if (view.description.isNotEmpty) _part(problem != null ? 'The solution' : 'Overview', [p(attributes: const {'dir': 'auto'}, [.text(view.description)])]),
+            if (role != null) _part('My role', [p(attributes: const {'dir': 'auto'}, [.text(role)])]),
+            if (outcome != null) _part('The outcome', [p(attributes: const {'dir': 'auto'}, [.text(outcome)])]),
             if (view.tech.isNotEmpty)
               _part('Built with', [
                 ul(classes: 'cs-tech', [for (final item in view.tech) li([.text(item)])]),

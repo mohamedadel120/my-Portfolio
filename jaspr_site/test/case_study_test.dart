@@ -73,7 +73,7 @@ void main() {
         'featured': true,
       }));
       final page = body(html);
-      expect(page, contains('<h1 class="cs-title">Gomla Mobile App</h1>'));
+      expect(page, contains('<h1 class="cs-title" dir="auto">Gomla Mobile App</h1>'));
       expect(page, contains('The problem'));
       expect(page, contains('Buying beauty products meant going to a store.'));
       // With a problem above it, the description is the answer to it.

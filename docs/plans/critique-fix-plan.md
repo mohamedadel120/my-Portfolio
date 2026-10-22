@@ -27,7 +27,7 @@ Status: ⬜ not started · 🔄 in progress · ✅ done · ⏸ waiting for the o
 
 | # | Step | Where | Needs the owner | Status |
 |---|------|-------|-----------------|--------|
-| 8 | Showcase: shorter scroll per project, description clamped with a link, at most ~6 tags + "+N", `dir="auto"` for Arabic, no inner scroller hiding the CTAs | `project_pinned_showcase.dart` | No | ⬜ |
+| 8 | Showcase: shorter scroll per project, description clamped with a link, at most ~6 tags + "+N", `dir="auto"` for Arabic, no inner scroller hiding the CTAs | `project_pinned_showcase.dart` | No | ✅ |
 | 9 | Case studies: "My role" and "The outcome" filled, role line under the title, first image not cropped | Firestore + `project_case_study.dart` | Yes: the role/outcome text | ⏸ |
 | 10 | Lower half of the page in the direction c voice (titles, copy, contact, footer) | sections below Projects | Yes: redesign or polish | ⏸ |
 | 11 | Dashboard accessibility: semantics on, labelled icon buttons, keyboard reaches sidebar and actions | dashboard | No | ⬜ |

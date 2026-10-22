@@ -73,6 +73,22 @@ void main() {
       expect(html, contains('Skip to contact'));
     });
 
+    test('at most six tags, the rest folded into "+N" with their names', () async {
+      final many = {...project(1), 'tech': [for (var i = 1; i <= 9; i++) 'Tech$i']};
+      final html = markupOnly(await render(ProjectsVariant.pinnedShowcase, [many]));
+      expect(html, contains('>Tech6</li>'));
+      expect(html, isNot(contains('>Tech7</li>')));
+      expect(html, contains('>+3</li>'));
+      expect(html, contains('title="Tech7, Tech8, Tech9"'));
+      expect(html, contains('aria-label="and 3 more: Tech7, Tech8, Tech9"'));
+    });
+
+    test('titles and descriptions take their direction from the text (Arabic)', () async {
+      final html = markupOnly(await render(ProjectsVariant.pinnedShowcase, all));
+      expect(html, contains('class="pp-title" dir="auto"'));
+      expect(html, contains('class="pp-description" dir="auto"'));
+    });
+
     test('no screenshots: a demo video shows its first frame, nothing at all shows a placeholder', () async {
       final noMedia = project(1, full: false);
       final withVideo = {...project(2, full: false), 'videoUrl': 'assets/videos/demo.mp4'};

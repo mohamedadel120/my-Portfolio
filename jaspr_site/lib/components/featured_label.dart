@@ -25,7 +25,7 @@ class FeaturedLabel extends StatelessComponent {
           span(classes: 'material-symbols-rounded feat-star', attributes: {'aria-hidden': 'true'}, [.text('star')]),
           .text('Featured project'),
         ]),
-      if (highlight != null) p(classes: 'feat-highlight', [.text(highlight)]),
+      if (highlight != null) p(classes: 'feat-highlight', attributes: const {'dir': 'auto'}, [.text(highlight)]),
     ]);
   }
 

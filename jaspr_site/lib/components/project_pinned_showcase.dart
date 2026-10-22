@@ -19,11 +19,17 @@ import 'store_buttons.dart';
 /// title and description are typed out.
 ///
 /// Every project's text is in the server-rendered HTML (only the active
-/// project is visible). Typed text is a visual copy: the full text stays in
-/// the document for screen readers and search engines. Visitors who asked for
-/// reduced motion get no typing, no autoplay and no cross-fades. Tablets and
-/// phones get plain stacked cards with the manual gallery instead of a pinned
-/// stage.
+/// project is visible). Visitors who asked for reduced motion get no
+/// autoplay and no cross-fades. Tablets and phones get plain stacked cards
+/// with the manual gallery instead of a pinned stage.
+///
+/// Scroll distance per project, in viewport heights. 0.85 made eight
+/// projects cost about 7,000 px of scrolling on a desktop.
+const _segmentVh = 0.65;
+
+/// Tags shown per project before the rest fold into "+N".
+const _maxTags = 6;
+
 @client
 class ProjectPinnedShowcase extends StatefulComponent {
   final List<Map<String, dynamic>> projects;
@@ -38,7 +44,7 @@ class ProjectPinnedShowcase extends StatefulComponent {
     // `clip` (not `hidden`) keeps the sticky children working while making
     // sure nothing pinned can hang out over the next section.
     css('.pp', [
-      css('&').styles(position: Position.relative(), raw: {'height': 'calc(var(--n) * 85dvh + 100dvh)', 'overflow': 'clip'}),
+      css('&').styles(position: Position.relative(), raw: {'height': 'calc(var(--n) * ${(_segmentVh * 100).round()}dvh + 100dvh)', 'overflow': 'clip'}),
     ]),
     css('.pp.pp-narrow', [css('&').styles(raw: {'height': 'auto'})]),
     // The counter, the project list and the skip link: a layer over the whole
@@ -247,6 +253,19 @@ class ProjectPinnedShowcase extends StatefulComponent {
         raw: {'overflow-wrap': 'break-word', 'font-size': 'clamp(0.82rem, 2dvh, 1rem)'},
       ),
     ]),
+    // In the pinned stage a long description stops at four lines, so the
+    // store buttons and the call to action always stay in view; the whole
+    // text is one click away on the case study ("Read the case study" sits
+    // right under it).
+    css('.pp-info .pp-description').styles(raw: {
+      'display': '-webkit-box',
+      '-webkit-box-orient': 'vertical',
+      '-webkit-line-clamp': '4',
+      'line-clamp': '4',
+      'overflow': 'hidden',
+    }),
+    // The "+N" chip for tags that did not fit.
+    css('.pp-tech li.pp-tech-more').styles(color: AppColors.textSecondary, raw: {'border-style': 'dashed'}),
     // The tags follow the text in a short stagger.
     MotionRule.allowed([
       css('.pp-info[data-active="true"] .pp-tech li').styles(raw: {'animation': 'ppIn 260ms cubic-bezier(0.23, 1, 0.32, 1) both', 'animation-delay': 'calc(var(--k) * 30ms + 120ms)'}),
@@ -506,9 +525,6 @@ class ProjectPinnedShowcase extends StatefulComponent {
 class _ProjectPinnedShowcaseState extends State<ProjectPinnedShowcase> {
   static const _rootId = 'pinned-showcase';
 
-  /// Scroll distance for each project, in viewport heights.
-  static const _segmentVh = 0.85;
-
   /// How long each screenshot is shown while playing.
   static const _shotMs = 2200;
 
@@ -685,21 +701,36 @@ class _ProjectPinnedShowcaseState extends State<ProjectPinnedShowcase> {
       classes: 'pp-info',
       attributes: {'data-active': '$active', if (!active) 'aria-hidden': 'true'},
       [
-        h3(classes: 'pp-title', [.text(view.title)]),
+        // dir="auto": an Arabic title or description lays out right to left.
+        h3(classes: 'pp-title', attributes: const {'dir': 'auto'}, [.text(view.title)]),
         if (view.downloads.isNotEmpty) p(classes: 'pp-meta', [.text(view.downloads)]),
         FeaturedLabel(view),
-        p(classes: 'pp-description', [.text(view.description)]),
+        p(classes: 'pp-description', attributes: const {'dir': 'auto'}, [.text(view.description)]),
         CaseStudyLink(view, focusable: active),
-        if (view.tech.isNotEmpty)
-          ul(classes: 'pp-tech', attributes: {'aria-label': 'Technologies'}, [
-            for (final (k, item) in view.tech.indexed) li(styles: Styles(raw: {'--k': '$k'}), [.text(item)]),
-          ]),
+        if (view.tech.isNotEmpty) techList(view.tech),
         div(classes: 'pp-links', [
           StoreButtons(view, focusable: active),
           CtaLink(focusable: active),
         ]),
       ],
     );
+  }
+
+  /// The first [_maxTags] technologies, then one "+N" chip whose tooltip and
+  /// accessible name list the rest (the case study shows them all).
+  static Component techList(List<String> tech) {
+    final shown = tech.take(_maxTags).toList();
+    final rest = tech.skip(_maxTags).toList();
+    return ul(classes: 'pp-tech', attributes: {'aria-label': 'Technologies'}, [
+      for (final (k, item) in shown.indexed) li(styles: Styles(raw: {'--k': '$k'}), [.text(item)]),
+      if (rest.isNotEmpty)
+        li(
+          classes: 'pp-tech-more',
+          styles: Styles(raw: {'--k': '${shown.length}'}),
+          attributes: {'title': rest.join(', '), 'aria-label': 'and ${rest.length} more: ${rest.join(', ')}'},
+          [.text('+${rest.length}')],
+        ),
+    ]);
   }
 
   Component _phone(ProjectView view, int index) {
@@ -827,16 +858,13 @@ class _ProjectPinnedShowcaseState extends State<ProjectPinnedShowcase> {
       styles: Styles(raw: {'--accent': view.accentHex}),
       attributes: {'aria-labelledby': 'pp-card-title-$index'},
       [
-        h3(id: 'pp-card-title-$index', classes: 'pp-title', [.text(view.title)]),
+        h3(id: 'pp-card-title-$index', classes: 'pp-title', attributes: const {'dir': 'auto'}, [.text(view.title)]),
         if (view.downloads.isNotEmpty) p(classes: 'pp-meta', [.text(view.downloads)]),
         if (view.images.isNotEmpty) ShotGalleryView(title: view.title, images: view.images, eagerFirst: index == 0),
         FeaturedLabel(view),
-        p(classes: 'pp-description', [.text(view.description)]),
+        p(classes: 'pp-description', attributes: const {'dir': 'auto'}, [.text(view.description)]),
         CaseStudyLink(view),
-        if (view.tech.isNotEmpty)
-          ul(classes: 'pp-tech', attributes: {'aria-label': 'Technologies'}, [
-            for (final item in view.tech) li([.text(item)]),
-          ]),
+        if (view.tech.isNotEmpty) _ProjectPinnedShowcaseState.techList(view.tech),
         div(classes: 'pp-links', [StoreButtons(view), const CtaLink()]),
       ],
     );
