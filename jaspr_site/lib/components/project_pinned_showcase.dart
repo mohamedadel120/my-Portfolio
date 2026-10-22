@@ -213,12 +213,22 @@ class ProjectPinnedShowcase extends StatefulComponent {
           'margin': '-2.5rem 0 -0.5rem -2.5rem',
           'grid-area': '1 / 1',
           'min-width': '0',
+          // Switching projects is a short crossfade with a slight rise: the
+          // visitor sees it every time they scroll, so it stays quick and
+          // never makes the text unreadable (it used to be typed out again,
+          // character by character, on every switch).
           'opacity': '0',
           'visibility': 'hidden',
-          'transition': 'opacity 250ms ease, visibility 0s linear 250ms',
+          'transform': 'translateY(8px)',
+          'transition': 'opacity 150ms ease-out, transform 150ms ease-out, visibility 0s linear 150ms',
         },
       ),
-      css('&[data-active="true"]').styles(raw: {'opacity': '1', 'visibility': 'visible', 'transition': 'opacity 250ms ease'}),
+      css('&[data-active="true"]').styles(raw: {
+        'opacity': '1',
+        'visibility': 'visible',
+        'transform': 'none',
+        'transition': 'opacity 220ms cubic-bezier(0.23, 1, 0.32, 1), transform 220ms cubic-bezier(0.23, 1, 0.32, 1)',
+      }),
     ]),
     css('.pp-title', [
       css('&').styles(
@@ -237,40 +247,10 @@ class ProjectPinnedShowcase extends StatefulComponent {
         raw: {'overflow-wrap': 'break-word', 'font-size': 'clamp(0.82rem, 2dvh, 1rem)'},
       ),
     ]),
-    // Visually hidden full text, kept for screen readers while the visible
-    // copy is being typed.
-    css('.pp-sr', [
-      css('&').styles(
-        position: Position.absolute(),
-        width: 1.px,
-        height: 1.px,
-        overflow: Overflow.hidden,
-        raw: {'clip': 'rect(0 0 0 0)', 'clip-path': 'inset(50%)', 'white-space': 'nowrap'},
-      ),
-    ]),
-    // The invisible full-length copy reserves the final height, so the
-    // layout does not jump as the typed text grows.
-    css('.pp-typed', [css('&').styles(position: Position.relative(), display: Display.block)]),
-    css('.pp-typed-ghost', [css('&').styles(raw: {'visibility': 'hidden', 'display': 'block'})]),
-    css('.pp-typed-live', [css('&').styles(position: Position.absolute(top: Unit.zero, left: Unit.zero, right: Unit.zero))]),
-    css('.pp-caret', [
-      css('&').styles(
-        display: Display.inlineBlock,
-        width: 2.px,
-        height: 1.em,
-        margin: Margin.only(left: 2.px),
-        backgroundColor: AppColors.primary,
-        raw: {'vertical-align': 'text-bottom'},
-      ),
-    ]),
+    // The tags follow the text in a short stagger.
     MotionRule.allowed([
-      css('.pp-caret').styles(raw: {'animation': 'ppBlink 900ms steps(1) infinite'}),
-      css('.pp-info[data-active="true"] .pp-tech li').styles(raw: {'animation': 'ppIn 320ms cubic-bezier(0.23, 1, 0.32, 1) both', 'animation-delay': 'calc(var(--k) * 45ms + 350ms)'}),
+      css('.pp-info[data-active="true"] .pp-tech li').styles(raw: {'animation': 'ppIn 260ms cubic-bezier(0.23, 1, 0.32, 1) both', 'animation-delay': 'calc(var(--k) * 30ms + 120ms)'}),
     ]),
-    css.keyframes('ppBlink', {
-      '0%, 100%': Styles(opacity: 1),
-      '50%': Styles(opacity: 0),
-    }),
     css.keyframes('ppIn', {
       'from': Styles(opacity: 0, transform: Transform.translate(y: 6.px)),
       'to': Styles(opacity: 1, transform: Transform.translate(y: 0.px)),
@@ -545,9 +525,6 @@ class _ProjectPinnedShowcaseState extends State<ProjectPinnedShowcase> {
   /// only added as they are about to be shown.
   final Map<int, int> _reach = {};
 
-  int _typedTitle = -1; // -1 = show the full text
-  int _typedDesc = -1;
-  int _typeToken = 0;
   int _shotToken = 0;
   int _cycle = 0;
 
@@ -563,7 +540,6 @@ class _ProjectPinnedShowcaseState extends State<ProjectPinnedShowcase> {
     // Deferred: setState must not run before the first build completes.
     scheduleTimeout(Duration.zero, () {
       _recompute();
-      _startTyping(_active);
       _restartShots();
     });
   }
@@ -590,51 +566,10 @@ class _ProjectPinnedShowcaseState extends State<ProjectPinnedShowcase> {
         _shot = 0;
         _inView = inView;
       });
-      _startTyping(index);
       _restartShots();
     } else if (inView != _inView) {
       setState(() => _inView = inView);
       _restartShots();
-    }
-  }
-
-  // ---- typing ----
-
-  void _startTyping(int index) {
-    _typeToken++;
-    if (!_effects) {
-      setState(() {
-        _typedTitle = -1;
-        _typedDesc = -1;
-      });
-      return;
-    }
-    setState(() {
-      _typedTitle = 0;
-      _typedDesc = 0;
-    });
-    _typeTitle(_typeToken, index);
-  }
-
-  void _typeTitle(int token, int index) {
-    if (!mounted || token != _typeToken) return;
-    final length = _views[index].title.length;
-    if (_typedTitle < length) {
-      setState(() => _typedTitle++);
-      scheduleTimeout(const Duration(milliseconds: 26), () => _typeTitle(token, index));
-    } else {
-      _typeDescription(token, index);
-    }
-  }
-
-  void _typeDescription(int token, int index) {
-    if (!mounted || token != _typeToken) return;
-    final length = _views[index].description.length;
-    // About one second however long the description is.
-    final step = (length / 55).ceil().clamp(2, 14);
-    if (_typedDesc < length) {
-      setState(() => _typedDesc = (_typedDesc + step).clamp(0, length));
-      scheduleTimeout(const Duration(milliseconds: 18), () => _typeDescription(token, index));
     }
   }
 
@@ -743,35 +678,17 @@ class _ProjectPinnedShowcaseState extends State<ProjectPinnedShowcase> {
     );
   }
 
-  /// Text that is typed out while it is the active project's: a hidden copy
-  /// reserves the full height, the visible copy grows, and the full text is
-  /// always available to assistive technology.
-  Component _typed(String full, int typedLength, bool active, {bool showCaret = false}) {
-    if (!active || typedLength < 0 || typedLength >= full.length && !showCaret) return .text(full);
-    final shown = full.substring(0, typedLength.clamp(0, full.length));
-    return span(classes: 'pp-typed', [
-      span(classes: 'pp-sr', [.text(full)]),
-      span(classes: 'pp-typed-ghost', attributes: {'aria-hidden': 'true'}, [.text(full)]),
-      span(classes: 'pp-typed-live', attributes: {'aria-hidden': 'true'}, [
-        .text(shown),
-        if (showCaret) span(classes: 'pp-caret', []),
-      ]),
-    ]);
-  }
-
   Component _info(ProjectView view, int index) {
     final active = index == _active;
-    final titleTyping = active && _typedTitle >= 0 && _typedTitle < view.title.length;
-    final descTyping = active && !titleTyping && _typedDesc >= 0 && _typedDesc < view.description.length;
 
     return div(
       classes: 'pp-info',
       attributes: {'data-active': '$active', if (!active) 'aria-hidden': 'true'},
       [
-        h3(classes: 'pp-title', [_typed(view.title, _typedTitle, active, showCaret: titleTyping)]),
+        h3(classes: 'pp-title', [.text(view.title)]),
         if (view.downloads.isNotEmpty) p(classes: 'pp-meta', [.text(view.downloads)]),
         FeaturedLabel(view),
-        p(classes: 'pp-description', [_typed(view.description, _typedDesc, active, showCaret: descTyping)]),
+        p(classes: 'pp-description', [.text(view.description)]),
         CaseStudyLink(view, focusable: active),
         if (view.tech.isNotEmpty)
           ul(classes: 'pp-tech', attributes: {'aria-label': 'Technologies'}, [
