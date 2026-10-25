@@ -27,7 +27,7 @@ class ContactSection extends AsyncStatelessComponent {
         h2(classes: 'section-title', [.text('Get In Touch')]),
       p(classes: 'contact-subtitle', [.text("Let's build something amazing together!")]),
       div(classes: 'contact-grid', [
-        div(classes: 'reveal', [ContactForm(recipientEmail: contact.email)]),
+        div(classes: 'reveal', [ContactForm(recipientEmail: contact.email, standalone: standalone)]),
         div(
           classes: 'contact-side reveal',
           styles: Styles(raw: {'transition-delay': '120ms'}),

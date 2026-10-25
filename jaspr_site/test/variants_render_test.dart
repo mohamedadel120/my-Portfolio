@@ -188,4 +188,19 @@ void main() {
       expect(html, isNot(contains('feat-badge')));
     });
   });
+
+  // No skipped heading levels: on the Projects page (h1 "Projects") project
+  // titles are h2; on the home page (h2 "Projects") they stay h3.
+  test('project titles follow the page outline', () async {
+    Future<String> titles({required bool standalone}) async {
+      final result = await renderComponent(ProjectsSection.showcase(ProjectsVariant.pinnedShowcase, all, standalone: standalone), standalone: true);
+      return markupOnly(utf8.decode(result.body).split('</head>').last);
+    }
+
+    bool has(String html, String tag) => RegExp('<$tag[^>]*class="pp-title"').hasMatch(html);
+    final home = await titles(standalone: false);
+    final page = await titles(standalone: true);
+    expect((has(home, 'h3'), has(home, 'h2')), (true, false));
+    expect((has(page, 'h2'), has(page, 'h3')), (true, false));
+  });
 }

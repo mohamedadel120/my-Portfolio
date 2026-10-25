@@ -41,15 +41,15 @@ class ProjectsSection extends AsyncStatelessComponent {
       else
         h2(classes: 'section-title', [.text('Projects')]),
       ...proofStrip(summary),
-      showcase(variant, projectMaps(projects)),
+      showcase(variant, projectMaps(projects), standalone: standalone),
     ]);
   }
 
   /// The presentation for [variant]. Public so tests can render every one.
-  static Component showcase(ProjectsVariant variant, List<Map<String, dynamic>> projects) {
+  static Component showcase(ProjectsVariant variant, List<Map<String, dynamic>> projects, {bool standalone = false}) {
     return switch (variant) {
       ProjectsVariant.v1 => StickyProjectShowcase(projects: projects),
-      ProjectsVariant.pinnedShowcase => ProjectPinnedShowcase(projects: projects),
+      ProjectsVariant.pinnedShowcase => ProjectPinnedShowcase(projects: projects, standalone: standalone),
     };
   }
 

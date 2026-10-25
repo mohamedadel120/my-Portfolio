@@ -34,7 +34,11 @@ const _maxTags = 6;
 class ProjectPinnedShowcase extends StatefulComponent {
   final List<Map<String, dynamic>> projects;
 
-  const ProjectPinnedShowcase({super.key, required this.projects});
+  /// True on the Projects page, where project titles sit right under the
+  /// page's h1 and become h2s (h3s under the home page's "Projects" h2).
+  final bool standalone;
+
+  const ProjectPinnedShowcase({super.key, required this.projects, this.standalone = false});
 
   @override
   State<ProjectPinnedShowcase> createState() => _ProjectPinnedShowcaseState();
@@ -694,6 +698,11 @@ class _ProjectPinnedShowcaseState extends State<ProjectPinnedShowcase> {
     );
   }
 
+  // h2 on the Projects page (under its h1), h3 on the home page.
+  Component _title(String text, {String? id}) => component.standalone
+      ? h2(id: id, classes: 'pp-title', attributes: const {'dir': 'auto'}, [.text(text)])
+      : h3(id: id, classes: 'pp-title', attributes: const {'dir': 'auto'}, [.text(text)]);
+
   Component _info(ProjectView view, int index) {
     final active = index == _active;
 
@@ -702,7 +711,7 @@ class _ProjectPinnedShowcaseState extends State<ProjectPinnedShowcase> {
       attributes: {'data-active': '$active', if (!active) 'aria-hidden': 'true'},
       [
         // dir="auto": an Arabic title or description lays out right to left.
-        h3(classes: 'pp-title', attributes: const {'dir': 'auto'}, [.text(view.title)]),
+        _title(view.title),
         if (view.downloads.isNotEmpty) p(classes: 'pp-meta', [.text(view.downloads)]),
         FeaturedLabel(view),
         p(classes: 'pp-description', attributes: const {'dir': 'auto'}, [.text(view.description)]),
@@ -858,7 +867,7 @@ class _ProjectPinnedShowcaseState extends State<ProjectPinnedShowcase> {
       styles: Styles(raw: {'--accent': view.accentHex}),
       attributes: {'aria-labelledby': 'pp-card-title-$index'},
       [
-        h3(id: 'pp-card-title-$index', classes: 'pp-title', attributes: const {'dir': 'auto'}, [.text(view.title)]),
+        _title(view.title, id: 'pp-card-title-$index'),
         if (view.downloads.isNotEmpty) p(classes: 'pp-meta', [.text(view.downloads)]),
         if (view.images.isNotEmpty) ShotGalleryView(title: view.title, images: view.images, eagerFirst: index == 0),
         FeaturedLabel(view),

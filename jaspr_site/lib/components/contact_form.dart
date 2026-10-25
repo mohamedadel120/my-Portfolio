@@ -18,7 +18,10 @@ enum _SubmitState { idle, submitting, success, error }
 class ContactForm extends StatefulComponent {
   final String recipientEmail;
 
-  const ContactForm({super.key, required this.recipientEmail});
+  /// True on the Contact page (see ContactSection.standalone).
+  final bool standalone;
+
+  const ContactForm({super.key, required this.recipientEmail, this.standalone = false});
 
   @override
   State<ContactForm> createState() => _ContactFormState();
@@ -39,7 +42,7 @@ class ContactForm extends StatefulComponent {
       css.media(MediaQuery.screen(maxWidth: Breakpoints.mobile.px), [
         css('&').styles(padding: Padding.all(1.5.rem)),
       ]),
-      css('h3').styles(color: AppColors.textPrimary, fontSize: AppType.size(TypeStep.h2, was: 1.75.rem)),
+      css('.contact-form-title').styles(color: AppColors.textPrimary, fontSize: AppType.size(TypeStep.h2, was: 1.75.rem)),
       css('.contact-form-hint').styles(
         color: AppColors.textSecondary,
         fontFamily: AppFonts.of(FontRole.text, was: AppFonts.jetBrainsMono),
@@ -162,7 +165,12 @@ class _ContactFormState extends State<ContactForm> {
   @override
   Component build(BuildContext context) {
     return div(classes: 'contact-form', [
-      h3([.text('Send Me a Message')]),
+      // An h2 right under the Contact page's h1; an h3 under the home page's
+      // "Get In Touch" h2.
+      if (component.standalone)
+        h2(classes: 'contact-form-title', [.text('Send Me a Message')])
+      else
+        h3(classes: 'contact-form-title', [.text('Send Me a Message')]),
       p(classes: 'contact-form-hint', [
         .text("I'd love to hear from you. Send me a message and I'll respond as soon as possible."),
       ]),

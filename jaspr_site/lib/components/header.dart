@@ -48,6 +48,9 @@ class Header extends StatefulComponent {
         border: Border.only(
           bottom: BorderSide.solid(color: AppColors.outline(0.15), width: 1.px),
         ),
+        // Text scrolling under the bar turns into a soft wash instead of
+        // showing through, faded, beside the logo and the CV button.
+        raw: {'backdrop-filter': 'blur(12px) saturate(140%)', '-webkit-backdrop-filter': 'blur(12px) saturate(140%)'},
       ),
       css('.nav-inner', [
         css('&').styles(

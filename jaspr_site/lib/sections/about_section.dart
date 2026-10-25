@@ -1,6 +1,7 @@
 import 'package:jaspr/dom.dart';
 import 'package:jaspr/server.dart';
 
+import '../constants/motion_css.dart';
 import '../constants/theme.dart';
 import '../data/profile_repository.dart';
 
@@ -21,6 +22,8 @@ class AboutSection extends AsyncStatelessComponent {
 
   @override
   Future<Component> build(BuildContext context) async {
+    // Under the page's own h1 the tile titles are h2; under the home page's h2, h3.
+    Component bentoTitle(String text) => standalone ? h2(classes: 'bento-title', [.text(text)]) : h3(classes: 'bento-title', [.text(text)]);
     final about = await fetchAboutData();
 
     return section(id: 'about', classes: 'about', [
@@ -30,7 +33,7 @@ class AboutSection extends AsyncStatelessComponent {
         h2(classes: 'section-title', [.text('About Me')]),
       div(classes: 'about-grid', [
         div(classes: 'bento identity reveal', [
-          h3(classes: 'bento-title', [.text('Identity')]),
+          bentoTitle('Identity'),
           p(classes: 'identity-headline', [.text('Crafting Exceptional Digital Experiences')]),
           p(classes: 'identity-summary', [.text(about.professionalSummary)]),
         ]),
@@ -38,7 +41,7 @@ class AboutSection extends AsyncStatelessComponent {
           classes: 'bento impact reveal',
           styles: Styles(raw: {'transition-delay': '80ms'}),
           [
-            h3(classes: 'bento-title', [.text('Impact')]),
+            bentoTitle('Impact'),
             div(classes: 'impact-stats', [
               div(classes: 'impact-stat', [
                 span(classes: 'material-symbols-rounded impact-icon', [.text('download')]),
@@ -58,7 +61,7 @@ class AboutSection extends AsyncStatelessComponent {
           classes: 'bento features reveal',
           styles: Styles(raw: {'transition-delay': '160ms'}),
           [
-            h3(classes: 'bento-title', [.text('Experience')]),
+            bentoTitle('Experience'),
             div(classes: 'feature-grid', [
               for (final feature in about.features)
                 div(classes: 'feature-card', [
@@ -73,7 +76,7 @@ class AboutSection extends AsyncStatelessComponent {
           classes: 'bento skills reveal',
           styles: Styles(raw: {'transition-delay': '240ms'}),
           [
-          h3(classes: 'bento-title', [.text('Proficiency')]),
+          bentoTitle('Proficiency'),
           div(classes: 'skill-list', [
             for (final (i, skill) in about.skills.indexed)
               div(classes: 'skill', [
@@ -279,20 +282,25 @@ class AboutSection extends AsyncStatelessComponent {
         radius: BorderRadius.circular(3.px),
         overflow: Overflow.hidden,
       ),
-      // Starts at 0 and only grows to its real value once the bento tile's
-      // .reveal.revealed class lands (IntersectionObserver-driven, see
-      // components/scroll_reveal.dart) -- same on-scroll-into-view trigger
-      // used for every other reveal animation on the site, in place of the
-      // original Flutter version's scroll-linked AnimationController.
+      // Rendered at its real value, so the bar is right without scripts and
+      // with reduced motion. When the reveal script runs, a tile still below
+      // the fold starts at scaleX(0) and grows once .revealed lands (see
+      // components/scroll_reveal.dart). Scaling instead of animating width
+      // keeps it off the layout path.
       css('.skill-fill').styles(
         height: 100.percent,
-        width: Unit.zero,
+        width: Unit.expression('var(--target-width)'),
         radius: BorderRadius.circular(3.px),
-        raw: {'transition': 'width 1000ms ease'},
+        raw: {'transform-origin': 'left center', 'transition': 'transform 900ms cubic-bezier(0.23, 1, 0.32, 1)'},
       ),
       css('.skill-fill.primary').styles(backgroundColor: AppColors.primary),
       css('.skill-fill.secondary').styles(backgroundColor: AppColors.secondary),
     ]),
-    css('.reveal.revealed .skill-fill').styles(width: Unit.expression('var(--target-width)')),
+    MotionRule.allowed([
+      css('html.reveal-ready .reveal:not(.revealed) .skill-fill').styles(raw: {'transform': 'scaleX(0)'}),
+    ]),
+    MotionRule.reduced([
+      css('.skill-fill').styles(raw: {'transition': 'none'}),
+    ]),
   ];
 }

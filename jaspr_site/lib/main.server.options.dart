@@ -117,6 +117,7 @@ ServerOptions get defaultServerOptions => ServerOptions(
 
 Map<String, Object?> __contact_formContactForm(_contact_form.ContactForm c) => {
   'recipientEmail': c.recipientEmail,
+  'standalone': c.standalone,
 };
 Map<String, Object?> __headerHeader(_header.Header c) => {'cvUrl': c.cvUrl};
 Map<String, Object?> __project_galleryProjectGallery(
@@ -124,7 +125,7 @@ Map<String, Object?> __project_galleryProjectGallery(
 ) => {'title': c.title, 'images': c.images};
 Map<String, Object?> __project_pinned_showcaseProjectPinnedShowcase(
   _project_pinned_showcase.ProjectPinnedShowcase c,
-) => {'projects': c.projects};
+) => {'projects': c.projects, 'standalone': c.standalone};
 Map<String, Object?> __project_showcaseStickyProjectShowcase(
   _project_showcase.StickyProjectShowcase c,
 ) => {'projects': c.projects};

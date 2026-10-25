@@ -43,6 +43,7 @@ ClientOptions get defaultClientOptions => ClientOptions(
     'contact_form': ClientLoader(
       (p) => _contact_form.ContactForm(
         recipientEmail: p['recipientEmail'] as String,
+        standalone: p['standalone'] as bool,
       ),
       loader: _contact_form.loadLibrary,
     ),
@@ -66,6 +67,7 @@ ClientOptions get defaultClientOptions => ClientOptions(
         projects: (p['projects'] as List<Object?>)
             .map((i) => (i as Map<String, Object?>))
             .toList(),
+        standalone: p['standalone'] as bool,
       ),
       loader: _project_pinned_showcase.loadLibrary,
     ),

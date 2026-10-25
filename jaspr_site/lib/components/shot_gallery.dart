@@ -174,14 +174,17 @@ class ShotGalleryView extends StatefulComponent {
         cursor: Cursor.pointer,
       ),
       css('&:focus-visible').styles(raw: {'outline': '2px solid ${AppColors.primary.value}', 'outline-offset': '-2px', 'border-radius': '0.5rem'}),
+      // Always 1.5rem wide; the clip shows an 8 px dot, and the current one
+      // opens to the full pill. Clipping repaints only, while animating
+      // width would re-run layout on every frame.
       css('span').styles(
-        width: 0.5.rem,
+        width: 1.5.rem,
         height: 0.5.rem,
         radius: BorderRadius.circular(0.25.rem),
         backgroundColor: AppColors.textPrimary.withValues(alpha: 0.3),
-        raw: {'transition': 'width 220ms cubic-bezier(0.23, 1, 0.32, 1), background-color 220ms ease'},
+        raw: {'clip-path': 'inset(0 0.5rem round 0.25rem)', 'transition': 'clip-path 220ms cubic-bezier(0.23, 1, 0.32, 1), background-color 220ms ease'},
       ),
-      css('&[aria-current="true"] span').styles(width: 1.5.rem, backgroundColor: AppColors.primary),
+      css('&[aria-current="true"] span').styles(backgroundColor: AppColors.primary, raw: {'clip-path': 'inset(0 0 round 0.25rem)'}),
     ]),
     css('.gal-count', [
       css('&').styles(
@@ -304,7 +307,8 @@ class _ShotGalleryState extends State<ShotGalleryView> {
             div(classes: 'gal-island', []),
             div(
               classes: 'gal-viewport',
-              attributes: {'tabindex': '0', 'aria-label': '$title screenshots. Use the left and right arrow keys to browse.'},
+              // A plain div may not carry aria-label; as a group it can.
+              attributes: {'tabindex': '0', 'role': 'group', 'aria-label': '$title screenshots. Use the left and right arrow keys to browse.'},
               events: {
                 'keydown': _onKey,
                 'pointerdown': (e) => _dragStartX = pointerX(e),
