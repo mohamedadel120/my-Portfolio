@@ -48,13 +48,13 @@ class Home extends StatelessComponent {
     // The proof (Projects) comes straight after the promise (Hero). About sits
     // after Experience: the apps and the jobs they came from read as one
     // story, and the skills recap is there for whoever wants to check the
-    // stack before the testimonials and the contact form.
+    // stack before the contact form. No testimonials: the owner removed them
+    // (25 Oct 2026) as not convincing enough to earn the space.
     HomeLayout.v2 => const [
       HeroSection(layout: HomeLayout.v2),
       ProjectsSection(),
       ExperienceSection(),
       AboutBriefSection(),
-      TestimonialsSection(),
       ContactSection(),
     ],
   };

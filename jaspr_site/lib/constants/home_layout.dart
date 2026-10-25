@@ -7,7 +7,7 @@ enum HomeLayout {
   v1,
 
   /// Hero (new headline), Projects, Experience, one short About (summary and
-  /// skills grouped by area, no percentages), Testimonials, Contact.
+  /// skills grouped by area, no percentages), Contact.
   v2,
 }
 

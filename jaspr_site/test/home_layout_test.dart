@@ -65,13 +65,12 @@ void main() {
     expect((Home.sections(HomeLayout.v1).first as HeroSection).layout, HomeLayout.v1);
   });
 
-  test('v2 puts Projects first and has one About', () {
+  test('v2 puts Projects first, has one About and no testimonials', () {
     expect(Home.sections(HomeLayout.v2).map((c) => c.runtimeType), [
       HeroSection,
       ProjectsSection,
       ExperienceSection,
       AboutBriefSection,
-      TestimonialsSection,
       ContactSection,
     ]);
     expect((Home.sections(HomeLayout.v2).first as HeroSection).layout, HomeLayout.v2);
