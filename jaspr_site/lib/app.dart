@@ -7,7 +7,9 @@ import 'components/header.dart';
 import 'components/scroll_reveal.dart';
 import 'components/visit_tracker.dart';
 import 'components/project_view.dart';
+import 'constants/site_design.dart';
 import 'constants/theme_direction.dart';
+import 'd/d_pages.dart';
 import 'data/profile_repository.dart';
 import 'pages/project_case_study.dart';
 import 'sections/projects_section.dart';
@@ -33,6 +35,8 @@ class App extends AsyncStatelessComponent {
     // just also pulling cvUrl this time so the nav's "DOWNLOAD CV" button
     // has a real link instead of the placeholder href="#" it shipped with.
     final hero = await fetchHeroData();
+
+    if (isDesignD) return _designD(hero.cvUrl);
 
     // One case study page per project, at a fixed address each: a static
     // build only generates routes it can list, so `/projects/:slug` (a
@@ -86,6 +90,40 @@ class App extends AsyncStatelessComponent {
           ],
         ),
       ]),
+    ]);
+  }
+
+  /// Design D: the same addresses, its own pages (lib/d/). Every route gets
+  /// the shell (progress line, header, footer); case study pages mark
+  /// PROJECTS as the current section.
+  Future<Component> _designD(String cvUrl) async {
+    final projects = await fetchDProjects();
+    final count = projects.length;
+    Component page(Component content, [String? current]) => dShell(cvUrl: cvUrl, content: content, current: current);
+    return div(classes: 'app-shell', [
+      const VisitTracker(),
+      Router(
+        routes: [
+          Route(path: '/', title: 'Mohamed Adel - Flutter Developer Portfolio', builder: (context, state) => page(const DHome())),
+          Route(path: '/about', title: 'About - Mohamed Adel, Flutter Developer', builder: (context, state) => page(const DSection(DSectionPage.about), 'about')),
+          Route(path: '/projects', title: 'Projects - Mohamed Adel, Flutter Developer', builder: (context, state) => page(const DSection(DSectionPage.projects), 'projects')),
+          for (final (i, p) in projects.indexed)
+            Route(
+              path: '/projects/${p.slug}',
+              title: DCaseStudyPage.pageTitle(p),
+              builder: (context, state) => page(
+                DCaseStudyPage(
+                  project: p,
+                  // The list wraps around, so the last project leads back to the first.
+                  previous: count > 1 ? projects[(i - 1 + count) % count] : null,
+                  next: count > 1 ? projects[(i + 1) % count] : null,
+                ),
+                'projects',
+              ),
+            ),
+          Route(path: '/contact', title: 'Contact - Mohamed Adel, Flutter Developer', builder: (context, state) => page(const DSection(DSectionPage.contact), 'contact')),
+        ],
+      ),
     ]);
   }
 }

@@ -14,6 +14,10 @@ enum _SubmitState { idle, submitting, success, error }
 /// split internally (unlike `cloud_firestore`/`package:web`, it doesn't
 /// need a manual `.vm.dart`/`.web.dart` split), so this needed no extra
 /// plumbing beyond marking the component `@client`.
+/// Web3Forms' public access key (it is meant to ship in the page). Design D's
+/// contact form posts with it too.
+const web3FormsAccessKey = 'f73c2290-70cc-489f-afae-c766950c8604';
+
 @client
 class ContactForm extends StatefulComponent {
   final String recipientEmail;
@@ -98,7 +102,6 @@ class ContactForm extends StatefulComponent {
 }
 
 class _ContactFormState extends State<ContactForm> {
-  static const _web3FormsAccessKey = 'f73c2290-70cc-489f-afae-c766950c8604';
 
   String _name = '';
   String _email = '';
@@ -130,7 +133,7 @@ class _ContactFormState extends State<ContactForm> {
             Uri.parse('https://api.web3forms.com/submit'),
             headers: {'Content-Type': 'application/json'},
             body: jsonEncode({
-              'access_key': _web3FormsAccessKey,
+              'access_key': web3FormsAccessKey,
               'subject': 'Portfolio Contact: $_name',
               'from_name': _name,
               'from_email': _email,

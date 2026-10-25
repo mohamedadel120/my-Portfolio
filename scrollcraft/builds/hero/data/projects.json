@@ -1,0 +1,231 @@
+[
+  {
+    "slug": "gomla",
+    "title": "Gomla Mobile App",
+    "overview": "",
+    "stack": [
+      "Flutter",
+      "Firebase",
+      "cubit",
+      "Clean Architecture",
+      "Payment Gateway"
+    ],
+    "downloads": "10,000+",
+    "available": "Android and iOS",
+    "play": "https://play.google.com/store/apps/details?id=com.gomla.store",
+    "appStore": "https://apps.apple.com/eg/app/go-gomla/id6742806281",
+    "images": [
+      "https://i.ibb.co/FbZkqwd8/a7321550fb20.webp",
+      "https://i.ibb.co/N6qGN5Dd/d0368c29068b.webp",
+      "https://i.ibb.co/spW7xKvK/1c61e2551fda.webp",
+      "https://i.ibb.co/LXgGmM3y/ac535d89fe69.webp"
+    ],
+    "video": null
+  },
+  {
+    "slug": "stock",
+    "title": "Stock Mobile App",
+    "overview": "A powerful B2B inventory management platform designed for businesses to efficiently track and manage their stock. Built with clean architecture and Bloc pattern for scalable state management. The app has passed 10,000+ downloads.",
+    "stack": [
+      "Flutter",
+      "Firebase",
+      "Bloc",
+      "Clean Architecture",
+      "REST APIs"
+    ],
+    "downloads": "10,000+",
+    "available": "Android and iOS",
+    "play": "https://play.google.com/store/apps/details?id=com.spark.stockclientapp",
+    "appStore": "https://apps.apple.com/eg/app/stock-b2b/id1639101527",
+    "images": [
+      "https://i.ibb.co/9kJC8whW/42e2916b3134.webp",
+      "https://i.ibb.co/cKZ2k8cY/5a024da21f8b.webp",
+      "https://i.ibb.co/2wWrdWb/ba6238199736.webp",
+      "https://i.ibb.co/WZ7wd59/1bab37a236ae.webp",
+      "https://i.ibb.co/vC6MPSxJ/ae1eed6af402.webp",
+      "https://i.ibb.co/C3d3t5wS/9b7fbb069319.webp",
+      "https://i.ibb.co/BKjJ3PBS/ebd76ad01aa2.webp",
+      "https://i.ibb.co/j994ycKn/e65ee03dcd20.webp"
+    ],
+    "video": null
+  },
+  {
+    "slug": "albatal",
+    "title": "Albatal Mobile App",
+    "overview": "A full-featured marketplace platform that connects sellers and customers seamlessly. Includes a robust seller dashboard for inventory management, order processing, and analytics, while giving customers a smooth shopping experience.",
+    "stack": [
+      "Flutter",
+      "Bloc",
+      "REST APIs",
+      "E-commerce",
+      "Seller System"
+    ],
+    "downloads": "1,000+",
+    "available": "Android",
+    "play": "https://play.google.com/store/apps/details?id=com.albatal.alba",
+    "appStore": null,
+    "images": [
+      "https://i.ibb.co/SwrrbHQ8/fbb0d3e111d5.png",
+      "https://i.ibb.co/JwV1bLNH/afa9d60e5465.png",
+      "https://i.ibb.co/jkhzYM3H/64a1cef6141e.png",
+      "https://i.ibb.co/kgm7XBL8/8dc9bbc97f80.png"
+    ],
+    "video": null
+  },
+  {
+    "slug": "palleta",
+    "title": "Palleta Mobile App",
+    "overview": "An innovative mobile application designed for modern businesses. Built with Flutter and clean architecture principles, Palleta offers a seamless user experience with robust performance. The app features intuitive design, efficient state management using Bloc pattern, and seamless integration with Firebase backend services.",
+    "stack": [
+      "Flutter",
+      "Firebase",
+      "Bloc",
+      "Clean Architecture",
+      "REST APIs"
+    ],
+    "downloads": "",
+    "available": "Android and iOS",
+    "play": "https://play.google.com/store/apps/details?id=com.spark.palettalientapp",
+    "appStore": "https://apps.apple.com/eg/app/paletta-b2b/id6760196797",
+    "images": [
+      "https://i.ibb.co/JWvfKxGf/7cca82130eb7.webp",
+      "https://i.ibb.co/q3H1JkJg/cf0a01275d0f.webp",
+      "https://i.ibb.co/XrfVSRKV/c296688569b2.webp",
+      "https://i.ibb.co/dsy22JBz/f8dff6404f1a.webp",
+      "https://i.ibb.co/xxJMXMC/4883400e507a.webp",
+      "https://i.ibb.co/B26L9QDV/254af32fe074.webp",
+      "https://i.ibb.co/vCwnrrT5/35bae1e9e419.webp"
+    ],
+    "video": null
+  },
+  {
+    "slug": "to-let",
+    "title": "to-let",
+    "overview": "Rent smarter, move faster. to-let streamlines the entire renting process into one simple interface designed for people on the move, with instant discovery of places tailored to your budget and lifestyle.",
+    "stack": [
+      "Flutter",
+      "Firebase",
+      "cubit",
+      "clean archeticture",
+      "responsive",
+      "adaptive",
+      "chat"
+    ],
+    "downloads": "",
+    "available": "Android and iOS",
+    "play": "https://play.google.com/store/apps/details?id=com.thefirst.tolet&amp;pcampaignid=web_share",
+    "appStore": "https://apps.apple.com/us/app/to-let/id6758267446",
+    "images": [
+      "https://i.ibb.co/4wW8RtGM/7581e1ae73ee.png",
+      "https://i.ibb.co/Lh0GR3Z6/8282b097289b.png",
+      "https://i.ibb.co/JwfKYx9v/2e6a77a55209.png",
+      "https://i.ibb.co/JWx6zhJs/bf0bbb8b41ad.png",
+      "https://i.ibb.co/GvKx9dCR/e2e051ab8348.png",
+      "https://i.ibb.co/SXPj2qQ7/e21acb5be2c7.png",
+      "https://i.ibb.co/99btKxfV/c98e6bced3c7.png",
+      "https://i.ibb.co/pjjhcx6S/bc5f6596c9e5.png",
+      "https://i.ibb.co/jPv1TpXf/595d078fe0be.png",
+      "https://i.ibb.co/0y75gRcQ/19f3b6cfffc8.png",
+      "https://i.ibb.co/39rZXGLX/87151007f19b.png",
+      "https://i.ibb.co/JRxQVHw0/4c897fc204d9.png",
+      "https://i.ibb.co/BVTyF2Bd/e3ce2dd4f36a.png",
+      "https://i.ibb.co/3Y0VYc40/f1b4ff5b29ce.png",
+      "https://i.ibb.co/s9K5TFrr/a07a53e0fc41.png",
+      "https://i.ibb.co/sJ3ysXgK/b6c332d4de7b.png",
+      "https://i.ibb.co/qYvwX6nw/813c071881db.png",
+      "https://i.ibb.co/G3J5JC8j/4c6fa87beace.png",
+      "https://i.ibb.co/9fsB66Y/12df7b6eb91d.png",
+      "https://i.ibb.co/JRF82xqg/c292d5237c69.png",
+      "https://i.ibb.co/HfQz0n6k/9049e71b5d64.png",
+      "https://i.ibb.co/991GKLXf/e75c66c28814.png",
+      "https://i.ibb.co/gF7K0v97/7fc8844dd21e.png",
+      "https://i.ibb.co/W4WXQW20/9cd046635d84.png"
+    ],
+    "video": null
+  },
+  {
+    "slug": "ureva",
+    "title": "ureva",
+    "overview": "A comprehensive e-commerce platform for the Saudi Arabian gold and diamond market. Features real-time gold price updates (second-by-second), secure purchasing, and instant notifications. Built with Clean Architecture, Cubit, Google Maps, and fully automated CI/CD pipelines.",
+    "stack": [
+      "Flutter",
+      "Cubit",
+      "Firebase",
+      "Google Maps",
+      "Clean Code",
+      "CI/CD"
+    ],
+    "downloads": "",
+    "available": "",
+    "play": null,
+    "appStore": null,
+    "images": [
+      "https://i.ibb.co/ymCwnSd9/be86d8376744.png",
+      "https://i.ibb.co/MyvyCKrK/1d87292ee498.png",
+      "https://i.ibb.co/C3mD1X9H/6c2985ed55e1.png",
+      "https://i.ibb.co/q3BwkRMb/3439f8f09a22.png",
+      "https://i.ibb.co/F46PXFwr/8d232d1cae14.png",
+      "https://i.ibb.co/j9jrW0F4/99054bd9ce6c.png",
+      "https://i.ibb.co/LXM0hjkY/4b086cb8b3dd.png",
+      "https://i.ibb.co/qL8Vhd8z/5d4f753a0bbd.png"
+    ],
+    "video": null
+  },
+  {
+    "slug": "adruse",
+    "title": "Adruse Mobile App",
+    "overview": "A comprehensive Learning Management System (LMS) designed to revolutionize the educational experience. Features interactive learning modules, real-time progress tracking, and dedicated parent portal for monitoring student performance. The platform simplifies education management while providing complete control and transparency for all stakeholders.",
+    "stack": [
+      "Flutter",
+      "Firebase",
+      "Bloc",
+      "LMS",
+      "Parent Control"
+    ],
+    "downloads": "",
+    "available": "",
+    "play": null,
+    "appStore": null,
+    "images": [
+      "https://i.ibb.co/JR9mn1y9/a32743bd4380.png",
+      "https://i.ibb.co/NnphzSph/d41d3938e6e8.png",
+      "https://i.ibb.co/WNdYdYfY/fcddbb5b41fc.png",
+      "https://i.ibb.co/BKQJr76D/d31888c3db44.png",
+      "https://i.ibb.co/HTty3tww/7c8a888a3f24.png",
+      "https://i.ibb.co/VpxNctbM/713ab334f02d.png",
+      "https://i.ibb.co/cct08ZKR/5f7836425224.png",
+      "https://i.ibb.co/DDdvDPjj/f9f44745dde5.png",
+      "https://i.ibb.co/C5LmRytj/57ea803dfaf3.png",
+      "https://i.ibb.co/0pCRq46G/ef200dc7eabb.png",
+      "https://i.ibb.co/S7NJ7T4g/c4b7ccf86b94.png",
+      "https://i.ibb.co/392hX19X/c7fe1050c4eb.png",
+      "https://i.ibb.co/rfzT3qJB/f98d02a61720.png",
+      "https://i.ibb.co/DsDP0qv/d469790a583c.png",
+      "https://i.ibb.co/HfdSFjWF/e2ff2840ae63.png",
+      "https://i.ibb.co/gbCpGYdN/f3592ff0146c.png",
+      "https://i.ibb.co/cpr8fyJ/28fbccd0ae2c.png",
+      "https://i.ibb.co/0pWp1xND/7e370fcc5b27.png",
+      "https://i.ibb.co/wh3VBXDk/f8bc91a32b85.png",
+      "https://i.ibb.co/7NgtW3nr/016cd4c06976.png"
+    ],
+    "video": null
+  },
+  {
+    "slug": "drugza-tagpharma",
+    "title": "DrugZa - TagPharma",
+    "overview": "A specialized healthcare application connecting patients with pharmaceutical services. Features local data storage using SQLite and Hive for offline functionality, ensuring seamless access to medical information.",
+    "stack": [
+      "Flutter",
+      "Firebase",
+      "Bloc",
+      "SQLite",
+      "Hive"
+    ],
+    "downloads": "",
+    "available": "Android",
+    "play": "https://play.google.com/store/apps/details?id=com.app.drugza",
+    "appStore": null,
+    "images": [],
+    "video": "/assets/videos/drugza_demo.mp4#t=0.1"
+  }
+]

@@ -2,6 +2,24 @@
   "version": "0.0.1",
   "configurations": [
     {
+      "name": "dashboard-demo",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["C:/Users/Lenovo/AppData/Local/Temp/claude/D--my-web-site/22f29d05-3454-4001-a61e-e10846890fb4/scratchpad/spa.js", "D:/adel/admin_dashboard/build/web", "8099"],
+      "port": 8099
+    },
+    {
+      "name": "site-build",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["C:/Users/Lenovo/AppData/Local/Temp/claude/D--my-web-site/22f29d05-3454-4001-a61e-e10846890fb4/scratchpad/serve.js", "C:/Users/Lenovo/AppData/Local/Temp/claude/D--my-web-site/22f29d05-3454-4001-a61e-e10846890fb4/scratchpad/lh3/v3c", "8098"],
+      "port": 8098
+    },
+    {
+      "name": "hero-prototypes",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["C:/Users/Lenovo/AppData/Local/Temp/claude/D--my-web-site/22f29d05-3454-4001-a61e-e10846890fb4/scratchpad/serve.js", "D:/my_web_site/scrollcraft/builds/hero", "4500"],
+      "port": 4500
+    },
+    {
       "name": "portfolio",
       "runtimeExecutable": "powershell",
       "runtimeArgs": ["-NoProfile", "-Command", "Set-Location jaspr_site; dart pub global run jaspr_cli:jaspr serve"],

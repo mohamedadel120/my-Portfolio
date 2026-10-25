@@ -51,3 +51,10 @@ app.*.map.json
 /analysis_output.txt
 /test_output.txt
 /build_log*.txt
+
+# scroll-craft: API key and raw generations never go to git
+.env
+scrollcraft/builds/*/out/
+scrollcraft/builds/*/lab/
+scrollcraft/builds/*/assets/
+scrollcraft/backups/

@@ -10,6 +10,7 @@ import 'package:jaspr/server.dart';
 
 // Imports the [App] component.
 import 'app.dart';
+import 'constants/site_design.dart';
 import 'constants/theme.dart';
 
 // This file is generated automatically by Jaspr, do not remove or edit.
@@ -17,8 +18,13 @@ import 'main.server.options.dart';
 
 void main() {
   // Initializes the server environment with the generated default options.
+  // Design D brings its own stylesheet (web/d/d.css), so the component
+  // styles of design c are left out: several of their names (.hero,
+  // .store-icon) and their element rules (h1-h6, section) would otherwise
+  // restyle D. The client components (the visit tracker) stay.
+  final base = defaultServerOptions;
   Jaspr.initializeApp(
-    options: defaultServerOptions,
+    options: isDesignD ? ServerOptions(clientId: base.clientId, clients: base.clients, stylesId: base.stylesId, styles: () => const []) : base,
   );
 
   // Starts the app.
@@ -54,9 +60,13 @@ void main() {
       // The project screenshots are hosted on imgbb; the hero's phone shows
       // one on the first screen.
       link(rel: 'preconnect', href: 'https://i.ibb.co'),
-      for (final href in fontStylesheets)
+      for (final href in isDesignD ? designDFonts : fontStylesheets)
         link(rel: 'preload', href: href, attributes: const {'as': 'style', 'onload': "this.onload=null;this.rel='stylesheet'"}),
-      Component.element(tag: 'noscript', children: [for (final href in fontStylesheets) link(rel: 'stylesheet', href: href)]),
+      Component.element(tag: 'noscript', children: [for (final href in isDesignD ? designDFonts : fontStylesheets) link(rel: 'stylesheet', href: href)]),
+      if (isDesignD) ...[
+        link(rel: 'stylesheet', href: '/d/d.css'),
+        script(src: '/d/d.js', attributes: const {'defer': ''}),
+      ],
       link(rel: 'icon', type: 'image/png', href: 'favicon.png'),
       link(rel: 'manifest', href: 'manifest.json'),
       // Document's `meta` map always renders a `name=` attribute; Open Graph
