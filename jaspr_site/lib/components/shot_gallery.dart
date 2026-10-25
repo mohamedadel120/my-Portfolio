@@ -139,8 +139,9 @@ class ShotGalleryView extends StatefulComponent {
       css('&:focus-visible').styles(raw: {'outline': '2px solid ${AppColors.primary.value}', 'outline-offset': '2px'}),
       // Kept in the layout (so the phone never shifts) but invisible at the ends.
       css('&[disabled]').styles(raw: {'opacity': '0', 'pointer-events': 'none'}),
+      // 44 px on phones: the minimum comfortable touch target.
       css.media(MediaQuery.screen(maxWidth: Breakpoints.mobile.px), [
-        css('&').styles(width: 2.5.rem, height: 2.5.rem),
+        css('&').styles(width: 2.75.rem, height: 2.75.rem),
       ]),
     ]),
     RawMediaRule.hoverCapable([
@@ -158,14 +159,15 @@ class ShotGalleryView extends StatefulComponent {
     css('.gal-dots', [
       css('&').styles(display: Display.flex, alignItems: AlignItems.center, flexWrap: FlexWrap.wrap, justifyContent: JustifyContent.center),
     ]),
-    // Each dot is a 2rem hit area around a small visible mark.
+    // Each dot is a 36 x 44 px hit area around a small visible mark (it was
+    // 32 x 32, small for a thumb).
     css('.gal-dot', [
       css('&').styles(
         display: Display.flex,
         alignItems: AlignItems.center,
         justifyContent: JustifyContent.center,
-        width: 2.rem,
-        height: 2.rem,
+        width: 2.25.rem,
+        height: 2.75.rem,
         padding: Padding.zero,
         border: Border.none,
         backgroundColor: Colors.transparent,

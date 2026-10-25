@@ -31,7 +31,7 @@ Status: ⬜ not started · 🔄 in progress · ✅ done · ⏸ waiting for the o
 | 9 | Case studies: "My role" and "The outcome" filled, role line under the title, first image not cropped | Firestore + `project_case_study.dart` | Yes: the role/outcome text | ⏸ |
 | 10 | Lower half of the page in the direction c voice (titles, copy, contact, footer) | sections below Projects | Yes: redesign or polish | ⏸ |
 | 11 | Dashboard accessibility: semantics on, labelled icon buttons, keyboard reaches sidebar and actions | dashboard | No | ⬜ |
-| 12 | Touch targets 44 px on phones (gallery arrows/dots, case study link, "All projects"); store tooltip readable and on screen | site components | No | ⬜ |
+| 12 | Touch targets 44 px on phones (gallery arrows/dots, case study link, "All projects"); store tooltip readable and on screen | site components | No | ✅ |
 
 ## P3 (one batch at the end)
 

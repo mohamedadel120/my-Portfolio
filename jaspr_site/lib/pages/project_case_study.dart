@@ -173,8 +173,10 @@ class ProjectCaseStudy extends StatelessComponent {
         fontFamily: _mono,
         fontSize: 0.9.rem,
         textDecoration: TextDecoration.none,
-        raw: {'align-self': 'flex-start', 'margin-bottom': '-2rem', 'transition': 'color 160ms ease'},
+        raw: {'align-self': 'flex-start', 'margin-bottom': '-2rem', 'transition': 'color 160ms ease', 'position': 'relative'},
       ),
+      // Invisible touch area: the link text is 23 px tall, the target 44.
+      css('&::after').styles(raw: {'content': "''", 'position': 'absolute', 'inset': '-11px -8px'}),
       css('&:hover').styles(color: AppColors.primary),
       css('&:focus-visible').styles(raw: {'outline': '2px solid ${AppColors.primary.value}', 'outline-offset': '4px'}),
     ]),

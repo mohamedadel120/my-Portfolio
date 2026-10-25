@@ -1,6 +1,7 @@
 import 'package:jaspr/dom.dart';
 import 'package:jaspr/jaspr.dart';
 
+import '../constants/motion_css.dart';
 import '../constants/theme.dart';
 import 'project_showcase.vm.dart' if (dart.library.js_interop) 'project_showcase.web.dart';
 
@@ -302,6 +303,11 @@ class StickyProjectShowcase extends StatefulComponent {
         ),
       ]),
     ]),
+    // The store buttons' tooltips appear on hover, which touch screens do not
+    // have; there they were only a hidden box that could sit off-screen.
+    RawMediaRule('(hover: none)', [
+      css('.info-links .store-tooltip').styles(display: Display.none),
+    ]),
     css('.info-links', [
       css('&').styles(display: Display.flex, gap: Gap.all(1.25.rem)),
       css('.store-btn').styles(
@@ -341,7 +347,7 @@ class StickyProjectShowcase extends StatefulComponent {
           backgroundColor: AppColors.surface,
           color: AppColors.textPrimary,
           fontFamily: AppFonts.of(FontRole.accent, was: AppFonts.jetBrainsMono),
-          fontSize: 0.7.rem,
+          fontSize: 0.75.rem,
           whiteSpace: WhiteSpace.noWrap,
           opacity: 0,
           zIndex: ZIndex(2),

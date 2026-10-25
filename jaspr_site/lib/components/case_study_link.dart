@@ -49,8 +49,13 @@ class CaseStudyLink extends StatelessComponent {
           'color': lit('var(--accent-fg, ${AppColors.primary.value})', light: AppColors.textPrimary.value),
           'border-bottom': lit('1px solid currentColor', light: '2px solid var(--accent, ${AppColors.primary.value})'),
           'padding-bottom': '2px',
+          'position': 'relative',
         },
       ),
+      // An invisible touch area around the 28 px-tall link, about 46 px tall
+      // for a thumb, with no change to how it looks. The inset starts inside
+      // the 2 px underline, so -10px reaches 8 px below it.
+      css('&::after').styles(raw: {'content': "''", 'position': 'absolute', 'inset': '-10px -6px'}),
       css('&:focus-visible').styles(raw: {'outline': '2px solid ${AppColors.textPrimary.value}', 'outline-offset': '3px'}),
     ]),
     css('.case-link-icon').styles(
