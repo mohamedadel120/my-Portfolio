@@ -39,4 +39,8 @@ Header blur while scrolling; no skipped heading levels on /projects, /about, /co
 `.gal-viewport` gets a role; dashboard chart without overshoot; one style for edit/delete buttons;
 "enterprise-grade scalability" in `profile_repository.dart:88`.
 
+✅ Done. Site: commit cf78d99 on v3/preview (the custom cursor's width transition stays: the
+cursor is off in direction c). Dashboard: branch fix/unsaved-changes (also: no rating field,
+chart axis in round steps).
+
 After all steps: re-run the critique and compare the scores.
