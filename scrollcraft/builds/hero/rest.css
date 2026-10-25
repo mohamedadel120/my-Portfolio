@@ -1,0 +1,134 @@
+/* The rest of the page in D's language: Experience as a log that draws
+   itself, About as a skills file being written, Contact as a working form,
+   plus page-wide touches (heading reveal, scroll-spy nav, progress line). */
+
+/* ------------------------------------------------------------ page-wide */
+.progress { position: fixed; z-index: 25; inset: 0 0 auto 0; height: 2px; background: var(--accent); transform-origin: left; transform: scaleX(var(--read, 0)); pointer-events: none; }
+.top nav a { transition: background-color 200ms var(--ease), color 200ms var(--ease); }
+.top nav a.active { background: #fff; color: var(--accent); }
+.top nav a:not(.active) { background: transparent; color: var(--ink-soft); }
+/* Section titles rise out of a mask once, when they enter. */
+.reveal-line { display: block; overflow: hidden; padding-bottom: 0.08em; }
+.reveal-line > span { display: block; }
+@media (prefers-reduced-motion: no-preference) {
+  .js .reveal-line > span { transform: translateY(105%); transition: transform 700ms var(--ease); }
+  .js .seen .reveal-line > span { transform: none; }
+}
+
+/* ----------------------------------------------------------- experience */
+.log2 { --draw: 0; position: relative; margin-top: 2.5rem; padding-left: 1.75rem; }
+.log2::before, .log2::after { content: ""; position: absolute; left: 0; top: 0.35rem; bottom: 0; width: 2px; border-radius: 1px; }
+.log2::before { background: var(--line); }
+.log2::after { background: var(--accent); transform-origin: top; transform: scaleY(var(--draw)); }
+.job { position: relative; padding-bottom: 2.75rem; }
+.job::before { content: ""; position: absolute; left: calc(-1.75rem - 5px); top: 0.3rem; width: 12px; height: 12px; border-radius: 50%; background: var(--canvas); border: 2px solid var(--accent); transition: background-color 300ms var(--ease), box-shadow 300ms var(--ease); }
+.job.lit::before { background: var(--accent); box-shadow: 0 0 0 5px rgba(14, 116, 144, 0.14); }
+.job .when { font: 0.78rem var(--mono); color: var(--ink-faint); display: flex; align-items: center; gap: 0.6rem; }
+.head { font: 500 0.68rem var(--mono); color: #fff; background: var(--accent); padding: 0.15rem 0.45rem; border-radius: 5px; }
+.job h3 { margin: 0.35rem 0 0; font-size: 1.2rem; letter-spacing: -0.01em; }
+.job h3 small { font-weight: 500; color: var(--ink-soft); font-size: 0.95rem; }
+.job ul { margin: 0.8rem 0 0; padding: 0; list-style: none; font-size: 0.97rem; color: var(--ink-soft); line-height: 1.55; display: grid; gap: 0.3rem; }
+.job li { padding-left: 1.4rem; position: relative; }
+.job li::before { content: "+"; position: absolute; left: 0; font-family: var(--mono); color: #15803D; }
+@media (prefers-reduced-motion: no-preference) {
+  .js .job { opacity: 0.4; transition: opacity 400ms var(--ease); }
+  .js .job.lit { opacity: 1; }
+  .js .job li { opacity: 0.25; transform: translateX(-8px); transition: opacity 320ms var(--ease), transform 420ms var(--ease); transition-delay: calc(var(--i) * 70ms + 120ms); }
+  .js .job.lit li { opacity: 1; transform: none; }
+  .head { animation: head 2.4s ease-in-out infinite; }
+  @keyframes head { 0%, 100% { box-shadow: 0 0 0 0 rgba(14, 116, 144, 0.35); } 50% { box-shadow: 0 0 0 5px rgba(14, 116, 144, 0); } }
+}
+
+/* ---------------------------------------------------------------- about */
+.about2 { margin-top: 2.5rem; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(2rem, 5vw, 4rem); align-items: start; }
+.about2 > p { margin: 0; font-size: 1.15rem; line-height: 1.7; color: var(--ink-soft); }
+.about2 mark { background: none; color: var(--ink); font-weight: 500; background-image: linear-gradient(rgba(14, 116, 144, 0.22), rgba(14, 116, 144, 0.22)); background-repeat: no-repeat; background-position: 0 88%; background-size: 100% 0.35em; }
+.file { border-radius: 14px; background: var(--surface); border: 1px solid var(--line); box-shadow: 0 24px 50px -32px rgba(22, 23, 26, 0.35); overflow: hidden; }
+.file-tab { display: flex; justify-content: space-between; padding: 0.6rem 1rem; border-bottom: 1px solid var(--line); font: 0.75rem var(--mono); color: var(--ink-faint); }
+.file-tab b { color: var(--ink); font-weight: 500; }
+.file pre { margin: 0; padding: 1rem 1.2rem 1.2rem 0; font: 0.84rem/1.8 var(--mono); color: var(--ink); overflow-x: auto; counter-reset: ln; }
+.file .ln { display: block; padding-left: 3.2rem; position: relative; white-space: pre; }
+.file .ln::before { counter-increment: ln; content: counter(ln); position: absolute; left: 0; width: 2.2rem; text-align: right; color: var(--ink-faint); opacity: 0.6; }
+.file .k { color: var(--accent); }
+.file .c { color: var(--ink-faint); }
+.caret { display: inline-block; width: 0.55em; height: 1.1em; margin-left: 2px; vertical-align: -0.2em; background: var(--accent); }
+@media (prefers-reduced-motion: no-preference) {
+  .js .about2 mark { background-size: 0% 0.35em; transition: background-size 700ms var(--ease); }
+  .js .seen .about2 mark { background-size: 100% 0.35em; }
+  .js .seen .about2 mark:nth-of-type(2) { transition-delay: 150ms; }
+  .js .seen .about2 mark:nth-of-type(3) { transition-delay: 300ms; }
+  .js .file .ln { opacity: 0; transform: translateY(4px); transition: opacity 160ms linear, transform 220ms var(--ease); transition-delay: calc(var(--n) * 55ms + 200ms); }
+  .js .seen .file .ln { opacity: 1; transform: none; }
+  .caret { animation: caret 1.05s steps(1) infinite; }
+  @keyframes caret { 50% { opacity: 0; } }
+}
+
+/* -------------------------------------------------------------- contact */
+.contact2 { margin-top: 2.5rem; display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: clamp(2rem, 5vw, 4rem); align-items: start; }
+.contact2 .lead { margin: 0; font-size: 1.15rem; line-height: 1.65; color: var(--ink-soft); }
+.rows { margin: 2rem 0 0; display: grid; gap: 0.25rem; }
+.row { display: grid; grid-template-columns: 6rem 1fr auto; align-items: center; gap: 1rem; padding: 0.8rem 0; border-bottom: 1px solid var(--line); }
+.row dt { font: 0.78rem var(--mono); color: var(--ink-faint); }
+.row dd { margin: 0; font-weight: 500; }
+.row dd a { text-decoration: none; }
+.row dd a:hover { color: var(--accent); }
+.copy-btn { min-height: 2.75rem; min-width: 4.5rem; padding: 0 0.8rem; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); font: 500 0.75rem var(--mono); color: var(--ink-soft); cursor: pointer; transition: transform 120ms var(--ease), color 160ms, border-color 160ms; }
+.copy-btn:active { transform: scale(0.97); }
+.copy-btn.done { color: #15803D; border-color: rgba(21, 128, 61, 0.4); }
+.copy-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.socials { margin-top: 1.5rem; display: flex; gap: 0.6rem; flex-wrap: wrap; }
+.socials a { display: inline-flex; align-items: center; min-height: 2.75rem; padding: 0 1rem; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); text-decoration: none; font-weight: 600; font-size: 0.9rem; transition: border-color 160ms, color 160ms; }
+.socials a:hover { border-color: rgba(14, 116, 144, 0.5); color: var(--accent); }
+
+.form { border-radius: 16px; background: var(--surface); border: 1px solid var(--line); box-shadow: 0 30px 60px -36px rgba(22, 23, 26, 0.35); overflow: hidden; }
+.form .file-tab { padding: 0.75rem 1.25rem; }
+.form form { padding: 1.5rem 1.25rem 1.25rem; display: grid; gap: 1.1rem; }
+.field { display: grid; gap: 0.4rem; }
+.field label { font: 0.75rem var(--mono); color: var(--ink-faint); transition: color 160ms; }
+.field input, .field textarea { width: 100%; min-width: 0; font: inherit; font-size: 1rem; color: var(--ink); background: var(--canvas); border: 1px solid var(--line); border-radius: 10px; padding: 0.8rem 0.9rem; transition: border-color 160ms, box-shadow 160ms, background-color 160ms; }
+.field textarea { min-height: 8rem; resize: vertical; }
+.field:focus-within label { color: var(--accent); }
+.field input:focus, .field textarea:focus { outline: none; border-color: var(--accent); background: #fff; box-shadow: 0 0 0 4px rgba(14, 116, 144, 0.12); }
+.send { position: relative; overflow: hidden; justify-self: start; min-height: 3rem; padding: 0 1.5rem; border: 0; border-radius: 999px; background: var(--accent); color: #fff; font: 600 0.95rem var(--font); cursor: pointer; transition: transform 140ms var(--ease); }
+.send:active { transform: scale(0.97); }
+.send:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.send::after { content: ""; position: absolute; inset: auto 0 0 0; height: 3px; background: rgba(255, 255, 255, 0.7); transform: scaleX(0); transform-origin: left; }
+.send.busy::after { transition: transform 900ms var(--ease); transform: scaleX(1); }
+.status { margin: 0; min-height: 1.4em; font: 0.8rem var(--mono); color: var(--ink-faint); }
+.status.ok { color: #15803D; }
+
+.foot { padding: 2.5rem clamp(1.25rem, 6vw, 6rem) 7rem; border-top: 1px solid var(--line); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; font: 0.8rem var(--mono); color: var(--ink-faint); }
+.foot b { color: var(--accent); font-weight: 500; }
+
+@media (max-width: 899px) {
+  .about2, .contact2 { grid-template-columns: minmax(0, 1fr); }
+  .row { grid-template-columns: 4.5rem 1fr auto; }
+}
+
+/* Contact rows on phones: the long email may wrap instead of widening the
+   row; the email and phone links are 44 px tall targets. */
+.row dd { min-width: 0; overflow-wrap: anywhere; }
+.row dd a { display: inline-flex; align-items: center; min-height: 2.75rem; }
+@media (max-width: 899px) { .row { grid-template-columns: 4.5rem minmax(0, 1fr) auto; } }
+
+/* Wide screens: content stays within a 1440 px column, centred; only the
+   backgrounds run edge to edge. */
+.section, .foot, .pn { max-width: 1440px; margin-inline: auto; }
+@media (min-width: 900px) {
+  .copy { left: max(clamp(1.25rem, 6vw, 6rem), calc((100vw - 1440px) / 2 + 6rem)); }
+  .scene { right: max(clamp(2rem, 9vw, 9rem), calc((100vw - 1440px) / 2 + 9rem)); }
+}
+
+.status.err { color: #B42318; }
+
+/* Phones: the section links live in a small Menu (a <details>, so it works
+   without scripts). Hidden on wider screens, where the pill nav shows. */
+.menu { display: none; position: relative; margin-left: auto; margin-right: 0.6rem; }
+.menu summary { list-style: none; display: inline-flex; align-items: center; min-height: 2.75rem; padding: 0 1.1rem; border-radius: 999px; border: 1px solid var(--line); background: #fff; font-size: 0.8rem; font-weight: 600; cursor: pointer; }
+.menu summary::-webkit-details-marker { display: none; }
+.menu summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.menu nav { position: absolute; right: 0; top: calc(100% + 0.5rem); display: grid; min-width: 12rem; padding: 0.4rem; border-radius: 14px; background: #fff; border: 1px solid var(--line); box-shadow: 0 20px 40px -20px rgba(22, 23, 26, 0.35); }
+.menu nav a { display: flex; align-items: center; min-height: 2.75rem; padding: 0 0.9rem; border-radius: 10px; text-decoration: none; font-size: 0.85rem; font-weight: 600; color: var(--ink-soft); }
+.menu nav a.active { color: var(--accent); background: var(--accent-soft); }
+@media (max-width: 899px) { .menu { display: block; } }
+.top .logo { display: inline-flex; min-width: 2.75rem; min-height: 2.75rem; align-items: center; }

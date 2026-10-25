@@ -14,11 +14,18 @@ enum _SubmitState { idle, submitting, success, error }
 /// split internally (unlike `cloud_firestore`/`package:web`, it doesn't
 /// need a manual `.vm.dart`/`.web.dart` split), so this needed no extra
 /// plumbing beyond marking the component `@client`.
+/// Web3Forms' public access key (it is meant to ship in the page). Design D's
+/// contact form posts with it too.
+const web3FormsAccessKey = 'f73c2290-70cc-489f-afae-c766950c8604';
+
 @client
 class ContactForm extends StatefulComponent {
   final String recipientEmail;
 
-  const ContactForm({super.key, required this.recipientEmail});
+  /// True on the Contact page (see ContactSection.standalone).
+  final bool standalone;
+
+  const ContactForm({super.key, required this.recipientEmail, this.standalone = false});
 
   @override
   State<ContactForm> createState() => _ContactFormState();
@@ -33,36 +40,42 @@ class ContactForm extends StatefulComponent {
         padding: Padding.all(2.5.rem),
         backgroundColor: AppColors.surface,
         radius: BorderRadius.circular(1.25.rem),
-        border: Border.all(color: AppColors.primary.withValues(alpha: 0.3), width: 1.5.px),
+        border: Border.all(color: AppColors.outline(0.3), width: themed(1.5.px, calm: 1.px)),
         minWidth: Unit.zero,
       ),
       css.media(MediaQuery.screen(maxWidth: Breakpoints.mobile.px), [
         css('&').styles(padding: Padding.all(1.5.rem)),
       ]),
-      css('h3').styles(color: AppColors.textPrimary, fontSize: 1.75.rem),
+      css('.contact-form-title').styles(color: AppColors.textPrimary, fontSize: AppType.size(TypeStep.h2, was: 1.75.rem)),
       css('.contact-form-hint').styles(
         color: AppColors.textSecondary,
-        fontFamily: FontFamily.list([FontFamily('JetBrains Mono'), FontFamilies.monospace]),
-        fontSize: 0.95.rem,
+        fontFamily: AppFonts.of(FontRole.text, was: AppFonts.jetBrainsMono),
+        fontSize: AppType.size(TypeStep.body, was: 0.95.rem),
       ),
     ]),
     css('.form-field', [
       css('&').styles(display: Display.flex, flexDirection: FlexDirection.column, gap: Gap.all(0.5.rem)),
       css('label').styles(
         color: AppColors.textSecondary,
-        fontFamily: FontFamily.list([FontFamily('JetBrains Mono'), FontFamilies.monospace]),
-        fontSize: 0.85.rem,
+        fontFamily: AppFonts.of(FontRole.text, was: AppFonts.jetBrainsMono),
+        fontSize: AppType.size(TypeStep.small, was: 0.85.rem),
       ),
-      css('input, textarea').styles(
+      // One rule per element: inside a nested rule Jaspr prefixes only the
+      // first part of a comma selector (`input, textarea` styled every
+      // textarea on the site).
+      for (final field in ['input', 'textarea'])
+      css(field).styles(
         color: AppColors.textPrimary,
-        backgroundColor: AppColors.background,
-        fontFamily: FontFamily.list([FontFamily('JetBrains Mono'), FontFamilies.monospace]),
-        fontSize: 1.rem,
+        backgroundColor: lit(AppColors.background, light: AppColors.surface),
+        fontFamily: AppFonts.of(FontRole.text, was: AppFonts.jetBrainsMono),
+        fontSize: AppType.size(TypeStep.body, was: 1.rem),
         padding: Padding.all(0.85.rem),
         radius: BorderRadius.circular(0.75.rem),
-        border: Border.all(color: AppColors.primary.withValues(alpha: 0.3), width: 1.px),
+        // Fields keep a clearly visible edge in every direction.
+        border: Border.all(color: themed(AppColors.primary.withValues(alpha: 0.3), calm: AppColors.textPrimary.withValues(alpha: 0.24)), width: 1.px),
       ),
-      css('input:focus, textarea:focus').styles(
+      for (final field in ['input', 'textarea'])
+      css('$field:focus').styles(
         border: Border.all(color: AppColors.primary, width: 2.px),
         raw: {'outline': 'none'},
       ),
@@ -70,10 +83,10 @@ class ContactForm extends StatefulComponent {
     css('.submit-button', [
       css('&').styles(
         backgroundColor: AppColors.primary,
-        color: AppColors.background,
-        fontFamily: FontFamily.list([FontFamily('JetBrains Mono'), FontFamilies.monospace]),
+        color: AppColors.onPrimary,
+        fontFamily: AppFonts.of(FontRole.text, was: AppFonts.jetBrainsMono),
         fontWeight: FontWeight.w700,
-        fontSize: 1.rem,
+        fontSize: AppType.size(TypeStep.body, was: 1.rem),
         padding: Padding.symmetric(vertical: 1.rem),
         radius: BorderRadius.circular(0.75.rem),
         border: Border.none,
@@ -81,7 +94,7 @@ class ContactForm extends StatefulComponent {
       ),
     ]),
     css('.form-status', [
-      css('&').styles(fontFamily: FontFamily.list([FontFamily('JetBrains Mono'), FontFamilies.monospace]), fontSize: 0.9.rem),
+      css('&').styles(fontFamily: AppFonts.of(FontRole.text, was: AppFonts.jetBrainsMono), fontSize: AppType.size(TypeStep.small, was: 0.9.rem)),
       css('&.success').styles(color: Color('#4CAF50')),
       css('&.error').styles(color: Color('#F44336')),
     ]),
@@ -89,7 +102,6 @@ class ContactForm extends StatefulComponent {
 }
 
 class _ContactFormState extends State<ContactForm> {
-  static const _web3FormsAccessKey = 'f73c2290-70cc-489f-afae-c766950c8604';
 
   String _name = '';
   String _email = '';
@@ -121,7 +133,7 @@ class _ContactFormState extends State<ContactForm> {
             Uri.parse('https://api.web3forms.com/submit'),
             headers: {'Content-Type': 'application/json'},
             body: jsonEncode({
-              'access_key': _web3FormsAccessKey,
+              'access_key': web3FormsAccessKey,
               'subject': 'Portfolio Contact: $_name',
               'from_name': _name,
               'from_email': _email,
@@ -156,7 +168,12 @@ class _ContactFormState extends State<ContactForm> {
   @override
   Component build(BuildContext context) {
     return div(classes: 'contact-form', [
-      h3([.text('Send Me a Message')]),
+      // An h2 right under the Contact page's h1; an h3 under the home page's
+      // "Get In Touch" h2.
+      if (component.standalone)
+        h2(classes: 'contact-form-title', [.text('Send Me a Message')])
+      else
+        h3(classes: 'contact-form-title', [.text('Send Me a Message')]),
       p(classes: 'contact-form-hint', [
         .text("I'd love to hear from you. Send me a message and I'll respond as soon as possible."),
       ]),

@@ -73,13 +73,44 @@ void main() {
       expect(html, contains('Skip to contact'));
     });
 
-    test('inactive projects expose only their first screenshot', () async {
-      final html = await render(ProjectsVariant.pinnedShowcase, all);
+    test('at most six tags, the rest folded into "+N" with their names', () async {
+      final many = {...project(1), 'tech': [for (var i = 1; i <= 9; i++) 'Tech$i']};
+      final html = markupOnly(await render(ProjectsVariant.pinnedShowcase, [many]));
+      expect(html, contains('>Tech6</li>'));
+      expect(html, isNot(contains('>Tech7</li>')));
+      expect(html, contains('>+3</li>'));
+      expect(html, contains('title="Tech7, Tech8, Tech9"'));
+      expect(html, contains('aria-label="and 3 more: Tech7, Tech8, Tech9"'));
+    });
+
+    test('titles and descriptions take their direction from the text (Arabic)', () async {
+      final html = markupOnly(await render(ProjectsVariant.pinnedShowcase, all));
+      expect(html, contains('class="pp-title" dir="auto"'));
+      expect(html, contains('class="pp-description" dir="auto"'));
+    });
+
+    test('no screenshots: a demo video shows its first frame, nothing at all shows a placeholder', () async {
+      final noMedia = project(1, full: false);
+      final withVideo = {...project(2, full: false), 'videoUrl': 'assets/videos/demo.mp4'};
+      final html = markupOnly(await render(ProjectsVariant.pinnedShowcase, [noMedia, withVideo]));
+      expect(html, contains('class="pp-empty"'));
+      expect(html, contains('No screenshots yet'));
+      expect(html, contains('src="/assets/videos/demo.mp4#t=0.1"'));
+      expect(html, contains('preload="metadata"'));
+    });
+
+    test('only the active project and its neighbours load screenshots', () async {
+      final html = await render(ProjectsVariant.pinnedShowcase, [for (var i = 1; i <= 5; i++) project(i)]);
       final sources = RegExp(r'<img[^>]*src="([^"]+)"').allMatches(html).map((m) => m.group(1)).toList();
-      expect(sources, contains('https://img.test/3-1.webp'));
-      expect(sources, isNot(contains('https://img.test/3-2.webp')));
       // The active project adds the screenshot that is about to play.
-      expect(sources, contains('https://img.test/1-2.webp'));
+      expect(sources, containsAll(['https://img.test/1-1.webp', 'https://img.test/1-2.webp']));
+      // Its neighbour keeps its first screenshot ready, nothing more.
+      expect(sources, contains('https://img.test/2-1.webp'));
+      expect(sources, isNot(contains('https://img.test/2-2.webp')));
+      // Projects further away load nothing until the visitor gets close.
+      for (var i = 3; i <= 5; i++) {
+        expect(sources.where((s) => s!.startsWith('https://img.test/$i-')), isEmpty, reason: 'project $i');
+      }
     });
 
     test('arrows flank the phone and the player bar sits over the screen', () async {
@@ -156,5 +187,20 @@ void main() {
       expect(html, contains('Just a headline'));
       expect(html, isNot(contains('feat-badge')));
     });
+  });
+
+  // No skipped heading levels: on the Projects page (h1 "Projects") project
+  // titles are h2; on the home page (h2 "Projects") they stay h3.
+  test('project titles follow the page outline', () async {
+    Future<String> titles({required bool standalone}) async {
+      final result = await renderComponent(ProjectsSection.showcase(ProjectsVariant.pinnedShowcase, all, standalone: standalone), standalone: true);
+      return markupOnly(utf8.decode(result.body).split('</head>').last);
+    }
+
+    bool has(String html, String tag) => RegExp('<$tag[^>]*class="pp-title"').hasMatch(html);
+    final home = await titles(standalone: false);
+    final page = await titles(standalone: true);
+    expect((has(home, 'h3'), has(home, 'h2')), (true, false));
+    expect((has(page, 'h2'), has(page, 'h3')), (true, false));
   });
 }

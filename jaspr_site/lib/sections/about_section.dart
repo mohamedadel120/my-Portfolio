@@ -1,6 +1,7 @@
 import 'package:jaspr/dom.dart';
 import 'package:jaspr/server.dart';
 
+import '../constants/motion_css.dart';
 import '../constants/theme.dart';
 import '../data/profile_repository.dart';
 
@@ -21,6 +22,8 @@ class AboutSection extends AsyncStatelessComponent {
 
   @override
   Future<Component> build(BuildContext context) async {
+    // Under the page's own h1 the tile titles are h2; under the home page's h2, h3.
+    Component bentoTitle(String text) => standalone ? h2(classes: 'bento-title', [.text(text)]) : h3(classes: 'bento-title', [.text(text)]);
     final about = await fetchAboutData();
 
     return section(id: 'about', classes: 'about', [
@@ -30,7 +33,7 @@ class AboutSection extends AsyncStatelessComponent {
         h2(classes: 'section-title', [.text('About Me')]),
       div(classes: 'about-grid', [
         div(classes: 'bento identity reveal', [
-          h3(classes: 'bento-title', [.text('Identity')]),
+          bentoTitle('Identity'),
           p(classes: 'identity-headline', [.text('Crafting Exceptional Digital Experiences')]),
           p(classes: 'identity-summary', [.text(about.professionalSummary)]),
         ]),
@@ -38,7 +41,7 @@ class AboutSection extends AsyncStatelessComponent {
           classes: 'bento impact reveal',
           styles: Styles(raw: {'transition-delay': '80ms'}),
           [
-            h3(classes: 'bento-title', [.text('Impact')]),
+            bentoTitle('Impact'),
             div(classes: 'impact-stats', [
               div(classes: 'impact-stat', [
                 span(classes: 'material-symbols-rounded impact-icon', [.text('download')]),
@@ -58,7 +61,7 @@ class AboutSection extends AsyncStatelessComponent {
           classes: 'bento features reveal',
           styles: Styles(raw: {'transition-delay': '160ms'}),
           [
-            h3(classes: 'bento-title', [.text('Experience')]),
+            bentoTitle('Experience'),
             div(classes: 'feature-grid', [
               for (final feature in about.features)
                 div(classes: 'feature-card', [
@@ -73,7 +76,7 @@ class AboutSection extends AsyncStatelessComponent {
           classes: 'bento skills reveal',
           styles: Styles(raw: {'transition-delay': '240ms'}),
           [
-          h3(classes: 'bento-title', [.text('Proficiency')]),
+          bentoTitle('Proficiency'),
           div(classes: 'skill-list', [
             for (final (i, skill) in about.skills.indexed)
               div(classes: 'skill', [
@@ -173,13 +176,13 @@ class AboutSection extends AsyncStatelessComponent {
       ]),
       css('&:hover').styles(
         transform: Transform.translate(y: (-4).px),
-        border: Border.all(color: AppColors.primary.withValues(alpha: 0.3), width: 1.px),
-        raw: {'box-shadow': '0 15px 35px -12px ${AppColors.primary.withValues(alpha: 0.25).value}'},
+        border: Border.all(color: themed(AppColors.primary.withValues(alpha: 0.3), calm: AppColors.textPrimary.withValues(alpha: 0.16)), width: 1.px),
+        raw: {'box-shadow': '0 15px 35px -12px ${AppColors.glow(0.25).value}'},
       ),
       css('.bento-title').styles(
         color: AppColors.primary,
-        fontFamily: FontFamily.list([FontFamily('Space Mono'), FontFamilies.monospace]),
-        fontSize: 0.8.rem,
+        fontFamily: AppFonts.of(FontRole.accent, was: AppFonts.spaceMono),
+        fontSize: AppType.size(TypeStep.label, was: 0.8.rem),
         letterSpacing: 2.px,
         textTransform: TextTransform.upperCase,
         margin: Margin.only(bottom: 1.5.rem),
@@ -191,18 +194,18 @@ class AboutSection extends AsyncStatelessComponent {
         css('&').styles(gridPlacement: GridPlacement(columnStart: LinePlacement.span(1))),
       ]),
       css('.identity-headline').styles(
-        fontFamily: FontFamily.list([FontFamily('IBM Plex Mono'), FontFamilies.monospace]),
-        fontSize: 2.25.rem,
-        fontWeight: FontWeight.w900,
+        fontFamily: AppFonts.of(FontRole.heading, was: AppFonts.ibmPlexMono),
+        fontSize: AppType.size(TypeStep.h2, was: 2.25.rem),
+        fontWeight: themed(FontWeight.w900, calm: AppFonts.active.headingWeight),
         lineHeight: Unit.expression('1.1'),
-        letterSpacing: (-1).px,
+        letterSpacing: themed((-1).px, calm: (-0.02).em),
         color: AppColors.textPrimary,
         margin: Margin.only(bottom: 1.25.rem),
       ),
       css('.identity-summary').styles(
         color: AppColors.textSecondary,
-        fontFamily: FontFamily.list([FontFamily('JetBrains Mono'), FontFamilies.monospace]),
-        fontSize: 1.rem,
+        fontFamily: AppFonts.of(FontRole.text, was: AppFonts.jetBrainsMono),
+        fontSize: AppType.size(TypeStep.body, was: 1.rem),
         lineHeight: Unit.expression('1.6'),
       ),
     ]),
@@ -211,15 +214,15 @@ class AboutSection extends AsyncStatelessComponent {
       css('.impact-stat').styles(display: Display.flex, flexDirection: FlexDirection.column, alignItems: AlignItems.center, gap: Gap.all(0.5.rem)),
       css('.impact-icon').styles(color: AppColors.primary, fontSize: 1.75.rem),
       css('.impact-value').styles(
-        fontFamily: FontFamily.list([FontFamily('IBM Plex Mono'), FontFamilies.monospace]),
-        fontSize: 2.rem,
+        fontFamily: AppFonts.of(FontRole.heading, was: AppFonts.ibmPlexMono),
+        fontSize: AppType.size(TypeStep.h2, was: 2.rem),
         fontWeight: FontWeight.w700,
         color: AppColors.textPrimary,
       ),
       css('.impact-label').styles(
         color: AppColors.textTertiary,
-        fontFamily: FontFamily.list([FontFamily('Space Mono'), FontFamilies.monospace]),
-        fontSize: 0.7.rem,
+        fontFamily: AppFonts.of(FontRole.accent, was: AppFonts.spaceMono),
+        fontSize: AppType.size(TypeStep.label, was: 0.7.rem),
         letterSpacing: 1.px,
       ),
     ]),
@@ -239,27 +242,27 @@ class AboutSection extends AsyncStatelessComponent {
         css('&').styles(raw: {'grid-template-columns': 'minmax(0, 1fr)'}),
       ]),
       css('.feature-card').styles(
-        backgroundColor: Colors.white.withValues(alpha: 0.03),
+        backgroundColor: AppColors.textPrimary.withValues(alpha: 0.03),
         radius: BorderRadius.circular(1.rem),
         padding: Padding.all(1.rem),
         raw: {'transition': 'transform 200ms ease, background-color 200ms ease'},
       ),
       css('.feature-card:hover').styles(
-        backgroundColor: Colors.white.withValues(alpha: 0.07),
+        backgroundColor: AppColors.textPrimary.withValues(alpha: 0.07),
         transform: Transform.translate(y: (-3).px),
       ),
       css('.feature-icon').styles(color: AppColors.primary, fontSize: 1.25.rem),
       css('.feature-title').styles(
         color: AppColors.textPrimary,
-        fontFamily: FontFamily.list([FontFamily('IBM Plex Mono'), FontFamilies.monospace]),
+        fontFamily: AppFonts.of(FontRole.heading, was: AppFonts.ibmPlexMono),
         fontWeight: FontWeight.w700,
-        fontSize: 0.9.rem,
+        fontSize: AppType.size(TypeStep.body, was: 0.9.rem),
         margin: Margin.only(top: 0.75.rem, bottom: 0.5.rem),
       ),
       css('.feature-description').styles(
         color: AppColors.textSecondary,
-        fontFamily: FontFamily.list([FontFamily('JetBrains Mono'), FontFamilies.monospace]),
-        fontSize: 0.8.rem,
+        fontFamily: AppFonts.of(FontRole.text, was: AppFonts.jetBrainsMono),
+        fontSize: AppType.size(TypeStep.small, was: 0.8.rem),
         lineHeight: Unit.expression('1.4'),
       ),
     ]),
@@ -269,30 +272,35 @@ class AboutSection extends AsyncStatelessComponent {
         display: Display.flex,
         justifyContent: JustifyContent.spaceBetween,
         color: AppColors.textSecondary,
-        fontFamily: FontFamily.list([FontFamily('JetBrains Mono'), FontFamilies.monospace]),
-        fontSize: 0.85.rem,
+        fontFamily: AppFonts.of(FontRole.text, was: AppFonts.jetBrainsMono),
+        fontSize: AppType.size(TypeStep.small, was: 0.85.rem),
         margin: Margin.only(bottom: 0.5.rem),
       ),
       css('.skill-track').styles(
         height: 6.px,
-        backgroundColor: Colors.white.withValues(alpha: 0.08),
+        backgroundColor: AppColors.textPrimary.withValues(alpha: 0.08),
         radius: BorderRadius.circular(3.px),
         overflow: Overflow.hidden,
       ),
-      // Starts at 0 and only grows to its real value once the bento tile's
-      // .reveal.revealed class lands (IntersectionObserver-driven, see
-      // components/scroll_reveal.dart) -- same on-scroll-into-view trigger
-      // used for every other reveal animation on the site, in place of the
-      // original Flutter version's scroll-linked AnimationController.
+      // Rendered at its real value, so the bar is right without scripts and
+      // with reduced motion. When the reveal script runs, a tile still below
+      // the fold starts at scaleX(0) and grows once .revealed lands (see
+      // components/scroll_reveal.dart). Scaling instead of animating width
+      // keeps it off the layout path.
       css('.skill-fill').styles(
         height: 100.percent,
-        width: Unit.zero,
+        width: Unit.expression('var(--target-width)'),
         radius: BorderRadius.circular(3.px),
-        raw: {'transition': 'width 1000ms ease'},
+        raw: {'transform-origin': 'left center', 'transition': 'transform 900ms cubic-bezier(0.23, 1, 0.32, 1)'},
       ),
       css('.skill-fill.primary').styles(backgroundColor: AppColors.primary),
       css('.skill-fill.secondary').styles(backgroundColor: AppColors.secondary),
     ]),
-    css('.reveal.revealed .skill-fill').styles(width: Unit.expression('var(--target-width)')),
+    MotionRule.allowed([
+      css('html.reveal-ready .reveal:not(.revealed) .skill-fill').styles(raw: {'transform': 'scaleX(0)'}),
+    ]),
+    MotionRule.reduced([
+      css('.skill-fill').styles(raw: {'transition': 'none'}),
+    ]),
   ];
 }

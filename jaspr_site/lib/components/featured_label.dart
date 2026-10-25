@@ -25,7 +25,7 @@ class FeaturedLabel extends StatelessComponent {
           span(classes: 'material-symbols-rounded feat-star', attributes: {'aria-hidden': 'true'}, [.text('star')]),
           .text('Featured project'),
         ]),
-      if (highlight != null) p(classes: 'feat-highlight', [.text(highlight)]),
+      if (highlight != null) p(classes: 'feat-highlight', attributes: const {'dir': 'auto'}, [.text(highlight)]),
     ]);
   }
 
@@ -42,11 +42,13 @@ class FeaturedLabel extends StatelessComponent {
         padding: Padding.symmetric(horizontal: 0.75.rem, vertical: 0.3.rem),
         radius: BorderRadius.circular(2.rem),
         border: Border.all(color: AppColors.primary, width: 1.px),
-        backgroundColor: AppColors.primary.withValues(alpha: 0.14),
+        // Teal text on its own tint falls under 4.5:1 on the light page.
+        backgroundColor: lit(AppColors.primary.withValues(alpha: 0.14), light: AppColors.surface),
         color: AppColors.primary,
-        fontSize: 0.78.rem,
-        fontWeight: FontWeight.w800,
-        raw: {'box-shadow': '0 0 22px -6px ${AppColors.primary.withValues(alpha: 0.7).value}'},
+        fontFamily: themed(null, calm: AppFonts.of(FontRole.accent, was: AppFonts.jetBrainsMono)),
+        fontSize: AppType.size(TypeStep.label, was: 0.78.rem),
+        fontWeight: themed(FontWeight.w800, calm: FontWeight.w600),
+        raw: {'box-shadow': '0 0 22px -6px ${AppColors.glow(0.7).value}'},
       ),
     ]),
     css('.feat-star', [
@@ -65,7 +67,16 @@ class FeaturedLabel extends StatelessComponent {
         fontSize: Unit.expression('clamp(1.05rem, 2.3dvh, 1.3rem)'),
         fontWeight: FontWeight.w700,
         lineHeight: Unit.expression('1.45'),
-        raw: {'color': 'var(--accent-fg, #ffffff)'},
+        // Dark looks: the app's own colour. Light look: ink text (a darkened
+        // yellow reads as muddy olive) with the app's colour as a side mark.
+        raw: lit(
+          {'color': 'var(--accent-fg, ${AppColors.textPrimary.value})'},
+          light: {
+            'color': AppColors.textPrimary.value,
+            'border-left': '3px solid var(--accent, ${AppColors.primary.value})',
+            'padding-left': '0.85rem',
+          },
+        ),
         maxWidth: Unit.expression('60ch'),
       ),
     ]),

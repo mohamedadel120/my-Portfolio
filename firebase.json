@@ -44,6 +44,12 @@
         ]
       },
       {
+        "source": "/projects/**",
+        "headers": [
+          { "key": "Cache-Control", "value": "public, no-cache" }
+        ]
+      },
+      {
         "source": "/contact",
         "headers": [
           { "key": "Cache-Control", "value": "public, no-cache" }

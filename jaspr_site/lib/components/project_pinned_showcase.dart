@@ -5,6 +5,7 @@ import '../constants/motion_css.dart';
 import '../constants/theme.dart';
 import 'pinned_helpers.vm.dart' if (dart.library.js_interop) 'pinned_helpers.web.dart';
 import 'project_showcase.vm.dart' if (dart.library.js_interop) 'project_showcase.web.dart';
+import 'case_study_link.dart';
 import 'cta_link.dart';
 import 'featured_label.dart';
 import 'project_view.dart';
@@ -18,28 +19,51 @@ import 'store_buttons.dart';
 /// title and description are typed out.
 ///
 /// Every project's text is in the server-rendered HTML (only the active
-/// project is visible). Typed text is a visual copy: the full text stays in
-/// the document for screen readers and search engines. Visitors who asked for
-/// reduced motion get no typing, no autoplay and no cross-fades. Tablets and
-/// phones get plain stacked cards with the manual gallery instead of a pinned
-/// stage.
+/// project is visible). Visitors who asked for reduced motion get no
+/// autoplay and no cross-fades. Tablets and phones get plain stacked cards
+/// with the manual gallery instead of a pinned stage.
+///
+/// Scroll distance per project, in viewport heights. 0.85 made eight
+/// projects cost about 7,000 px of scrolling on a desktop.
+const _segmentVh = 0.65;
+
+/// Tags shown per project before the rest fold into "+N".
+const _maxTags = 6;
+
 @client
 class ProjectPinnedShowcase extends StatefulComponent {
   final List<Map<String, dynamic>> projects;
 
-  const ProjectPinnedShowcase({super.key, required this.projects});
+  /// True on the Projects page, where project titles sit right under the
+  /// page's h1 and become h2s (h3s under the home page's "Projects" h2).
+  final bool standalone;
+
+  const ProjectPinnedShowcase({super.key, required this.projects, this.standalone = false});
 
   @override
   State<ProjectPinnedShowcase> createState() => _ProjectPinnedShowcaseState();
 
   @css
   static List<StyleRule> get styles => [
+    // `clip` (not `hidden`) keeps the sticky children working while making
+    // sure nothing pinned can hang out over the next section.
     css('.pp', [
-      css('&').styles(position: Position.relative(), raw: {'height': 'calc(var(--n) * 85dvh + 100dvh)'}),
+      css('&').styles(position: Position.relative(), raw: {'height': 'calc(var(--n) * ${(_segmentVh * 100).round()}dvh + 100dvh)', 'overflow': 'clip'}),
     ]),
     css('.pp.pp-narrow', [css('&').styles(raw: {'height': 'auto'})]),
+    // The counter, the project list and the skip link: a layer over the whole
+    // pinned stage, so they leave the screen together with it. (They used to
+    // sit on their own zero-height sticky layer, which stayed pinned for a
+    // screen after the stage had scrolled away and floated over the next
+    // section.) Being absolutely positioned it takes no grid cell; only its
+    // controls take clicks.
     css('.pp-chrome', [
-      css('&').styles(position: Position.sticky(top: Unit.zero), height: Unit.zero, zIndex: ZIndex(5)),
+      css('&').styles(
+        position: Position.absolute(top: Unit.zero, left: Unit.zero, right: Unit.zero, bottom: Unit.zero),
+        zIndex: ZIndex(5),
+        raw: {'pointer-events': 'none'},
+      ),
+      css('& > *').styles(raw: {'pointer-events': 'auto'}),
     ]),
     css('.pp-nav', [
       css('&').styles(
@@ -62,8 +86,8 @@ class ProjectPinnedShowcase extends StatefulComponent {
         backgroundColor: Colors.transparent,
         color: AppColors.textTertiary,
         cursor: Cursor.pointer,
-        fontFamily: FontFamily.list([AppFonts.body, FontFamilies.monospace]),
-        fontSize: 0.75.rem,
+        fontFamily: AppFonts.body,
+        fontSize: AppType.size(TypeStep.label, was: 0.75.rem),
         textAlign: TextAlign.right,
         raw: {'transition': 'color 160ms ease'},
       ),
@@ -98,17 +122,35 @@ class ProjectPinnedShowcase extends StatefulComponent {
         backgroundColor: AppColors.background.withValues(alpha: 0.8),
         color: AppColors.textPrimary,
         textDecoration: TextDecoration.none,
-        fontSize: 0.8.rem,
-        raw: {'top': '6rem', 'backdrop-filter': 'blur(6px)'},
+        fontSize: AppType.size(TypeStep.small, was: 0.8.rem),
+        // Below the fixed header (it used to sit half under it).
+        raw: {'top': '7.5rem', 'backdrop-filter': 'blur(6px)'},
       ),
       css('&:focus-visible').styles(raw: {'outline': '2px solid ${AppColors.primary.value}', 'outline-offset': '2px'}),
+      // A keyboard shortcut: hidden until it receives focus from the Tab key,
+      // like any skip link, but still read by screen readers.
+      css('&:not(:focus-visible)').styles(raw: {
+        'clip-path': 'inset(50%)',
+        'width': '1px',
+        'height': '1px',
+        'min-height': '0',
+        'padding': '0',
+        'border': '0',
+        'overflow': 'hidden',
+        'white-space': 'nowrap',
+      }),
     ]),
+    // Which project out of how many. Only below 1200px, where the project list
+    // on the right is hidden (the list already shows it on wider screens), and
+    // at the bottom of the stage, clear of the fixed header.
     css('.pp-counter', [
       css('&').styles(
-        position: Position.absolute(left: 2.rem),
+        position: Position.absolute(left: 2.rem, bottom: 1.25.rem),
+        display: Display.none,
         color: AppColors.textSecondary,
-        fontSize: 0.85.rem,
-        raw: {'top': '6.4rem', 'font-variant-numeric': 'tabular-nums', 'white-space': 'nowrap'},
+        fontFamily: themed(null, calm: AppFonts.of(FontRole.accent, was: AppFonts.jetBrainsMono)),
+        fontSize: AppType.size(TypeStep.small, was: 0.85.rem),
+        raw: {'font-variant-numeric': 'tabular-nums', 'white-space': 'nowrap'},
       ),
     ]),
     // The pinned stage. Information on the left, the phone on the right of it.
@@ -124,14 +166,14 @@ class ProjectPinnedShowcase extends StatefulComponent {
           'grid-template-columns': 'minmax(0, 26rem) minmax(0, 1fr)',
           // Clears the fixed navigation bar (about 6.5rem) at any window height.
           'padding': '7rem 12rem 1.5rem 4rem',
-          'background': 'radial-gradient(circle at 65% 50%, color-mix(in srgb, var(--accent) 16%, ${AppColors.background.value}) 0%, ${AppColors.background.value} 65%)',
+          'background': 'radial-gradient(circle at 65% 50%, color-mix(in srgb, var(--accent) ${lit(16, light: 8)}%, ${AppColors.background.value}) 0%, ${AppColors.background.value} 65%)',
           'transition': 'background 600ms ease',
         },
       ),
     ]),
     // A readable tint of the app's own colour for buttons, progress and focus
     // (the raw colour can be very dark).
-    css('.pp-stage, .pp-phone').styles(raw: {'--accent-fg': 'color-mix(in srgb, var(--accent) 62%, #ffffff)'}),
+    css('.pp-stage, .pp-phone').styles(raw: {'--accent-fg': AppColors.accentText}),
     // Short windows (laptops, browsers with toolbars): tighter type and gaps so
     // the text never needs more room than there is.
     RawMediaRule('(max-height: 820px)', [
@@ -152,7 +194,7 @@ class ProjectPinnedShowcase extends StatefulComponent {
       css('.pp .pp-media').styles(raw: {'--h': 'min(26rem, 52dvh)'}),
       css('.pp .pp-deck').styles(raw: {'gap': '0.6rem'}),
       css('.pp .pp-btn').styles(raw: {'width': '2.4rem', 'height': '2.4rem'}),
-      css('.pp .pp-counter').styles(raw: {'left': '2rem'}),
+      css('.pp .pp-counter').styles(raw: {'left': '2rem', 'display': 'block'}),
       css('.pp .pp-skip').styles(raw: {'right': '2rem'}),
     ]),
     RawMediaRule('(max-height: 680px)', [
@@ -181,12 +223,22 @@ class ProjectPinnedShowcase extends StatefulComponent {
           'margin': '-2.5rem 0 -0.5rem -2.5rem',
           'grid-area': '1 / 1',
           'min-width': '0',
+          // Switching projects is a short crossfade with a slight rise: the
+          // visitor sees it every time they scroll, so it stays quick and
+          // never makes the text unreadable (it used to be typed out again,
+          // character by character, on every switch).
           'opacity': '0',
           'visibility': 'hidden',
-          'transition': 'opacity 250ms ease, visibility 0s linear 250ms',
+          'transform': 'translateY(8px)',
+          'transition': 'opacity 150ms ease-out, transform 150ms ease-out, visibility 0s linear 150ms',
         },
       ),
-      css('&[data-active="true"]').styles(raw: {'opacity': '1', 'visibility': 'visible', 'transition': 'opacity 250ms ease'}),
+      css('&[data-active="true"]').styles(raw: {
+        'opacity': '1',
+        'visibility': 'visible',
+        'transform': 'none',
+        'transition': 'opacity 220ms cubic-bezier(0.23, 1, 0.32, 1), transform 220ms cubic-bezier(0.23, 1, 0.32, 1)',
+      }),
     ]),
     css('.pp-title', [
       css('&').styles(
@@ -195,7 +247,7 @@ class ProjectPinnedShowcase extends StatefulComponent {
         lineHeight: Unit.expression('1.12'),
       ),
     ]),
-    css('.pp-meta', [css('&').styles(margin: Margin.zero, color: AppColors.textTertiary, fontSize: 0.85.rem)]),
+    css('.pp-meta', [css('&').styles(margin: Margin.zero, color: AppColors.textTertiary, fontSize: AppType.size(TypeStep.small, was: 0.85.rem))]),
     css('.pp-description', [
       css('&').styles(
         margin: Margin.zero,
@@ -205,40 +257,23 @@ class ProjectPinnedShowcase extends StatefulComponent {
         raw: {'overflow-wrap': 'break-word', 'font-size': 'clamp(0.82rem, 2dvh, 1rem)'},
       ),
     ]),
-    // Visually hidden full text, kept for screen readers while the visible
-    // copy is being typed.
-    css('.pp-sr', [
-      css('&').styles(
-        position: Position.absolute(),
-        width: 1.px,
-        height: 1.px,
-        overflow: Overflow.hidden,
-        raw: {'clip': 'rect(0 0 0 0)', 'clip-path': 'inset(50%)', 'white-space': 'nowrap'},
-      ),
-    ]),
-    // The invisible full-length copy reserves the final height, so the
-    // layout does not jump as the typed text grows.
-    css('.pp-typed', [css('&').styles(position: Position.relative(), display: Display.block)]),
-    css('.pp-typed-ghost', [css('&').styles(raw: {'visibility': 'hidden', 'display': 'block'})]),
-    css('.pp-typed-live', [css('&').styles(position: Position.absolute(top: Unit.zero, left: Unit.zero, right: Unit.zero))]),
-    css('.pp-caret', [
-      css('&').styles(
-        display: Display.inlineBlock,
-        width: 2.px,
-        height: 1.em,
-        margin: Margin.only(left: 2.px),
-        backgroundColor: AppColors.primary,
-        raw: {'vertical-align': 'text-bottom'},
-      ),
-    ]),
-    MotionRule.allowed([
-      css('.pp-caret').styles(raw: {'animation': 'ppBlink 900ms steps(1) infinite'}),
-      css('.pp-info[data-active="true"] .pp-tech li').styles(raw: {'animation': 'ppIn 320ms cubic-bezier(0.23, 1, 0.32, 1) both', 'animation-delay': 'calc(var(--k) * 45ms + 350ms)'}),
-    ]),
-    css.keyframes('ppBlink', {
-      '0%, 100%': Styles(opacity: 1),
-      '50%': Styles(opacity: 0),
+    // In the pinned stage a long description stops at four lines, so the
+    // store buttons and the call to action always stay in view; the whole
+    // text is one click away on the case study ("Read the case study" sits
+    // right under it).
+    css('.pp-info .pp-description').styles(raw: {
+      'display': '-webkit-box',
+      '-webkit-box-orient': 'vertical',
+      '-webkit-line-clamp': '4',
+      'line-clamp': '4',
+      'overflow': 'hidden',
     }),
+    // The "+N" chip for tags that did not fit.
+    css('.pp-tech li.pp-tech-more').styles(color: AppColors.textSecondary, raw: {'border-style': 'dashed'}),
+    // The tags follow the text in a short stagger.
+    MotionRule.allowed([
+      css('.pp-info[data-active="true"] .pp-tech li').styles(raw: {'animation': 'ppIn 260ms cubic-bezier(0.23, 1, 0.32, 1) both', 'animation-delay': 'calc(var(--k) * 30ms + 120ms)'}),
+    ]),
     css.keyframes('ppIn', {
       'from': Styles(opacity: 0, transform: Transform.translate(y: 6.px)),
       'to': Styles(opacity: 1, transform: Transform.translate(y: 0.px)),
@@ -250,7 +285,8 @@ class ProjectPinnedShowcase extends StatefulComponent {
         radius: BorderRadius.circular(0.5.rem),
         border: Border.all(color: AppColors.textPrimary.withValues(alpha: 0.18), width: 1.px),
         color: AppColors.textPrimary,
-        fontSize: 0.78.rem,
+        fontFamily: themed(null, calm: AppFonts.of(FontRole.accent, was: AppFonts.jetBrainsMono)),
+        fontSize: AppType.size(TypeStep.label, was: 0.78.rem),
       ),
     ]),
     // Store buttons (the round originals) and the call to action share a row.
@@ -278,7 +314,10 @@ class ProjectPinnedShowcase extends StatefulComponent {
           'grid-area': '1 / 1',
           'width': 'calc(var(--w) + 20px)',
           'background': 'linear-gradient(135deg, #555555 0%, #222222 40%, #111111 60%, #444444 100%)',
-          'box-shadow': '0 30px 50px -10px rgba(0,0,0,0.5), 0 20px 60px 0 color-mix(in srgb, var(--accent) 45%, transparent)',
+          'box-shadow': lit(
+            '0 30px 50px -10px rgba(0,0,0,0.5), 0 20px 60px 0 color-mix(in srgb, var(--accent) 45%, transparent)',
+            light: '0 40px 70px -30px rgba(22,23,26,0.45), 0 24px 60px -10px color-mix(in srgb, var(--accent) 30%, transparent)',
+          ),
           'opacity': '0',
           'visibility': 'hidden',
           'transform': 'scale(0.96)',
@@ -304,8 +343,41 @@ class ProjectPinnedShowcase extends StatefulComponent {
         overflow: Overflow.hidden,
         radius: BorderRadius.circular(2.25.rem),
         backgroundColor: Colors.black,
-        raw: {'height': 'var(--h)'},
+        // While a screenshot loads the light look shows a soft tint of the
+        // app's colour instead of a black slab.
+        raw: {'height': 'var(--h)', if (isLight) 'background': 'color-mix(in srgb, var(--accent) 16%, ${AppColors.surfaceLight.value})'},
       ),
+      // A demo video fills the screen; its first frame shows before play.
+      css('video').styles(
+        position: Position.absolute(top: Unit.zero, left: Unit.zero),
+        width: 100.percent,
+        height: 100.percent,
+        raw: {'object-fit': 'contain', 'background': '#0f1012'},
+      ),
+    ]),
+    // A project with neither screenshots nor a video: an intentional card in
+    // the app's colour, not an empty phone.
+    css('.pp-empty', [
+      css('&').styles(
+        position: Position.absolute(top: Unit.zero, left: Unit.zero, right: Unit.zero, bottom: Unit.zero),
+        display: Display.flex,
+        flexDirection: FlexDirection.column,
+        alignItems: AlignItems.center,
+        justifyContent: JustifyContent.center,
+        gap: Gap.all(0.6.rem),
+        padding: Padding.all(1.5.rem),
+        textAlign: TextAlign.center,
+        raw: {'background': 'color-mix(in srgb, var(--accent) 22%, ${AppColors.surface.value})'},
+      ),
+      css('.pp-empty-icon').styles(
+        width: 2.5.rem,
+        height: 2.5.rem,
+        overflow: Overflow.hidden,
+        fontSize: 2.5.rem,
+        raw: {'line-height': '1', 'color': 'var(--accent-fg)'},
+      ),
+      css('.pp-empty-title').styles(margin: Margin.zero, color: AppColors.textPrimary, fontWeight: FontWeight.w600, fontSize: 1.05.rem),
+      css('.pp-empty-text').styles(margin: Margin.zero, color: AppColors.textSecondary, fontSize: 0.85.rem),
     ]),
     // Screenshots are stacked and cross-fade, like the frames of a video.
     css('.pp-shot', [
@@ -344,7 +416,7 @@ class ProjectPinnedShowcase extends StatefulComponent {
       css('&:focus-visible').styles(raw: {'outline': '2px solid var(--accent-fg)', 'outline-offset': '3px'}),
     ]),
     RawMediaRule.hoverCapable([
-      css('.pp-btn:hover').styles(raw: {'background-color': 'var(--accent-fg)', 'color': '#000000'}),
+      css('.pp-btn:hover').styles(raw: {'background-color': 'var(--accent-fg)', 'color': lit('#000000', light: '#ffffff')}),
     ]),
     // Tap anywhere on the screen to pause the screenshots; tap again to play.
     css('.pp-tap', [
@@ -457,9 +529,6 @@ class ProjectPinnedShowcase extends StatefulComponent {
 class _ProjectPinnedShowcaseState extends State<ProjectPinnedShowcase> {
   static const _rootId = 'pinned-showcase';
 
-  /// Scroll distance for each project, in viewport heights.
-  static const _segmentVh = 0.85;
-
   /// How long each screenshot is shown while playing.
   static const _shotMs = 2200;
 
@@ -476,9 +545,6 @@ class _ProjectPinnedShowcaseState extends State<ProjectPinnedShowcase> {
   /// only added as they are about to be shown.
   final Map<int, int> _reach = {};
 
-  int _typedTitle = -1; // -1 = show the full text
-  int _typedDesc = -1;
-  int _typeToken = 0;
   int _shotToken = 0;
   int _cycle = 0;
 
@@ -494,7 +560,6 @@ class _ProjectPinnedShowcaseState extends State<ProjectPinnedShowcase> {
     // Deferred: setState must not run before the first build completes.
     scheduleTimeout(Duration.zero, () {
       _recompute();
-      _startTyping(_active);
       _restartShots();
     });
   }
@@ -521,51 +586,10 @@ class _ProjectPinnedShowcaseState extends State<ProjectPinnedShowcase> {
         _shot = 0;
         _inView = inView;
       });
-      _startTyping(index);
       _restartShots();
     } else if (inView != _inView) {
       setState(() => _inView = inView);
       _restartShots();
-    }
-  }
-
-  // ---- typing ----
-
-  void _startTyping(int index) {
-    _typeToken++;
-    if (!_effects) {
-      setState(() {
-        _typedTitle = -1;
-        _typedDesc = -1;
-      });
-      return;
-    }
-    setState(() {
-      _typedTitle = 0;
-      _typedDesc = 0;
-    });
-    _typeTitle(_typeToken, index);
-  }
-
-  void _typeTitle(int token, int index) {
-    if (!mounted || token != _typeToken) return;
-    final length = _views[index].title.length;
-    if (_typedTitle < length) {
-      setState(() => _typedTitle++);
-      scheduleTimeout(const Duration(milliseconds: 26), () => _typeTitle(token, index));
-    } else {
-      _typeDescription(token, index);
-    }
-  }
-
-  void _typeDescription(int token, int index) {
-    if (!mounted || token != _typeToken) return;
-    final length = _views[index].description.length;
-    // About one second however long the description is.
-    final step = (length / 55).ceil().clamp(2, 14);
-    if (_typedDesc < length) {
-      setState(() => _typedDesc = (_typedDesc + step).clamp(0, length));
-      scheduleTimeout(const Duration(milliseconds: 18), () => _typeDescription(token, index));
     }
   }
 
@@ -635,29 +659,31 @@ class _ProjectPinnedShowcaseState extends State<ProjectPinnedShowcase> {
       styles: Styles(raw: {'--n': '$_n'}),
       attributes: {'role': 'region', 'aria-label': 'Projects'},
       [
-        div(classes: 'pp-chrome', [
-          a(href: '#contact', classes: 'pp-skip', [.text('Skip to contact')]),
-          span(classes: 'pp-counter', attributes: {'aria-hidden': 'true'}, [.text('Project ${_active + 1} / $_n')]),
-          ul(classes: 'pp-nav', attributes: {'aria-label': 'Jump to project'}, [
-            for (final (i, view) in _views.indexed)
-              li([
-                button(
-                  classes: 'pp-nav-item',
-                  attributes: {'type': 'button', 'aria-current': i == _active ? 'true' : 'false'},
-                  events: {'click': (_) => _goToProject(i)},
-                  [
-                    if (view.featured)
-                      span(classes: 'material-symbols-rounded pp-nav-star', attributes: {'aria-hidden': 'true'}, [.text('star')]),
-                    .text(view.title),
-                  ],
-                ),
-              ]),
-          ]),
-        ]),
         div(
           classes: 'pp-stage',
           styles: Styles(raw: {'--accent': _views[_active].accentHex}),
           [
+            // Inside the pinned stage so the counter, list and skip link
+            // arrive and leave together with it.
+            div(classes: 'pp-chrome', [
+              a(href: '#contact', classes: 'pp-skip', [.text('Skip to contact')]),
+              span(classes: 'pp-counter', attributes: {'aria-hidden': 'true'}, [.text('Project ${_active + 1} / $_n')]),
+              ul(classes: 'pp-nav', attributes: {'aria-label': 'Jump to project'}, [
+                for (final (i, view) in _views.indexed)
+                  li([
+                    button(
+                      classes: 'pp-nav-item',
+                      attributes: {'type': 'button', 'aria-current': i == _active ? 'true' : 'false'},
+                      events: {'click': (_) => _goToProject(i)},
+                      [
+                        if (view.featured)
+                          span(classes: 'material-symbols-rounded pp-nav-star', attributes: {'aria-hidden': 'true'}, [.text('star')]),
+                        .text(view.title),
+                      ],
+                    ),
+                  ]),
+              ]),
+            ]),
             div(classes: 'pp-infos', [for (final (i, view) in _views.indexed) _info(view, i)]),
             div(classes: 'pp-media', [
               div(classes: 'pp-deck', [
@@ -672,45 +698,48 @@ class _ProjectPinnedShowcaseState extends State<ProjectPinnedShowcase> {
     );
   }
 
-  /// Text that is typed out while it is the active project's: a hidden copy
-  /// reserves the full height, the visible copy grows, and the full text is
-  /// always available to assistive technology.
-  Component _typed(String full, int typedLength, bool active, {bool showCaret = false}) {
-    if (!active || typedLength < 0 || typedLength >= full.length && !showCaret) return .text(full);
-    final shown = full.substring(0, typedLength.clamp(0, full.length));
-    return span(classes: 'pp-typed', [
-      span(classes: 'pp-sr', [.text(full)]),
-      span(classes: 'pp-typed-ghost', attributes: {'aria-hidden': 'true'}, [.text(full)]),
-      span(classes: 'pp-typed-live', attributes: {'aria-hidden': 'true'}, [
-        .text(shown),
-        if (showCaret) span(classes: 'pp-caret', []),
-      ]),
-    ]);
-  }
+  // h2 on the Projects page (under its h1), h3 on the home page.
+  Component _title(String text, {String? id}) => component.standalone
+      ? h2(id: id, classes: 'pp-title', attributes: const {'dir': 'auto'}, [.text(text)])
+      : h3(id: id, classes: 'pp-title', attributes: const {'dir': 'auto'}, [.text(text)]);
 
   Component _info(ProjectView view, int index) {
     final active = index == _active;
-    final titleTyping = active && _typedTitle >= 0 && _typedTitle < view.title.length;
-    final descTyping = active && !titleTyping && _typedDesc >= 0 && _typedDesc < view.description.length;
 
     return div(
       classes: 'pp-info',
       attributes: {'data-active': '$active', if (!active) 'aria-hidden': 'true'},
       [
-        h3(classes: 'pp-title', [_typed(view.title, _typedTitle, active, showCaret: titleTyping)]),
+        // dir="auto": an Arabic title or description lays out right to left.
+        _title(view.title),
         if (view.downloads.isNotEmpty) p(classes: 'pp-meta', [.text(view.downloads)]),
         FeaturedLabel(view),
-        p(classes: 'pp-description', [_typed(view.description, _typedDesc, active, showCaret: descTyping)]),
-        if (view.tech.isNotEmpty)
-          ul(classes: 'pp-tech', attributes: {'aria-label': 'Technologies'}, [
-            for (final (k, item) in view.tech.indexed) li(styles: Styles(raw: {'--k': '$k'}), [.text(item)]),
-          ]),
+        p(classes: 'pp-description', attributes: const {'dir': 'auto'}, [.text(view.description)]),
+        CaseStudyLink(view, focusable: active),
+        if (view.tech.isNotEmpty) techList(view.tech),
         div(classes: 'pp-links', [
           StoreButtons(view, focusable: active),
           CtaLink(focusable: active),
         ]),
       ],
     );
+  }
+
+  /// The first [_maxTags] technologies, then one "+N" chip whose tooltip and
+  /// accessible name list the rest (the case study shows them all).
+  static Component techList(List<String> tech) {
+    final shown = tech.take(_maxTags).toList();
+    final rest = tech.skip(_maxTags).toList();
+    return ul(classes: 'pp-tech', attributes: {'aria-label': 'Technologies'}, [
+      for (final (k, item) in shown.indexed) li(styles: Styles(raw: {'--k': '$k'}), [.text(item)]),
+      if (rest.isNotEmpty)
+        li(
+          classes: 'pp-tech-more',
+          styles: Styles(raw: {'--k': '${shown.length}'}),
+          attributes: {'title': rest.join(', '), 'aria-label': 'and ${rest.length} more: ${rest.join(', ')}'},
+          [.text('+${rest.length}')],
+        ),
+    ]);
   }
 
   Component _phone(ProjectView view, int index) {
@@ -722,9 +751,15 @@ class _ProjectPinnedShowcaseState extends State<ProjectPinnedShowcase> {
       final needed = (current + 1).clamp(0, images.length - 1);
       if (needed > previous) _reach[index] = needed;
     }
-    // Inactive projects keep only their first image in the page (so it is
-    // indexed); the active one adds the next screenshot ahead of time.
-    final rendered = images.isEmpty ? 0 : (active ? (_reach[index] ?? 0) + 1 : 1);
+    // The active project adds the next screenshot ahead of time; its two
+    // neighbours keep their first one ready so a project switch never shows
+    // an empty screen. Projects further away render no image yet: all the
+    // phones sit stacked in view, so `loading="lazy"` cannot hold them back,
+    // and on a phone they all downloaded before anything else (some are
+    // multi-megabyte PNGs). Every screenshot stays indexable on the case
+    // study pages.
+    final near = (index - _active).abs() <= 1;
+    final rendered = images.isEmpty ? 0 : (active ? (_reach[index] ?? 0) + 1 : (near ? 1 : 0));
 
     return div(
       classes: 'pp-phone',
@@ -740,13 +775,23 @@ class _ProjectPinnedShowcaseState extends State<ProjectPinnedShowcase> {
               classes: 'pp-shot',
               attributes: {
                 'data-current': '${active && j == current}',
-                'loading': index == 0 && j == 0 ? 'eager' : 'lazy',
+                // Below the hero on every layout now, so nothing here is
+                // needed for the first screen.
+                'loading': 'lazy',
                 'decoding': 'async',
                 'draggable': 'false',
               },
             ),
+          // `#t=0.1` with metadata preload shows the video's first frame
+          // instead of a black box until play.
           if (images.isEmpty && view.videoUrl != null)
-            video(src: view.videoUrl!, controls: true, muted: true, attributes: const {'playsinline': '', 'preload': 'none'}, []),
+            video(src: '${view.videoUrl!}#t=0.1', controls: true, muted: true, attributes: {'playsinline': '', 'preload': 'metadata', 'aria-label': '${view.title} demo video'}, []),
+          if (images.isEmpty && view.videoUrl == null)
+            div(classes: 'pp-empty', [
+              span(classes: 'material-symbols-rounded pp-empty-icon', attributes: {'aria-hidden': 'true'}, [.text('phone_android')]),
+              p(classes: 'pp-empty-title', [.text(view.title)]),
+              p(classes: 'pp-empty-text', [.text('No screenshots yet')]),
+            ]),
           if (active && images.length > 1) ...[
             // Mouse and touch convenience only: the pause button below is the
             // keyboard- and screen-reader-accessible control.
@@ -822,15 +867,13 @@ class _ProjectPinnedShowcaseState extends State<ProjectPinnedShowcase> {
       styles: Styles(raw: {'--accent': view.accentHex}),
       attributes: {'aria-labelledby': 'pp-card-title-$index'},
       [
-        h3(id: 'pp-card-title-$index', classes: 'pp-title', [.text(view.title)]),
+        _title(view.title, id: 'pp-card-title-$index'),
         if (view.downloads.isNotEmpty) p(classes: 'pp-meta', [.text(view.downloads)]),
         if (view.images.isNotEmpty) ShotGalleryView(title: view.title, images: view.images, eagerFirst: index == 0),
         FeaturedLabel(view),
-        p(classes: 'pp-description', [.text(view.description)]),
-        if (view.tech.isNotEmpty)
-          ul(classes: 'pp-tech', attributes: {'aria-label': 'Technologies'}, [
-            for (final item in view.tech) li([.text(item)]),
-          ]),
+        p(classes: 'pp-description', attributes: const {'dir': 'auto'}, [.text(view.description)]),
+        CaseStudyLink(view),
+        if (view.tech.isNotEmpty) _ProjectPinnedShowcaseState.techList(view.tech),
         div(classes: 'pp-links', [StoreButtons(view), const CtaLink()]),
       ],
     );

@@ -2,6 +2,7 @@ import 'package:jaspr/dom.dart';
 import 'package:jaspr/jaspr.dart';
 
 import 'header_scroll.vm.dart' if (dart.library.js_interop) 'header_scroll.web.dart';
+import '../constants/home_layout.dart';
 import '../constants/theme.dart';
 
 /// Ported from the Flutter app's `_InteractiveNavBar` (in
@@ -45,8 +46,11 @@ class Header extends StatefulComponent {
       css('&.scrolled').styles(
         backgroundColor: AppColors.background.withValues(alpha: 0.85),
         border: Border.only(
-          bottom: BorderSide.solid(color: AppColors.primary.withValues(alpha: 0.15), width: 1.px),
+          bottom: BorderSide.solid(color: AppColors.outline(0.15), width: 1.px),
         ),
+        // Text scrolling under the bar turns into a soft wash instead of
+        // showing through, faded, beside the logo and the CV button.
+        raw: {'backdrop-filter': 'blur(12px) saturate(140%)', '-webkit-backdrop-filter': 'blur(12px) saturate(140%)'},
       ),
       css('.nav-inner', [
         css('&').styles(
@@ -61,7 +65,7 @@ class Header extends StatefulComponent {
         css('&').styles(raw: {'transition': 'filter 250ms ease, transform 250ms ease'}),
         css('&:hover').styles(
           transform: Transform.scale(1.08),
-          raw: {'filter': 'drop-shadow(0 0 10px ${AppColors.primary.withValues(alpha: 0.6).value})'},
+          raw: {'filter': 'drop-shadow(0 0 10px ${AppColors.glow(0.6).value})'},
         ),
       ]),
       css('.nav-logo img', [
@@ -82,7 +86,7 @@ class Header extends StatefulComponent {
           padding: Padding.all(0.45.rem),
           raw: {
             'backdrop-filter': 'blur(12px)',
-            'box-shadow': '0 4px 20px rgba(0, 0, 0, 0.3)',
+            'box-shadow': lit('0 4px 20px rgba(0, 0, 0, 0.3)', light: '0 4px 20px rgba(22, 23, 26, 0.08)'),
           },
         ),
         css('a', [
@@ -91,9 +95,10 @@ class Header extends StatefulComponent {
             display: Display.inlineBlock,
             color: AppColors.textSecondary,
             textDecoration: TextDecoration.none,
-            fontFamily: FontFamily.list([FontFamily('Fira Code'), FontFamilies.monospace]),
-            fontSize: 1.rem,
+            fontFamily: AppFonts.of(FontRole.text, was: AppFonts.firaCode),
+            fontSize: AppType.size(TypeStep.small, was: 1.rem),
             fontWeight: FontWeight.w600,
+            letterSpacing: themed(null, calm: 0.04.em),
             padding: Padding.symmetric(horizontal: 1.6.rem, vertical: 0.85.rem),
             radius: BorderRadius.circular(999.px),
             raw: {'transition': 'color 200ms, background-color 200ms'},
@@ -109,7 +114,7 @@ class Header extends StatefulComponent {
             opacity: 0,
             raw: {
               'transform': 'translateX(-50%)',
-              'box-shadow': '0 0 16px 2px ${AppColors.primary.withValues(alpha: 0.6).value}',
+              'box-shadow': '0 0 16px 2px ${AppColors.glow(0.6).value}',
               'transition': 'opacity 250ms ease',
             },
           ),
@@ -118,28 +123,37 @@ class Header extends StatefulComponent {
         // view -- same idea as the .nav-dot.active state in the Projects
         // showcase, just driven by section position instead of an index.
         css('a.active', [
-          css('&').styles(color: AppColors.primary, backgroundColor: AppColors.primary.withValues(alpha: 0.08)),
+          // Light look: a white segment in the grey pill (a teal tint behind
+          // teal text falls just under 4.5:1 contrast).
+          css('&').styles(
+            color: AppColors.primary,
+            backgroundColor: lit(AppColors.primary.withValues(alpha: 0.08), light: AppColors.surface),
+            raw: lit(const <String, String>{}, light: const {'box-shadow': '0 1px 2px rgba(22,23,26,0.08)'}),
+          ),
           css('&::before').styles(opacity: 1),
           // The old inline "< LABEL />" bracket motif, now scoped to just
-          // the active pill instead of every link's hover state.
-          css('.nav-label::before').styles(
-            content: '<',
-            color: AppColors.secondaryText,
-            margin: Margin.only(right: 0.3.rem),
-          ),
-          css('.nav-label::after').styles(
-            content: '/>',
-            color: AppColors.secondaryText,
-            margin: Margin.only(left: 0.3.rem),
-          ),
+          // the active pill instead of every link's hover state. Today's look
+          // only: the new directions drop the code-editor references.
+          if (!isCalm) ...[
+            css('.nav-label::before').styles(
+              content: '<',
+              color: AppColors.secondaryText,
+              margin: Margin.only(right: 0.3.rem),
+            ),
+            css('.nav-label::after').styles(
+              content: '/>',
+              color: AppColors.secondaryText,
+              margin: Margin.only(left: 0.3.rem),
+            ),
+          ],
         ]),
       ]),
       css('.cv-button', [
         css('&').styles(
           backgroundColor: AppColors.primary,
-          color: Colors.black,
+          color: AppColors.onPrimary,
           fontWeight: FontWeight.w700,
-          fontSize: 0.85.rem,
+          fontSize: AppType.size(TypeStep.small, was: 0.85.rem),
           padding: Padding.symmetric(horizontal: 1.6.rem, vertical: 1.rem),
           radius: BorderRadius.circular(4.px),
           textDecoration: TextDecoration.none,
@@ -149,9 +163,29 @@ class Header extends StatefulComponent {
         ),
         css('&:hover').styles(
           transform: Transform.scale(1.08),
-          raw: {'box-shadow': '0 0 20px 2px ${AppColors.primary.withValues(alpha: 0.5).value}'},
+          raw: {'box-shadow': '0 0 20px 2px ${AppColors.glow(0.5).value}'},
         ),
       ]),
+      // Light look: a quiet outlined pill, so the page's own call to action
+      // ("See the apps") is the strongest thing on screen, not the header.
+      if (isLight) ...[
+        css('.cv-button', [
+          css('&').styles(
+            backgroundColor: AppColors.surface,
+            color: AppColors.textPrimary,
+            border: Border.all(color: AppColors.textPrimary.withValues(alpha: 0.16), width: 1.px),
+            radius: BorderRadius.circular(999.px),
+            padding: Padding.symmetric(horizontal: 1.2.rem, vertical: 0.7.rem),
+            fontWeight: FontWeight.w600,
+            letterSpacing: Unit.zero,
+            raw: {'transition': 'border-color 160ms ease, background-color 160ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1)'},
+          ),
+          // Only a border colour, so a tap leaving it "hovered" on a phone is
+          // harmless; the dark looks' scale-and-glow hover is switched off.
+          css('&:hover').styles(transform: Transform.none, raw: {'box-shadow': 'none', 'border-color': AppColors.textPrimary.withValues(alpha: 0.4).value}),
+          css('&:active').styles(transform: Transform.scale(0.97)),
+        ]),
+      ],
       css('.menu-toggle', [
         css('&').styles(
           backgroundColor: Colors.transparent,
@@ -194,9 +228,10 @@ class Header extends StatefulComponent {
         css('&').styles(
           color: AppColors.textPrimary,
           textDecoration: TextDecoration.none,
-          fontFamily: FontFamily.list([FontFamily('Anton'), FontFamilies.sansSerif]),
-          fontSize: 2.5.rem,
-          letterSpacing: 1.px,
+          fontFamily: AppFonts.of(FontRole.heading, was: AppFonts.anton),
+          fontSize: AppType.size(TypeStep.h2, was: 2.5.rem),
+          fontWeight: themed(null, calm: AppFonts.active.headingWeight),
+          letterSpacing: themed(1.px, calm: 0.02.em),
           opacity: 0,
           animation: Animation(
             name: 'fade-in-up',
@@ -209,15 +244,16 @@ class Header extends StatefulComponent {
       // carries it too -- the header's own CV button is desktop-only.
       css('a.mobile-cv-button').styles(
         margin: Margin.only(top: 1.rem),
-        fontFamily: FontFamily.list([FontFamily('Fira Code'), FontFamilies.monospace]),
-        fontSize: 1.rem,
-        color: Colors.black,
+        fontFamily: AppFonts.of(FontRole.text, was: AppFonts.firaCode),
+        fontSize: AppType.size(TypeStep.body, was: 1.rem),
+        color: AppColors.onPrimary,
       ),
       css('.mobile-menu-footer', [
         css('&').styles(
           position: Position.absolute(bottom: 2.5.rem),
           color: AppColors.textTertiary,
-          fontSize: 0.7.rem,
+          fontFamily: themed(null, calm: AppFonts.of(FontRole.accent, was: AppFonts.jetBrainsMono)),
+          fontSize: AppType.size(TypeStep.label, was: 0.7.rem),
           letterSpacing: 2.px,
         ),
       ]),
@@ -234,14 +270,24 @@ class _HeaderState extends State<Header> {
   bool _menuOpen = false;
   String? _activeSection;
 
-  static const _links = [
-    (label: 'HOME', href: '/#hero', id: 'hero'),
-    (label: 'ABOUT', href: '/#about', id: 'about'),
-    (label: 'EXPERTISE', href: '/#expertise', id: 'expertise'),
-    (label: 'EXPERIENCE', href: '/#experience', id: 'experience'),
-    (label: 'PROJECTS', href: '/#projects', id: 'projects'),
-    (label: 'CONTACT', href: '/#contact', id: 'contact'),
-  ];
+  // Same order as the home page's sections. The v2 layout has no Expertise
+  // section (it is folded into About), so it has no link for it either.
+  static const _links = homeLayout == HomeLayout.v2
+      ? [
+          (label: 'HOME', href: '/#hero', id: 'hero'),
+          (label: 'PROJECTS', href: '/#projects', id: 'projects'),
+          (label: 'EXPERIENCE', href: '/#experience', id: 'experience'),
+          (label: 'ABOUT', href: '/#about', id: 'about'),
+          (label: 'CONTACT', href: '/#contact', id: 'contact'),
+        ]
+      : [
+          (label: 'HOME', href: '/#hero', id: 'hero'),
+          (label: 'ABOUT', href: '/#about', id: 'about'),
+          (label: 'EXPERTISE', href: '/#expertise', id: 'expertise'),
+          (label: 'EXPERIENCE', href: '/#experience', id: 'experience'),
+          (label: 'PROJECTS', href: '/#projects', id: 'projects'),
+          (label: 'CONTACT', href: '/#contact', id: 'contact'),
+        ];
 
   @override
   void initState() {
@@ -260,7 +306,11 @@ class _HeaderState extends State<Header> {
         a(href: '/#hero', classes: 'nav-logo', [
           // Intrinsic size reserves the space before the image loads (no layout shift);
           // CSS sets the displayed height.
-          img(src: 'images/logo1.png', alt: 'Mohamed Adel', attributes: const {'width': '450', 'height': '450'}),
+          // The cyan logo on the dark looks, the same mark in the brand teal on
+        // the light one (the cyan has about 1.7:1 contrast on off-white).
+        // 160px files for a 52px slot (sharp at 3x); the 450px originals were
+        // up to 54 KB for the same picture.
+        img(src: isLight ? 'images/logo-teal-160.png' : 'images/logo-160.png', alt: 'Mohamed Adel', attributes: const {'width': '160', 'height': '160'}),
         ]),
         nav(classes: 'nav-links desktop-only', [
           for (final link in _links)

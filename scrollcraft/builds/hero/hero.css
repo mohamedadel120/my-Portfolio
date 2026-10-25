@@ -1,0 +1,158 @@
+/* Hero prototypes A, B, C: one photographed scene, four planes.
+   Plate (wall + desk) -> headline -> phones (real screens, HTML) -> branch.
+   Motion is driven by --p (0 at the top, 1 when the hero has scrolled away),
+   written by hero.js. No pinning: the page always scrolls normally. */
+:root {
+  --canvas: #F6F6F3;
+  --ink: #16171A;
+  --ink-soft: #55585F;
+  --accent: #0E7490;
+  --on-accent: #FFFFFF;
+  --line: rgba(22, 23, 26, 0.12);
+  --ease: cubic-bezier(0.23, 1, 0.32, 1);
+  --font: "Geist", system-ui, sans-serif;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--canvas); color: var(--ink); font-family: var(--font); }
+body { -webkit-font-smoothing: antialiased; }
+a { color: inherit; }
+
+/* Header, as on the site (simplified). */
+.top {
+  position: fixed; inset: 0 0 auto 0; z-index: 20;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1.1rem clamp(1rem, 4vw, 2.5rem);
+}
+.top img { width: 2.75rem; height: 2.75rem; display: block; }
+.top nav { display: flex; gap: 0.25rem; padding: 0.35rem; border-radius: 999px; background: rgba(246, 246, 243, 0.72); border: 1px solid var(--line); backdrop-filter: blur(12px); }
+.top nav a { font-size: 0.8rem; font-weight: 600; letter-spacing: 0.04em; text-decoration: none; padding: 0.6rem 1rem; border-radius: 999px; color: var(--ink-soft); }
+.top nav a:first-child { background: #fff; color: var(--accent); }
+.top .cv { font-size: 0.8rem; font-weight: 600; text-decoration: none; padding: 0.65rem 1.1rem; border-radius: 999px; background: #fff; border: 1px solid var(--line); }
+@media (max-width: 899px) { .top nav { display: none; } }
+
+/* The scene. */
+.hero { position: relative; height: 100svh; min-height: 640px; overflow: clip; isolation: isolate; --p: 0; }
+.plane { position: absolute; inset: 0; will-change: transform; }
+
+.plate { z-index: 0; }
+.plate img { width: 100%; height: calc(100% + 140px); object-fit: cover; object-position: 50% 100%; display: block; margin-top: -140px; }
+/* Contact shadows live on the desk, so they move with the plate. */
+.shadow { position: absolute; bottom: calc(30% - 2.2rem); height: 1.6rem; border-radius: 50%; background: radial-gradient(closest-side, rgba(60, 50, 35, 0.32), rgba(60, 50, 35, 0)); }
+
+.copy { position: absolute; z-index: 2; left: clamp(1.25rem, 6vw, 6rem); top: clamp(7rem, 22vh, 13rem); width: min(36rem, 44vw); }
+.eyebrow { margin: 0 0 1.25rem; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); }
+.copy h1 { margin: 0; font-size: clamp(2.6rem, 4.8vw, 4.6rem); line-height: 1.02; letter-spacing: -0.035em; font-weight: 600; text-wrap: balance; }
+.copy .sub { margin: 1.25rem 0 0; max-width: 30rem; font-size: 1.1rem; line-height: 1.55; color: var(--ink-soft); text-wrap: pretty; }
+.actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 2rem; }
+.btn { display: inline-flex; align-items: center; min-height: 3rem; padding: 0 1.4rem; border-radius: 999px; font-weight: 600; font-size: 0.95rem; text-decoration: none; border: 1px solid var(--line); background: rgba(255, 255, 255, 0.85); transition: transform 140ms var(--ease); }
+.btn.primary { background: var(--accent); color: var(--on-accent); border-color: transparent; }
+.btn:active { transform: scale(0.97); }
+.btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.proof { margin: 1.75rem 0 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 0.4rem 1.25rem; font-size: 0.85rem; color: var(--ink-soft); }
+.proof b { color: var(--ink); font-weight: 600; font-variant-numeric: tabular-nums; }
+
+/* Phones: real screens in a CSS body. Positioned on the lit right half of
+   the desk; each has its own depth (size, brightness, rate). */
+.phones { z-index: 3; pointer-events: none; }
+.phone {
+  position: absolute; bottom: 30%;
+  width: var(--w); aspect-ratio: 9 / 19.2;
+  border-radius: calc(var(--w) * 0.15);
+  background: #111; padding: calc(var(--w) * 0.035);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.25) inset, 0 30px 60px -20px rgba(40, 32, 20, 0.45), 0 12px 24px -12px rgba(40, 32, 20, 0.35);
+  transform-origin: 50% 100%;
+}
+.phone img { width: 100%; height: 100%; object-fit: cover; object-position: top; border-radius: calc(var(--w) * 0.12); display: block; }
+.phone.back { --w: clamp(9rem, 12.5vw, 13rem); left: 54%; filter: saturate(0.9) brightness(0.97); }
+.phone.front { --w: clamp(11rem, 15.5vw, 16.5rem); left: 64%; }
+.phone.side { --w: clamp(9.5rem, 13.5vw, 14rem); left: 78%; filter: saturate(0.95); }
+
+.branch { z-index: 4; pointer-events: none; }
+.branch img { position: absolute; right: -4vw; bottom: -6vh; width: min(34vw, 36rem); height: auto; filter: blur(3px); opacity: 0.96; }
+
+/* Below: the start of Projects, to judge the hand-off. */
+.next { position: relative; z-index: 1; background: var(--canvas); padding: 6rem clamp(1.25rem, 6vw, 6rem) 40vh; }
+.next h2 { margin: 0; font-size: clamp(2rem, 3.4vw, 3rem); letter-spacing: -0.03em; font-weight: 600; }
+.next p { margin: 1rem 0 0; color: var(--ink-soft); max-width: 36rem; line-height: 1.6; }
+
+/* Switch between prototypes. */
+.switch { position: fixed; z-index: 30; left: 50%; bottom: 1rem; transform: translateX(-50%); display: flex; gap: 0.25rem; padding: 0.3rem; border-radius: 999px; background: var(--ink); }
+.switch a { color: #fff; text-decoration: none; font-size: 0.8rem; font-weight: 600; padding: 0.5rem 0.9rem; border-radius: 999px; }
+.switch a[aria-current="page"] { background: var(--accent); }
+
+/* ---------------------------------------------------------------------
+   Motion. All three share the calm depth rates; A and B add their moment.
+   Rates are kept under ~200px of travel, so it reads as depth, not sliding. */
+@media (prefers-reduced-motion: no-preference) {
+  .plate  { transform: translate3d(calc(var(--mx, 0) * -6px), calc(var(--p) * 140px + var(--my, 0) * -4px), 0); }
+  .phones { transform: translate3d(calc(var(--mx, 0) * 10px), calc(var(--p) * -40px + var(--my, 0) * 6px), 0); }
+  .branch { transform: translate3d(calc(var(--mx, 0) * 22px), calc(var(--p) * -180px + var(--my, 0) * 12px), 0); }
+
+  /* A: the apps come forward over the headline. The phones hold against
+     the scroll (they move down as the page moves up) and fan apart, so the
+     title slides up behind them; the left one crosses in front of it.
+     Shadows stay on the desk and soften as the phones lift off it. */
+  [data-moment="a"] .phone.back  { transform: translate(calc(var(--p) * -30vw), calc(var(--p) * 200px)) rotate(calc(var(--p) * -8deg)); }
+  [data-moment="a"] .phone.front { transform: translate(calc(var(--p) * -8vw), calc(var(--p) * 300px)) scale(calc(1 + var(--p) * 0.08)); }
+  [data-moment="a"] .phone.side  { transform: translate(calc(var(--p) * 3vw), calc(var(--p) * 170px)) rotate(calc(var(--p) * 7deg)); }
+  [data-moment="a"] .shadow { opacity: calc(1 - var(--p) * 1.4); transform: scaleX(calc(1 + var(--p) * 0.6)); }
+
+  /* B: one phone comes closer until its screen fills the view. The front
+     phone travels with the reader (counter to the scroll) while it grows;
+     the others step aside and the copy clears. */
+  [data-moment="b"] .phone.front { transform: translate(calc(var(--p) * -14vw), calc(var(--p) * 62vh)) scale(calc(1 + var(--p) * var(--grow, 2.2))); z-index: 2; }
+  [data-moment="b"] .phone.back  { transform: translateX(calc(var(--p) * -30vw)); opacity: calc(1 - var(--p) * 2); }
+  [data-moment="b"] .phone.side  { transform: translateX(calc(var(--p) * 20vw)); opacity: calc(1 - var(--p) * 2); }
+  [data-moment="b"] .copy { opacity: calc(1 - var(--p) * 2.2); transform: translateY(calc(var(--p) * -60px)); }
+  [data-moment="b"] .shadow { opacity: calc(1 - var(--p) * 2); }
+}
+
+/* ---------------------------------------------------------------------
+   Phone composition: its own crop, copy on top, phones lower and smaller,
+   the branch a corner accent. */
+@media (max-width: 899px) {
+  .hero { min-height: 680px; }
+  .plate img { object-position: 50% 100%; }
+  .copy { top: 6.5rem; width: auto; right: 1.25rem; left: 1.25rem; }
+  .copy h1 { font-size: clamp(2.2rem, 9.5vw, 3rem); }
+  .copy .sub { font-size: 1rem; }
+  .actions { margin-top: 1.5rem; }
+  .proof { display: none; }
+  .phone { bottom: 12%; }
+  .shadow { bottom: calc(12% - 2rem); }
+  .phone.back { --w: 7.2rem; left: 8%; }
+  .phone.front { --w: 8.6rem; left: 34%; }
+  .phone.side { --w: 7.4rem; left: 64%; }
+  .branch img { width: 52vw; right: -12vw; bottom: -4vh; filter: blur(2px); }
+  [data-moment="b"] { --grow: 1.4; }
+}
+
+/* Each shadow sits under its phone: same left, same width. */
+.shadow.back  { left: 54%; width: clamp(9rem, 12.5vw, 13rem); }
+.shadow.front { left: 64%; width: clamp(11rem, 15.5vw, 16.5rem); }
+.shadow.side  { left: 78%; width: clamp(9.5rem, 13.5vw, 14rem); }
+@media (max-width: 899px) {
+  .shadow.back  { left: 8%;  width: 7.2rem; }
+  .shadow.front { left: 34%; width: 8.6rem; }
+  .shadow.side  { left: 64%; width: 7.4rem; }
+}
+
+/* The scene fades into the page at the hero's own bottom edge (the plate
+   moves with the scroll, so a mask on the plate would end below the cut).
+   Above the plate, under the copy and phones. */
+.hero::after { content: ""; position: absolute; z-index: 1; inset: auto 0 0 0; height: 26%; pointer-events: none;
+  background: linear-gradient(to bottom, rgba(246, 246, 243, 0), var(--canvas) 92%); }
+
+/* A soft column of the canvas colour under the copy (a sibling of the copy,
+   not a full-frame overlay): the window light behind the sub-line and the
+   notebooks behind the proof row otherwise wash the text out. */
+.copy-ground { position: absolute; z-index: 1; inset: 0 auto 0 0; width: min(52rem, 58vw); pointer-events: none;
+  background: linear-gradient(90deg, rgba(246, 246, 243, 0.86) 0%, rgba(246, 246, 243, 0.7) 55%, rgba(246, 246, 243, 0) 100%); }
+@media (max-width: 899px) {
+  .copy-ground { width: auto; inset: 0 0 auto 0; height: 62%;
+    background: linear-gradient(180deg, rgba(246, 246, 243, 0.85) 0%, rgba(246, 246, 243, 0.7) 70%, rgba(246, 246, 243, 0) 100%); }
+}
+
+/* Phones fade near the hero's bottom too, so a phone that comes forward (B)
+   or lifts (A) never ends on a hard cut. */
+.phones { -webkit-mask-image: linear-gradient(to bottom, #000 76%, transparent 98%); mask-image: linear-gradient(to bottom, #000 76%, transparent 98%); }

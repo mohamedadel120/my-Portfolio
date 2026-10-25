@@ -7,6 +7,7 @@ import '../constants/projects_variant.dart';
 import '../constants/theme.dart';
 import '../data/experience_repository.dart';
 import '../data/preview_data.dart';
+import '../data/project_slug.dart';
 import '../data/projects_repository.dart';
 
 /// Proof strip (verifiable facts only) plus the scroll-driven phone-mockup
@@ -40,34 +41,17 @@ class ProjectsSection extends AsyncStatelessComponent {
       else
         h2(classes: 'section-title', [.text('Projects')]),
       ...proofStrip(summary),
-      showcase(variant, withPreviewData([for (final p in projects) _toMap(p)])),
+      showcase(variant, projectMaps(projects), standalone: standalone),
     ]);
   }
 
   /// The presentation for [variant]. Public so tests can render every one.
-  static Component showcase(ProjectsVariant variant, List<Map<String, dynamic>> projects) {
+  static Component showcase(ProjectsVariant variant, List<Map<String, dynamic>> projects, {bool standalone = false}) {
     return switch (variant) {
       ProjectsVariant.v1 => StickyProjectShowcase(projects: projects),
-      ProjectsVariant.pinnedShowcase => ProjectPinnedShowcase(projects: projects),
+      ProjectsVariant.pinnedShowcase => ProjectPinnedShowcase(projects: projects, standalone: standalone),
     };
   }
-
-  Map<String, dynamic> _toMap(ProjectItem p) => {
-    'title': p.title,
-    'description': p.description,
-    'tech': p.tech,
-    'color': p.color,
-    'downloads': p.downloads,
-    'galleryImages': p.galleryImages,
-    'androidStoreUrl': p.androidStoreUrl,
-    'iosStoreUrl': p.iosStoreUrl,
-    'videoUrl': p.videoUrl,
-    'role': p.role,
-    'problem': p.problem,
-    'outcome': p.outcome,
-    'featured': p.featured,
-    'highlight': p.highlight,
-  };
 
   @css
   static List<StyleRule> get styles => [
@@ -83,8 +67,8 @@ class ProjectsSection extends AsyncStatelessComponent {
         margin: Margin.only(top: 3.rem, bottom: 3.75.rem),
         padding: Padding.symmetric(vertical: 1.5.rem),
         border: Border.only(
-          top: BorderSide(color: AppColors.primary.withValues(alpha: 0.3), width: 1.px),
-          bottom: BorderSide(color: AppColors.primary.withValues(alpha: 0.3), width: 1.px),
+          top: BorderSide(color: AppColors.outline(0.3), width: 1.px),
+          bottom: BorderSide(color: AppColors.outline(0.3), width: 1.px),
         ),
         raw: {
           'grid-template-columns': 'repeat(auto-fit, minmax(10rem, 1fr))',
@@ -96,20 +80,47 @@ class ProjectsSection extends AsyncStatelessComponent {
       css('&').styles(display: Display.flex, flexDirection: FlexDirection.column, gap: Gap.all(0.35.rem), margin: Margin.zero),
       css('dt').styles(
         color: AppColors.textSecondary,
-        fontFamily: FontFamily.list([FontFamily('JetBrains Mono'), FontFamilies.monospace]),
-        fontSize: 0.8.rem,
+        fontFamily: AppFonts.of(FontRole.accent, was: AppFonts.jetBrainsMono),
+        fontSize: AppType.size(TypeStep.label, was: 0.8.rem),
       ),
       css('dd').styles(
         margin: Margin.zero,
         color: AppColors.textPrimary,
-        fontFamily: FontFamily.list([FontFamily('JetBrains Mono'), FontFamilies.monospace]),
-        fontSize: 1.25.rem,
+        fontFamily: AppFonts.of(FontRole.heading, was: AppFonts.jetBrainsMono),
+        fontSize: AppType.size(TypeStep.h3, was: 1.25.rem),
         fontWeight: FontWeight.w600,
         raw: {'font-variant-numeric': 'tabular-nums'},
       ),
     ]),
   ];
 }
+
+/// Every project as the plain map the presentations (and the case study
+/// pages) read through [ProjectView], each with its unique `slug`. One
+/// function for both, so the showcase links and the generated pages always
+/// agree on the addresses.
+List<Map<String, dynamic>> projectMaps(List<ProjectItem> projects) =>
+    withSlugs(withPreviewData([for (final p in projects) _toMap(p)]));
+
+Future<List<Map<String, dynamic>>> fetchProjectMaps() async => projectMaps(await fetchProjects());
+
+Map<String, dynamic> _toMap(ProjectItem p) => {
+  'title': p.title,
+  'description': p.description,
+  'tech': p.tech,
+  'color': p.color,
+  'downloads': p.downloads,
+  'galleryImages': p.galleryImages,
+  'androidStoreUrl': p.androidStoreUrl,
+  'iosStoreUrl': p.iosStoreUrl,
+  'videoUrl': p.videoUrl,
+  'role': p.role,
+  'problem': p.problem,
+  'outcome': p.outcome,
+  'featured': p.featured,
+  'highlight': p.highlight,
+  'slug': p.slug,
+};
 
 /// One fact: a label and its value. Public so tests can render it.
 class ProofFact {

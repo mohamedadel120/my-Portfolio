@@ -2,6 +2,24 @@
   "version": "0.0.1",
   "configurations": [
     {
+      "name": "dashboard-demo",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["C:/Users/Lenovo/AppData/Local/Temp/claude/D--my-web-site/22f29d05-3454-4001-a61e-e10846890fb4/scratchpad/spa.js", "D:/adel/admin_dashboard/build/web", "8099"],
+      "port": 8099
+    },
+    {
+      "name": "site-build",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["C:/Users/Lenovo/AppData/Local/Temp/claude/D--my-web-site/22f29d05-3454-4001-a61e-e10846890fb4/scratchpad/serve.js", "C:/Users/Lenovo/AppData/Local/Temp/claude/D--my-web-site/22f29d05-3454-4001-a61e-e10846890fb4/scratchpad/lh3/v3c", "8098"],
+      "port": 8098
+    },
+    {
+      "name": "hero-prototypes",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["C:/Users/Lenovo/AppData/Local/Temp/claude/D--my-web-site/22f29d05-3454-4001-a61e-e10846890fb4/scratchpad/serve.js", "D:/my_web_site/scrollcraft/builds/hero", "4500"],
+      "port": 4500
+    },
+    {
       "name": "portfolio",
       "runtimeExecutable": "powershell",
       "runtimeArgs": ["-NoProfile", "-Command", "Set-Location jaspr_site; dart pub global run jaspr_cli:jaspr serve"],
@@ -17,6 +35,54 @@
       "name": "portfolio-v1-original",
       "runtimeExecutable": "powershell",
       "runtimeArgs": ["-NoProfile", "-Command", "Set-Location jaspr_site; dart pub global run jaspr_cli:jaspr serve --dart-define=PROJECTS_VARIANT=v1"],
+      "port": 8080
+    },
+    {
+      "name": "portfolio-v2-structure",
+      "runtimeExecutable": "powershell",
+      "runtimeArgs": ["-NoProfile", "-Command", "Set-Location jaspr_site; dart pub global run jaspr_cli:jaspr serve --dart-define=HOME_LAYOUT=v2"],
+      "port": 8080
+    },
+    {
+      "name": "portfolio-v2-hero2",
+      "runtimeExecutable": "powershell",
+      "runtimeArgs": ["-NoProfile", "-Command", "Set-Location jaspr_site; dart pub global run jaspr_cli:jaspr serve --dart-define=HOME_LAYOUT=v2 --dart-define=HERO_COPY=2"],
+      "port": 8080
+    },
+    {
+      "name": "portfolio-v2-hero3",
+      "runtimeExecutable": "powershell",
+      "runtimeArgs": ["-NoProfile", "-Command", "Set-Location jaspr_site; dart pub global run jaspr_cli:jaspr serve --dart-define=HOME_LAYOUT=v2 --dart-define=HERO_COPY=3"],
+      "port": 8080
+    },
+    {
+      "name": "portfolio-theme-a",
+      "runtimeExecutable": "powershell",
+      "runtimeArgs": ["-NoProfile", "-Command", "Set-Location jaspr_site; dart pub global run jaspr_cli:jaspr serve --dart-define=THEME_DIRECTION=a"],
+      "port": 8080
+    },
+    {
+      "name": "portfolio-theme-b",
+      "runtimeExecutable": "powershell",
+      "runtimeArgs": ["-NoProfile", "-Command", "Set-Location jaspr_site; dart pub global run jaspr_cli:jaspr serve --dart-define=THEME_DIRECTION=b"],
+      "port": 8080
+    },
+    {
+      "name": "portfolio-v3-a",
+      "runtimeExecutable": "powershell",
+      "runtimeArgs": ["-NoProfile", "-Command", "Set-Location jaspr_site; dart pub global run jaspr_cli:jaspr serve --dart-define=HOME_LAYOUT=v2 --dart-define=THEME_DIRECTION=a"],
+      "port": 8080
+    },
+    {
+      "name": "portfolio-v3-c",
+      "runtimeExecutable": "powershell",
+      "runtimeArgs": ["-NoProfile", "-Command", "Set-Location jaspr_site; dart pub global run jaspr_cli:jaspr serve --dart-define=HOME_LAYOUT=v2 --dart-define=THEME_DIRECTION=c"],
+      "port": 8080
+    },
+    {
+      "name": "portfolio-v3-b",
+      "runtimeExecutable": "powershell",
+      "runtimeArgs": ["-NoProfile", "-Command", "Set-Location jaspr_site; dart pub global run jaspr_cli:jaspr serve --dart-define=HOME_LAYOUT=v2 --dart-define=THEME_DIRECTION=b"],
       "port": 8080
     }
   ]

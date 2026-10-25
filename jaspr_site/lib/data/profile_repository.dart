@@ -85,7 +85,7 @@ const _fallbackFeatures = [
   ),
   AboutFeature(
     title: 'Architecture',
-    description: 'Robust Clean Architecture and MVVM patterns for enterprise-grade scalability.',
+    description: 'Clean Architecture and MVVM, so new features fit in without rewriting what already works.',
   ),
   AboutFeature(
     title: 'Responsive',

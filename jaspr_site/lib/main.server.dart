@@ -10,14 +10,21 @@ import 'package:jaspr/server.dart';
 
 // Imports the [App] component.
 import 'app.dart';
+import 'constants/site_design.dart';
+import 'constants/theme.dart';
 
 // This file is generated automatically by Jaspr, do not remove or edit.
 import 'main.server.options.dart';
 
 void main() {
   // Initializes the server environment with the generated default options.
+  // Design D brings its own stylesheet (web/d/d.css), so the component
+  // styles of design c are left out: several of their names (.hero,
+  // .store-icon) and their element rules (h1-h6, section) would otherwise
+  // restyle D. The client components (the visit tracker) stay.
+  final base = defaultServerOptions;
   Jaspr.initializeApp(
-    options: defaultServerOptions,
+    options: isDesignD ? ServerOptions(clientId: base.clientId, clients: base.clients, stylesId: base.stylesId, styles: () => const []) : base,
   );
 
   // Starts the app.
@@ -36,14 +43,30 @@ void main() {
     meta: {
       'author': 'Mohamed Adel',
       'keywords': 'Flutter Developer, Mobile App Developer, Portfolio, Mohamed Adel, Dart, iOS, Android, Cross-platform Development',
+      // Colours the phone's browser bar to match the page.
+      'theme-color': AppColors.background.value,
       'twitter:card': 'summary_large_image',
       'twitter:image': ogImage,
     },
     head: [
-      // Open the connections to Google Fonts early: the font stylesheet is
-      // render-blocking, so every round trip saved shows the page sooner.
+      // Open the connections to Google Fonts early, then fetch the font
+      // stylesheets without blocking the first paint: each is preloaded and
+      // switched to a stylesheet once it arrives, so the page shows straight
+      // away in the fallback fonts and swaps in Geist when it lands (text
+      // fonts use display=swap; the icons sit in clipped boxes until theirs
+      // arrives). Without JavaScript the <noscript> links load them normally.
       link(rel: 'preconnect', href: 'https://fonts.googleapis.com'),
       link(rel: 'preconnect', href: 'https://fonts.gstatic.com', attributes: const {'crossorigin': ''}),
+      // The project screenshots are hosted on imgbb; the hero's phone shows
+      // one on the first screen.
+      link(rel: 'preconnect', href: 'https://i.ibb.co'),
+      for (final href in isDesignD ? designDFonts : fontStylesheets)
+        link(rel: 'preload', href: href, attributes: const {'as': 'style', 'onload': "this.onload=null;this.rel='stylesheet'"}),
+      Component.element(tag: 'noscript', children: [for (final href in isDesignD ? designDFonts : fontStylesheets) link(rel: 'stylesheet', href: href)]),
+      if (isDesignD) ...[
+        link(rel: 'stylesheet', href: '/d/d.css'),
+        script(src: '/d/d.js', attributes: const {'defer': ''}),
+      ],
       link(rel: 'icon', type: 'image/png', href: 'favicon.png'),
       link(rel: 'manifest', href: 'manifest.json'),
       // Document's `meta` map always renders a `name=` attribute; Open Graph

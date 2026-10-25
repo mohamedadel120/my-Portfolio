@@ -66,7 +66,10 @@ class ShotGalleryView extends StatefulComponent {
           'flex': '0 0 auto',
           'width': 'calc(var(--w) + 20px)',
           'background': 'linear-gradient(135deg, #555555 0%, #222222 40%, #111111 60%, #444444 100%)',
-          'box-shadow': '0 30px 50px -10px rgba(0,0,0,0.5), 0 20px 60px 0 color-mix(in srgb, var(--accent, ${AppColors.primary.value}) 40%, transparent)',
+          'box-shadow': lit(
+            '0 30px 50px -10px rgba(0,0,0,0.5), 0 20px 60px 0 color-mix(in srgb, var(--accent, ${AppColors.primary.value}) 40%, transparent)',
+            light: '0 40px 70px -30px rgba(22,23,26,0.45), 0 24px 60px -10px color-mix(in srgb, var(--accent, ${AppColors.primary.value}) 28%, transparent)',
+          ),
         },
       ),
     ]),
@@ -136,12 +139,13 @@ class ShotGalleryView extends StatefulComponent {
       css('&:focus-visible').styles(raw: {'outline': '2px solid ${AppColors.primary.value}', 'outline-offset': '2px'}),
       // Kept in the layout (so the phone never shifts) but invisible at the ends.
       css('&[disabled]').styles(raw: {'opacity': '0', 'pointer-events': 'none'}),
+      // 44 px on phones: the minimum comfortable touch target.
       css.media(MediaQuery.screen(maxWidth: Breakpoints.mobile.px), [
-        css('&').styles(width: 2.5.rem, height: 2.5.rem),
+        css('&').styles(width: 2.75.rem, height: 2.75.rem),
       ]),
     ]),
     RawMediaRule.hoverCapable([
-      css('.gal-btn:hover').styles(backgroundColor: AppColors.primary, color: AppColors.background),
+      css('.gal-btn:hover').styles(backgroundColor: AppColors.primary, color: AppColors.onPrimary),
     ]),
     css('.gal-footer', [
       css('&').styles(
@@ -155,33 +159,37 @@ class ShotGalleryView extends StatefulComponent {
     css('.gal-dots', [
       css('&').styles(display: Display.flex, alignItems: AlignItems.center, flexWrap: FlexWrap.wrap, justifyContent: JustifyContent.center),
     ]),
-    // Each dot is a 2rem hit area around a small visible mark.
+    // Each dot is a 36 x 44 px hit area around a small visible mark (it was
+    // 32 x 32, small for a thumb).
     css('.gal-dot', [
       css('&').styles(
         display: Display.flex,
         alignItems: AlignItems.center,
         justifyContent: JustifyContent.center,
-        width: 2.rem,
-        height: 2.rem,
+        width: 2.25.rem,
+        height: 2.75.rem,
         padding: Padding.zero,
         border: Border.none,
         backgroundColor: Colors.transparent,
         cursor: Cursor.pointer,
       ),
       css('&:focus-visible').styles(raw: {'outline': '2px solid ${AppColors.primary.value}', 'outline-offset': '-2px', 'border-radius': '0.5rem'}),
+      // Always 1.5rem wide; the clip shows an 8 px dot, and the current one
+      // opens to the full pill. Clipping repaints only, while animating
+      // width would re-run layout on every frame.
       css('span').styles(
-        width: 0.5.rem,
+        width: 1.5.rem,
         height: 0.5.rem,
         radius: BorderRadius.circular(0.25.rem),
         backgroundColor: AppColors.textPrimary.withValues(alpha: 0.3),
-        raw: {'transition': 'width 220ms cubic-bezier(0.23, 1, 0.32, 1), background-color 220ms ease'},
+        raw: {'clip-path': 'inset(0 0.5rem round 0.25rem)', 'transition': 'clip-path 220ms cubic-bezier(0.23, 1, 0.32, 1), background-color 220ms ease'},
       ),
-      css('&[aria-current="true"] span').styles(width: 1.5.rem, backgroundColor: AppColors.primary),
+      css('&[aria-current="true"] span').styles(backgroundColor: AppColors.primary, raw: {'clip-path': 'inset(0 0 round 0.25rem)'}),
     ]),
     css('.gal-count', [
       css('&').styles(
         color: AppColors.textSecondary,
-        fontSize: 0.85.rem,
+        fontSize: AppType.size(TypeStep.small, was: 0.85.rem),
         raw: {'font-variant-numeric': 'tabular-nums', 'white-space': 'nowrap'},
       ),
     ]),
@@ -299,7 +307,8 @@ class _ShotGalleryState extends State<ShotGalleryView> {
             div(classes: 'gal-island', []),
             div(
               classes: 'gal-viewport',
-              attributes: {'tabindex': '0', 'aria-label': '$title screenshots. Use the left and right arrow keys to browse.'},
+              // A plain div may not carry aria-label; as a group it can.
+              attributes: {'tabindex': '0', 'role': 'group', 'aria-label': '$title screenshots. Use the left and right arrow keys to browse.'},
               events: {
                 'keydown': _onKey,
                 'pointerdown': (e) => _dragStartX = pointerX(e),

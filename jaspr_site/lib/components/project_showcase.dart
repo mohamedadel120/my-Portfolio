@@ -1,6 +1,7 @@
 import 'package:jaspr/dom.dart';
 import 'package:jaspr/jaspr.dart';
 
+import '../constants/motion_css.dart';
 import '../constants/theme.dart';
 import 'project_showcase.vm.dart' if (dart.library.js_interop) 'project_showcase.web.dart';
 
@@ -138,14 +139,20 @@ class StickyProjectShowcase extends StatefulComponent {
       // `loadeddata` event) -- previously this faded in on a fixed timer
       // regardless of whether the network image had actually arrived, so
       // slow-loading images still flashed blank/black underneath it.
-      css('img, video').styles(
-        width: 100.percent,
-        height: 100.percent,
-        opacity: 0,
-        transition: Transition('opacity', duration: 300.ms),
-        raw: {'object-fit': 'cover'},
-      ),
-      css('img.media-loaded, video.media-loaded').styles(opacity: 1),
+      //
+      // One rule per element: inside a nested rule Jaspr prefixes only the
+      // first part of a comma selector, so `css('img, video')` came out as
+      // `.phone-screen img, video` and hid every <video> on the site.
+      for (final media in ['img', 'video'])
+        css(media).styles(
+          width: 100.percent,
+          height: 100.percent,
+          opacity: 0,
+          transition: Transition('opacity', duration: 300.ms),
+          raw: {'object-fit': 'cover'},
+        ),
+      css('img.media-loaded').styles(opacity: 1),
+      css('video.media-loaded').styles(opacity: 1),
     ]),
     css('.phone-loading', [
       css('&').styles(
@@ -254,7 +261,7 @@ class StickyProjectShowcase extends StatefulComponent {
     css('.info-title', [
       css('&').styles(
         color: AppColors.textPrimary,
-        fontFamily: FontFamily.list([FontFamily('IBM Plex Mono'), FontFamilies.monospace]),
+        fontFamily: AppFonts.of(FontRole.heading, was: AppFonts.ibmPlexMono),
         fontSize: 2.5.rem,
         margin: Margin.only(bottom: 1.25.rem),
       ),
@@ -271,7 +278,7 @@ class StickyProjectShowcase extends StatefulComponent {
     css('.info-description', [
       css('&').styles(
         color: AppColors.textSecondary,
-        fontFamily: FontFamily.list([FontFamily('JetBrains Mono'), FontFamilies.monospace]),
+        fontFamily: AppFonts.of(FontRole.text, was: AppFonts.jetBrainsMono),
         fontSize: 1.rem,
         lineHeight: Unit.expression('1.6'),
         margin: Margin.only(bottom: 2.5.rem),
@@ -295,6 +302,11 @@ class StickyProjectShowcase extends StatefulComponent {
           },
         ),
       ]),
+    ]),
+    // The store buttons' tooltips appear on hover, which touch screens do not
+    // have; there they were only a hidden box that could sit off-screen.
+    RawMediaRule('(hover: none)', [
+      css('.info-links .store-tooltip').styles(display: Display.none),
     ]),
     css('.info-links', [
       css('&').styles(display: Display.flex, gap: Gap.all(1.25.rem)),
@@ -334,8 +346,8 @@ class StickyProjectShowcase extends StatefulComponent {
           radius: BorderRadius.circular(0.4.rem),
           backgroundColor: AppColors.surface,
           color: AppColors.textPrimary,
-          fontFamily: FontFamily.list([FontFamily('JetBrains Mono'), FontFamilies.monospace]),
-          fontSize: 0.7.rem,
+          fontFamily: AppFonts.of(FontRole.accent, was: AppFonts.jetBrainsMono),
+          fontSize: 0.75.rem,
           whiteSpace: WhiteSpace.noWrap,
           opacity: 0,
           zIndex: ZIndex(2),
@@ -390,7 +402,8 @@ class StickyProjectShowcase extends StatefulComponent {
         // Identical length/width for both legs, mirrored rotation from the
         // same origin point, so they meet symmetrically at the apex. Thick
         // relative to their length for a bold, solid look like the real icon.
-        css('.as-bar-left, .as-bar-right').styles(
+        for (final bar in ['.as-bar-left', '.as-bar-right'])
+        css(bar).styles(
           position: Position.absolute(left: 0.615.em, top: 0.315.em),
           width: 0.27.em,
           height: 1.185.em,
@@ -432,7 +445,7 @@ class StickyProjectShowcase extends StatefulComponent {
       ),
       css('.coming-soon').styles(
         color: AppColors.textSecondary,
-        fontFamily: FontFamily.list([FontFamily('JetBrains Mono'), FontFamilies.monospace]),
+        fontFamily: AppFonts.of(FontRole.text, was: AppFonts.jetBrainsMono),
         fontSize: 0.85.rem,
         padding: Padding.symmetric(horizontal: 1.rem, vertical: 0.6.rem),
         radius: BorderRadius.circular(1.5.rem),
@@ -461,7 +474,7 @@ class StickyProjectShowcase extends StatefulComponent {
       css('.tech-label').styles(
         display: Display.block,
         color: AppColors.textSecondary,
-        fontFamily: FontFamily.list([FontFamily('JetBrains Mono'), FontFamilies.monospace]),
+        fontFamily: AppFonts.of(FontRole.accent, was: AppFonts.jetBrainsMono),
         fontSize: 0.85.rem,
         letterSpacing: 2.px,
         margin: Margin.only(bottom: 1.25.rem),
@@ -469,7 +482,7 @@ class StickyProjectShowcase extends StatefulComponent {
       css('.tech-word').styles(
         display: Display.block,
         color: AppColors.textPrimary,
-        fontFamily: FontFamily.list([FontFamily('IBM Plex Mono'), FontFamilies.monospace]),
+        fontFamily: AppFonts.of(FontRole.heading, was: AppFonts.ibmPlexMono),
         fontWeight: FontWeight.w700,
         fontSize: 2.5.rem,
       ),
@@ -516,7 +529,7 @@ class StickyProjectShowcase extends StatefulComponent {
         backgroundColor: Colors.transparent,
         border: Border.none,
         color: AppColors.textSecondary,
-        fontFamily: FontFamily.list([FontFamily('Space Mono'), FontFamilies.monospace]),
+        fontFamily: AppFonts.of(FontRole.accent, was: AppFonts.spaceMono),
         fontSize: 0.7.rem,
         letterSpacing: 1.px,
         cursor: Cursor.pointer,

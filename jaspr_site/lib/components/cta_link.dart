@@ -12,12 +12,16 @@ class CtaLink extends StatelessComponent {
   /// False inside a hidden (inactive) panel, so keyboard focus skips it.
   final bool focusable;
 
-  const CtaLink({this.focusable = true, super.key});
+  /// Root-relative, so it reaches the contact section from any page (on the
+  /// home page itself it just scrolls there).
+  final String href;
+
+  const CtaLink({this.focusable = true, this.href = '/#contact', super.key});
 
   @override
   Component build(BuildContext context) {
     return a(
-      href: '#contact',
+      href: href,
       classes: 'cta-btn',
       attributes: {if (!focusable) 'tabindex': '-1'},
       [
@@ -40,18 +44,18 @@ class CtaLink extends StatelessComponent {
         padding: Padding.symmetric(horizontal: 1.5.rem),
         radius: BorderRadius.circular(0.9.rem),
         backgroundColor: AppColors.primary,
-        color: AppColors.background,
+        color: AppColors.onPrimary,
         textDecoration: TextDecoration.none,
-        fontFamily: FontFamily.list([AppFonts.body, FontFamilies.monospace]),
-        fontSize: 1.rem,
-        fontWeight: FontWeight.w800,
+        fontFamily: AppFonts.body,
+        fontSize: AppType.size(TypeStep.body, was: 1.rem),
+        fontWeight: themed(FontWeight.w800, calm: FontWeight.w700),
         raw: {
-          'box-shadow': '0 10px 28px -10px ${AppColors.primary.withValues(alpha: 0.7).value}, inset 0 1px 0 rgba(255,255,255,0.35)',
+          'box-shadow': '0 10px 28px -10px ${AppColors.glow(0.7).value}, inset 0 1px 0 rgba(255,255,255,0.35)',
           'transition': 'transform 180ms cubic-bezier(0.23, 1, 0.32, 1), box-shadow 180ms ease',
         },
       ),
       css('&:active').styles(transform: Transform.scale(0.97)),
-      css('&:focus-visible').styles(raw: {'outline': '2px solid #ffffff', 'outline-offset': '3px'}),
+      css('&:focus-visible').styles(raw: {'outline': '2px solid ${AppColors.textPrimary.value}', 'outline-offset': '3px'}),
     ]),
     css('.cta-icon', [
       css('&').styles(
@@ -67,7 +71,7 @@ class CtaLink extends StatelessComponent {
     RawMediaRule.hoverCapable([
       css('.cta-btn:hover').styles(
         transform: Transform.translate(y: (-2).px),
-        raw: {'box-shadow': '0 16px 34px -10px ${AppColors.primary.withValues(alpha: 0.85).value}, inset 0 1px 0 rgba(255,255,255,0.35)'},
+        raw: {'box-shadow': '0 16px 34px -10px ${AppColors.glow(0.85).value}, inset 0 1px 0 rgba(255,255,255,0.35)'},
       ),
       css('.cta-btn:hover .cta-icon').styles(raw: {'transform': 'translate(3px, -3px) rotate(8deg)'}),
     ]),

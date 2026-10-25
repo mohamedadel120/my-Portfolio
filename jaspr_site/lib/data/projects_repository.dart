@@ -33,6 +33,23 @@ class ProjectItem {
   final bool featured;
   final String? highlight;
 
+  /// Owner-chosen URL name of the case study page (Firestore `slug`). When
+  /// absent the site makes one from the title (see data/project_slug.dart).
+  final String? slug;
+
+  /// Position set by dragging in the admin dashboard (Firestore `sortOrder`);
+  /// 0 when never set.
+  final int sortOrder;
+
+  /// How the project is shown (Firestore `showcase`, edited in the
+  /// dashboard): the chosen screens with their inspector labels, or store
+  /// artwork, or the screen recording. Empty when not set up yet.
+  final Showcase showcase;
+
+  /// The app's listings as the stores show them (Firestore `storeListings`):
+  /// title, developer and icon per store, for the store previews.
+  final List<StoreListing> storeListings;
+
   const ProjectItem({
     required this.title,
     required this.description,
@@ -51,6 +68,10 @@ class ProjectItem {
     this.outcome,
     this.featured = false,
     this.highlight,
+    this.slug,
+    this.sortOrder = 0,
+    this.showcase = const Showcase(),
+    this.storeListings = const [],
   });
 
   bool get hasAndroid => _isUsable(androidStoreUrl);
@@ -78,7 +99,119 @@ class ProjectItem {
       outcome: _nonBlank(json['outcome']),
       featured: parseFlag(json['featured']),
       highlight: _nonBlank(json['highlight']),
+      slug: _nonBlank(json['slug']),
+      sortOrder: json['sortOrder'] is num ? (json['sortOrder'] as num).toInt() : 0,
+      showcase: Showcase.fromJson(json['showcase']),
+      storeListings: [
+        if (json['storeListings'] case final List list)
+          for (final raw in list)
+            if (StoreListing.fromJson(raw) case final listing?) listing,
+      ],
     );
+  }
+
+  /// The listing for a store ('play' or 'ios'), if the owner added one.
+  StoreListing? listing(String store) {
+    for (final l in storeListings) {
+      if (l.store == store) return l;
+    }
+    return null;
+  }
+}
+
+/// How a project is shown on its stage.
+enum ShowcaseMode {
+  /// Real app screens in a phone, with inspector labels.
+  screens,
+
+  /// Store artwork only: shown in a plain frame, with no device claims.
+  art,
+
+  /// The screen recording (`videoUrl`) playing in the phone.
+  video,
+}
+
+class Showcase {
+  final ShowcaseMode? mode;
+  final List<ShowcaseScreen> screens;
+
+  const Showcase({this.mode, this.screens = const []});
+
+  /// Unknown or missing data gives an empty showcase rather than an error.
+  factory Showcase.fromJson(Object? raw) {
+    if (raw is! Map) return const Showcase();
+    final mode = switch (raw['mode']) {
+      'screens' => ShowcaseMode.screens,
+      'art' => ShowcaseMode.art,
+      'video' => ShowcaseMode.video,
+      _ => null,
+    };
+    return Showcase(
+      mode: mode,
+      screens: [
+        if (raw['screens'] case final List list)
+          for (final s in list)
+            if (ShowcaseScreen.fromJson(s) case final screen?) screen,
+      ],
+    );
+  }
+}
+
+class ShowcaseScreen {
+  final String url;
+  final String caption;
+  final List<ScreenNote> notes;
+
+  const ShowcaseScreen({required this.url, required this.caption, this.notes = const []});
+
+  static ShowcaseScreen? fromJson(Object? raw) {
+    if (raw is! Map) return null;
+    final url = _nonBlank(raw['url']);
+    if (url == null) return null;
+    return ShowcaseScreen(
+      url: url,
+      caption: _nonBlank(raw['caption']) ?? 'Screen',
+      notes: [
+        if (raw['notes'] case final List list)
+          for (final n in list)
+            if (ScreenNote.fromJson(n) case final note?) note,
+      ],
+    );
+  }
+}
+
+/// One inspector label: the widget name and where it sits, as a share of
+/// the screen's height (0-100).
+class ScreenNote {
+  final String label;
+  final int y;
+
+  const ScreenNote({required this.label, required this.y});
+
+  static ScreenNote? fromJson(Object? raw) {
+    if (raw is! Map) return null;
+    final label = _nonBlank(raw['label']);
+    final y = raw['y'];
+    if (label == null || y is! num) return null;
+    return ScreenNote(label: label, y: y.toInt().clamp(0, 100));
+  }
+}
+
+class StoreListing {
+  /// 'play' or 'ios'.
+  final String store;
+  final String title;
+  final String developer;
+  final String? iconUrl;
+
+  const StoreListing({required this.store, required this.title, required this.developer, this.iconUrl});
+
+  static StoreListing? fromJson(Object? raw) {
+    if (raw is! Map) return null;
+    final store = raw['store'];
+    final title = _nonBlank(raw['title']);
+    if ((store != 'play' && store != 'ios') || title == null) return null;
+    return StoreListing(store: store as String, title: title, developer: _nonBlank(raw['developer']) ?? '', iconUrl: _nonBlank(raw['iconUrl']));
   }
 }
 
@@ -135,8 +268,17 @@ List<ProjectItem> featuredFirst(List<ProjectItem> projects) => [
   ...projects.where((p) => !p.featured),
 ];
 
-List<ProjectItem> parseProjects(List<Map<String, dynamic>> docs) =>
-    featuredFirst(docs.map(ProjectItem.fromJson).toList());
+/// The dashboard's order (`sortOrder`), then featured projects first. Both
+/// steps are stable, so projects with the same `sortOrder` (all of them,
+/// until the owner reorders) keep their Firestore order.
+List<ProjectItem> parseProjects(List<Map<String, dynamic>> docs) {
+  final indexed = docs.map(ProjectItem.fromJson).indexed.toList()
+    ..sort((a, b) {
+      final byOrder = a.$2.sortOrder.compareTo(b.$2.sortOrder);
+      return byOrder != 0 ? byOrder : a.$1.compareTo(b.$1);
+    });
+  return featuredFirst([for (final (_, p) in indexed) p]);
+}
 
 Future<List<ProjectItem>> fetchProjects() async {
   final docs = await _firestore.getCollection('projects');
