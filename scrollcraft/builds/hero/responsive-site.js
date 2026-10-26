@@ -15,7 +15,7 @@ const widths = [320, 360, 375, 390, 414, 768, 834, 1024, 1280, 1440, 1920];
     for (const w of widths) {
       const ctx = await b.newContext({ viewport: { width: w, height: w < 768 ? 844 : 900 }, isMobile: w < 768, hasTouch: w < 768 });
       const p = await ctx.newPage();
-      await p.goto(url(pg), { waitUntil: 'networkidle' });
+      await p.goto(url(pg), { waitUntil: 'load' }); await p.waitForTimeout(1200);
       // Let entrances finish everywhere: walk the page once.
       await p.evaluate(async () => { for (let y = 0; y < document.body.scrollHeight; y += innerHeight * 0.8) { scrollTo(0, y); await new Promise((r) => setTimeout(r, 120)); } scrollTo(0, 0); });
       await p.waitForTimeout(600);

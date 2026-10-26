@@ -132,3 +132,6 @@
 .menu nav a.active { color: var(--accent); background: var(--accent-soft); }
 @media (max-width: 899px) { .menu { display: block; } }
 .top .logo { display: inline-flex; min-width: 2.75rem; min-height: 2.75rem; align-items: center; }
+/* On phones the open menu spans the screen under the header, so it never
+   runs past an edge whatever sits beside the Menu button. */
+@media (max-width: 899px) { .menu nav { position: fixed; top: 4.6rem; left: 1rem; right: 1rem; min-width: 0; } }
