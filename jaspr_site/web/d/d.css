@@ -333,11 +333,15 @@ a { color: inherit; }
 @media (max-width: 520px) { .app-stage { overflow-x: clip; } }
 
 /* Data from the dashboard can be long or many (Damany: multi-word labels,
-   17 screens). Labels stay one line, cut with an ellipsis; the steps wrap
-   onto more rows; the stage leaves room above the phone for the store card
+   17 screens). Labels stay one line, cut with an ellipsis; the steps stay
+   one row and share its width, so many screens make shorter dashes, never
+   a second row; the stage leaves room above the phone for the store card
    so a label at the very top of the screen never sits under it. */
 .note b { max-width: 11rem; overflow: hidden; text-overflow: ellipsis; }
-.steps { flex-wrap: wrap; justify-content: center; max-width: min(100%, 26rem); }
+.steps { flex-wrap: nowrap; justify-content: center; max-width: min(100%, 26rem); }
+.steps button { flex: 0 1 2.75rem; min-width: 0; }
+.steps:has(button:nth-child(9)) { gap: 0.2rem; }
+.app-stage { grid-template-columns: minmax(0, 1fr); }
 .app-stage { padding-top: 4.75rem; }
 @media (max-width: 520px) { .note b { max-width: 7.5rem; } .app-stage { padding-top: 4.25rem; } }
 @media (min-width: 521px) and (max-width: 1199px) { .note b { max-width: 7.5rem; } }
