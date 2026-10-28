@@ -42,6 +42,9 @@
   const apps = [...document.querySelectorAll('[data-app]')];
 
   for (const app of apps) {
+    // One project with unexpected data must not stop the others: if its
+    // setup fails, it is shown as is (phone visible, no motion).
+    try {
     const frames = [...app.querySelectorAll('.frame')];
     const steps = [...app.querySelectorAll('.steps button')];
     const phone = app.querySelector('.app-phone');
@@ -113,6 +116,8 @@
     // opens, it shifts sideways (--dx) to stay 12 px inside the viewport.
     for (const wrap of app.querySelectorAll('.peek-wrap')) {
       const peek = wrap.querySelector('.peek');
+      // A store link without listing data has no preview card.
+      if (!peek) continue;
       peek.addEventListener('click', () => wrap.querySelector('a').click());
       const fit = () => requestAnimationFrame(() => {
         peek.style.setProperty('--dx', '0px');
@@ -218,6 +223,10 @@
         phone.style.setProperty('--ry', (x * 16).toFixed(2) + 'deg');
         phone.style.setProperty('--rx', (y * -12).toFixed(2) + 'deg');
       });
+    }
+    } catch (err) {
+      app.classList.add('in', 'settled');
+      console.error('project stage:', err);
     }
   }
 

@@ -58,6 +58,10 @@ void main() {
       expect(stock.downloads, 10000);
       expect(stock.status, isNull);
       expect(stock.platforms, 'Android · iOS');
+      // The dashboard takes free text: the plus may come first.
+      final damany = project({'title': 'Damany', 'downloads': '+50'});
+      expect(damany.downloads, 50);
+      expect(damany.status, isNull);
       final drugza = project({'title': 'DrugZa - TagPharma', 'downloads': 'Active Development'});
       expect(drugza.name, 'DrugZa');
       expect(drugza.downloads, isNull);

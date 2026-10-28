@@ -55,9 +55,10 @@ class DProject {
   /// 'Android · iOS', 'Android', 'iOS' or '' from the store links.
   String get platforms => [if (item.hasAndroid) 'Android', if (item.hasIos) 'iOS'].join(' · ');
 
-  /// The download count when `downloads` is a number like "10,000+".
+  /// The download count when `downloads` is a number: "10,000+", "+50" or
+  /// "50" (the dashboard takes free text, so the plus may come first).
   int? get downloads {
-    final m = RegExp(r'^\s*([\d,]+)\s*\+?\s*$').firstMatch(item.downloads);
+    final m = RegExp(r'^\s*\+?\s*([\d,]+)\s*\+?\s*$').firstMatch(item.downloads);
     return m == null ? null : int.tryParse(m.group(1)!.replaceAll(',', ''));
   }
 

@@ -331,6 +331,16 @@ a { color: inherit; }
 }
 @media (max-width: 520px) { .app-stage { overflow-x: clip; } }
 
+/* Data from the dashboard can be long or many (Damany: multi-word labels,
+   17 screens). Labels stay one line, cut with an ellipsis; the steps wrap
+   onto more rows; the stage leaves room above the phone for the store card
+   so a label at the very top of the screen never sits under it. */
+.note b { max-width: 11rem; overflow: hidden; text-overflow: ellipsis; }
+.steps { flex-wrap: wrap; justify-content: center; max-width: min(100%, 26rem); }
+.app-stage { padding-top: 4.75rem; }
+@media (max-width: 520px) { .note b { max-width: 7.5rem; } .app-stage { padding-top: 4.25rem; } }
+@media (min-width: 521px) and (max-width: 1199px) { .note b { max-width: 7.5rem; } }
+
 /* Experience: the career as a log, each line an addition. */
 .log { margin-top: 2.5rem; border-left: 1px solid var(--line); }
 .entry { position: relative; padding: 0 0 2.25rem 1.75rem; }
