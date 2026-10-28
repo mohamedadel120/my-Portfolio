@@ -101,6 +101,14 @@ void main() {
       expect(video, contains('<video class="frame on" src="/v.mp4"'));
     });
 
+    test('a store link without listing data still gets its preview, with no guessed developer', () {
+      final html = dProjects([project({'title': 'Damany', 'androidStoreUrl': 'https://play', 'showcase': screens([[], []])})]);
+      expect(html, contains('class="peek"'));
+      expect(html, contains('<b dir="auto">Damany</b></span>'));
+      expect(html, isNot(contains('<small>')));
+      expect(html, contains('View on Google Play'));
+    });
+
     test('inspector labels travel with each screen', () {
       final html = dProjects([project({'showcase': screens([[['SearchAppBar', 13], ['CartBar', 93]]])})]);
       expect(html, contains('data-notes="SearchAppBar@13|CartBar@93"'));

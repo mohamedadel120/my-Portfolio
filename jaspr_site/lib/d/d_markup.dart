@@ -140,13 +140,18 @@ DProject? heroProject(List<DProject> projects) {
 
 // --------------------------------------------------------------- projects
 
-String _peek(DStore s, List<ShowcaseScreen> screens) {
+String _peek(DStore s, DProject p) {
+  // Without the listing from the dashboard, the card still shows what is
+  // known: the project's own title, logo and screens. No developer is guessed.
   final l = s.listing;
-  if (l == null) return '';
-  final icon = l.iconUrl == null ? '' : '<img src="${esc(l.iconUrl!)}" alt="" width="48" height="48" loading="lazy">';
-  final shots = screens.take(3).toList();
+  final title = l?.title ?? p.title;
+  final developer = l?.developer ?? '';
+  final logo = (p.item.logoUrl ?? '').trim();
+  final iconUrl = l?.iconUrl ?? (logo.isEmpty ? null : logo);
+  final icon = iconUrl == null ? '' : '<img src="${esc(iconUrl)}" alt="" width="48" height="48" loading="lazy">';
+  final shots = p.screens.take(3).toList();
   return '''<span class="peek" aria-hidden="true">
-  <span class="peek-head">$icon<span><b dir="auto">${esc(l.title)}</b><small>${esc(l.developer)}</small></span></span>
+  <span class="peek-head">$icon<span><b dir="auto">${esc(title)}</b>${developer.isEmpty ? '' : '<small>${esc(developer)}</small>'}</span></span>
   ${shots.isEmpty ? '' : '<span class="peek-shots">${shots.map((s) => '<img src="${esc(s.url)}" alt="" width="600" height="1200" loading="lazy">').join()}</span>'}
   <span class="peek-foot"><span>For ${s.device}</span><span>View on ${s.label} ↗</span></span>
 </span>''';
@@ -156,7 +161,7 @@ String _storeLink(DStore s, DProject p, {required bool button}) {
   final glyph = s.store == 'play' ? playGlyph : appleGlyph;
   final aria = s.store == 'play' ? 'Get ${p.name} on Google Play' : 'Download ${p.name} on the App Store';
   final inner = button ? '$glyph<span><small>${s.store == 'play' ? 'Get it on' : 'Download on the'}</small><b>${s.label}</b></span>' : glyph;
-  return '<span class="peek-wrap"><a class="${button ? 'store-btn' : 'store-icon'}" href="${esc(s.url)}" target="_blank" rel="noopener noreferrer" aria-label="${esc(aria)}">$inner</a>${_peek(s, p.screens)}</span>';
+  return '<span class="peek-wrap"><a class="${button ? 'store-btn' : 'store-icon'}" href="${esc(s.url)}" target="_blank" rel="noopener noreferrer" aria-label="${esc(aria)}">$inner</a>${_peek(s, p)}</span>';
 }
 
 String _img(String url, String alt, {String cls = '', String extra = ''}) =>
