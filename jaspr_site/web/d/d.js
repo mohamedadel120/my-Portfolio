@@ -47,6 +47,8 @@
     try {
     const frames = [...app.querySelectorAll('.frame')];
     const steps = [...app.querySelectorAll('.steps button')];
+    // Many screens get a pager (name, number, arrows) instead of dashes.
+    const pagerNow = app.querySelector('.pager-now');
     const phone = app.querySelector('.app-phone');
     const ghostEl = app.querySelector('.ghost');
     const ghost = ghostEl?.querySelector('img');
@@ -131,6 +133,14 @@
       wrap.addEventListener('focusin', fit);
     }
 
+    // Screens are lazy; once one is shown its neighbours start loading, so a
+    // tap or an arrow lands on a ready screen instead of a blank one.
+    const warm = (i) => {
+      for (const d of [1, -1]) {
+        const f = frames[(i + d + frames.length) % frames.length];
+        if (f && f.loading === 'lazy') f.loading = 'eager';
+      }
+    };
     const show = (next) => {
       if (next === index) return;
       const old = frames[index];
@@ -138,9 +148,14 @@
       old.classList.add('out');
       setTimeout(() => old.classList.remove('out'), 520);
       frames[next].classList.add('on');
-      steps[index].removeAttribute('aria-current');
-      steps[next].setAttribute('aria-current', 'true');
+      steps[index]?.removeAttribute('aria-current');
+      steps[next]?.setAttribute('aria-current', 'true');
       index = next;
+      warm(next);
+      if (pagerNow) {
+        pagerNow.querySelector('b').textContent = frames[next].dataset.caption || '';
+        pagerNow.querySelector('span').textContent = `${next + 1}/${frames.length}`;
+      }
       label(index);
       if (!reduced) {
         // A small swipe of the hand: the phone leans into the change.
@@ -160,6 +175,7 @@
     // Use it like the app: tap for the next screen (a ripple marks the
     // touch), swipe sideways for next or previous, Enter or Space likewise.
     const step = (dir) => show((index + dir + frames.length) % frames.length);
+    app.querySelectorAll('.pager button').forEach((b) => b.addEventListener('click', () => step(+b.dataset.dir)));
     let downX = null, downY = null;
     phone.addEventListener('pointerdown', (e) => { downX = e.clientX; downY = e.clientY; });
     phone.addEventListener('pointerup', (e) => {
@@ -205,6 +221,7 @@
         app.classList.add('in');
         setTimeout(() => app.classList.add('settled'), 950);
         count();
+        warm(index);
       }
       schedule();
     }, { threshold: 0.3 }).observe(app);

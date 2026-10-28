@@ -189,7 +189,7 @@ String _devices(DProject p) {
   final frames = [
     for (final (i, s) in screens.indexed)
       _img(s.url, '${p.name}: ${_lower(s.caption)}${art ? '' : ' screen'}', cls: 'frame${i == 0 ? ' on' : ''}',
-          extra: '${i > 0 ? ' loading="lazy"' : ''} data-notes="${esc(s.notes.map((n) => '${n.label}@${n.y}').join('|'))}"'),
+          extra: '${i > 0 ? ' loading="lazy"' : ''} data-caption="${esc(s.caption)}" data-notes="${esc(s.notes.map((n) => '${n.label}@${n.y}').join('|'))}"'),
   ].join();
   return '''$ghost
           <div class="app-phone dev $kind" role="button" tabindex="0" aria-label="$name: show the next $what"><span class="dev-tag" aria-hidden="true">$tag</span>
@@ -204,15 +204,27 @@ String _floatCard(DProject p) {
   return '<div class="float-card" aria-hidden="true"><span class="dot"></span><span>${stores.isNotEmpty ? 'On $stores' : esc(p.name)}<b>${esc(line)}</b></span></div>';
 }
 
+/// The most screens shown as dashes under the phone; more get the pager.
+const maxStepDashes = 8;
+const _chevronLeft = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>';
+const _chevronRight = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>';
+
 bool _hasStage(DProject p) => p.mode == ShowcaseMode.video ? p.videoUrl != null : p.screens.isNotEmpty;
 
 String _stage(DProject p) {
   if (!_hasStage(p)) return '';
   final screens = p.screens;
   final what = p.mode == ShowcaseMode.art ? 'artwork' : 'screens';
-  final steps = p.mode != ShowcaseMode.video && screens.length > 1
-      ? '<div class="steps" role="group" aria-label="${esc(p.name)} $what">${[for (final (i, s) in screens.indexed) '<button type="button" aria-label="Show ${esc(_lower(s.caption))}"${i == 0 ? ' aria-current="true"' : ''}><span></span></button>'].join()}</div>'
-      : '';
+  // Up to 8 screens: one dash each. More than that: the screen's name, its
+  // number and two arrows, since a row of many dashes is too small to read.
+  final steps = p.mode == ShowcaseMode.video || screens.length < 2
+      ? ''
+      : screens.length > maxStepDashes
+      ? '<div class="pager" role="group" aria-label="${esc(p.name)} $what">'
+            '<button type="button" data-dir="-1" aria-label="Previous screen">$_chevronLeft</button>'
+            '<span class="pager-now" aria-live="polite"><b dir="auto">${esc(screens.first.caption)}</b><span>1/${screens.length}</span></span>'
+            '<button type="button" data-dir="1" aria-label="Next screen">$_chevronRight</button></div>'
+      : '<div class="steps" role="group" aria-label="${esc(p.name)} $what">${[for (final (i, s) in screens.indexed) '<button type="button" aria-label="Show ${esc(_lower(s.caption))}"${i == 0 ? ' aria-current="true"' : ''}><span></span></button>'].join()}</div>';
   return '''<div class="app-stage" style="--tint: ${p.tint}">
         <span class="bg-word" aria-hidden="true">${esc(p.name)}</span>
         <div class="rigwrap">

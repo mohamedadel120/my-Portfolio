@@ -109,6 +109,16 @@ void main() {
       expect(html, contains('View on Google Play'));
     });
 
+    test('up to 8 screens show as dashes; more get the pager with the first screen named', () {
+      final eight = dProjects([project({'showcase': screens(List.filled(8, []))})]);
+      expect(eight, contains('class="steps"'));
+      expect(eight, isNot(contains('class="pager"')));
+      final many = dProjects([project({'showcase': screens(List.filled(16, []))})]);
+      expect(many, isNot(contains('class="steps"')));
+      expect(many, contains('<b dir="auto">Screen 0</b><span>1/16</span>'));
+      expect(many, contains('data-caption="Screen 15"'));
+    });
+
     test('inspector labels travel with each screen', () {
       final html = dProjects([project({'showcase': screens([[['SearchAppBar', 13], ['CartBar', 93]]])})]);
       expect(html, contains('data-notes="SearchAppBar@13|CartBar@93"'));
