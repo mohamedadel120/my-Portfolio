@@ -333,11 +333,23 @@ a { color: inherit; }
 @media (max-width: 520px) { .app-stage { overflow-x: clip; } }
 
 /* Data from the dashboard can be long or many (Damany: multi-word labels,
-   17 screens). Labels stay one line, cut with an ellipsis; the steps wrap
-   onto more rows; the stage leaves room above the phone for the store card
-   so a label at the very top of the screen never sits under it. */
+   16 screens). Labels stay one line, cut with an ellipsis; up to 8 screens
+   show as dashes, more get the pager (screen name, number, arrows); the
+   stage leaves room above the phone for the store card so a label at the
+   very top of the screen never sits under it. */
 .note b { max-width: 11rem; overflow: hidden; text-overflow: ellipsis; }
-.steps { flex-wrap: wrap; justify-content: center; max-width: min(100%, 26rem); }
+.steps { flex-wrap: nowrap; justify-content: center; max-width: 100%; }
+.steps button { flex: 0 1 2.75rem; min-width: 0; }
+.app-stage { grid-template-columns: minmax(0, 1fr); }
+.pager { display: flex; align-items: center; gap: 0.25rem; max-width: 100%; position: relative; z-index: 4; font: 0.78rem var(--mono); color: var(--ink-faint); }
+.pager button { flex: none; width: 2.75rem; height: 2.75rem; padding: 0; border: 0; border-radius: 50%; background: transparent; color: var(--ink); cursor: pointer; display: grid; place-items: center; transition: background-color 0.2s ease, transform 0.15s ease; }
+.pager button svg { width: 1.1rem; height: 1.1rem; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.pager button:active { transform: scale(0.94); }
+.pager button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+@media (hover: hover) and (pointer: fine) { .pager button:hover { background: rgba(22, 23, 26, 0.06); } }
+.pager-now { display: flex; align-items: baseline; gap: 0.6rem; min-width: 0; padding: 0 0.25rem; }
+.pager-now b { font-weight: 500; color: var(--ink); max-width: 13rem; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.pager-now span { flex: none; font-variant-numeric: tabular-nums; }
 .app-stage { padding-top: 4.75rem; }
 @media (max-width: 520px) { .note b { max-width: 7.5rem; } .app-stage { padding-top: 4.25rem; } }
 @media (min-width: 521px) and (max-width: 1199px) { .note b { max-width: 7.5rem; } }
