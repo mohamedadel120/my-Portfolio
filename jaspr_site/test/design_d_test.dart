@@ -138,6 +138,19 @@ void main() {
       expect(heroProject([art]), isNull);
     });
 
+    test('a Featured project leads the hero, even with store artwork, and no widgets are made up for it', () {
+      final stock = project({'title': 'Stock Mobile App', 'downloads': '10,000+', 'androidStoreUrl': 'https://play', 'showcase': screens([[['SearchAppBar', 13], ['CartBar', 93]]])});
+      final gomla = project({'title': 'Gomla', 'featured': true, 'downloads': '10,000+', 'androidStoreUrl': 'https://play', 'showcase': screens([[], []], mode: 'art')});
+      expect(heroProject([stock, gomla]), same(gomla));
+      final html = dHero(scene: gomla, location: 'Cairo, Egypt');
+      expect(html, contains('src="https://img.test/0.webp"'));
+      expect(html, contains('Gomla on Google Play<b>10,000+ downloads</b>'));
+      expect(html, isNot(contains('class="layer code"')));
+      expect(html, isNot(contains('class="box"')));
+      // Without a Featured project the hero keeps choosing labelled screens.
+      expect(heroProject([project({'title': 'Gomla', 'showcase': screens([[]], mode: 'art')}), stock]), same(stock));
+    });
+
     test('a case study shows the story only when the owner wrote it', () {
       final p = project({'problem': 'Orders were slow.', 'showcase': screens([[]])});
       expect(dCaseStudy(p, prev: null, next: null), contains('<dt>problem</dt><dd dir="auto">Orders were slow.</dd>'));
