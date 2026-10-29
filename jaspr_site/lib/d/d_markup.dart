@@ -112,12 +112,17 @@ String _heroScene(DProject p) {
   final storeCard = stores.isEmpty || count == null
       ? ''
       : '<div class="card store"><span class="dot"></span><span>${esc(p.name)} on $stores<b>${_num(count)}+ downloads</b></span></div>';
-  return '''<div class="scene" aria-hidden="true">
-    <div class="rig">
-      <pre class="layer code">$code</pre>
+  // Store artwork has no widget names to build the code and boxes from, so
+  // the scene shows the phone alone rather than made-up widgets.
+  final layers = names.isEmpty
+      ? ''
+      : '''<pre class="layer code">$code</pre>
       <div class="layer wire"><div class="screen">
         $boxes
-      </div></div>
+      </div></div>''';
+  return '''<div class="scene${names.isEmpty ? ' art' : ''}" aria-hidden="true">
+    <div class="rig">
+      $layers
       <div class="layer device"><img src="${esc(screen.url)}" alt="" width="600" height="1200" fetchpriority="high"></div>
       <div class="card build">\$ flutter build appbundle --release<br><span class="ok">✓</span> Built app-release.aab</div>
       $storeCard
@@ -125,9 +130,13 @@ String _heroScene(DProject p) {
   </div>''';
 }
 
-/// The project the hero shows: the first with real screens and a download
-/// count, else the first with screens, else none.
+/// The project the hero shows: the one the owner marked Featured in the
+/// dashboard (store artwork works too), else the first with labelled
+/// screens and a download count, else the first with labelled screens.
 DProject? heroProject(List<DProject> projects) {
+  for (final p in projects) {
+    if (p.item.featured && p.mode != ShowcaseMode.video && p.screens.isNotEmpty) return p;
+  }
   bool hasScreens(DProject p) => p.mode == ShowcaseMode.screens && p.screens.isNotEmpty && p.screens.first.notes.isNotEmpty;
   for (final p in projects) {
     if (hasScreens(p) && p.downloads != null) return p;
