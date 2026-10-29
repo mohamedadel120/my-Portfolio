@@ -37,7 +37,7 @@ class DHome extends AsyncStatelessComponent {
             'Mohamed Adel, Flutter developer in Cairo with 3+ years shipping iOS and Android apps. Gomla and Stock: 10,000+ downloads each. Download the CV or get in touch.',
       ),
       RawText([
-        dHero(scene: heroProject(projects), location: contact.location.isEmpty ? 'Cairo, Egypt' : contact.location),
+        dHero(scene: heroProject(projects), ai: aiHeroProject(projects), location: contact.location.isEmpty ? 'Cairo, Egypt' : contact.location),
         dProjects(projects),
         dExperience(jobs),
         dAbout(about),
