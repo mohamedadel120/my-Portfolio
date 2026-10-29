@@ -138,6 +138,22 @@ void main() {
       expect(heroProject([art]), isNull);
     });
 
+    test('the hero carries Gomla\'s AI scene beside the first, hidden until the switch picks it', () {
+      final stock = project({'title': 'Stock Mobile App', 'downloads': '10,000+', 'androidStoreUrl': 'https://play', 'showcase': screens([[['SearchAppBar', 13], ['CartBar', 93]]])});
+      final gomla = project({'title': 'Gomla', 'downloads': '10,000+', 'androidStoreUrl': 'https://play', 'showcase': screens([[]], mode: 'art')}, 'gomla');
+      expect(aiHeroProject([stock, gomla]), same(gomla));
+      final html = dHero(scene: stock, ai: gomla, location: 'Cairo, Egypt');
+      expect(RegExp('class="scene').allMatches(html), hasLength(2));
+      expect(html, contains('<div class="scene ai" aria-hidden="true" hidden>'));
+      expect(html, contains("localStorage.getItem('d-hero')"));
+      expect(html, contains('MethodChannel'));
+      expect(html, contains('Gomla on Google Play<b>10,000+ downloads</b>'));
+      // Alone (no Stock), the AI scene shows and no switch is needed.
+      final alone = dHero(scene: null, ai: gomla, location: 'Cairo, Egypt');
+      expect(alone, contains('<div class="scene ai" aria-hidden="true">'));
+      expect(alone, isNot(contains('localStorage')));
+    });
+
     test('a case study shows the story only when the owner wrote it', () {
       final p = project({'problem': 'Orders were slow.', 'showcase': screens([[]])});
       expect(dCaseStudy(p, prev: null, next: null), contains('<dt>problem</dt><dd dir="auto">Orders were slow.</dd>'));

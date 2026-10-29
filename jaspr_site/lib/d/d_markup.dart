@@ -43,7 +43,11 @@ String dFooter() => '<footer class="foot"><span>© ${DateTime.now().year} Mohame
 /// The hero's scene is built from a real project: its first screen, the
 /// widget names on it (the inspector labels), its stores and downloads. The
 /// code layer is illustrative, assembled from those widget names.
-String dHero({required DProject? scene, required String location}) {
+///
+/// With [ai] (Gomla) the page carries a second scene, the AI skin analysis,
+/// and each visit shows one of the two in turn. Without script the first
+/// scene shows.
+String dHero({required DProject? scene, required String location, DProject? ai}) {
   final copy = '''<div class="copy">
     <p class="eyebrow"><b>flutter</b> developer · ${esc(location)}</p>
     <h1 id="hero-title">Flutter apps people actually download.</h1>
@@ -58,7 +62,59 @@ String dHero({required DProject? scene, required String location}) {
   <div class="grid" aria-hidden="true"></div>
   $copy
   ${scene == null ? '' : _heroScene(scene)}
+  ${ai == null ? '' : _aiScene(ai, hidden: scene != null)}
+  ${scene != null && ai != null ? _heroSwitch : ''}
 </section>''';
+}
+
+/// The project behind the AI scene: Gomla, whose skin analysis the owner
+/// built (native Android and iOS SDKs bridged to Flutter).
+DProject? aiHeroProject(List<DProject> projects) {
+  for (final p in projects) {
+    if (p.slug == 'gomla') return p;
+  }
+  return null;
+}
+
+/// Alternates the two scenes, one per visit. Inline and tiny so the right
+/// scene is there on first paint; storage may be blocked, then it is random.
+const _heroSwitch = '''<script>(function(){var s=document.querySelectorAll('.hero .scene');if(s.length<2)return;var n;try{n=(+localStorage.getItem('d-hero')||0)+1;localStorage.setItem('d-hero',n%2);}catch(e){n=Math.random()<.5?1:2;}var i=n%2;for(var k=0;k<s.length;k++)s[k].hidden=k!==i;})();</script>''';
+
+/// Gomla's scene: the analysis screen from its store artwork in the phone,
+/// a scan line over the face, the platform-channel call behind it (class and
+/// channel names are illustrative), and how the analysis reaches Flutter.
+String _aiScene(DProject p, {required bool hidden}) {
+  String t(String s) => '<span class="t">${esc(s)}</span>';
+  String k(String s) => '<span class="k">$s</span>';
+  String s(String v) => '<span class="s">${esc(v)}</span>';
+  String c(String v) => '<span class="c">${esc(v)}</span>';
+  final code = [
+    '<span class="fname">lib/features/skin_analysis/skin_analysis_channel.dart</span>${k('class')} ${t('SkinAnalysisChannel')} {',
+    '  ${k('static const')} _channel = ${t('MethodChannel')}(${s("'gomla/skin_analysis'")});',
+    '',
+    '  ${c('// The native SDK runs the analysis on Android and iOS.')}',
+    '  ${t('Future')}&lt;${t('SkinReport')}&gt; analyze(${t('String')} imagePath) ${k('async')} {',
+    '    ${k('final')} result = ${k('await')} _channel.invokeMapMethod(',
+    '      ${s("'analyze'")}, {${s("'imagePath'")}: imagePath},',
+    '    );',
+    '    ${k('return')} ${t('SkinReport')}.fromMap(result!);',
+    '  }',
+    '}',
+  ].join('\n');
+  final stores = p.stores.map((s) => s.label).join(' and ');
+  final count = p.downloads;
+  final storeCard = stores.isEmpty || count == null
+      ? ''
+      : '<div class="card store"><span class="dot"></span><span>${esc(p.name)} on $stores<b>${_num(count)}+ downloads</b></span></div>';
+  return '''<div class="scene ai" aria-hidden="true"${hidden ? ' hidden' : ''}>
+    <div class="rig">
+      <pre class="layer code">$code</pre>
+      <div class="layer wire"><div class="screen"><span class="frame-scan"></span></div></div>
+      <div class="layer device"><img src="/images/hero/gomla-skin-scan.webp" alt="" width="600" height="1374"><span class="scanline"></span></div>
+      <div class="card build">native SDK · Android + iOS<br><span class="ok">⇄</span> platform channel → Flutter</div>
+      $storeCard
+    </div>
+  </div>''';
 }
 
 String _heroScene(DProject p) {

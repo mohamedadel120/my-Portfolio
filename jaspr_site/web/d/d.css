@@ -91,6 +91,18 @@ a { color: inherit; }
 .card.store b { display: block; color: var(--ink); font-size: 0.95rem; font-variant-numeric: tabular-nums; }
 .card.store .dot { width: 0.55rem; height: 0.55rem; border-radius: 50%; background: var(--accent); }
 
+/* The AI scene (Gomla's skin analysis): one scene shows per visit. A scan
+   line sweeps the face frame in the phone; the wire layer behind carries the
+   same frame as a dashed outline. */
+.scene[hidden] { display: none; }
+.scene.ai .frame-scan { position: absolute; left: 12%; right: 30%; top: 15%; height: 30%; border: 1px dashed rgba(14, 116, 144, 0.7); border-radius: 10px; background: var(--accent-soft); }
+.scene.ai .scanline { position: absolute; left: 13%; right: 31%; top: 16%; height: 28%; overflow: hidden; border-radius: 8px; }
+.scene.ai .scanline::after { content: ""; position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(255, 200, 61, 0) 0, rgba(255, 200, 61, 0.28) 70%, #FFC83D 70%, #FFC83D calc(70% + 2px), rgba(255, 200, 61, 0) calc(70% + 2px));
+  transform: translateY(-70%); animation: skin-scan 2.4s cubic-bezier(0.45, 0, 0.55, 1) infinite alternate; }
+@keyframes skin-scan { to { transform: translateY(30%); } }
+@media (prefers-reduced-motion: reduce) { .scene.ai .scanline::after { animation: none; transform: translateY(-20%); } }
+
 /* Reduced motion: the same scene, shown taken apart and still. */
 @media (prefers-reduced-motion: reduce) { .hero { --p: 0.3 !important; } .scene { transform: translateY(-50%); } }
 
