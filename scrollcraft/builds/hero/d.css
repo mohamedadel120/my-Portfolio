@@ -94,7 +94,28 @@ a { color: inherit; }
    line sweeps the face frame in the phone; the wire layer behind carries the
    same frame as a dashed outline. */
 .scene[hidden] { display: none; }
-.scene.ai .frame-scan { position: absolute; left: 12%; right: 30%; top: 15%; height: 30%; border: 1px dashed rgba(14, 116, 144, 0.7); border-radius: 10px; background: var(--accent-soft); }
+/* The chip behind Gomla's phone. --d draws the traces as the hero scrolls,
+   then each result completes in turn (--r); data pulses run along the
+   traces once they are drawn. */
+.scene.ai .screen { --d: clamp(0, calc((var(--e) - 0.12) * 2.2), 1); overflow: hidden; }
+.chip-art { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.chip-art .pins path { stroke: var(--accent); stroke-width: 1.4; stroke-linecap: round; opacity: calc(0.35 + var(--d) * 0.65); }
+.chip-art .body { fill: #fff; stroke: var(--accent); stroke-width: 1.2; }
+.chip-art .die { fill: var(--accent); opacity: calc(0.12 + var(--d) * 0.78); }
+.chip-art .trace { fill: none; stroke: var(--accent); stroke-width: 0.9; stroke-linejoin: round; stroke-dasharray: 100; stroke-dashoffset: calc((1 - var(--d)) * 100px); opacity: 0.75; }
+.chip-art .pulse { fill: none; stroke: #FFB020; stroke-width: 1.8; stroke-linecap: round; stroke-dasharray: 4 96; stroke-dashoffset: 100px; opacity: clamp(0, calc((var(--d) - 0.85) * 7), 1); animation: chip-pulse 1.8s linear infinite; }
+.chip-art .pulse:nth-of-type(5) { animation-delay: -0.6s; }
+.chip-art .pulse:nth-of-type(6) { animation-delay: -1.2s; }
+@keyframes chip-pulse { to { stroke-dashoffset: 0; } }
+.chip-ai { position: absolute; left: 50%; top: 23.1%; transform: translate(-50%, -50%); font: 600 1rem/1 var(--mono); letter-spacing: 0.04em;
+  color: color-mix(in srgb, var(--accent) calc((1 - var(--d)) * 100%), #fff); }
+.chip-tag { position: absolute; left: 0; right: 0; top: 4.5%; text-align: center; font: 500 0.6rem/1.2 var(--mono); color: var(--accent); }
+.result { --r: clamp(0, calc((var(--d) - 0.5 - var(--i) * 0.12) * 5), 1); position: absolute; left: 16%; right: 7%; transform: translateY(-50%);
+  font: 500 0.58rem/1.2 var(--mono); color: var(--ink); white-space: nowrap; opacity: calc(0.25 + var(--r) * 0.75); }
+.result i { display: block; height: 3px; margin-top: 0.3rem; border-radius: 2px; background: rgba(14, 116, 144, 0.15); overflow: hidden; position: relative; }
+.result i::after { content: ""; position: absolute; inset: 0; background: var(--accent); transform: scaleX(var(--r)); transform-origin: left; }
+@media (max-width: 899px) { .chip-ai { font-size: 0.6rem; } .chip-tag, .result { font-size: 0.42rem; } }
+@media (prefers-reduced-motion: reduce) { .chip-art .pulse { animation: none; } }
 .scene.ai .scanline { position: absolute; left: 13%; right: 31%; top: 16%; height: 28%; overflow: hidden; border-radius: 8px; }
 .scene.ai .scanline::after { content: ""; position: absolute; inset: 0;
   background: linear-gradient(180deg, rgba(255, 200, 61, 0) 0, rgba(255, 200, 61, 0.28) 70%, #FFC83D 70%, #FFC83D calc(70% + 2px), rgba(255, 200, 61, 0) calc(70% + 2px));
